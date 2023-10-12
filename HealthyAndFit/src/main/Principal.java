@@ -1,9 +1,11 @@
 package main;
 
+import javax.swing.SwingUtilities;
+
 import gui.VentanaResumen;
 
 public class Principal {
 	public static void main(String[] args) {
-		new VentanaResumen();
+		SwingUtilities.invokeLater(()-> new VentanaResumen());
 	}
 }
