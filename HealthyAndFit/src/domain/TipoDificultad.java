@@ -1,5 +1,5 @@
 package domain;
 
-public enum Dificultad {
+public enum TipoDificultad {
 	FACIL,MEDIO,DIFICIL
 }
