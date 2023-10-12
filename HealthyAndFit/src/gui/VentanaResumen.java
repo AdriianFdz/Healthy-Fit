@@ -30,18 +30,20 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
+import domain.Usuario;
+
 public class VentanaResumen extends JFrame{
 
 	private JButton botonEntrenar;
 	
 	private static final long serialVersionUID = 1L;
-	public VentanaResumen() {		
+	public VentanaResumen(Usuario persona) {		
 		
 		//ENTRENAMIENTO
 		JPanel panelEntrenamiento = new JPanel(new BorderLayout());
 		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
 		
-		JLabel caloriasGastadas = new JLabel("Calorías gastadas: ");
+		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getAltura());
 		JLabel racha = new JLabel("Racha: ");
 		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: ");
 		JLabel objetivo = new JLabel("Objetivo: ");
@@ -116,6 +118,12 @@ public class VentanaResumen extends JFrame{
 		
 		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
 				
+		
+
+		
+		
+		
+		
 		
 		
 		//LISTENERS BOTONES
