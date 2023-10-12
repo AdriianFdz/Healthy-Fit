@@ -1,5 +1,5 @@
 package domain;
 
-public enum Preferencia {
+public enum TipoPreferencia {
 	NINGUNA, VEGETARIANO, VEGANO
 }
