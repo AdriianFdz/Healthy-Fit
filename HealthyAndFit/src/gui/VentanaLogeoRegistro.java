@@ -49,7 +49,7 @@ public class VentanaLogeoRegistro extends JFrame{
 			preguntaYaTienesCuenta = new JLabel("¿Ya tienes cuenta?");		
 			logeoIzquierda.add(preguntaYaTienesCuenta);
 		
-			nombreLogeo = new JLabel("NOMBRE DE USUARIO");
+			nombreLogeo = new JLabel("NOMBRE DE USUARIO ");
 			meterNombreLogeo = new JTextField(20);
 			logeoIzquierda.add(nombreLogeo);
 			logeoIzquierda.add(meterNombreLogeo);
@@ -84,7 +84,7 @@ public class VentanaLogeoRegistro extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			if(usuarioContraseñaCorrectos()) {
-			new VentanaResumen();
+			new VentanaResumen(null);
 			}else {
 				JOptionPane.showMessageDialog(iniciarSesion,"La contraseña o el usuario no son validos","Error",JOptionPane.ERROR_MESSAGE);
 			}
