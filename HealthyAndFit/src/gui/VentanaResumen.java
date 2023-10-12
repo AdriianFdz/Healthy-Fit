@@ -2,18 +2,23 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -21,10 +26,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.time.Day;
-import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.time.TimeSeriesTableModel;
 import org.jfree.data.xy.XYDataset;
 
 public class VentanaResumen extends JFrame{
@@ -36,14 +39,14 @@ public class VentanaResumen extends JFrame{
 		
 		//ENTRENAMIENTO
 		JPanel panelEntrenamiento = new JPanel(new BorderLayout());
-		JPanel panelTextosEntrenamiento = new JPanel();
-		panelTextosEntrenamiento.setLayout(new GridLayout(3, 3, 100, 50));
+		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
 		
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: ");
 		JLabel racha = new JLabel("Racha: ");
 		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: ");
 		JLabel objetivo = new JLabel("Objetivo: ");
 		JLabel ultimaVez = new JLabel("Última vez: ");
+		ultimaVez.setBorder(new EmptyBorder(0, 0, 10, 0)); //Añadir margen inferior al JLabel
 		
 		panelTextosEntrenamiento.add(caloriasGastadas);
 		panelTextosEntrenamiento.add(racha);
@@ -58,8 +61,62 @@ public class VentanaResumen extends JFrame{
 		anadirBordePanel("ENTRENAMIENTO", panelEntrenamiento);
 		add(panelEntrenamiento, BorderLayout.WEST);
 		
+			//Grafica entrenamiento
+		TimeSeriesCollection datasetEntrenamiento = crearDatasetEjemplo("Calorías quemadas");
+		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
+		ChartPanel panelGraficaEntrenamiento = new ChartPanel(graficaEntrenamiento);
+		panelGraficaEntrenamiento.setPreferredSize(new Dimension(940, 500));
+		
+		panelEntrenamiento.add(panelGraficaEntrenamiento, BorderLayout.CENTER);
+		
 		//DIETA
+		
+		JPanel panelDieta = new JPanel(new BorderLayout());
+		JPanel panelTextosDieta = new JPanel();
+		panelTextosDieta.setLayout(new GridLayout(3, 1, 0, 0));
+		
+		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: ");
+		JLabel proximaComida = new JLabel("Próxima comida: ");
+		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
+		
+		JPanel panelVasosAgua = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		panelVasosAgua.add(vasosDeAgua);
+		JPanel panelImagenVasos = new JPanel();
+		panelVasosAgua.add(panelImagenVasos);
+		
+		List<JLabel> listaVasos = new ArrayList<JLabel>();
+		for (int i = 0; i < 8; i++) {
+			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoVacio.png");
+			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+			ImageIcon vasoBueno = new ImageIcon(vaso);
+			JLabel vasoL = new JLabel();
+			vasoL.setIcon(vasoBueno);
+			panelImagenVasos.add(vasoL);
+			listaVasos.add(vasoL);
+		}
+				
+		
+		panelTextosDieta.add(caloriasConsumidas);
+		panelTextosDieta.add(proximaComida);
+		panelTextosDieta.add(panelVasosAgua);
+		panelDieta.add(panelTextosDieta, BorderLayout.NORTH);
+		
+		
+		JButton botonDieta = new JButton("Revisar dieta");
+		panelDieta.add(botonDieta, BorderLayout.SOUTH);
 
+		anadirBordePanel("DIETA", panelDieta);
+		add(panelDieta, BorderLayout.EAST);
+			
+			//Grafica dieta
+		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
+		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
+		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
+		panelGraficaDieta.setPreferredSize(new Dimension(940, 500));
+		
+		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
+				
+		
 		
 		//LISTENERS BOTONES
 		
@@ -72,27 +129,19 @@ public class VentanaResumen extends JFrame{
 			}
 		});
 		
+		botonDieta.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Boton revisar dieta pulsado");
+				
+			}
+		});
 		
-		TimeSeriesCollection dataset = crearDatasetEjemplo();
-		JFreeChart grafica = crearGrafica("Calorías consumidas", "Dia", "Calorias", dataset);
-		ChartPanel panelGraficaEntrenamiento = new ChartPanel(grafica);
 
-		panelEntrenamiento.add(panelGraficaEntrenamiento, BorderLayout.CENTER);
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		setSize(1920,1080);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setSize(800,800);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Resumen");
@@ -107,18 +156,20 @@ public class VentanaResumen extends JFrame{
 		panel.setBorder(bordeConTitulo);
 	}
 	
-	
+	//Crear grafica
 	private JFreeChart crearGrafica(String titulo, String tiempo, String valores, XYDataset xydataset) {
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(titulo, tiempo, valores, xydataset);
 		chart.setBackgroundPaint(Color.WHITE);
 		return chart;
 	}
 	
-	private TimeSeriesCollection crearDatasetEjemplo() {
-        TimeSeries s1 = new TimeSeries("Calorías consumidas");
+	//Dataset Ejemplo
+	private TimeSeriesCollection crearDatasetEjemplo(String titulo) {
+        TimeSeries s1 = new TimeSeries(titulo);
         
-        for (int i = 1; i < 31; i++) {
-        	s1.add(new Day(i, LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()), 100+i*10);			
+        for (int i = 1; i < LocalDateTime.now().getMonth().length(true)+1; i++) { //Incluye años bisiestos
+        	s1.add(new Day(i, LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()), 100+i*10);		
+        	
 		}
 
         TimeSeriesCollection dataset = new TimeSeriesCollection();
