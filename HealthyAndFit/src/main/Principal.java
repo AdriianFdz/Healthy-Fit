@@ -1,7 +1,6 @@
 package main;
 
 import javax.swing.SwingUtilities;
-
 import gui.VentanaResumen;
 
 public class Principal {
