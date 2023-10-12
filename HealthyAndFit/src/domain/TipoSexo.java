@@ -1,5 +1,5 @@
 package domain;
 
-public enum Sexo {
+public enum TipoSexo {
 	HOMBRE, MUJER, OTRO
 }

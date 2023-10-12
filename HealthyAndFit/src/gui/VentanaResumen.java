@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -30,22 +31,28 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
+import domain.Usuario;
+
 public class VentanaResumen extends JFrame{
 
 	private JButton botonEntrenar;
-	
+	JPanel panelImagenVasos = new JPanel();
+
 	private static final long serialVersionUID = 1L;
-	public VentanaResumen() {		
+	public VentanaResumen(Usuario persona) {		
 		
 		//ENTRENAMIENTO
+		JPanel panelIzquierda = new JPanel(new BorderLayout());
+		add(panelIzquierda, BorderLayout.WEST);
+
 		JPanel panelEntrenamiento = new JPanel(new BorderLayout());
 		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
 		
-		JLabel caloriasGastadas = new JLabel("Calorías gastadas: ");
-		JLabel racha = new JLabel("Racha: ");
-		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: ");
-		JLabel objetivo = new JLabel("Objetivo: ");
-		JLabel ultimaVez = new JLabel("Última vez: ");
+		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getcaloriasGastadas());
+		JLabel racha = new JLabel("Racha: "+persona.getrachaEntrenamiento());
+		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: "+persona.gettiempoEntrenado());
+		JLabel objetivo = new JLabel("Objetivo: "+persona.getObjetivo());
+		JLabel ultimaVez = new JLabel("Última vez: "+persona.getultimaVezEntreno());
 		ultimaVez.setBorder(new EmptyBorder(0, 0, 10, 0)); //Añadir margen inferior al JLabel
 		
 		panelTextosEntrenamiento.add(caloriasGastadas);
@@ -59,7 +66,7 @@ public class VentanaResumen extends JFrame{
 		panelEntrenamiento.add(botonEntrenar, BorderLayout.SOUTH);
 	
 		anadirBordePanel("ENTRENAMIENTO", panelEntrenamiento);
-		add(panelEntrenamiento, BorderLayout.WEST);
+		panelIzquierda.add(panelEntrenamiento, BorderLayout.CENTER);
 		
 			//Grafica entrenamiento
 		TimeSeriesCollection datasetEntrenamiento = crearDatasetEjemplo("Calorías quemadas");
@@ -71,29 +78,34 @@ public class VentanaResumen extends JFrame{
 		
 		//DIETA
 		
+		JPanel panelDerecha = new JPanel(new BorderLayout());
+		add(panelDerecha, BorderLayout.EAST);
+		
 		JPanel panelDieta = new JPanel(new BorderLayout());
 		JPanel panelTextosDieta = new JPanel();
 		panelTextosDieta.setLayout(new GridLayout(3, 1, 0, 0));
 		
-		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: ");
-		JLabel proximaComida = new JLabel("Próxima comida: ");
+		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getcaloriasConsumidas());
+		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getproximaComida());
 		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
 		
 		JPanel panelVasosAgua = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		panelVasosAgua.add(vasosDeAgua);
-		JPanel panelImagenVasos = new JPanel();
 		panelVasosAgua.add(panelImagenVasos);
 		
 		List<JLabel> listaVasos = new ArrayList<JLabel>();
-		for (int i = 0; i < 8; i++) {
-			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoVacio.png");
-			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-			ImageIcon vasoBueno = new ImageIcon(vaso);
-			JLabel vasoL = new JLabel();
-			vasoL.setIcon(vasoBueno);
-			panelImagenVasos.add(vasoL);
-			listaVasos.add(vasoL);
-		}
+//		for (int i = 0; i < persona.getvasosDeAgua(); i++) {
+//			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoLleno.png");
+//			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+//			ImageIcon vasoBueno = new ImageIcon(vaso);
+//			JLabel vasoL = new JLabel();
+//			vasoL.setIcon(vasoBueno);
+//			panelImagenVasos.add(vasoL);
+//			listaVasos.add(vasoL);
+//		}
+		crearVasosDeAgua(listaVasos);
+		actualizarVasosDeAgua(persona, listaVasos);
+		
 				
 		
 		panelTextosDieta.add(caloriasConsumidas);
@@ -106,7 +118,7 @@ public class VentanaResumen extends JFrame{
 		panelDieta.add(botonDieta, BorderLayout.SOUTH);
 
 		anadirBordePanel("DIETA", panelDieta);
-		add(panelDieta, BorderLayout.EAST);
+		panelDerecha.add(panelDieta, BorderLayout.CENTER);
 			
 			//Grafica dieta
 		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
@@ -117,6 +129,34 @@ public class VentanaResumen extends JFrame{
 		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
 				
 		
+		JPanel panelArriba = new JPanel(new BorderLayout());
+		add(panelArriba, BorderLayout.NORTH);
+		
+
+		
+		JLabel alertaEntrenamiento = new JLabel("          VAMOS, QUE HOY TE TOCA ENTRENAR!          ");
+		alertaEntrenamiento.setFont(new Font("verdana", Font.BOLD, 15));
+		alertaEntrenamiento.setHorizontalAlignment(SwingConstants.CENTER);
+		alertaEntrenamiento.setBorder(new EmptyBorder(40, 0, 40, 0));
+		panelIzquierda.add(alertaEntrenamiento, BorderLayout.NORTH);
+		
+		JLabel alertaAgua = new JLabel("          RECUERDA BEBER AGUA!          ");
+		alertaAgua.setFont(new Font("verdana", Font.BOLD, 15));
+		alertaAgua.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		JPanel panelArribaDerecha = new JPanel(new BorderLayout());
+		panelArribaDerecha.add(alertaAgua, BorderLayout.CENTER);
+		
+		Image foto = persona.getFoto().getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+		JButton fotoPerfil = new JButton(new ImageIcon(foto));
+		fotoPerfil.setPreferredSize(new Dimension(100,100));
+		panelArribaDerecha.add(fotoPerfil, BorderLayout.EAST);
+		
+		panelDerecha.add(panelArribaDerecha, BorderLayout.NORTH);
+		
+		animacionTexto(alertaEntrenamiento);
+		animacionTexto(alertaAgua);	
+					
 		
 		//LISTENERS BOTONES
 		
@@ -138,10 +178,18 @@ public class VentanaResumen extends JFrame{
 			}
 		});
 		
+		fotoPerfil.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Foto de perfil pulsada");
+				
+			}
+		});
 
 		
+		pack();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setSize(800,800);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Resumen");
@@ -179,6 +227,56 @@ public class VentanaResumen extends JFrame{
 
 	}
 	
+	//Animacion de las alertas
+	private void animacionTexto(JLabel texto) {
+		Thread hilo = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				while (true) {
+					String textoAnterior = texto.getText();
+					// Cojo el texto anterior desde la 2 letra hasta el final, y le sumo la primera letra
+					String textoDesplazado = textoAnterior.substring(1)+texto.getText().substring(0,1);  
+					texto.setText(textoDesplazado);
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						System.out.println("Hilo de animaciones de texto interrumpido");
+					}
+				}
+				
+			}
+		});
+		hilo.start();
+
+	}
 	
+	private void crearVasosDeAgua(List<JLabel>listaVasos) {
+		for (int i = 0; i < 8; i++) {
+			listaVasos.add(new JLabel());
+		}
+	}
+	
+	private void actualizarVasosDeAgua(Usuario persona, List<JLabel> listaVasos) {
+		for (int i = 0; i < persona.getvasosDeAgua(); i++) {
+			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoLleno.png");
+			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+			ImageIcon vasoBueno = new ImageIcon(vaso);
+			JLabel vasoL = new JLabel();
+			vasoL.setIcon(vasoBueno);
+			panelImagenVasos.add(vasoL);
+			listaVasos.set(i, vasoL);
+		}
+		
+		for (int i = persona.getvasosDeAgua(); i < 8; i++) {
+			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoVacio.png");
+			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+			ImageIcon vasoBueno = new ImageIcon(vaso);
+			JLabel vasoL = new JLabel();
+			vasoL.setIcon(vasoBueno);
+			panelImagenVasos.add(vasoL);
+			listaVasos.set(i, vasoL);
+		}
+	}
 	
 }

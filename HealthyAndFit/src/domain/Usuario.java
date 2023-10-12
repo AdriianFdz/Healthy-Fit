@@ -1,58 +1,103 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import javax.swing.ImageIcon;
 
 public class Usuario {
 	private String nombre;
-	private String nombre_usuario;
+	private String nombreUsuario;
 	private String apellido1;
 	private String apellido2;
-	private Date fecha_nacimiento;
-	private Sexo sexo;
+	private Date fechaNacimiento;
+	private TipoSexo sexo;
 	private double altura;
 	private int peso;
-	private Alergias alergias;
-	private String correo_electronico;
-	private Enfermedades enfermedades;
+	private List<TipoAlergias> alergias;
+	private String correoElectronico;
+	private List<TipoEnfermedades> enfermedades;
 	private double imc;
-	private Preferencia preferencia_alimenticia;
+	private TipoPreferencia preferenciaAlimenticia;
+	private int caloriasGastadas;
+	private int rachaEntrenamiento;
+	private String objetivo;
+	private int tiempoEntrenado;
+	private Date ultimaVezEntreno;
+	private int caloriasConsumidas;
+	private String proximaComida;
+	private int vasosDeAgua;
+	private String contraseña;
+	private ImageIcon foto;
 	
-	public Usuario(String nombre, String nombre_usuario, String apellido1, String apellido2, Date fecha_nacimiento,
-			Sexo sexo, double altura, int peso, Alergias alergias, String correo_electronico, Enfermedades enfermedades,
-			double imc, Preferencia preferencia_alimenticia) {
+	//Constructor con argumentos
+	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, Date fechaNacimiento,
+			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
+			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
+			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, Date ultimaVezEntreno,
+			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto) {
 		super();
 		this.nombre = nombre;
-		this.nombre_usuario = nombre_usuario;
+		this.nombreUsuario = nombreUsuario;
 		this.apellido1 = apellido1;
 		this.apellido2 = apellido2;
-		this.fecha_nacimiento = fecha_nacimiento;
+		this.fechaNacimiento = fechaNacimiento;
 		this.sexo = sexo;
 		this.altura = altura;
 		this.peso = peso;
-		this.alergias = alergias;
-		this.correo_electronico = correo_electronico;
-		this.enfermedades = enfermedades;
+		this.alergias = new ArrayList<TipoAlergias>();
+		for (TipoAlergias a : alergias) {
+			this.alergias.add(a);
+		}
+		this.correoElectronico = correoElectronico;
+		this.enfermedades = new ArrayList<TipoEnfermedades>();
+		for (TipoEnfermedades e : enfermedades) {
+			this.enfermedades.add(e);
+		}
 		this.imc = peso / (altura * altura);
-		this.preferencia_alimenticia = preferencia_alimenticia;
+		this.preferenciaAlimenticia = preferenciaAlimenticia;
+		this.caloriasGastadas = caloriasGastadas;
+		this.rachaEntrenamiento = rachaEntrenamiento;
+		this.objetivo = objetivo;
+		this.tiempoEntrenado = tiempoEntrenado;
+		this.ultimaVezEntreno = ultimaVezEntreno;
+		this.caloriasConsumidas = caloriasConsumidas;
+		this.proximaComida = proximaComida;
+		this.vasosDeAgua = vasosDeAgua;
+		this.foto = foto;
+		this.contraseña = contraseña;
 	}
 	
+	//Constructor sin argumentos
 	public Usuario() {
 		super();
 		this.nombre = "";
-		this.nombre_usuario = "";
+		this.nombreUsuario = "";
 		this.apellido1 = "";
 		this.apellido2 = "";
-		this.fecha_nacimiento = new Date();
-		this.sexo = Sexo.HOMBRE;
+		this.fechaNacimiento = new Date();
+		this.sexo = TipoSexo.OTRO;
 		this.altura = 0.0;
 		this.peso = 0;
-		this.alergias = Alergias.NINGUNA;
-		this.correo_electronico = "";
-		this.enfermedades = Enfermedades.NINGUNA;
+		this.alergias = new ArrayList<TipoAlergias>();
+		this.correoElectronico = "";
+		this.enfermedades = new ArrayList<TipoEnfermedades>();
 		this.imc = 0.0;
-		this.preferencia_alimenticia = Preferencia.NINGUNA;
+		this.preferenciaAlimenticia = TipoPreferencia.NINGUNA;
+		this.caloriasGastadas = 0;
+		this.rachaEntrenamiento = 0;
+		this.objetivo = "";
+		this.tiempoEntrenado = 0;
+		this.ultimaVezEntreno = new Date();
+		this.caloriasConsumidas = 0;
+		this.proximaComida = "";
+		this.vasosDeAgua = 0;
+		this.contraseña = "";
+		this.foto = new ImageIcon();
 	}
 
+	//getters y setters
 	public String getNombre() {
 		return nombre;
 	}
@@ -61,12 +106,12 @@ public class Usuario {
 		this.nombre = nombre;
 	}
 
-	public String getNombre_usuario() {
-		return nombre_usuario;
+	public String getnombreUsuario() {
+		return nombreUsuario;
 	}
 
-	public void setNombre_usuario(String nombre_usuario) {
-		this.nombre_usuario = nombre_usuario;
+	public void setnombreUsuario(String nombreUsuario) {
+		this.nombreUsuario = nombreUsuario;
 	}
 
 	public String getApellido1() {
@@ -85,22 +130,19 @@ public class Usuario {
 		this.apellido2 = apellido2;
 	}
 
-	public Date getFecha_nacimiento() {
-		return fecha_nacimiento;
+	public Date getfechaNacimiento() {
+		return fechaNacimiento;
 	}
 
-	public void setFecha_nacimiento(Date fecha_nacimiento) {
-		if (fecha_nacimiento != null) {
-			this.fecha_nacimiento = fecha_nacimiento;
-		}
-	
+	public void setfechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public Sexo getSexo() {
+	public TipoSexo getSexo() {
 		return sexo;
 	}
 
-	public void setSexo(Sexo sexo) {
+	public void setSexo(TipoSexo sexo) {
 		this.sexo = sexo;
 	}
 
@@ -109,7 +151,10 @@ public class Usuario {
 	}
 
 	public void setAltura(double altura) {
-		this.altura = altura;
+		if (altura > 0) {
+			this.altura = altura;
+		}
+		
 	}
 
 	public int getPeso() {
@@ -117,30 +162,33 @@ public class Usuario {
 	}
 
 	public void setPeso(int peso) {
-		this.peso = peso;
+		if (peso > 0) {
+			this.peso = peso;
+		}
+	
 	}
 
-	public Alergias getAlergias() {
+	public List<TipoAlergias> getAlergias() {
 		return alergias;
 	}
 
-	public void setAlergias(Alergias alergias) {
+	public void setAlergias(List<TipoAlergias> alergias) {
 		this.alergias = alergias;
 	}
 
-	public String getCorreo_electronico() {
-		return correo_electronico;
+	public String getcorreoElectronico() {
+		return correoElectronico;
 	}
 
-	public void setCorreo_electronico(String correo_electronico) {
-		this.correo_electronico = correo_electronico;
+	public void setcorreoElectronico(String correoElectronico) {
+		this.correoElectronico = correoElectronico;
 	}
 
-	public Enfermedades getEnfermedades() {
+	public List<TipoEnfermedades> getEnfermedades() {
 		return enfermedades;
 	}
 
-	public void setEnfermedades(Enfermedades enfermedades) {
+	public void setEnfermedades(List<TipoEnfermedades> enfermedades) {
 		this.enfermedades = enfermedades;
 	}
 
@@ -148,26 +196,122 @@ public class Usuario {
 		return imc;
 	}
 
-	public void setImc(double imc) {
-		this.imc = imc;
+	public TipoPreferencia getpreferenciaAlimenticia() {
+		return preferenciaAlimenticia;
 	}
 
-	public Preferencia getPreferencia_alimenticia() {
-		return preferencia_alimenticia;
+	public void setpreferenciaAlimenticia(TipoPreferencia preferenciaAlimenticia) {
+		this.preferenciaAlimenticia = preferenciaAlimenticia;
 	}
 
-	public void setPreferencia_alimenticia(Preferencia preferencia_alimenticia) {
-		this.preferencia_alimenticia = preferencia_alimenticia;
+	public int getcaloriasGastadas() {
+		return caloriasGastadas;
 	}
 
+	public void setcaloriasGastadas(int caloriasGastadas) {
+		if (caloriasGastadas >= 0) {
+			this.caloriasGastadas = caloriasGastadas;
+		}
+		
+	}
+
+	public int getrachaEntrenamiento() {
+		return rachaEntrenamiento;
+	}
+
+	public void setrachaEntrenamiento(int rachaEntrenamiento) {
+		if (rachaEntrenamiento >= 0) {
+			this.rachaEntrenamiento = rachaEntrenamiento;
+		}
+		
+	}
+
+	public String getObjetivo() {
+		return objetivo;
+	}
+
+	public void setObjetivo(String objetivo) {
+		this.objetivo = objetivo;
+	}
+
+	public int gettiempoEntrenado() {
+		return tiempoEntrenado;
+	}
+
+	public void settiempoEntrenado(int tiempoEntrenado) {
+		if (tiempoEntrenado >= 0) {
+			this.tiempoEntrenado = tiempoEntrenado;
+		}
+		
+	}
+
+	public Date getultimaVezEntreno() {
+		return ultimaVezEntreno;
+	}
+
+	public void setultimaVezEntreno(Date ultimaVezEntreno) {
+		this.ultimaVezEntreno = ultimaVezEntreno;
+	}
+
+	public int getcaloriasConsumidas() {
+		return caloriasConsumidas;
+	}
+
+	public void setcaloriasConsumidas(int caloriasConsumidas) {
+		if (caloriasConsumidas >= 0) {
+			this.caloriasConsumidas = caloriasConsumidas;
+		}
+		
+	}
+
+	public String getproximaComida() {
+		return proximaComida;
+	}
+
+	public void setproximaComida(String proximaComida) {
+		this.proximaComida = proximaComida;
+	}
+
+	public int getvasosDeAgua() {
+		return vasosDeAgua;
+	}
+
+	public void setvasosDeAgua(int vasosDeAgua) {
+		if (vasosDeAgua >= 0 && vasosDeAgua < 8)
+		this.vasosDeAgua = vasosDeAgua;
+	}
+
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public void setContraseña(String contraseña) {
+		if (contraseña.length() > 0) {
+			this.contraseña = contraseña;
+		}
+	
+	}
+
+	public ImageIcon getFoto() {
+		return foto;
+	}
+
+	public void setFoto(ImageIcon foto) {
+		this.foto = foto;
+	}
+	
+	//Metodo toString
 	@Override
 	public String toString() {
-		return "Usuario [nombre=" + nombre + ", nombre_usuario=" + nombre_usuario + ", apellido1=" + apellido1
-				+ ", apellido2=" + apellido2 + ", fecha_nacimiento=" + fecha_nacimiento + ", sexo=" + sexo + ", altura="
-				+ altura + ", peso=" + peso + ", alergias=" + alergias + ", correo_electronico=" + correo_electronico
-				+ ", enfermedades=" + enfermedades + ", imc=" + imc + "]";
+		return "Usuario [nombre=" + nombre + ", nombreUsuario=" + nombreUsuario + ", apellido1=" + apellido1
+				+ ", apellido2=" + apellido2 + ", fechaNacimiento=" + fechaNacimiento + ", sexo=" + sexo + ", altura="
+				+ altura + ", peso=" + peso + ", alergias=" + alergias + ", correoElectronico=" + correoElectronico
+				+ ", enfermedades=" + enfermedades + ", imc=" + imc + ", preferenciaAlimenticia="
+				+ preferenciaAlimenticia + ", caloriasGastadas=" + caloriasGastadas + ", rachaEntrenamiento="
+				+ rachaEntrenamiento + ", objetivo=" + objetivo + ", tiempoEntrenado=" + tiempoEntrenado
+				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
+				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contraseña=" + contraseña
+				+ ", foto=" + foto + "]";
 	}
-	
-	
 	
 }
