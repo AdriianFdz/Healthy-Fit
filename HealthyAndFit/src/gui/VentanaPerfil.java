@@ -10,8 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import domain.Usuario;
+
 
 public class VentanaPerfil extends JFrame{
+	
 	JPanel panel1;
 	JPanel panelColum1;
 	JLabel labelNombre;
@@ -31,7 +34,7 @@ public class VentanaPerfil extends JFrame{
 	JLabel labelPeso;
 	JLabel labelIMC;
 	
-	public VentanaPerfil() {
+	public VentanaPerfil(Usuario p) {
 		panel1 = new JPanel(new GridLayout(1, 3));
 
 		panelColum1 = new JPanel();
@@ -41,11 +44,11 @@ public class VentanaPerfil extends JFrame{
 		JLabel fotoUsuario = new JLabel(imageIcon);
 		panelColum1.add(fotoUsuario);
 
-		labelNombre = new JLabel("Nombre");
-		labelApellido1 = new JLabel("Apelldo1");
-		labelApellido2 = new JLabel("Apellido2");
-		labelFechaNac = new JLabel("Fecha de Nacimiento");
-		labelTipoU = new JLabel("Tipo de Usuario");
+		labelNombre = new JLabel(p.getNombre());
+		labelApellido1 = new JLabel(p.getApellido1());
+		labelApellido2 = new JLabel(p.getApellido2());
+		labelFechaNac = new JLabel(p.getfechaNacimiento().toString()); //esto no se como seria con lo de DATE
+		labelTipoU = new JLabel(""); //donde dice q tipo de usuario es
 
 		panelColum1.add(labelNombre);
 		panelColum1.add(labelApellido1);
