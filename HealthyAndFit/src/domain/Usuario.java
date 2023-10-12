@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 public class Usuario {
 	private String nombre;
 	private String nombreUsuario;
@@ -26,13 +28,15 @@ public class Usuario {
 	private int caloriasConsumidas;
 	private String proximaComida;
 	private int vasosDeAgua;
+	private String contraseña;
+	private ImageIcon foto;
 	
 	//Constructor con argumentos
 	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, Date fechaNacimiento,
 			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
 			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
 			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, Date ultimaVezEntreno,
-			int caloriasConsumidas, String proximaComida, int vasosDeAgua) {
+			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto) {
 		super();
 		this.nombre = nombre;
 		this.nombreUsuario = nombreUsuario;
@@ -61,6 +65,8 @@ public class Usuario {
 		this.caloriasConsumidas = caloriasConsumidas;
 		this.proximaComida = proximaComida;
 		this.vasosDeAgua = vasosDeAgua;
+		this.foto = foto;
+		this.contraseña = contraseña;
 	}
 	
 	//Constructor sin argumentos
@@ -87,6 +93,8 @@ public class Usuario {
 		this.caloriasConsumidas = 0;
 		this.proximaComida = "";
 		this.vasosDeAgua = 0;
+		this.contraseña = "";
+		this.foto = new ImageIcon();
 	}
 
 	//getters y setters
@@ -273,6 +281,25 @@ public class Usuario {
 		this.vasosDeAgua = vasosDeAgua;
 	}
 
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public void setContraseña(String contraseña) {
+		if (contraseña.length() > 0) {
+			this.contraseña = contraseña;
+		}
+	
+	}
+
+	public ImageIcon getFoto() {
+		return foto;
+	}
+
+	public void setFoto(ImageIcon foto) {
+		this.foto = foto;
+	}
+	
 	//Metodo toString
 	@Override
 	public String toString() {
@@ -283,9 +310,8 @@ public class Usuario {
 				+ preferenciaAlimenticia + ", caloriasGastadas=" + caloriasGastadas + ", rachaEntrenamiento="
 				+ rachaEntrenamiento + ", objetivo=" + objetivo + ", tiempoEntrenado=" + tiempoEntrenado
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
-				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + "]";
+				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contraseña=" + contraseña
+				+ ", foto=" + foto + "]";
 	}
-	
-	
 	
 }
