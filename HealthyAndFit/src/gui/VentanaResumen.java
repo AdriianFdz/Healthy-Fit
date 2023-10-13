@@ -94,15 +94,7 @@ public class VentanaResumen extends JFrame{
 		panelVasosAgua.add(panelImagenVasos);
 		
 		List<JLabel> listaVasos = new ArrayList<JLabel>();
-//		for (int i = 0; i < persona.getvasosDeAgua(); i++) {
-//			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoLleno.png");
-//			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-//			ImageIcon vasoBueno = new ImageIcon(vaso);
-//			JLabel vasoL = new JLabel();
-//			vasoL.setIcon(vasoBueno);
-//			panelImagenVasos.add(vasoL);
-//			listaVasos.add(vasoL);
-//		}
+
 		crearVasosDeAgua(listaVasos);
 		actualizarVasosDeAgua(persona, listaVasos);
 		
@@ -259,7 +251,7 @@ public class VentanaResumen extends JFrame{
 	
 	private void actualizarVasosDeAgua(Usuario persona, List<JLabel> listaVasos) {
 		for (int i = 0; i < persona.getvasosDeAgua(); i++) {
-			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoLleno.png");
+			ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoLleno.png");
 			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 			ImageIcon vasoBueno = new ImageIcon(vaso);
 			JLabel vasoL = new JLabel();
@@ -269,7 +261,7 @@ public class VentanaResumen extends JFrame{
 		}
 		
 		for (int i = persona.getvasosDeAgua(); i < 8; i++) {
-			ImageIcon vasotmp = new ImageIcon(System.getProperty("user.dir")+"\\resources\\images\\vasoVacio.png");
+			ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoVacio.png");
 			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 			ImageIcon vasoBueno = new ImageIcon(vaso);
 			JLabel vasoL = new JLabel();
