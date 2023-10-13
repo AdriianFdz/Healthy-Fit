@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.time.LocalDate;
 import java.time.Period;
@@ -22,6 +23,7 @@ import domain.Usuario;
 
 public class VentanaPerfil extends JFrame{
 	JPanel panel1;
+	JPanel panel2;
 	JPanel panelColum1;
 	JLabel labelNombre;
 	JLabel labelApellido1;
@@ -44,6 +46,8 @@ public class VentanaPerfil extends JFrame{
 	
 	public VentanaPerfil(Usuario p) {
 		panel1 = new JPanel(new GridLayout(1, 3));
+		panel2 = new JPanel(new BorderLayout());
+		add(panel2, BorderLayout.SOUTH);
 
 		panelColum1 = new JPanel();
 		panelColum1.setLayout(new BoxLayout(panelColum1, BoxLayout.Y_AXIS));
@@ -66,12 +70,16 @@ public class VentanaPerfil extends JFrame{
 
 		JButton modificarBot = new JButton("MODIFICAR DATOS");
 		JButton accesoPanelBot = new JButton("ACEESO PANEL");
+		
+		JButton volverBot =  new JButton("VOLVER");
 
 		panelColum1.add(modificarBot);
 		panelColum1.add(accesoPanelBot);
-
+		panel2.add(volverBot, BorderLayout.WEST);
+		
 		panel1.add(panelColum1);
 
+		
 		panelColum2 = new JPanel();
 		panelColum2.setLayout(new BoxLayout(panelColum2, BoxLayout.Y_AXIS));
 
@@ -111,13 +119,16 @@ public class VentanaPerfil extends JFrame{
 		labelAleg = new JLabel("ALERGIAS");
 		JScrollPane paneAlergias = new JScrollPane();
 		
+		JButton botonCerSesion = new JButton("CERRAR SESION");
+		
 		
 		panelColum3.add(labelEdad);
 		panelColum3.add(labelSexo);
 		panelColum3.add(labelAltura);
 		panelColum3.add(labelAleg);
 		panelColum3.add(paneAlergias);
-
+		
+		panel2.add(botonCerSesion, BorderLayout.WEST);
 
 		panel1.add(panelColum3);
 
