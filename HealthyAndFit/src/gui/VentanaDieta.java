@@ -29,7 +29,6 @@ public class VentanaDieta extends JFrame {
 	private static final long serialVersionUID = 1L;
 		JPanel panel;
 		JPanel panelArriba;
-		JPanel panelArriba2;
 		JPanel panelAbajo;
 		JLabel nombre;
 		JLabel minutos;
@@ -46,7 +45,7 @@ public class VentanaDieta extends JFrame {
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		panelArriba = new JPanel();
-		panelArriba.setLayout(new GridLayout(4, 2, 50, 10));
+		panelArriba.setLayout(new GridLayout(4, 2, 50, 50));
 		//panelAbajo = new JPanel();
 		//panelAbajo.setLayout(new GridLayout(2,2,100,3));
 		
@@ -100,11 +99,11 @@ public class VentanaDieta extends JFrame {
 		JLabel label = new JLabel();
 		
 		panelArriba.add(minutos);
-		panelArriba.add(labelPasos);
+		panelArriba.add(dificultad);
 		panelArriba.add(kcal);
-		panelArriba.add(pasos);
+		panelArriba.add(labelPasos);
 		panelArriba.add(Labelingredientes);
-		panelArriba.add(label);
+		panelArriba.add(pasos);
 		panelArriba.add(ingredientes);
 		
 		//panelAbajo.add(Labelingredientes);
