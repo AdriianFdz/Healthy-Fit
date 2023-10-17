@@ -141,8 +141,6 @@ public class VentanaPerfil extends JFrame{
 
 		this.add(panel1);
 		
-		
-		
 		this.setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
