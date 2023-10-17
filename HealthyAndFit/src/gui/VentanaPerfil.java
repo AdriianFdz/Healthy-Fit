@@ -15,11 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import domain.TipoAlergias;
 import domain.TipoEnfermedades;
 import domain.TipoPreferencia;
 import domain.Usuario;
-
-
 
 public class VentanaPerfil extends JFrame{
 	JPanel panel1;
@@ -75,6 +74,7 @@ public class VentanaPerfil extends JFrame{
 
 		panelColum1.add(modificarBot);
 		panelColum1.add(accesoPanelBot);
+		
 		panel2.add(volverBot, BorderLayout.WEST);
 		
 		panel1.add(panelColum1);
@@ -93,13 +93,16 @@ public class VentanaPerfil extends JFrame{
 		labelEnfer = new JLabel("Enfermedades");
 
 		JScrollPane paneEnfermedades = new JScrollPane();
-		//for (TipoEnfermedades p.getEnfermedades() : enfermedades) {
+		for (TipoEnfermedades enfermedad: p.getEnfermedades()) {
+			JLabel label1 = new JLabel(enfermedad.name());
+			paneEnfermedades.add(label1);
+		}
 
 
 		labelPrefAli = new JLabel("PREFERENCIAS ALIMENTICIAS");
 		JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
-		//for (TipoPreferencia preferenciaAlimenticia : ) {
-			
+		//for (TipoPreferencia preferencia : p.getpreferenciaAlimenticia() ) {
+		//	preferenciasComboBox.addItem(preferencia);
 		//}
 		
 		panelColum2.add(labelEdad);
@@ -117,8 +120,12 @@ public class VentanaPerfil extends JFrame{
 		labelPeso = new JLabel(Double.toString(p.getPeso()));
 		labelIMC = new JLabel(""); //falta imc
 		labelAleg = new JLabel("ALERGIAS");
-		JScrollPane paneAlergias = new JScrollPane();
 		
+		JScrollPane paneAlergias = new JScrollPane();
+		for (TipoAlergias alergia : p.getAlergias()) {
+			JLabel label = new JLabel(alergia.name());
+			paneAlergias.add(label);
+		}
 		JButton botonCerSesion = new JButton("CERRAR SESION");
 		
 		
@@ -134,8 +141,10 @@ public class VentanaPerfil extends JFrame{
 
 		this.add(panel1);
 		
+		
+		
 		this.setVisible(true);
-		this.setSize(800, 800);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Healthy & Fit");
 	}
