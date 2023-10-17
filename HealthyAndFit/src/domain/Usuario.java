@@ -1,5 +1,6 @@
 package domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,7 +12,7 @@ public class Usuario {
 	private String nombreUsuario;
 	private String apellido1;
 	private String apellido2;
-	private Date fechaNacimiento;
+	private LocalDate fechaNacimiento;
 	private TipoSexo sexo;
 	private double altura;
 	private int peso;
@@ -24,7 +25,7 @@ public class Usuario {
 	private int rachaEntrenamiento;
 	private String objetivo;
 	private int tiempoEntrenado;
-	private Date ultimaVezEntreno;
+	private LocalDate ultimaVezEntreno;
 	private int caloriasConsumidas;
 	private String proximaComida;
 	private int vasosDeAgua;
@@ -32,10 +33,10 @@ public class Usuario {
 	private ImageIcon foto;
 	
 	//Constructor con argumentos
-	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, Date fechaNacimiento,
+	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, LocalDate fechaNacimiento,
 			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
 			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
-			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, Date ultimaVezEntreno,
+			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
 			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto) {
 		super();
 		this.nombre = nombre;
@@ -76,7 +77,7 @@ public class Usuario {
 		this.nombreUsuario = "";
 		this.apellido1 = "";
 		this.apellido2 = "";
-		this.fechaNacimiento = new Date();
+		this.fechaNacimiento = LocalDate.now();
 		this.sexo = TipoSexo.OTRO;
 		this.altura = 0.0;
 		this.peso = 0;
@@ -89,7 +90,7 @@ public class Usuario {
 		this.rachaEntrenamiento = 0;
 		this.objetivo = "";
 		this.tiempoEntrenado = 0;
-		this.ultimaVezEntreno = new Date();
+		this.ultimaVezEntreno = LocalDate.now();
 		this.caloriasConsumidas = 0;
 		this.proximaComida = "";
 		this.vasosDeAgua = 0;
@@ -130,11 +131,11 @@ public class Usuario {
 		this.apellido2 = apellido2;
 	}
 
-	public Date getfechaNacimiento() {
+	public LocalDate getfechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setfechaNacimiento(Date fechaNacimiento) {
+	public void setfechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
@@ -245,11 +246,11 @@ public class Usuario {
 		
 	}
 
-	public Date getultimaVezEntreno() {
+	public LocalDate getultimaVezEntreno() {
 		return ultimaVezEntreno;
 	}
 
-	public void setultimaVezEntreno(Date ultimaVezEntreno) {
+	public void setultimaVezEntreno(LocalDate ultimaVezEntreno) {
 		this.ultimaVezEntreno = ultimaVezEntreno;
 	}
 

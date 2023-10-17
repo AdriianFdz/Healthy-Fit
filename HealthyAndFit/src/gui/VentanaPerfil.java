@@ -2,9 +2,9 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Label;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -21,6 +21,8 @@ import domain.TipoPreferencia;
 import domain.Usuario;
 
 public class VentanaPerfil extends JFrame{
+	private static final long serialVersionUID = 1L;
+	
 	JPanel panel1;
 	JPanel panel2;
 	JPanel panelColum1;
@@ -83,11 +85,10 @@ public class VentanaPerfil extends JFrame{
 		panelColum2 = new JPanel();
 		panelColum2.setLayout(new BoxLayout(panelColum2, BoxLayout.Y_AXIS));
 
-		//Problema con la fecha, da una exception debido al tipo de datos
-		LocalDate ahora = LocalDate.now();
-		Period periodo = Period.between(LocalDate.of(p.getfechaNacimiento().getYear(), p.getfechaNacimiento().getHours(), p.getfechaNacimiento().getMinutes()), ahora);
 		
-		labelEdad = new JLabel(periodo.toString());
+		int edad = Period.between(p.getfechaNacimiento(), LocalDate.now()).getYears();
+					
+		labelEdad = new JLabel(edad + "");
 		labelSexo = new JLabel(p.getSexo().name());
 		labelAltura = new JLabel(Double.toString(p.getAltura()));
 		labelEnfer = new JLabel("Enfermedades");
@@ -108,7 +109,9 @@ public class VentanaPerfil extends JFrame{
 		panelColum2.add(labelEdad);
 		panelColum2.add(labelSexo);
 		panelColum2.add(labelAltura);
+		panelColum2.add(new Label("ENFERMEDADES"));
 		panelColum2.add(paneEnfermedades);
+		panelColum2.add(new Label("PREFERENCIA ALIMENTICIA"));
 		panelColum2.add(preferenciasComboBox);
 		
 		panel1.add(panelColum2);
@@ -118,7 +121,7 @@ public class VentanaPerfil extends JFrame{
 
 		labelCorreo = new JLabel(p.getcorreoElectronico());
 		labelPeso = new JLabel(Double.toString(p.getPeso()));
-		labelIMC = new JLabel(""); //falta imc
+		labelIMC = new JLabel("IMC"); //falta imc
 		labelAleg = new JLabel("ALERGIAS");
 		
 		JScrollPane paneAlergias = new JScrollPane();
@@ -129,9 +132,9 @@ public class VentanaPerfil extends JFrame{
 		JButton botonCerSesion = new JButton("CERRAR SESION");
 		
 		
-		panelColum3.add(labelEdad);
-		panelColum3.add(labelSexo);
-		panelColum3.add(labelAltura);
+		panelColum3.add(labelCorreo);
+		panelColum3.add(labelPeso);
+		panelColum3.add(labelIMC);
 		panelColum3.add(labelAleg);
 		panelColum3.add(paneAlergias);
 		
@@ -140,10 +143,12 @@ public class VentanaPerfil extends JFrame{
 		panel1.add(panelColum3);
 
 		this.add(panel1);
-		
+	
 		this.setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Healthy & Fit");
+		this.setSize(1920,1080);
 	}
+	
 }
