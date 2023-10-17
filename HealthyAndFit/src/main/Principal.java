@@ -1,5 +1,7 @@
 package main;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,8 +22,9 @@ public class Principal {
 	
 	Usuario persona;
 	public static void main(String[] args) {
-		Usuario p = new Usuario("Juan", "juan_perez", "Perez", "Carbon", new Date(), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(), "juan@gmail.com", new ArrayList<TipoEnfermedades>(), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, new Date(), 13000, new Dieta().getNombre(), 3, "asd", new ImageIcon("resources\\images\\foto.png"));
-		SwingUtilities.invokeLater(()-> new VentanaResumen(p));
-		new VentanaLogeoRegistro();
+		Usuario p = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(), "juan@gmail.com", new ArrayList<TipoEnfermedades>(), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new Dieta().getNombre(), 3, "asd", new ImageIcon("resources\\images\\foto.png"));
+		System.out.println(p.getfechaNacimiento().getYear());
+		SwingUtilities.invokeLater(()-> new VentanaPerfil(p));
+		//new VentanaLogeoRegistro();
 	}
 }
