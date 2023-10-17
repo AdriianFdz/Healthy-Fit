@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
@@ -72,8 +73,9 @@ public class VentanaResumen extends JFrame{
 		TimeSeriesCollection datasetEntrenamiento = crearDatasetEjemplo("Calorías quemadas");
 		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
 		ChartPanel panelGraficaEntrenamiento = new ChartPanel(graficaEntrenamiento);
-		panelGraficaEntrenamiento.setPreferredSize(new Dimension(940, 500));
-		
+		//panelGraficaEntrenamiento.setPreferredSize(new Dimension(200, 200));
+		Dimension resPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		panelGraficaEntrenamiento.setPreferredSize(new Dimension(resPantalla.getSize().width/2,resPantalla.getSize().height/2));
 		panelEntrenamiento.add(panelGraficaEntrenamiento, BorderLayout.CENTER);
 		
 		//DIETA
@@ -116,8 +118,9 @@ public class VentanaResumen extends JFrame{
 		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
-		panelGraficaDieta.setPreferredSize(new Dimension(940, 500));
+		//panelGraficaDieta.setPreferredSize(new Dimension(200, 200));
 		
+		panelGraficaDieta.setPreferredSize(new Dimension(resPantalla.getSize().width/2-35,resPantalla.getSize().height/2-35));
 		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
 				
 		
