@@ -223,6 +223,8 @@ public class VentanaResumen extends JFrame{
 	}
 	
 	//Animacion de las alertas
+	
+	//Programa basado en https://www.tutorialspoint.com/how-can-we-implement-a-moving-text-using-a-jlabel-in-java
 	private void animacionTexto(JLabel texto) {
 		Thread hilo = new Thread(new Runnable() {
 			
@@ -252,6 +254,7 @@ public class VentanaResumen extends JFrame{
 		}
 	}
 	
+	//Imagenes sacadas de www.flaticon.com
 	private void actualizarVasosDeAgua(Usuario persona, List<JLabel> listaVasos) {
 		for (int i = 0; i < persona.getvasosDeAgua(); i++) {
 			ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoLleno.png");
