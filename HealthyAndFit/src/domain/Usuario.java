@@ -31,13 +31,14 @@ public class Usuario {
 	private int vasosDeAgua;
 	private String contraseña;
 	private ImageIcon foto;
+	private TipoPermiso permiso;
 	
 	//Constructor con argumentos
 	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, LocalDate fechaNacimiento,
 			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
 			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
 			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
-			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto) {
+			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso) {
 		super();
 		this.nombre = nombre;
 		this.nombreUsuario = nombreUsuario;
@@ -68,6 +69,7 @@ public class Usuario {
 		this.vasosDeAgua = vasosDeAgua;
 		this.foto = foto;
 		this.contraseña = contraseña;
+		this.permiso = permiso;
 	}
 	
 	//Constructor sin argumentos
@@ -96,6 +98,7 @@ public class Usuario {
 		this.vasosDeAgua = 0;
 		this.contraseña = "";
 		this.foto = new ImageIcon();
+		this.permiso = TipoPermiso.USUARIO;
 	}
 
 	//getters y setters
@@ -301,6 +304,15 @@ public class Usuario {
 		this.foto = foto;
 	}
 	
+	
+	public TipoPermiso getPermiso() {
+		return permiso;
+	}
+
+	public void setPermiso(TipoPermiso permiso) {
+		this.permiso = permiso;
+	}
+
 	//Metodo toString
 	@Override
 	public String toString() {
@@ -312,7 +324,8 @@ public class Usuario {
 				+ rachaEntrenamiento + ", objetivo=" + objetivo + ", tiempoEntrenado=" + tiempoEntrenado
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
 				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contraseña=" + contraseña
-				+ ", foto=" + foto + "]";
+				+ ", foto=" + foto + ", permiso=" + permiso + "]";
 	}
+
 	
 }
