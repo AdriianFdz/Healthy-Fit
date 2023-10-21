@@ -2,14 +2,16 @@ package domain;
 
 
 public class Entrenamiento {
+	private String nombre;
 	private TipoEntrenamiento tipoEntrenamiento;
 	private TipoDificultad dificultad;
 	private int tiempo;
 	private String descripcion;
 	
 	//Constructor con argumentos
-	public Entrenamiento(TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion) {
+	public Entrenamiento(String nombre, TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion) {
 		super();
+		this.nombre = nombre;
 		this.tipoEntrenamiento = tipoEntrenamiento;
 		this.dificultad = dificultad;
 		this.tiempo = tiempo;
@@ -19,6 +21,8 @@ public class Entrenamiento {
 	//Constructor sin argumentos
 	public Entrenamiento() {
 		super();
+		
+		this.nombre = "Nombre por defecto";
 		this.tipoEntrenamiento = TipoEntrenamiento.INFERIOR;
 		this.dificultad = TipoDificultad.FACIL;
 		this.tiempo = 0;
@@ -26,11 +30,21 @@ public class Entrenamiento {
 	}
 
 	//getters y setters
-	public TipoEntrenamiento gettipoEntrenamiento() {
+
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public TipoEntrenamiento getTipoEntrenamiento() {
 		return tipoEntrenamiento;
 	}
 
-	public void settipoEntrenamiento(TipoEntrenamiento tipoEntrenamiento) {
+	public void setTipoEntrenamiento(TipoEntrenamiento tipoEntrenamiento) {
 		this.tipoEntrenamiento = tipoEntrenamiento;
 	}
 
@@ -61,11 +75,10 @@ public class Entrenamiento {
 		this.descripcion = descripcion;
 	}
 
-	//Metodo toString
 	@Override
 	public String toString() {
-		return "Entrenamiento [tipoEntrenamiento=" + tipoEntrenamiento + ", dificultad=" + dificultad + ", tiempo="
-				+ tiempo + ", descripcion=" + descripcion + "]";
+		return "Entrenamiento [nombre=" + nombre + ", tipoEntrenamiento=" + tipoEntrenamiento + ", dificultad="
+				+ dificultad + ", tiempo=" + tiempo + ", descripcion=" + descripcion + "]";
 	}
 	
 	
