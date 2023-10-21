@@ -14,6 +14,8 @@ import domain.TipoEnfermedades;
 import domain.TipoPreferencia;
 import domain.TipoSexo;
 import domain.Usuario;
+import gui.VentanaDieta;
+import gui.VentanaEntrenamiento;
 import gui.VentanaLogeoRegistro;
 import gui.VentanaPerfil;
 import gui.VentanaResumen;
@@ -24,7 +26,7 @@ public class Principal {
 	public static void main(String[] args) {
 		Usuario p = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(), "juan@gmail.com", new ArrayList<TipoEnfermedades>(), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new Dieta().getNombre(), 3, "asd", new ImageIcon("resources\\images\\foto.png"));
 		System.out.println(p.getfechaNacimiento().getYear());
-		SwingUtilities.invokeLater(()-> new VentanaPerfil(p));
+		SwingUtilities.invokeLater(()-> new VentanaEntrenamiento());
 		//new VentanaLogeoRegistro();
 	}
 }
