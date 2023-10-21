@@ -1,21 +1,16 @@
 package domain;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Entrenamiento {
-	private List<String> tipoEntrenamiento;
+	private TipoEntrenamiento tipoEntrenamiento;
 	private TipoDificultad dificultad;
 	private int tiempo;
 	private String descripcion;
 	
 	//Constructor con argumentos
-	public Entrenamiento(List<String> tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion) {
+	public Entrenamiento(TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion) {
 		super();
-		this.tipoEntrenamiento = new ArrayList<String>();
-		for (String s : tipoEntrenamiento) {
-			this.tipoEntrenamiento.add(s);
-		}
+		this.tipoEntrenamiento = tipoEntrenamiento;
 		this.dificultad = dificultad;
 		this.tiempo = tiempo;
 		this.descripcion = descripcion;
@@ -24,18 +19,18 @@ public class Entrenamiento {
 	//Constructor sin argumentos
 	public Entrenamiento() {
 		super();
-		this.tipoEntrenamiento = new ArrayList<String>();
+		this.tipoEntrenamiento = TipoEntrenamiento.INFERIOR;
 		this.dificultad = TipoDificultad.FACIL;
 		this.tiempo = 0;
 		this.descripcion = "";
 	}
 
 	//getters y setters
-	public List<String> gettipoEntrenamiento() {
+	public TipoEntrenamiento gettipoEntrenamiento() {
 		return tipoEntrenamiento;
 	}
 
-	public void settipoEntrenamiento(List<String> tipoEntrenamiento) {
+	public void settipoEntrenamiento(TipoEntrenamiento tipoEntrenamiento) {
 		this.tipoEntrenamiento = tipoEntrenamiento;
 	}
 
