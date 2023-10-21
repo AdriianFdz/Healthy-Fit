@@ -7,15 +7,17 @@ public class Entrenamiento {
 	private TipoDificultad dificultad;
 	private int tiempo;
 	private String descripcion;
+	private int calorias;
 	
 	//Constructor con argumentos
-	public Entrenamiento(String nombre, TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion) {
+	public Entrenamiento(String nombre, TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion, int calorias) {
 		super();
 		this.nombre = nombre;
 		this.tipoEntrenamiento = tipoEntrenamiento;
 		this.dificultad = dificultad;
 		this.tiempo = tiempo;
 		this.descripcion = descripcion;
+		this.calorias = calorias;
 	}
 	
 	//Constructor sin argumentos
@@ -27,6 +29,7 @@ public class Entrenamiento {
 		this.dificultad = TipoDificultad.FACIL;
 		this.tiempo = 0;
 		this.descripcion = "";
+		this.calorias = 0;
 	}
 
 	//getters y setters
@@ -39,6 +42,15 @@ public class Entrenamiento {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public int getCalorias() {
+		return calorias;
+	}
+
+	public void setCalorias(int calorias) {
+		this.calorias = calorias;
+	}
+
 
 	public TipoEntrenamiento getTipoEntrenamiento() {
 		return tipoEntrenamiento;
