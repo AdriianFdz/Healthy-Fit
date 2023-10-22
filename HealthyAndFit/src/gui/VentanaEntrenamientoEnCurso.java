@@ -1,5 +1,6 @@
 package gui;
 
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -15,39 +16,55 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import domain.Entrenamiento;
+import domain.TipoDificultad;
+import domain.TipoEntrenamiento;
+
+
 public class VentanaEntrenamientoEnCurso extends JFrame{
 	
 	 private static final long serialVersionUID = 1L;
 
 	  
-	    private JPanel panel;
+	    private JPanel panelDerecha;
+	    private JPanel panelIzquierda;
 	    private JLabel panelTiempo;
+	    private JLabel nombre;
+	    private JLabel labelDificultad;
+	    private JLabel labelKcal;
+	    private JLabel repeticiones;
+	    private JLabel series;
 
-	    private JPanel buttonPanel;
+	    private JPanel panelBotones;
 	    private JButton botonStart;
 	    private JButton botonReset;
 	    private JButton botonStop;
 
-	  
-	    private byte centiseconds = 0;
-	    private byte seconds = 20;
-	    private short minutes = 0;
+	    private byte milisegundos;
+	    private byte segundos;
+	    private short minutos;
 
 	    private DecimalFormat timeFormatter;
+	  
 
 	    private Timer timer;
 
-	    public VentanaEntrenamientoEnCurso() {
-	        panel = new JPanel();
-	        panel.setLayout(new BorderLayout());
+	    public VentanaEntrenamientoEnCurso(Entrenamiento e) {
+	    	milisegundos = 0;
+		    segundos = 20;
+		    minutos = 0;
+		    
+		    nombre = new JLabel(e.getNombre());
+	        panelDerecha = new JPanel();
+	        panelDerecha.setLayout(new BorderLayout());
 
 	        panelTiempo = new JLabel();
 	        panelTiempo.setFont(new Font("Consolas", Font.PLAIN, 30));
 	        panelTiempo.setHorizontalAlignment(JLabel.CENTER);
-	        panel.add(panelTiempo);
+	        panelDerecha.add(panelTiempo);
 
-	        buttonPanel = new JPanel();
-	        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+	        panelBotones = new JPanel();
+	        panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 	        botonStart = new JButton("Start");
 	        botonStart.addActionListener(new ActionListener() {
@@ -57,25 +74,26 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	            }
 	        });
-	        buttonPanel.add(botonStart);
+	        panelBotones.add(botonStart);
 
 	        botonReset = new JButton("Reset");
 	        botonReset.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
+	            	
 
 	                timer.stop();
 
-	                centiseconds = 0;
-	                seconds = 30;
-	                minutes = 0;
+	                milisegundos = 0;
+	                segundos = 30;
+	                minutos = 0;
 
-	                panelTiempo.setText(timeFormatter.format(minutes) + ":"
-	                        + timeFormatter.format(seconds) + "."
-	                        + timeFormatter.format(centiseconds));
+	                panelTiempo.setText(timeFormatter.format(minutos) + ":"
+	                        + timeFormatter.format(segundos) + "."
+	                        + timeFormatter.format(milisegundos));
 	            }
 	        });
 
-	        buttonPanel.add(botonReset);
+	        panelBotones.add(botonReset);
 
 	        botonStop = new JButton("Stop");
 	        botonStop.addActionListener(new ActionListener() {
@@ -84,40 +102,40 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	            }
 	        });
 
-	        buttonPanel.add(botonStop);
+	        panelBotones.add(botonStop);
 
-	        panel.add(buttonPanel, BorderLayout.SOUTH);
+	        panelDerecha.add(panelBotones, BorderLayout.SOUTH);
 
 	        timeFormatter = new DecimalFormat("00");
 
 	        timer = new Timer(10, new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
-	                if (centiseconds > 0) {
-	                    centiseconds--;
+	                if (milisegundos > 0) {
+	                    milisegundos--;
 	                } else {
-	                    if (seconds == 0 && minutes == 0) {
+	                    if (segundos == 0 && minutos == 0) {
 	                        timer.stop();
-	                    } else if (seconds > 0) {
-	                        seconds--;
-	                        centiseconds = 99;
-	                    } else if (minutes > 0) {
-	                        minutes--;
-	                        seconds = 59;
-	                        centiseconds = 99;
+	                    } else if (segundos > 0) {
+	                        segundos--;
+	                        milisegundos = 99;
+	                    } else if (minutos > 0) {
+	                        minutos--;
+	                        segundos = 59;
+	                        milisegundos = 99;
 	                    }
 	                }
-	                panelTiempo.setText(timeFormatter.format(minutes) + ":"
-	                        + timeFormatter.format(seconds) + "."
-	                        + timeFormatter.format(centiseconds));
+	                panelTiempo.setText(timeFormatter.format(minutos) + ":"
+	                        + timeFormatter.format(segundos) + "."
+	                        + timeFormatter.format(milisegundos));
 	            }
 	        });
 
-	        panelTiempo.setText(timeFormatter.format(minutes) + ":"
-	                + timeFormatter.format(seconds) + "."
-	                + timeFormatter.format(centiseconds));
+	        panelTiempo.setText(timeFormatter.format(minutos) + ":"
+	                + timeFormatter.format(segundos) + "."
+	                + timeFormatter.format(milisegundos));
 
-	        add(panel);
+	        add(panelDerecha);
 
 	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	        setLocationRelativeTo(null);
@@ -133,7 +151,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	            public void run() {
 	             
 
-	                new VentanaEntrenamientoEnCurso();
+	                new VentanaEntrenamientoEnCurso(new Entrenamiento("Abdominales", TipoEntrenamiento.INFERIOR, TipoDificultad.FACIL, 5, "", 23, 33, 21));
 	            }
 	        });
 	    }
