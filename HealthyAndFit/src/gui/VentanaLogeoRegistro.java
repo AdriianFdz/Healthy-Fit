@@ -1,7 +1,6 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class VentanaLogeoRegistro extends JFrame{
+	private static final long serialVersionUID = 1L;
 
 	JTabbedPane paneles;
 	

@@ -4,18 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.ScrollPane;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.print.attribute.standard.JobPriority;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,11 +19,11 @@ import javax.swing.ListCellRenderer;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
-import domain.TipoEnfermedades;
 import domain.TipoEntrenamiento;
 
 public class VentanaEntrenamiento extends JFrame{
-	
+
+	private static final long serialVersionUID = 1L;
 	// Propiedades de la ventana
 	List<Entrenamiento> entrenamientos = new ArrayList<Entrenamiento>();
 	Entrenamiento e1 = new Entrenamiento("Entrenamiento 1", TipoEntrenamiento.SUPERIOR, TipoDificultad.FACIL, 120, "DESCRIPCION1", 50);
@@ -107,6 +100,8 @@ public class VentanaEntrenamiento extends JFrame{
 	
 	//Render de listaEntrenamientos
 	public class RenderListaEntrenamientos extends JLabel implements ListCellRenderer<Entrenamiento>{
+		private static final long serialVersionUID = 1L;
+		
 		Color sinSeleccionar = getBackground();
 
 		@Override
