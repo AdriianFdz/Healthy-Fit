@@ -36,118 +36,117 @@ import domain.Usuario;
 
 public class VentanaResumen extends JFrame{
 
+	//Propiedades de la ventana
 	private JButton botonEntrenar;
 	JPanel panelImagenVasos = new JPanel();
 
+	
+	
 	private static final long serialVersionUID = 1L;
 	public VentanaResumen(Usuario persona) {		
 		
 		//ENTRENAMIENTO
-		JPanel panelIzquierda = new JPanel(new BorderLayout());
-		add(panelIzquierda, BorderLayout.WEST);
-
-		JPanel panelEntrenamiento = new JPanel(new BorderLayout());
-		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
-		
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getcaloriasGastadas());
 		JLabel racha = new JLabel("Racha: "+persona.getrachaEntrenamiento());
 		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: "+persona.gettiempoEntrenado());
 		JLabel objetivo = new JLabel("Objetivo: "+persona.getObjetivo());
 		JLabel ultimaVez = new JLabel("Última vez: "+persona.getultimaVezEntreno());
 		ultimaVez.setBorder(new EmptyBorder(0, 0, 10, 0)); //Añadir margen inferior al JLabel
+
+		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
+			panelTextosEntrenamiento.add(caloriasGastadas);
+			panelTextosEntrenamiento.add(racha);
+			panelTextosEntrenamiento.add(tiempoEntrenado);
+			panelTextosEntrenamiento.add(objetivo);
+			panelTextosEntrenamiento.add(ultimaVez);
 		
-		panelTextosEntrenamiento.add(caloriasGastadas);
-		panelTextosEntrenamiento.add(racha);
-		panelTextosEntrenamiento.add(tiempoEntrenado);
-		panelTextosEntrenamiento.add(objetivo);
-		panelTextosEntrenamiento.add(ultimaVez);
-		panelEntrenamiento.add(panelTextosEntrenamiento, BorderLayout.NORTH);
+		JPanel panelEntrenamiento = new JPanel(new BorderLayout());
+			panelEntrenamiento.add(panelTextosEntrenamiento, BorderLayout.NORTH);
+			botonEntrenar = new JButton("Quiero entrenar");
+			panelEntrenamiento.add(botonEntrenar, BorderLayout.SOUTH);
+			anadirBordePanel("ENTRENAMIENTO", panelEntrenamiento);
+			
+		JPanel panelIzquierda = new JPanel(new BorderLayout());
+			panelIzquierda.add(panelEntrenamiento, BorderLayout.CENTER);
+		add(panelIzquierda, BorderLayout.WEST);
 		
-		botonEntrenar = new JButton("Quiero entrenar");
-		panelEntrenamiento.add(botonEntrenar, BorderLayout.SOUTH);
-	
-		anadirBordePanel("ENTRENAMIENTO", panelEntrenamiento);
-		panelIzquierda.add(panelEntrenamiento, BorderLayout.CENTER);
-		
-			//Grafica entrenamiento
+		//Grafica entrenamiento
 		TimeSeriesCollection datasetEntrenamiento = crearDatasetEjemplo("Calorías quemadas");
 		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
 		ChartPanel panelGraficaEntrenamiento = new ChartPanel(graficaEntrenamiento);
-		//panelGraficaEntrenamiento.setPreferredSize(new Dimension(200, 200));
 		Dimension resPantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		panelGraficaEntrenamiento.setPreferredSize(new Dimension(resPantalla.getSize().width/2,resPantalla.getSize().height/2));
 		panelEntrenamiento.add(panelGraficaEntrenamiento, BorderLayout.CENTER);
 		
+		
+		
 		//DIETA
+
 		
-		JPanel panelDerecha = new JPanel(new BorderLayout());
-		add(panelDerecha, BorderLayout.EAST);
-		
-		JPanel panelDieta = new JPanel(new BorderLayout());
-		JPanel panelTextosDieta = new JPanel();
-		panelTextosDieta.setLayout(new GridLayout(3, 1, 0, 0));
 		
 		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getcaloriasConsumidas());
 		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getproximaComida());
 		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
 		
 		JPanel panelVasosAgua = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		panelVasosAgua.add(vasosDeAgua);
-		panelVasosAgua.add(panelImagenVasos);
+			panelVasosAgua.add(vasosDeAgua);
+			panelVasosAgua.add(panelImagenVasos);
 		
-		List<JLabel> listaVasos = new ArrayList<JLabel>();
+			List<JLabel> listaVasos = new ArrayList<JLabel>();
 
-		crearVasosDeAgua(listaVasos);
-		actualizarVasosDeAgua(persona, listaVasos);
+			crearVasosDeAgua(listaVasos);
+			actualizarVasosDeAgua(persona, listaVasos);
 		
 				
+		JPanel panelTextosDieta = new JPanel(new GridLayout(3, 1, 0, 0));
+			panelTextosDieta.add(caloriasConsumidas);
+			panelTextosDieta.add(proximaComida);
+			panelTextosDieta.add(panelVasosAgua);
 		
-		panelTextosDieta.add(caloriasConsumidas);
-		panelTextosDieta.add(proximaComida);
-		panelTextosDieta.add(panelVasosAgua);
-		panelDieta.add(panelTextosDieta, BorderLayout.NORTH);
+		JPanel panelDieta = new JPanel(new BorderLayout());
+			panelDieta.add(panelTextosDieta, BorderLayout.NORTH);
 		
 		
-		JButton botonDieta = new JButton("Revisar dieta");
-		panelDieta.add(botonDieta, BorderLayout.SOUTH);
+			JButton botonDieta = new JButton("Revisar dieta");
+			panelDieta.add(botonDieta, BorderLayout.SOUTH);
 
-		anadirBordePanel("DIETA", panelDieta);
-		panelDerecha.add(panelDieta, BorderLayout.CENTER);
+			anadirBordePanel("DIETA", panelDieta);
 			
-			//Grafica dieta
+
+			
+		//Grafica dieta
 		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
-		//panelGraficaDieta.setPreferredSize(new Dimension(200, 200));
-		
+	
 		panelGraficaDieta.setPreferredSize(new Dimension(resPantalla.getSize().width/2-35,resPantalla.getSize().height/2-35));
 		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
 				
 		
 		JPanel panelArriba = new JPanel(new BorderLayout());
-		add(panelArriba, BorderLayout.NORTH);
-		
-
+			add(panelArriba, BorderLayout.NORTH);
 		
 		JLabel alertaEntrenamiento = new JLabel("          VAMOS, QUE HOY TE TOCA ENTRENAR!          ");
-		alertaEntrenamiento.setFont(new Font("verdana", Font.BOLD, 15));
-		alertaEntrenamiento.setHorizontalAlignment(SwingConstants.CENTER);
-		alertaEntrenamiento.setBorder(new EmptyBorder(40, 0, 40, 0));
-		panelIzquierda.add(alertaEntrenamiento, BorderLayout.NORTH);
+			alertaEntrenamiento.setFont(new Font("verdana", Font.BOLD, 15));
+			alertaEntrenamiento.setHorizontalAlignment(SwingConstants.CENTER);
+			alertaEntrenamiento.setBorder(new EmptyBorder(40, 0, 40, 0));
+			panelIzquierda.add(alertaEntrenamiento, BorderLayout.NORTH);
 		
 		JLabel alertaAgua = new JLabel("          RECUERDA BEBER AGUA!          ");
-		alertaAgua.setFont(new Font("verdana", Font.BOLD, 15));
-		alertaAgua.setHorizontalAlignment(SwingConstants.CENTER);
+			alertaAgua.setFont(new Font("verdana", Font.BOLD, 15));
+			alertaAgua.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel panelArribaDerecha = new JPanel(new BorderLayout());
-		panelArribaDerecha.add(alertaAgua, BorderLayout.CENTER);
-		
-		Image foto = persona.getFoto().getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
-		JButton fotoPerfil = new JButton(new ImageIcon(foto));
-		fotoPerfil.setPreferredSize(new Dimension(100,100));
-		panelArribaDerecha.add(fotoPerfil, BorderLayout.EAST);
-		
-		panelDerecha.add(panelArribaDerecha, BorderLayout.NORTH);
+			panelArribaDerecha.add(alertaAgua, BorderLayout.CENTER);
+			Image foto = persona.getFoto().getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+			JButton fotoPerfil = new JButton(new ImageIcon(foto));
+			fotoPerfil.setPreferredSize(new Dimension(100,100));
+			panelArribaDerecha.add(fotoPerfil, BorderLayout.EAST);
+
+		JPanel panelDerecha = new JPanel(new BorderLayout());
+			panelDerecha.add(panelDieta, BorderLayout.CENTER);
+			add(panelDerecha, BorderLayout.EAST);
+			panelDerecha.add(panelArribaDerecha, BorderLayout.NORTH);
 		
 		animacionTexto(alertaEntrenamiento);
 		animacionTexto(alertaAgua);	
