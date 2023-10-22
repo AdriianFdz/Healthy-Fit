@@ -1,3 +1,4 @@
+
 package domain;
 
 
@@ -8,9 +9,11 @@ public class Entrenamiento {
 	private int tiempo;
 	private String descripcion;
 	private int calorias;
+	private int series;
+	private int repeticiones;
 	
 	//Constructor con argumentos
-	public Entrenamiento(String nombre, TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion, int calorias) {
+	public Entrenamiento(String nombre, TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion, int calorias, int series, int repeticiones) {
 		super();
 		this.nombre = nombre;
 		this.tipoEntrenamiento = tipoEntrenamiento;
@@ -18,6 +21,9 @@ public class Entrenamiento {
 		this.tiempo = tiempo;
 		this.descripcion = descripcion;
 		this.calorias = calorias;
+		this.series = series;
+		this.repeticiones = repeticiones;
+		
 	}
 	
 	//Constructor sin argumentos
@@ -30,6 +36,8 @@ public class Entrenamiento {
 		this.tiempo = 0;
 		this.descripcion = "";
 		this.calorias = 0;
+		this.series = 0;
+		this.repeticiones = 0;
 	}
 
 	//getters y setters
@@ -87,11 +95,34 @@ public class Entrenamiento {
 		this.descripcion = descripcion;
 	}
 
+	
+	public int getSeries() {
+		return series;
+	}
+
+	public void setSeries(int series) {
+		if (series >= 0) {
+			this.series = series;
+		}
+		
+	}
+
+	public int getRepeticiones() {
+		return repeticiones;
+	}
+
+	public void setRepeticiones(int repeticiones) {
+		if (repeticiones >= 0) {
+			this.repeticiones = repeticiones;
+		}
+	
+	}
+
 	@Override
 	public String toString() {
 		return "Entrenamiento [nombre=" + nombre + ", tipoEntrenamiento=" + tipoEntrenamiento + ", dificultad="
-				+ dificultad + ", tiempo=" + tiempo + ", descripcion=" + descripcion + "]";
+				+ dificultad + ", tiempo=" + tiempo + ", descripcion=" + descripcion + ", calorias=" + calorias
+				+ ", series=" + series + ", repeticiones=" + repeticiones + "]";
 	}
-	
-	
+
 }
