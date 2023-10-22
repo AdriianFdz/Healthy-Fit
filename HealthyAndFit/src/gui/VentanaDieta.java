@@ -4,21 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.color.ColorSpace;
-import java.util.ArrayList;
-
-import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-
 import domain.Dieta;
 import domain.TipoDificultad;
 
@@ -27,27 +17,28 @@ public class VentanaDieta extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-		JPanel panel;
-		JPanel panelArriba;
-		JPanel panelAbajo;
-		JLabel nombre;
-		JLabel minutos;
-		JLabel dificultad;
-		JLabel kcal;
-		JLabel Labelingredientes;
-		JTextArea ingredientes;
-		JLabel labelPasos;
-		JTextArea pasos;
+	
+	//Definir atributos necesarios para la ventana
+		private JPanel panelGeneral;
+		private JPanel panelSecundario;
+		private JLabel nombre;
+		private JLabel minutos;
+		private JLabel dificultad;
+		private JLabel kcal;
+		private JLabel Labelingredientes;
+		private JTextArea ingredientes;
+		private JLabel labelPasos;
+		private JTextArea pasos;
 		
 	
 	
 	public VentanaDieta(Dieta d) {
-		panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panelArriba = new JPanel();
-		panelArriba.setLayout(new GridLayout(4, 2, 50, 50));
-		//panelAbajo = new JPanel();
-		//panelAbajo.setLayout(new GridLayout(2,2,100,3));
+		
+		//Inicializar los atributos previamente definidos
+		panelGeneral = new JPanel();
+		panelGeneral.setLayout(new BorderLayout());
+		panelSecundario = new JPanel();
+		panelSecundario.setLayout(new GridLayout(4, 2, 50, 50));
 		
 		
 		nombre = new JLabel(" " + d.getNombre());
@@ -56,7 +47,7 @@ public class VentanaDieta extends JFrame {
 		nombre.setOpaque(true);
 		minutos = new JLabel("    ⏰" + d.getTiempo() + " minutos");
 		
-		
+			//Poner emoji de fuego para reflejar la dificultad
 		if (d.getDificultad() == TipoDificultad.FACIL) {
 			dificultad = new JLabel("Dificultad: 🔥");
 		}else if (d.getDificultad() == TipoDificultad.MEDIO) {
@@ -73,51 +64,45 @@ public class VentanaDieta extends JFrame {
 		ingredientes = new JTextArea();
 		ingredientes.setEditable(false);
 		for (String s : d.getIngredientes()) {
-			ingredientes.append(s);
+			ingredientes.append(" -" + s + "\n");
 		}
 	
-		
-	
+
 		labelPasos = new JLabel("Pasos a realizar:");
 		
 		pasos = new JTextArea();
 		pasos.setEditable(false);
 		for (String s : d.getPasos()) {
-			pasos.append(s);
+			pasos.append(" -" + s + "\n");
 		}
 		
 		JScrollPane pane = new JScrollPane();
 		pasos.add(pane);
 		ingredientes.add(pane);
 		
+		//Cambio del tipo y tamaño de letra
 		kcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		Labelingredientes.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		labelPasos.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		minutos.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		dificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		
-		JLabel label = new JLabel();
+		//Añadir los atributos al panel
+		panelSecundario.add(minutos);
+		panelSecundario.add(dificultad);
+		panelSecundario.add(kcal);
+		panelSecundario.add(labelPasos);
+		panelSecundario.add(Labelingredientes);
+		panelSecundario.add(pasos);
+		panelSecundario.add(ingredientes);
 		
-		panelArriba.add(minutos);
-		panelArriba.add(dificultad);
-		panelArriba.add(kcal);
-		panelArriba.add(labelPasos);
-		panelArriba.add(Labelingredientes);
-		panelArriba.add(pasos);
-		panelArriba.add(ingredientes);
-		
-		//panelAbajo.add(Labelingredientes);
-		//panelAbajo.add(labelPasos);
-		//panelAbajo.add(ingredientes);
-		//panelAbajo.add(pasos);
-		
-		panel.add(panelArriba,BorderLayout.NORTH);
-		//panel.add(panelAbajo);
+		//Añadir el panelSecundario al panelGeneral
+		panelGeneral.add(panelSecundario,BorderLayout.NORTH);
 
 		
-		
+		//Añadir el panelGeneral a la ventana
 		this.add(nombre,BorderLayout.NORTH);
-		this.add(panel);
+		this.add(panelGeneral);
 		
 		
 		this.setVisible(true);
@@ -127,7 +112,4 @@ public class VentanaDieta extends JFrame {
 		
 	}
 	
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(()-> new VentanaDieta(new Dieta("Pollo al curry", 50, TipoDificultad.FACIL, 500,new ArrayList<String>(),new ArrayList<String>() )));
-	}
 }
