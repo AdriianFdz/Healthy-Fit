@@ -31,6 +31,7 @@ import domain.TipoEntrenamiento;
 
 public class VentanaEntrenamiento extends JFrame{
 	
+	// Propiedades de la ventana
 	List<Entrenamiento> entrenamientos = new ArrayList<Entrenamiento>();
 	Entrenamiento e1 = new Entrenamiento("Entrenamiento 1", TipoEntrenamiento.SUPERIOR, TipoDificultad.FACIL, 120, "DESCRIPCION1", 50);
 	Entrenamiento e2 = new Entrenamiento("Entrenamiento 2", TipoEntrenamiento.INFERIOR, TipoDificultad.MEDIO, 60, "DESCRIPCION2", 70);
@@ -55,48 +56,46 @@ public class VentanaEntrenamiento extends JFrame{
 	
 	public VentanaEntrenamiento() {
 		
-		
+		//Definir lista de entrenamientos
 		DefaultListModel<Entrenamiento> modeloListaEntrenamiento = new DefaultListModel<>();
 		listaEntrenamientos = new JList<Entrenamiento>(modeloListaEntrenamiento);
 		ScrollPane scrollListaEntrenamientos = new ScrollPane();
 	
 		scrollListaEntrenamientos.add(listaEntrenamientos);
 	
-		
+		//Entrenamientos de ejemplo
 		modeloListaEntrenamiento.addElement(e1);
 		modeloListaEntrenamiento.addElement(e2);
 		modeloListaEntrenamiento.addElement(e3);
 		
 		listaEntrenamientos.setCellRenderer(new RenderListaEntrenamientos());
 		
+		//Diseño de la ventana
+		JPanel panelIntermedio = new JPanel();
+			panelIntermedio.setLayout(new GridLayout(1,2));
+			tiempoEntrenamientoSeleccionado = new JLabel("");
+			caloriasEntrenamientoSeleccionado = new JLabel("");
+			panelIntermedio.add(tiempoEntrenamientoSeleccionado);
+			panelIntermedio.add(caloriasEntrenamientoSeleccionado);
+			
+		JPanel panelEntrenamientoSeleccionado = new JPanel();
+			panelEntrenamientoSeleccionado.setLayout(new BoxLayout(panelEntrenamientoSeleccionado, BoxLayout.Y_AXIS));
+			nombreEntrenamientoSeleccionado = new JLabel("");
+			dificultadEntrenamientoSeleccionado = new JLabel("");
+			descripcionEntrenamientoSeleccionado = new JLabel("");	
+				
+			panelEntrenamientoSeleccionado.add(nombreEntrenamientoSeleccionado);
+			panelEntrenamientoSeleccionado.add(panelIntermedio);
+			panelEntrenamientoSeleccionado.add(dificultadEntrenamientoSeleccionado);
+			panelEntrenamientoSeleccionado.add(descripcionEntrenamientoSeleccionado);
 		
 		JPanel panelIzquierdoEntrenamientos = new JPanel();
-		panelIzquierdoEntrenamientos.add(scrollListaEntrenamientos);
-				
-		JPanel panelEntrenamientoSeleccionado = new JPanel();
-		
-		panelEntrenamientoSeleccionado.setLayout(new BoxLayout(panelEntrenamientoSeleccionado, BoxLayout.Y_AXIS));
-		nombreEntrenamientoSeleccionado = new JLabel("");
-		tiempoEntrenamientoSeleccionado = new JLabel("");
-		caloriasEntrenamientoSeleccionado = new JLabel("");
-		dificultadEntrenamientoSeleccionado = new JLabel("");
-		descripcionEntrenamientoSeleccionado = new JLabel("");
-		
-		JPanel panelIntermedio = new JPanel();
-		panelIntermedio.setLayout(new GridLayout(1,2));
-		panelEntrenamientoSeleccionado.add(nombreEntrenamientoSeleccionado);
-		panelIntermedio.add(tiempoEntrenamientoSeleccionado);
-		panelIntermedio.add(caloriasEntrenamientoSeleccionado);
-		panelEntrenamientoSeleccionado.add(panelIntermedio);
-		panelEntrenamientoSeleccionado.add(dificultadEntrenamientoSeleccionado);
-		panelEntrenamientoSeleccionado.add(descripcionEntrenamientoSeleccionado);
-		
-		
-		panelIzquierdoEntrenamientos.add(panelEntrenamientoSeleccionado);
+			panelIzquierdoEntrenamientos.add(scrollListaEntrenamientos);
+			panelIzquierdoEntrenamientos.add(panelEntrenamientoSeleccionado);
+			panelIzquierdoEntrenamientos.add(botonIniciar, BorderLayout.EAST);
 		
 		add(panelIzquierdoEntrenamientos, BorderLayout.WEST);	
 		
-		panelIzquierdoEntrenamientos.add(botonIniciar, BorderLayout.EAST);
 		
 		pack();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -105,6 +104,8 @@ public class VentanaEntrenamiento extends JFrame{
 		setTitle("Resumen");		
 	}
 	
+	
+	//Render de listaEntrenamientos
 	public class RenderListaEntrenamientos extends JLabel implements ListCellRenderer<Entrenamiento>{
 		Color sinSeleccionar = getBackground();
 
@@ -126,9 +127,6 @@ public class VentanaEntrenamiento extends JFrame{
 				caloriasEntrenamientoSeleccionado.setText(Integer.toString(value.getCalorias()) + " kcal");
 				dificultadEntrenamientoSeleccionado.setText(value.getDificultad().toString());
 				descripcionEntrenamientoSeleccionado.setText(value.getDescripcion());
-				
-				
-				repaint();
 			}
 
 			return this;
