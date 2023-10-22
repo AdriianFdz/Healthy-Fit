@@ -137,10 +137,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	        add(panelDerecha);
 
-	        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        setLocationRelativeTo(null);
-	        setTitle("StopwatchGUI.java");
-
+	        setDefaultCloseOperation(EXIT_ON_CLOSE);
+	        setTitle("EntrenamientoEnCurso");
 	        pack();
 	        setVisible(true);
 	    }
