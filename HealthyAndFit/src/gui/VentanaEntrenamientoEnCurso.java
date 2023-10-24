@@ -5,8 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -34,9 +32,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    private JLabel nombre;
 	    private JLabel labelDificultad;
 	    private JLabel labelKcal;
-	    private JLabel labelRepeticiones;
-	    private JLabel labelSeries;
-	    
+	    private JLabel repeticiones;
+	    private JLabel series;
 
 	    private JPanel panelBotones;
 	    private JButton botonStart;
@@ -58,20 +55,13 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 		    minutos = 0;
 		    
 		    nombre = new JLabel(e.getNombre());
-		    labelDificultad = new JLabel("Dificultad: " + e.getDificultad().toString());
-		    labelKcal = new JLabel("🔥 " + e.getCalorias() + " kcal");
-		    labelSeries = new JLabel(e.getRepeticiones() + "SERIES");
-		    labelRepeticiones = new JLabel(e.getRepeticiones() + " REPETICIONES");
 	        panelDerecha = new JPanel();
-	        panelDerecha.setLayout(new GridLayout(2, 1, 20, 20));
-	        panelIzquierda = new JPanel();
-	        panelIzquierda.setLayout(new GridLayout(4, 1,20,20));
-	        
+	        panelDerecha.setLayout(new BorderLayout());
 
 	        panelTiempo = new JLabel();
 	        panelTiempo.setFont(new Font("Consolas", Font.PLAIN, 30));
 	        panelTiempo.setHorizontalAlignment(JLabel.CENTER);
-	       
+	        panelDerecha.add(panelTiempo);
 
 	        panelBotones = new JPanel();
 	        panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -145,17 +135,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                + timeFormatter.format(segundos) + "."
 	                + timeFormatter.format(milisegundos));
 
-	        panelDerecha.add(labelDificultad);
-	        panelDerecha.add(labelKcal);
-	        panelIzquierda.add(labelSeries);
-	        panelIzquierda.add(labelRepeticiones);
-	        panelIzquierda.add(panelTiempo);
-	        panelIzquierda.add(panelBotones);
+	        add(panelDerecha);
 
-	        this.add(nombre, BorderLayout.NORTH);
-	        this.add(panelDerecha, BorderLayout.WEST);
-	        this.add(panelIzquierda, BorderLayout.EAST);
-	        
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("EntrenamientoEnCurso");
 	        pack();
