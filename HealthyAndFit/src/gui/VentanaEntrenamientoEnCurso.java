@@ -2,6 +2,8 @@ package gui;
 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -28,8 +30,10 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	 private static final long serialVersionUID = 1L;
 
 	  
-	    private JPanel panelDerecha;
-	    private JPanel panelIzquierda;
+	    private JPanel panelPrincipal;
+	    private JPanel panelSecundario;
+	    private JPanel panelAbajo;
+	    
 	    private JLabel panelTiempo;
 	    private JLabel nombre;
 	    private JLabel labelDificultad;
@@ -42,6 +46,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    private JButton botonStart;
 	    private JButton botonReset;
 	    private JButton botonStop;
+	    private JButton botonVolver;
 
 	    private byte milisegundos;
 	    private byte segundos;
@@ -57,24 +62,26 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 		    segundos = 20;
 		    minutos = 0;
 		    
-		    nombre = new JLabel(e.getNombre());
-		    labelDificultad = new JLabel("Dificultad: " + e.getDificultad().toString());
-		    labelKcal = new JLabel("🔥 " + e.getCalorias() + " kcal");
-		    labelSeries = new JLabel(e.getRepeticiones() + "SERIES");
+		    nombre = new JLabel(" "+ e.getNombre());
+		    labelDificultad = new JLabel("   Dificultad: " + e.getDificultad().toString());
+		    labelKcal = new JLabel("   🔥 " + e.getCalorias() + " kcal");
+		    labelSeries = new JLabel(e.getSeries() + " SERIES");
 		    labelRepeticiones = new JLabel(e.getRepeticiones() + " REPETICIONES");
-	        panelDerecha = new JPanel();
-	        panelDerecha.setLayout(new GridLayout(2, 1, 20, 20));
-	        panelIzquierda = new JPanel();
-	        panelIzquierda.setLayout(new GridLayout(4, 1,20,20));
+	        panelPrincipal = new JPanel();
+	        panelPrincipal.setLayout(new BorderLayout());
+	        panelSecundario = new JPanel();
+	        panelSecundario.setLayout(new GridLayout(3, 2, 1100, 80));
+	        panelAbajo = new JPanel();
+	        panelAbajo.setLayout(new FlowLayout(FlowLayout.LEADING));
+	        botonVolver = new JButton("VOLVER");
 	        
-
 	        panelTiempo = new JLabel();
-	        panelTiempo.setFont(new Font("Consolas", Font.PLAIN, 30));
+	        panelTiempo.setFont(new Font("Consolas", Font.PLAIN, 160));
 	        panelTiempo.setHorizontalAlignment(JLabel.CENTER);
 	       
 
 	        panelBotones = new JPanel();
-	        panelBotones.setLayout(new FlowLayout(FlowLayout.CENTER));
+	        panelBotones.setLayout(new FlowLayout());
 
 	        botonStart = new JButton("Start");
 	        botonStart.addActionListener(new ActionListener() {
@@ -84,7 +91,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	            }
 	        });
-	        panelBotones.add(botonStart);
+	        
 
 	        botonReset = new JButton("Reset");
 	        botonReset.addActionListener(new ActionListener() {
@@ -103,7 +110,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	            }
 	        });
 
-	        panelBotones.add(botonReset);
+	    
 
 	        botonStop = new JButton("Stop");
 	        botonStop.addActionListener(new ActionListener() {
@@ -112,9 +119,9 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	            }
 	        });
 
-	        panelBotones.add(botonStop);
+	       
 
-	        panelDerecha.add(panelBotones, BorderLayout.SOUTH);
+	       
 
 	        timeFormatter = new DecimalFormat("00");
 
@@ -144,21 +151,63 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelTiempo.setText(timeFormatter.format(minutos) + ":"
 	                + timeFormatter.format(segundos) + "."
 	                + timeFormatter.format(milisegundos));
-
-	        panelDerecha.add(labelDificultad);
-	        panelDerecha.add(labelKcal);
-	        panelIzquierda.add(labelSeries);
-	        panelIzquierda.add(labelRepeticiones);
-	        panelIzquierda.add(panelTiempo);
-	        panelIzquierda.add(panelBotones);
-
-	        this.add(nombre, BorderLayout.NORTH);
-	        this.add(panelDerecha, BorderLayout.WEST);
-	        this.add(panelIzquierda, BorderLayout.EAST);
 	        
+	        
+	        /////
+	   
+			nombre.setFont(new Font("Tahoma", Font.BOLD, 50));
+			nombre.setBackground((Color.gray));
+			nombre.setOpaque(true);
+	        
+			Font fuenteFont = labelKcal.getFont();
+			
+			labelDificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
+			labelKcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
+			labelRepeticiones.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
+			labelSeries.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
+		
+	        ///////
+			botonStart.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+			botonReset.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+			botonStop.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+			
+			botonStart.setBackground(Color.GREEN);
+			botonStop.setBackground(Color.RED);
+			
+			botonStart.setPreferredSize(new Dimension(120,60));
+			botonReset.setPreferredSize(new Dimension(120,60));
+			botonStop.setPreferredSize(new Dimension(120,60));
+			botonVolver.setPreferredSize(new Dimension(120,60));
+			//////
+			panelBotones.add(botonStart);
+		    panelBotones.add(botonReset);
+		    panelBotones.add(botonStop);
+	        panelSecundario.add(labelDificultad);
+	        panelSecundario.add(labelSeries);
+	        panelSecundario.add(labelKcal);
+	        panelSecundario.add(labelRepeticiones);
+	        //panelSecundario.add(botonReset);
+	        //panelSecundario.add(panelTiempo);
+	       
+	        panelAbajo.add(botonVolver);
+	        
+	        panelPrincipal.add(panelBotones, BorderLayout.SOUTH);
+	        panelPrincipal.add(panelSecundario, BorderLayout.NORTH);
+	        panelPrincipal.add(panelTiempo, BorderLayout.CENTER);
+	       
+	        this.add(nombre, BorderLayout.NORTH);
+	       
+	        this.add(panelAbajo, BorderLayout.SOUTH);
+	        this.add(panelPrincipal);
+	      
+	        
+	        //this.add(panelPrincipal, BorderLayout.WEST);
+	        //this.add(panelSecundario, BorderLayout.CENTER);
+	        
+	        setSize(1920,1080);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("EntrenamientoEnCurso");
-	        pack();
+	        //pack();
 	        setVisible(true);
 	    }
 

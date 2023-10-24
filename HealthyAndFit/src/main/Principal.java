@@ -13,7 +13,7 @@ import domain.TipoPermiso;
 import domain.TipoPreferencia;
 import domain.TipoSexo;
 import domain.Usuario;
-
+import gui.VentanaDieta;
 import gui.VentanaResumen;
 
 public class Principal {
@@ -25,6 +25,6 @@ public class Principal {
 		Usuario p = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(), "juan@gmail.com", new ArrayList<TipoEnfermedades>(), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new Dieta().getNombre(), 3, "asd", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR);
 		System.out.println(p.getfechaNacimiento().getYear());
 		SwingUtilities.invokeLater(()-> new VentanaResumen(p));
-
+		
 	}
 }
