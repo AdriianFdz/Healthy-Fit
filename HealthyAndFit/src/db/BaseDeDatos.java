@@ -49,5 +49,8 @@ public class BaseDeDatos {
 		ingredientesD2.add("Salchichas");
 		
 		Dieta d2 = new Dieta("Macarrones con tomate y salchichas", 25, TipoDificultad.FACIL, 230, pasosD2, pasosD2);
+		
+		listaDietas.add(d1);
+		listaDietas.add(d2);
 	}
 }
