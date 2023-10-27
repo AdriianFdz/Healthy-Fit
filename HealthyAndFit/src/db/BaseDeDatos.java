@@ -53,4 +53,31 @@ public class BaseDeDatos {
 		listaDietas.add(d1);
 		listaDietas.add(d2);
 	}
+
+	public List<Usuario> getListaUsuarios() {
+		return listaUsuarios;
+	}
+
+	public void setListaUsuarios(List<Usuario> listaUsuarios) {
+		this.listaUsuarios = listaUsuarios;
+	}
+
+	public List<Entrenamiento> getListaEntrenamiento() {
+		return listaEntrenamiento;
+	}
+
+	public void setListaEntrenamiento(List<Entrenamiento> listaEntrenamiento) {
+		this.listaEntrenamiento = listaEntrenamiento;
+	}
+
+	public List<Dieta> getListaDietas() {
+		return listaDietas;
+	}
+
+	public void setListaDietas(List<Dieta> listaDietas) {
+		this.listaDietas = listaDietas;
+	}
+	
+	
+	
 }
