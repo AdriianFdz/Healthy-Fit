@@ -14,6 +14,7 @@ import domain.TipoPreferencia;
 import domain.TipoSexo;
 import domain.Usuario;
 import gui.VentanaDieta;
+import gui.VentanaLogeoRegistro;
 import gui.VentanaResumen;
 
 public class Principal {

@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.ScrollPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +18,12 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingUtilities;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
+import domain.Usuario;
 
 public class VentanaEntrenamiento extends JFrame{
 
@@ -47,7 +51,7 @@ public class VentanaEntrenamiento extends JFrame{
 	
 	
 	
-	public VentanaEntrenamiento() {
+	public VentanaEntrenamiento(Usuario persona) {
 		
 		//Definir lista de entrenamientos
 		DefaultListModel<Entrenamiento> modeloListaEntrenamiento = new DefaultListModel<>();
@@ -88,6 +92,27 @@ public class VentanaEntrenamiento extends JFrame{
 			panelIzquierdoEntrenamientos.add(botonIniciar, BorderLayout.EAST);
 		
 		add(panelIzquierdoEntrenamientos, BorderLayout.WEST);	
+		
+		//LISTENERS BOTONES
+		
+		botonIniciar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(() -> new VentanaEntrenamientoEnCurso(listaEntrenamientos.getSelectedValue(), persona));
+				
+			}
+		});
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		
 		pack();

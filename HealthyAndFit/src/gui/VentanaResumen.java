@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -158,7 +159,8 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Boton quiero entrenar pulsado");
+				dispose();
+				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
 				
 			}
 		});

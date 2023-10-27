@@ -4,10 +4,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,12 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import domain.Entrenamiento;
-import domain.TipoDificultad;
-import domain.TipoEntrenamiento;
+import domain.Usuario;
 
 
 public class VentanaEntrenamientoEnCurso extends JFrame{
@@ -57,7 +52,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	    private Timer timer;
 
-	    public VentanaEntrenamientoEnCurso(Entrenamiento e) {
+	    public VentanaEntrenamientoEnCurso(Entrenamiento e, Usuario persona) {
 	    	milisegundos = 0;
 		    segundos = 20;
 		    minutos = 0;
@@ -211,15 +206,15 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        setVisible(true);
 	    }
 
-	    public static void main(String[] args) {
-	        EventQueue.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-	             
-
-	                new VentanaEntrenamientoEnCurso(new Entrenamiento("Abdominales", TipoEntrenamiento.INFERIOR, TipoDificultad.FACIL, 5, "", 23, 33, 21));
-	            }
-	        });
-	    }
+//	    public static void main(String[] args) {
+//	        EventQueue.invokeLater(new Runnable() {
+//	            @Override
+//	            public void run() {
+//	             
+//
+//	                new VentanaEntrenamientoEnCurso(new Entrenamiento("Abdominales", TipoEntrenamiento.INFERIOR, TipoDificultad.FACIL, 5, "", 23, 33, 21));
+//	            }
+//	        });
+//	    }
 
 }
