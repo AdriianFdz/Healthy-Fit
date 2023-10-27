@@ -159,8 +159,8 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dispose();
 				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
+				dispose();
 				
 			}
 		});

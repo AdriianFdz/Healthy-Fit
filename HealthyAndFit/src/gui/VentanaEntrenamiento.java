@@ -100,7 +100,7 @@ public class VentanaEntrenamiento extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaEntrenamientoEnCurso(listaEntrenamientos.getSelectedValue(), persona));
-				
+				dispose();
 			}
 		});
 		
