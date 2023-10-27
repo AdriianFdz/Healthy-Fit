@@ -6,7 +6,6 @@ import java.util.List;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
-import domain.TipoEnfermedades;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
 
