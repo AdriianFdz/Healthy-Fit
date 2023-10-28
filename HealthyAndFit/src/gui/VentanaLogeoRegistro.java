@@ -1,6 +1,7 @@
 package gui;
 
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,7 +34,7 @@ public class VentanaLogeoRegistro extends JFrame{
 	JTextField meterContraseñaRegistro;
 	JLabel contraseñaRepetidaRegistro;
 	JTextField meterContraseñaRepetidaRegistro;
-	
+	JButton registrarse;
 	
 	
 	
@@ -68,10 +69,36 @@ public class VentanaLogeoRegistro extends JFrame{
 		logeo.add(logeoDerecha);
 		
 		
-	registro = new JPanel();
+		registro = new JPanel(new BorderLayout());
+		preguntaTodaviaSinCuenta = new JLabel("¿Todavía no tienes cuenta?");
+		registro.add(preguntaTodaviaSinCuenta, BorderLayout.NORTH);
+
+		JPanel meterDatos = new JPanel(new GridLayout(4, 2));
+		nombreRegistro = new JLabel("NOMBRE DE USUARIO");
+		meterNombreRegistro = new JTextField();
+
+		correoRegistro = new JLabel("CORREO ELECTRONICO");
+		meterCorreoRegistro = new JTextField();
+
+		contraseñaRegistro = new JLabel("CONTRASEÑA");
+		meterContraseñaRegistro = new JTextField();
+
+		contraseñaRepetidaRegistro = new JLabel("REPETIR CONTRASEÑA");
+		meterContraseñaRepetidaRegistro = new JTextField();
 		
-		
-		
+		meterDatos.add(nombreRegistro);
+		meterDatos.add(correoRegistro);
+		meterDatos.add(meterNombreRegistro);
+		meterDatos.add(meterCorreoRegistro);
+		meterDatos.add(contraseñaRegistro);
+		meterDatos.add(contraseñaRepetidaRegistro);
+		meterDatos.add(meterContraseñaRegistro);
+		meterDatos.add(meterContraseñaRepetidaRegistro);
+
+		registro.add(meterDatos, BorderLayout.CENTER);
+
+		registrarse = new JButton("REGISTRARSE");
+		registro.add(registrarse, BorderLayout.SOUTH);
 		
 		
 	
@@ -91,6 +118,22 @@ public class VentanaLogeoRegistro extends JFrame{
 		}
 	});
 	
+	registrarse.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if(!meterNombreRegistro.getText().isEmpty() && !meterCorreoRegistro.getText().isEmpty() && !meterContraseñaRepetidaRegistro.getText().isEmpty() && !meterContraseñaRegistro.getText().isEmpty()) {
+				if(meterContraseñaRegistro.getText().equals(meterContraseñaRepetidaRegistro.getText())){
+					//crear usuario en base de datos
+				}else {
+					 JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Las contraseñas deben coincidir", JOptionPane.ERROR_MESSAGE);
+				}
+			}else {
+				 JOptionPane.showMessageDialog(null, "Los datos introducidos no son correctos", "Error de datos", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	});
 	
 	
 	
