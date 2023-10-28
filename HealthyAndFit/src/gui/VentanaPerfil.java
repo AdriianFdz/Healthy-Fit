@@ -78,7 +78,7 @@ public class VentanaPerfil extends JFrame{
 
 		// Botones
 		JButton modificarBot = new JButton("MODIFICAR DATOS");
-		JButton accesoPanelBot = new JButton("ACEESO PANEL");
+		JButton accesoPanelBot = new JButton("ACCESO PANEL");
 
 		JButton volverBot = new JButton("VOLVER");
 		JButton botonCerSesion = new JButton("CERRAR SESION");
@@ -176,6 +176,16 @@ public class VentanaPerfil extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaLogeoRegistro());
+				dispose();
+			}
+		});
+		
+		volverBot.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				SwingUtilities.invokeLater(() -> new VentanaResumen(p));
 				dispose();
 			}
 		});
