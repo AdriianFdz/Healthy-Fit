@@ -3,8 +3,11 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.ScrollPane;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -12,13 +15,17 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
@@ -30,9 +37,9 @@ public class VentanaEntrenamiento extends JFrame{
 	private static final long serialVersionUID = 1L;
 	// Propiedades de la ventana
 	List<Entrenamiento> entrenamientos = new ArrayList<Entrenamiento>();
-	Entrenamiento e1 = new Entrenamiento("Entrenamiento 1", TipoEntrenamiento.SUPERIOR, TipoDificultad.FACIL, 120, "DESCRIPCION1", 50, 5, 3);
-	Entrenamiento e2 = new Entrenamiento("Entrenamiento 2", TipoEntrenamiento.INFERIOR, TipoDificultad.MEDIO, 60, "DESCRIPCION2", 70, 2, 7);
-	Entrenamiento e3 = new Entrenamiento("Entrenamiento 3", TipoEntrenamiento.SUPERIOR, TipoDificultad.DIFICIL, 180, "DESCRIPCION3", 100, 1, 3);
+	Entrenamiento e1 = new Entrenamiento("Entrenamiento 1", TipoEntrenamiento.SUPERIOR, TipoDificultad.FACIL, 120, "DESCRIPCIÓN1", 50, 5, 3);
+	Entrenamiento e2 = new Entrenamiento("Entrenamiento 2", TipoEntrenamiento.INFERIOR, TipoDificultad.MEDIO, 60, "DESCRIPCIÓN2", 70, 2, 7);
+	Entrenamiento e3 = new Entrenamiento("Entrenamiento 3", TipoEntrenamiento.SUPERIOR, TipoDificultad.DIFICIL, 180, "DESCRIPCIÓN3", 100, 1, 3);
 	
 	JButton botonIniciar = new JButton("Iniciar entrenamiento");
 	
@@ -41,24 +48,24 @@ public class VentanaEntrenamiento extends JFrame{
 	
 	JList<Entrenamiento> listaEntrenamientos;
 
-	JLabel nombreEntrenamientoSeleccionado;
 	JLabel tiempoEntrenamientoSeleccionado;
 	JLabel caloriasEntrenamientoSeleccionado;
 	JLabel dificultadEntrenamientoSeleccionado;
+	JLabel labelDescripcion;
 	JLabel descripcionEntrenamientoSeleccionado;
 	
+	JPanel panelEntrenamientoSeleccionado = new JPanel();
+
 	
 	
 	
 	
 	public VentanaEntrenamiento(Usuario persona) {
-		
 		//Definir lista de entrenamientos
+				
 		DefaultListModel<Entrenamiento> modeloListaEntrenamiento = new DefaultListModel<>();
 		listaEntrenamientos = new JList<Entrenamiento>(modeloListaEntrenamiento);
-		ScrollPane scrollListaEntrenamientos = new ScrollPane();
-	
-		scrollListaEntrenamientos.add(listaEntrenamientos);
+
 	
 		//Entrenamientos de ejemplo
 		modeloListaEntrenamiento.addElement(e1);
@@ -68,32 +75,80 @@ public class VentanaEntrenamiento extends JFrame{
 		listaEntrenamientos.setCellRenderer(new RenderListaEntrenamientos());
 		
 		//Diseño de la ventana
+		ScrollPane scrollListaEntrenamientos = new ScrollPane();
+		scrollListaEntrenamientos.add(listaEntrenamientos);
+		
+		
+		Dimension resPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+
+		scrollListaEntrenamientos.setPreferredSize(new Dimension((int)(resPantalla.getSize().getWidth()/4), (int)(resPantalla.getSize().getHeight()/2)));
+
+		
+		
 		JPanel panelIntermedio = new JPanel();
-			panelIntermedio.setLayout(new GridLayout(1,2));
-			tiempoEntrenamientoSeleccionado = new JLabel("");
-			caloriasEntrenamientoSeleccionado = new JLabel("");
+			panelIntermedio.setLayout(new BoxLayout(panelIntermedio, BoxLayout.X_AXIS));
+		
+			tiempoEntrenamientoSeleccionado = new JLabel("", SwingConstants.CENTER);
+			tiempoEntrenamientoSeleccionado.setAlignmentX(CENTER_ALIGNMENT);
+			caloriasEntrenamientoSeleccionado = new JLabel("", SwingConstants.CENTER);
+			caloriasEntrenamientoSeleccionado.setAlignmentX(CENTER_ALIGNMENT);
 			panelIntermedio.add(tiempoEntrenamientoSeleccionado);
 			panelIntermedio.add(caloriasEntrenamientoSeleccionado);
 			
-		JPanel panelEntrenamientoSeleccionado = new JPanel();
+			
+		
+
+		//Panel entrenamiento seleccionado
+			
 			panelEntrenamientoSeleccionado.setLayout(new BoxLayout(panelEntrenamientoSeleccionado, BoxLayout.Y_AXIS));
-			nombreEntrenamientoSeleccionado = new JLabel("");
-			dificultadEntrenamientoSeleccionado = new JLabel("");
-			descripcionEntrenamientoSeleccionado = new JLabel("");	
-				
-			panelEntrenamientoSeleccionado.add(nombreEntrenamientoSeleccionado);
+			
+			dificultadEntrenamientoSeleccionado = new JLabel("", SwingConstants.CENTER);
+			dificultadEntrenamientoSeleccionado.setAlignmentX(CENTER_ALIGNMENT);
+			
+			descripcionEntrenamientoSeleccionado = new JLabel("");
+			descripcionEntrenamientoSeleccionado.setAlignmentX(CENTER_ALIGNMENT);
+			
+			labelDescripcion = new JLabel("<html><b>Descripción</b></html>", SwingConstants.CENTER);
+			labelDescripcion.setAlignmentX(CENTER_ALIGNMENT);
+			labelDescripcion.setVisible(false);
+			
 			panelEntrenamientoSeleccionado.add(panelIntermedio);
 			panelEntrenamientoSeleccionado.add(dificultadEntrenamientoSeleccionado);
+			panelEntrenamientoSeleccionado.add(labelDescripcion);
 			panelEntrenamientoSeleccionado.add(descripcionEntrenamientoSeleccionado);
-		
+
+			
+			// Asignacion de fuente a los componentes y espaciado entre ellos
+			Font fuente = new Font(descripcionEntrenamientoSeleccionado.getFont().getName(), Font.PLAIN, 20);
+			for (Component componente : panelIntermedio.getComponents()) {
+				componente.setFont(fuente);
+				((JComponent) componente).setBorder(new EmptyBorder(20, 0, 0, 0));
+			}
+			for (Component componente : panelEntrenamientoSeleccionado.getComponents()) {
+				
+				if (componente != (Component)labelDescripcion) {
+					((JComponent) componente).setBorder(new EmptyBorder(10, 0, 15, 0));	
+				} else {
+					((JComponent) componente).setBorder(new EmptyBorder(15, 0, 0, 0));	
+				}
+				componente.setFont(fuente);
+			}
+
+			panelEntrenamientoSeleccionado.setPreferredSize(new Dimension((int)(resPantalla.getSize().getWidth()/4), (int)(resPantalla.getSize().getHeight()/2)));
+			panelEntrenamientoSeleccionado.setVisible(false);
+			
+		// Panel de componentes excepto botonIniciar
 		JPanel panelIzquierdoEntrenamientos = new JPanel();
 			panelIzquierdoEntrenamientos.add(scrollListaEntrenamientos);
 			panelIzquierdoEntrenamientos.add(panelEntrenamientoSeleccionado);
-			panelIzquierdoEntrenamientos.add(botonIniciar, BorderLayout.EAST);
+			panelIzquierdoEntrenamientos.add(botonIniciar);
+
+		add(panelIzquierdoEntrenamientos, BorderLayout.WEST);
 		
-		add(panelIzquierdoEntrenamientos, BorderLayout.WEST);	
 		
-		//LISTENERS BOTONES
+		botonIniciar.setPreferredSize(new Dimension(resPantalla.width/10, resPantalla.height/15));
+		
+		//LISTENERS BOTONES		
 		
 		botonIniciar.addActionListener(new ActionListener() {
 			
@@ -105,25 +160,16 @@ public class VentanaEntrenamiento extends JFrame{
 		});
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		pack();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setTitle("Resumen");		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setTitle("Seleccionar entrenamiento");		
 	}
 	
 	
 	//Render de listaEntrenamientos
+	//Imagenes sacadas de www.flaticon.com
 	public class RenderListaEntrenamientos extends JLabel implements ListCellRenderer<Entrenamiento>{
 		private static final long serialVersionUID = 1L;
 		
@@ -133,20 +179,38 @@ public class VentanaEntrenamiento extends JFrame{
 		public Component getListCellRendererComponent(JList<? extends Entrenamiento> list, Entrenamiento value,
 				int index, boolean isSelected, boolean cellHasFocus) {
 
+			Font fuente = new Font("Georgia", Font.BOLD, 15);
+			this.setFont(fuente);
+			
 			setText(value.getNombre());
 			setOpaque(true);
 			setBackground(sinSeleccionar);
 
 			if (isSelected) {
+				panelEntrenamientoSeleccionado.setVisible(true);
+				
 				entrenamientoSeleccionado = value;
 				
 				setBackground(Color.RED);
 				
-				nombreEntrenamientoSeleccionado.setText(value.getNombre());
-				tiempoEntrenamientoSeleccionado.setText(Integer.toString(value.getTiempo()) + " min");
-				caloriasEntrenamientoSeleccionado.setText(Integer.toString(value.getCalorias()) + " kcal");
-				dificultadEntrenamientoSeleccionado.setText(value.getDificultad().toString());
+				dificultadEntrenamientoSeleccionado.setText(String.format("<html><b>Dificultad: </b>%s</html>",value.getDificultad()));
+				
+				tiempoEntrenamientoSeleccionado.setText(String.format("<html><b>%d</b> minutos</html>", value.getTiempo()));
+				ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
+				Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+				tiempoEntrenamientoSeleccionado.setIcon(new ImageIcon(iconoCronometro));
+				
+				caloriasEntrenamientoSeleccionado.setText(String.format("<html><b>%d</b> calorias</html>", value.getCalorias()));
+				ImageIcon tmpCalorias = new ImageIcon("resources\\images\\calories.png");
+				Image iconoCalorias = tmpCalorias.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+				caloriasEntrenamientoSeleccionado.setIcon(new ImageIcon(iconoCalorias));
+			
+				labelDescripcion.setVisible(true);
+				
 				descripcionEntrenamientoSeleccionado.setText(value.getDescripcion());
+				VentanaResumen.anadirBordePanel(entrenamientoSeleccionado.getNombre(), panelEntrenamientoSeleccionado);
+			
+
 			}
 
 			return this;
