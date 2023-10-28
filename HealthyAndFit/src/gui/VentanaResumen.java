@@ -191,7 +191,7 @@ public class VentanaResumen extends JFrame{
 		this.setTitle("Resumen");
 	}
 	
-	private void anadirBordePanel(String titulo, JPanel panel) {
+	public static void anadirBordePanel(String titulo, JPanel panel) {
 		LineBorder borde = new LineBorder(Color.BLACK, 5); //Crea un estilo de borde continuo, anchura 5
 		TitledBorder bordeConTitulo = new TitledBorder(borde, titulo); //Añade el estilo de borde con un titulo
 		
