@@ -7,13 +7,17 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import domain.Entrenamiento;
@@ -28,16 +32,15 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    private JPanel panelPrincipal;
 	    private JPanel panelSecundario;
 	    private JPanel panelAbajo;
+	    private JPanel panelBotones;
 	    
-	    private JLabel panelTiempo;
-	    private JLabel nombre;
+	    private JLabel labelTiempo;
+	    private JLabel labelNombre;
 	    private JLabel labelDificultad;
 	    private JLabel labelKcal;
 	    private JLabel labelRepeticiones;
 	    private JLabel labelSeries;
-	    
-
-	    private JPanel panelBotones;
+	   
 	    private JButton botonStart;
 	    private JButton botonReset;
 	    private JButton botonStop;
@@ -49,77 +52,51 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	    private DecimalFormat timeFormatter;
 	  
-
 	    private Timer timer;
 
 	    public VentanaEntrenamientoEnCurso(Entrenamiento e, Usuario persona) {
-	    	milisegundos = 0;
-		    segundos = 20;
+	    
+			//Imagenes sacadas de www.flaticon.com
+		    ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
+            Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(200, 190, Image.SCALE_SMOOTH);
+            ImageIcon tmpFuego = new ImageIcon("resources\\images\\calories.png");
+            Image iconoFuego = tmpFuego.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+		    
+            
+        	milisegundos = 0;
+		    segundos = 20; //e.getTiempo()
 		    minutos = 0;
 		    
-		    nombre = new JLabel(" "+ e.getNombre());
+		    labelNombre = new JLabel(" "+ e.getNombre());
 		    labelDificultad = new JLabel("   Dificultad: " + e.getDificultad().toString());
-		    labelKcal = new JLabel("   🔥 " + e.getCalorias() + " kcal");
+		    labelKcal = new JLabel(e.getCalorias() + " kcal");
+		    labelKcal.setIcon(new ImageIcon(iconoFuego));
 		    labelSeries = new JLabel(e.getSeries() + " SERIES");
 		    labelRepeticiones = new JLabel(e.getRepeticiones() + " REPETICIONES");
+		    
 	        panelPrincipal = new JPanel();
 	        panelPrincipal.setLayout(new BorderLayout());
 	        panelSecundario = new JPanel();
 	        panelSecundario.setLayout(new GridLayout(3, 2, 1100, 80));
 	        panelAbajo = new JPanel();
 	        panelAbajo.setLayout(new FlowLayout(FlowLayout.LEADING));
-	        botonVolver = new JButton("VOLVER");
-	        
-	        panelTiempo = new JLabel();
-	        panelTiempo.setFont(new Font("Consolas", Font.PLAIN, 160));
-	        panelTiempo.setHorizontalAlignment(JLabel.CENTER);
-	       
-
 	        panelBotones = new JPanel();
 	        panelBotones.setLayout(new FlowLayout());
-
-	        botonStart = new JButton("Start");
-	        botonStart.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-
-	                timer.start();
-
-	            }
-	        });
 	        
+	        labelTiempo = new JLabel();
+	        labelTiempo.setFont(new Font("Consolas", Font.PLAIN, 160));
+	        labelTiempo.setHorizontalAlignment(JLabel.CENTER);
+	        labelTiempo.setIcon(new ImageIcon(iconoCronometro));
 
+	        botonVolver = new JButton("VOLVER");
+	        botonStart = new JButton("Start");
 	        botonReset = new JButton("Reset");
-	        botonReset.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	            	
-
-	                timer.stop();
-
-	                milisegundos = 0;
-	                segundos = 30;
-	                minutos = 0;
-
-	                panelTiempo.setText(timeFormatter.format(minutos) + ":"
-	                        + timeFormatter.format(segundos) + "."
-	                        + timeFormatter.format(milisegundos));
-	            }
-	        });
-
-	    
-
 	        botonStop = new JButton("Stop");
-	        botonStop.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                timer.stop();
-	            }
-	        });
-
-	       
-
-	       
-
+	        
+	        
+	        //Implementacion de un posible cronometro usando la Timer (provisional y aun sin acabar)
 	        timeFormatter = new DecimalFormat("00");
-
+	        
 	        timer = new Timer(10, new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
@@ -137,31 +114,81 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                        milisegundos = 99;
 	                    }
 	                }
-	                panelTiempo.setText(timeFormatter.format(minutos) + ":"
+	                
+	                labelTiempo.setText(timeFormatter.format(minutos) + ":"
 	                        + timeFormatter.format(segundos) + "."
 	                        + timeFormatter.format(milisegundos));
 	            }
 	        });
 
-	        panelTiempo.setText(timeFormatter.format(minutos) + ":"
+	        labelTiempo.setText(timeFormatter.format(minutos) + ":"
 	                + timeFormatter.format(segundos) + "."
 	                + timeFormatter.format(milisegundos));
 	        
 	        
-	        /////
-	   
-			nombre.setFont(new Font("Tahoma", Font.BOLD, 50));
-			nombre.setBackground((Color.gray));
-			nombre.setOpaque(true);
+	        botonStart.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+
+	                timer.start();
+
+	            }
+	        });
 	        
-			Font fuenteFont = labelKcal.getFont();
+
+	        
+	        botonReset.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            	
+
+	                timer.stop();
+
+	                milisegundos = 0;
+	                segundos = 20;
+	                minutos = 0;
+
+	                labelTiempo.setText(timeFormatter.format(minutos) + ":"
+	                        + timeFormatter.format(segundos) + "."
+	                        + timeFormatter.format(milisegundos));
+	            }
+	        });
+
+	    
+
+	       
+	        botonStop.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                timer.stop();
+	            }
+	        });
+
+	       
+
+	       botonVolver.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
+				dispose();
+				
+			}
+		});
+
+	       
+	        
+	        //Cambio del estilo y tamaño de diferentes componentes
+	   
+			labelNombre.setFont(new Font("Tahoma", Font.BOLD, 50));
+			labelNombre.setBackground((Color.gray));
+			labelNombre.setOpaque(true);
+	        
+				//Tomo la letra de cualquier JLabel y la recojo en una variable para utilizarla despues
+				Font fuenteFont = labelKcal.getFont();
 			
 			labelDificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
 			labelKcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
 			labelRepeticiones.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
 			labelSeries.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
 		
-	        ///////
 			botonStart.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
 			botonReset.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
 			botonStop.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
@@ -173,48 +200,36 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 			botonReset.setPreferredSize(new Dimension(120,60));
 			botonStop.setPreferredSize(new Dimension(120,60));
 			botonVolver.setPreferredSize(new Dimension(120,60));
-			//////
+			
+			
+			//Añadir componentes a los paneles
 			panelBotones.add(botonStart);
 		    panelBotones.add(botonReset);
 		    panelBotones.add(botonStop);
+		    
 	        panelSecundario.add(labelDificultad);
 	        panelSecundario.add(labelSeries);
 	        panelSecundario.add(labelKcal);
 	        panelSecundario.add(labelRepeticiones);
-	        //panelSecundario.add(botonReset);
-	        //panelSecundario.add(panelTiempo);
-	       
+	        
 	        panelAbajo.add(botonVolver);
 	        
 	        panelPrincipal.add(panelBotones, BorderLayout.SOUTH);
 	        panelPrincipal.add(panelSecundario, BorderLayout.NORTH);
-	        panelPrincipal.add(panelTiempo, BorderLayout.CENTER);
+	        panelPrincipal.add(labelTiempo, BorderLayout.CENTER);
 	       
-	        this.add(nombre, BorderLayout.NORTH);
-	       
+	        
+	        //Añadir paneles y el nombre a la ventana
+	        this.add(labelNombre, BorderLayout.NORTH);
 	        this.add(panelAbajo, BorderLayout.SOUTH);
 	        this.add(panelPrincipal);
 	      
-	        
-	        //this.add(panelPrincipal, BorderLayout.WEST);
-	        //this.add(panelSecundario, BorderLayout.CENTER);
-	        
+	        //Ajustes de la ventana
 	        setSize(1920,1080);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("EntrenamientoEnCurso");
-	        //pack();
 	        setVisible(true);
 	    }
-
-//	    public static void main(String[] args) {
-//	        EventQueue.invokeLater(new Runnable() {
-//	            @Override
-//	            public void run() {
-//	             
-//
-//	                new VentanaEntrenamientoEnCurso(new Entrenamiento("Abdominales", TipoEntrenamiento.INFERIOR, TipoDificultad.FACIL, 5, "", 23, 33, 21));
-//	            }
-//	        });
-//	    }
+	    
 
 }

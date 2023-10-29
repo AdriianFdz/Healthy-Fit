@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,98 +21,115 @@ public class VentanaDieta extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	//Definir atributos necesarios para la ventana
+	//Definir propiedades necesarias para la ventana
 		private JPanel panelGeneral;
 		private JPanel panelSecundario;
-		private JLabel nombre;
-		private JLabel minutos;
-		private JLabel dificultad;
-		private JLabel kcal;
-		private JLabel Labelingredientes;
-		private JTextArea ingredientes;
+		private JLabel labelNombre;
+		private JLabel labelMinutos;
+		private JLabel labelDificultad;
+		private JLabel labelKcal;
+		private JLabel labelIngredientes;
+		private JTextArea areaIngredientes;
 		private JLabel labelPasos;
-		private JTextArea pasos;
+		private JTextArea areaPasos;
 		
 	
 	
 	public VentanaDieta(Dieta d) {
 		
-		//Inicializar los atributos previamente definidos
+		//Imagenes sacadas de www.flaticon.com
+		ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
+        Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(65, 65, Image.SCALE_SMOOTH);
+		
+		//Inicializar las propiedades previamente definidas
 		panelGeneral = new JPanel();
 		panelGeneral.setLayout(new BorderLayout());
 		panelSecundario = new JPanel();
 		panelSecundario.setLayout(new GridLayout(4, 2, 50, 50));
 		
 		
-		nombre = new JLabel(" " + d.getNombre());
-		nombre.setFont(new Font("Tahoma", Font.BOLD, 25));
-		nombre.setBackground((Color.gray));
-		nombre.setOpaque(true);
-		minutos = new JLabel("    ⏰" + d.getTiempo() + " minutos");
+		labelNombre = new JLabel(" " + d.getNombre());
+		labelNombre.setFont(new Font("Tahoma", Font.BOLD, 40));
+		labelNombre.setBackground((Color.gray));
+		labelNombre.setOpaque(true);
+		
+		labelMinutos = new JLabel(d.getTiempo() + " minutos");
+		labelMinutos.setIcon(new ImageIcon(iconoCronometro));
+		
+		labelKcal = new JLabel("    Kcal: " + d.getKcal());
+		labelIngredientes = new JLabel("    Ingredientes:");
+		labelPasos = new JLabel("Pasos a realizar:");
+		
 		
 			//Poner emoji de fuego para reflejar la dificultad
 		if (d.getDificultad() == TipoDificultad.FACIL) {
-			dificultad = new JLabel("Dificultad: 🔥");
+			labelDificultad = new JLabel("Dificultad: 🔥");
 		}else if (d.getDificultad() == TipoDificultad.MEDIO) {
-			dificultad = new JLabel("Dificultad: 🔥🔥");
+			labelDificultad = new JLabel("Dificultad: 🔥🔥");
 		}else {
-			dificultad = new JLabel("Dificultad: 🔥🔥🔥");
+			labelDificultad = new JLabel("Dificultad: 🔥🔥🔥");
 		}
 		
-		kcal = new JLabel("    Kcal: " + d.getKcal());
-		Font fuenteFont = kcal.getFont();
 		
-		Labelingredientes = new JLabel("    Ingredientes:");
+		//Añadir datos a los JTextArea y modificaciones esteticas
 		
-		ingredientes = new JTextArea();
-		ingredientes.setEditable(false);
+		areaIngredientes = new JTextArea();
+		areaIngredientes.setEditable(false);
+		areaIngredientes.setFont(new Font("Consolas", Font.BOLD, 20));
+		
 		for (String s : d.getIngredientes()) {
-			ingredientes.append(" -" + s + "\n");
+			
+			areaIngredientes.append("  -" + s + "\n");
 		}
 	
-
-		labelPasos = new JLabel("Pasos a realizar:");
-		
-		pasos = new JTextArea();
-		pasos.setEditable(false);
+		areaPasos = new JTextArea();
+		areaPasos.setFont(new Font("Consolas", Font.BOLD, 20));;
+		areaPasos.setEditable(false);
 		for (String s : d.getPasos()) {
-			pasos.append(" -" + s + "\n");
+			areaPasos.append("  -" + s + "\n");
 		}
 		
+		//Añadir barra lateral de desplazamiento a los JTextArea
 		JScrollPane pane = new JScrollPane();
-		pasos.add(pane);
-		ingredientes.add(pane);
+		areaPasos.add(pane);
+		areaIngredientes.add(pane);
 		
-		//Cambio del tipo y tamaño de letra
-		kcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
-		Labelingredientes.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
-		labelPasos.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
-		minutos.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
-		dificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		
-		//Añadir los atributos al panel
-		panelSecundario.add(minutos);
-		panelSecundario.add(dificultad);
-		panelSecundario.add(kcal);
+		//Cambio del tipo y tamaño de letra de algunos JLabel
+		
+			//Tomo la letra de cualquier JLabel y la recojo en una variable para utilizarla despues
+			Font fuenteFont = labelKcal.getFont();
+		labelKcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+		labelIngredientes.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+		labelPasos.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+		labelMinutos.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+		labelDificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
+		
+		//Añadir las propiedades al panel
+		panelSecundario.add(labelMinutos);
+		panelSecundario.add(labelDificultad);
+		panelSecundario.add(labelKcal);
 		panelSecundario.add(labelPasos);
-		panelSecundario.add(Labelingredientes);
-		panelSecundario.add(pasos);
-		panelSecundario.add(ingredientes);
+		panelSecundario.add(labelIngredientes);
+		panelSecundario.add(areaPasos);
+		panelSecundario.add(areaIngredientes);
 		
 		//Añadir el panelSecundario al panelGeneral
 		panelGeneral.add(panelSecundario,BorderLayout.NORTH);
 
 		
 		//Añadir el panelGeneral a la ventana
-		this.add(nombre,BorderLayout.NORTH);
+		this.add(labelNombre,BorderLayout.NORTH);
 		this.add(panelGeneral);
 		
-		
+		//Ajustes de la ventana
+		this.pack();
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setVisible(true);
-		this.setSize(800, 800);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Dieta");
 		
 	}
+	
 	
 }
