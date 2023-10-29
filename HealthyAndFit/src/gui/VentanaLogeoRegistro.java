@@ -172,8 +172,8 @@ public class VentanaLogeoRegistro extends JFrame{
 	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
 		   
 		  for (Usuario usuario : BaseDeDatos.listaUsuarios) {
-			  System.out.println(usuario.getnombreUsuario());
-			  System.out.println(usuario.getContraseña());
+			  logger.log(Level.INFO, usuario.getnombreUsuario().toString());
+			  logger.log(Level.INFO, usuario.getContraseña().toString());
 			if (usuarioSinComprobar.getnombreUsuario().equals(usuario.getnombreUsuario()) && usuarioSinComprobar.getContraseña().equals(usuario.getContraseña())) {
 				return usuario;
 			}
