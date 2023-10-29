@@ -181,9 +181,7 @@ public class VentanaResumen extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaPerfil(persona));
-				dispose();
-				System.out.println("Foto de perfil pulsada");
-				
+				dispose();				
 			}
 		});
 
