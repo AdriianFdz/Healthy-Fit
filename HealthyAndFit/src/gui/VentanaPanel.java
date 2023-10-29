@@ -12,6 +12,11 @@ import javax.swing.table.DefaultTableModel;
 
 public class VentanaPanel extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public VentanaPanel() {
 
 		JPanel tablas = new JPanel(new GridLayout(3, 1));

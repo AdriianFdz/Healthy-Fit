@@ -28,7 +28,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	
 	 private static final long serialVersionUID = 1L;
 
-	  
+	 //Definir propiedades necesarias para la ventana
 	    private JPanel panelPrincipal;
 	    private JPanel panelSecundario;
 	    private JPanel panelAbajo;
@@ -62,7 +62,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
             ImageIcon tmpFuego = new ImageIcon("resources\\images\\calories.png");
             Image iconoFuego = tmpFuego.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
 		    
-            
+            //Inicializar las propiedades previamente definidas
         	milisegundos = 0;
 		    segundos = 20; //e.getTiempo()
 		    minutos = 0;
