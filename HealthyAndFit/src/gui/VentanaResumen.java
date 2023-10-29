@@ -33,6 +33,7 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
+import db.BaseDeDatos;
 import domain.Usuario;
 
 public class VentanaResumen extends JFrame{
@@ -169,8 +170,8 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Boton revisar dieta pulsado");
-				
+				SwingUtilities.invokeLater(() -> new VentanaDieta(BaseDeDatos.listaDietas.get(0)));
+				dispose();
 				
 			}
 		});

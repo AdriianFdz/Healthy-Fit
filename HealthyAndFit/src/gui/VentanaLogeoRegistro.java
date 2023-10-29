@@ -165,7 +165,9 @@ public class VentanaLogeoRegistro extends JFrame{
 		
 		this.setVisible(true);
 		this.setSize(960,540);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.pack();
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Healthy & Fit");
 	}
 	
