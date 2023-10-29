@@ -11,13 +11,16 @@ import java.time.LocalDate;
 import java.time.Period;
 
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import domain.TipoAlergias;
@@ -106,11 +109,13 @@ public class VentanaPerfil extends JFrame{
 		labelAltura = new JLabel(Double.toString(p.getAltura()));
 		labelEnfer = new JLabel("Enfermedades");
 
-		JScrollPane paneEnfermedades = new JScrollPane();
-		for (TipoEnfermedades enfermedad : p.getEnfermedades()) {
-			JLabel label1 = new JLabel(enfermedad.name());
-			paneEnfermedades.add(label1);
-		}
+		DefaultListModel<TipoEnfermedades> modeloLista = new DefaultListModel<>();
+        for (TipoEnfermedades enfermedad : p.getEnfermedades()) {
+            modeloLista.addElement(enfermedad);
+        }
+        JList<TipoEnfermedades> listaEnfe = new JList<>(modeloLista);
+		JScrollPane paneEnfermedades = new JScrollPane(listaEnfe);
+	
 
 		labelPrefAli = new JLabel("PREFERENCIAS ALIMENTICIAS");
 		JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
@@ -192,12 +197,11 @@ public class VentanaPerfil extends JFrame{
 		});
 
 		this.add(panel1);
-
+		this.pack();
 		this.setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Healthy & Fit");
-		this.setSize(1920, 1080);
 	}
 	
 }
