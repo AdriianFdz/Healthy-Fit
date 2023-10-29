@@ -124,7 +124,8 @@ public class VentanaLogeoRegistro extends JFrame{
 			
 			Usuario usuarioComprobado = usuarioContraseñaCorrectos(usuarioSinComprobar);
 			if(usuarioComprobado != null) {
-				SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioComprobado));	
+				SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioComprobado));
+				dispose();
 			
 			}else {
 				JOptionPane.showMessageDialog(iniciarSesion,"La contraseña o el usuario no son validos","Error",JOptionPane.ERROR_MESSAGE);
