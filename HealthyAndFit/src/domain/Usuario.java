@@ -96,10 +96,10 @@ public class Usuario {
 		this.proximaComida = "";
 		this.vasosDeAgua = 0;
 		this.contraseña = "";
-		this.foto = new ImageIcon();
+		this.foto = new ImageIcon("resources\\images\\foto.png");
 		this.permiso = TipoPermiso.USUARIO;
 	}
-
+	
 	//getters y setters
 	public String getNombre() {
 		return nombre;

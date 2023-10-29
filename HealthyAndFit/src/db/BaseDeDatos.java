@@ -1,20 +1,36 @@
 package db;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import domain.Dieta;
 import domain.Entrenamiento;
+import domain.TipoAlergias;
 import domain.TipoDificultad;
+import domain.TipoEnfermedades;
 import domain.TipoEntrenamiento;
+import domain.TipoPermiso;
+import domain.TipoPreferencia;
+import domain.TipoSexo;
 import domain.Usuario;
 
 public class BaseDeDatos {
-	List<Usuario> listaUsuarios = new ArrayList<>();
-	List<Entrenamiento> listaEntrenamiento = new ArrayList<>();
-	List<Dieta> listaDietas= new ArrayList<>();
+	private static Usuario p = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(), "juan@gmail.com", new ArrayList<TipoEnfermedades>(), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new Dieta().getNombre(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR);
+	public static List<Usuario> listaUsuarios = new ArrayList<>(Arrays.asList(p));
+	
+	
+	public static List<Entrenamiento> listaEntrenamiento = new ArrayList<>();
+	public static List<Dieta> listaDietas= new ArrayList<>();
 
 	public BaseDeDatos() {
+		
+		listaUsuarios.add(p);
+		
+		
 		Entrenamiento e1 = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominalels", 200, 3, 20);
 		Entrenamiento e2 = new Entrenamiento("Pierna", TipoEntrenamiento.INFERIOR, TipoDificultad.FACIL, 30, "Entrenamiento que mejorará los gemelos", 140, 2, 30);
 	
@@ -59,7 +75,7 @@ public class BaseDeDatos {
 	}
 
 	public void setListaUsuarios(List<Usuario> listaUsuarios) {
-		this.listaUsuarios = listaUsuarios;
+		BaseDeDatos.listaUsuarios = listaUsuarios;
 	}
 
 	public List<Entrenamiento> getListaEntrenamiento() {
@@ -67,7 +83,7 @@ public class BaseDeDatos {
 	}
 
 	public void setListaEntrenamiento(List<Entrenamiento> listaEntrenamiento) {
-		this.listaEntrenamiento = listaEntrenamiento;
+		BaseDeDatos.listaEntrenamiento = listaEntrenamiento;
 	}
 
 	public List<Dieta> getListaDietas() {
@@ -75,8 +91,10 @@ public class BaseDeDatos {
 	}
 
 	public void setListaDietas(List<Dieta> listaDietas) {
-		this.listaDietas = listaDietas;
+		BaseDeDatos.listaDietas = listaDietas;
 	}
+
+
 	
 	
 	

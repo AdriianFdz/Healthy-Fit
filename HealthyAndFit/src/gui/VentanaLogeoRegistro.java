@@ -5,12 +5,18 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 
+import db.BaseDeDatos;
+import domain.Usuario;
+
 public class VentanaLogeoRegistro extends JFrame{
 	private static final long serialVersionUID = 1L;
-
+	private static Logger logger = Logger.getLogger(VentanaLogeoRegistro.class.getName());
+	
 	JTabbedPane paneles;
 	
 	JPanel logeo;
@@ -81,10 +87,10 @@ public class VentanaLogeoRegistro extends JFrame{
 		meterCorreoRegistro = new JTextField();
 
 		contraseñaRegistro = new JLabel("CONTRASEÑA");
-		meterContraseñaRegistro = new JTextField();
+		meterContraseñaRegistro = new JPasswordField();
 
 		contraseñaRepetidaRegistro = new JLabel("REPETIR CONTRASEÑA");
-		meterContraseñaRepetidaRegistro = new JTextField();
+		meterContraseñaRepetidaRegistro = new JPasswordField();
 		
 		meterDatos.add(nombreRegistro);
 		meterDatos.add(correoRegistro);
@@ -107,11 +113,19 @@ public class VentanaLogeoRegistro extends JFrame{
 	
 	iniciarSesion.addActionListener(new ActionListener() {
 		
+		@SuppressWarnings("deprecation")
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			if(usuarioContraseñaCorrectos()) {
-			new VentanaResumen(null);
+			Usuario usuarioSinComprobar = new Usuario();
+			usuarioSinComprobar.setnombreUsuario(meterNombreLogeo.getText());
+			//Corregir funcion deprecated. Cambiar en Usuario la contraseña a []char.
+			//Eso evita no guardar en memoria la contraseña
+			usuarioSinComprobar.setContraseña(meterContraseñaLogeo.getText());
+			
+			Usuario usuarioComprobado = usuarioContraseñaCorrectos(usuarioSinComprobar);
+			if(usuarioComprobado != null) {
+				SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioComprobado));	
+			
 			}else {
 				JOptionPane.showMessageDialog(iniciarSesion,"La contraseña o el usuario no son validos","Error",JOptionPane.ERROR_MESSAGE);
 			}
@@ -122,10 +136,18 @@ public class VentanaLogeoRegistro extends JFrame{
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			if(!meterNombreRegistro.getText().isEmpty() && !meterCorreoRegistro.getText().isEmpty() && !meterContraseñaRepetidaRegistro.getText().isEmpty() && !meterContraseñaRegistro.getText().isEmpty()) {
 				if(meterContraseñaRegistro.getText().equals(meterContraseñaRepetidaRegistro.getText())){
 					//crear usuario en base de datos
+					logger.log(Level.INFO, BaseDeDatos.listaUsuarios.toString());
+					Usuario usuarioRegistrado = new Usuario();
+					usuarioRegistrado.setnombreUsuario(meterNombreRegistro.getText());
+					usuarioRegistrado.setcorreoElectronico(meterCorreoRegistro.getText());
+					usuarioRegistrado.setContraseña(meterContraseñaRegistro.getText());
+					BaseDeDatos.listaUsuarios.add(usuarioRegistrado);
+					logger.log(Level.INFO, BaseDeDatos.listaUsuarios.toString());
+					SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioRegistrado));
+					dispose();
 				}else {
 					 JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Las contraseñas deben coincidir", JOptionPane.ERROR_MESSAGE);
 				}
@@ -147,9 +169,17 @@ public class VentanaLogeoRegistro extends JFrame{
 		this.setTitle("Healthy & Fit");
 	}
 	
-	   public static boolean usuarioContraseñaCorrectos() {
-		   //Comprobar en base de datos
-	        return true;
-	    }
+	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
+		   
+		  for (Usuario usuario : BaseDeDatos.listaUsuarios) {
+			  System.out.println(usuario.getnombreUsuario());
+			  System.out.println(usuario.getContraseña());
+			if (usuarioSinComprobar.getnombreUsuario().equals(usuario.getnombreUsuario()) && usuarioSinComprobar.getContraseña().equals(usuario.getContraseña())) {
+				return usuario;
+			}
+		  }
+
+	      return null;
+	   }
 	
 }
