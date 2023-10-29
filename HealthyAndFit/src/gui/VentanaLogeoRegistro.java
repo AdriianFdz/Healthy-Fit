@@ -129,7 +129,7 @@ public class VentanaLogeoRegistro extends JFrame{
 			
 			}else {
 				JOptionPane.showMessageDialog(iniciarSesion,"La contraseña o el usuario no son validos","Error",JOptionPane.ERROR_MESSAGE);
-				logger.log(Level.SEVERE, "Contraseña incorrecta");
+				logger.log(Level.WARNING, "Contraseña incorrecta");
 			}
 		}
 	});
@@ -152,6 +152,8 @@ public class VentanaLogeoRegistro extends JFrame{
 					dispose();
 				}else {
 					 JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Las contraseñas deben coincidir", JOptionPane.ERROR_MESSAGE);
+					 logger.log(Level.WARNING, "Contraseñas no coinciden");
+
 				}
 			}else {
 				 JOptionPane.showMessageDialog(null, "Los datos introducidos no son correctos", "Error de datos", JOptionPane.ERROR_MESSAGE);
