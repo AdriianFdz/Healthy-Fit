@@ -39,9 +39,5 @@ public class BaseDeDatos {
 	
 	public static List<Dieta> listaDietas= new ArrayList<>(Arrays.asList(d1, d2));
 
-	public BaseDeDatos() {	
-	
-
-	}	
 	
 }

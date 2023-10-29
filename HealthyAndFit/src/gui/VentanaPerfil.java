@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -29,6 +31,8 @@ import domain.TipoPreferencia;
 import domain.Usuario;
 
 public class VentanaPerfil extends JFrame{
+	//LOGGER
+	private static Logger logger = Logger.getLogger(VentanaPerfil.class.getName());
 	private static final long serialVersionUID = 1L;
 	
 	JPanel panel1;
@@ -91,6 +95,7 @@ public class VentanaPerfil extends JFrame{
 		// Definir la condicion del boton Acceso
 		if (p.getPermiso() != TipoPermiso.ADMINISTRADOR) {
 			accesoPanelBot.setVisible(false);
+			logger.log(Level.INFO, "Panel bloqueado por no tener suficientes permisos");
 		}
 
 		panel1.add(panelColum1);
@@ -200,7 +205,7 @@ public class VentanaPerfil extends JFrame{
 		this.setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setTitle("Healthy & Fit");
+		this.setTitle("Perfil");
 	}
 	
 }

@@ -10,6 +10,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +41,16 @@ import domain.Usuario;
 public class VentanaResumen extends JFrame{
 
 	//Propiedades de la ventana
-	private JButton botonEntrenar;
-	JPanel panelImagenVasos = new JPanel();
+	 JButton botonEntrenar;
+	 JPanel panelImagenVasos = new JPanel();
 
 	
+	 //LOGGER
+	 private static Logger logger = Logger.getLogger(VentanaResumen.class.getName());
 	
 	private static final long serialVersionUID = 1L;
 	public VentanaResumen(Usuario persona) {		
+	
 		
 		//ENTRENAMIENTO
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getcaloriasGastadas());
@@ -77,15 +82,14 @@ public class VentanaResumen extends JFrame{
 		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
 		ChartPanel panelGraficaEntrenamiento = new ChartPanel(graficaEntrenamiento);
 		Dimension resPantalla = Toolkit.getDefaultToolkit().getScreenSize();
+		logger.log(Level.INFO, resPantalla.toString());
+		
 		panelGraficaEntrenamiento.setPreferredSize(new Dimension(resPantalla.getSize().width/2,resPantalla.getSize().height/2));
 		panelEntrenamiento.add(panelGraficaEntrenamiento, BorderLayout.CENTER);
 		
 		
 		
 		//DIETA
-
-		
-		
 		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getcaloriasConsumidas());
 		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getproximaComida());
 		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
@@ -120,7 +124,7 @@ public class VentanaResumen extends JFrame{
 		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
-	
+		
 		panelGraficaDieta.setPreferredSize(new Dimension(resPantalla.getSize().width/2-35,resPantalla.getSize().height/2-35));
 		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
 				
@@ -155,7 +159,6 @@ public class VentanaResumen extends JFrame{
 					
 		
 		//LISTENERS BOTONES
-		
 		botonEntrenar.addActionListener(new ActionListener() {
 			
 			@Override
@@ -221,6 +224,8 @@ public class VentanaResumen extends JFrame{
         TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(s1);
         
+        logger.log(Level.INFO, "Dataset de ejemplo creado correctamente");
+        
         return dataset;
 
 	}
@@ -251,6 +256,8 @@ public class VentanaResumen extends JFrame{
 
 	}
 	
+	//FUNCIONES DE UTILIDAD
+	
 	private void crearVasosDeAgua(List<JLabel>listaVasos) {
 		for (int i = 0; i < 8; i++) {
 			listaVasos.add(new JLabel());
@@ -278,6 +285,8 @@ public class VentanaResumen extends JFrame{
 			panelImagenVasos.add(vasoL);
 			listaVasos.set(i, vasoL);
 		}
+		
+		logger.log(Level.INFO, "Vasos de agua actualizados");
 	}
 	
 }

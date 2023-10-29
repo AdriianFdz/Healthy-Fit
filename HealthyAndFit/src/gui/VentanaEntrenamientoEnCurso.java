@@ -227,7 +227,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        //Ajustes de la ventana
 	        setSize(1920,1080);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
-	        setTitle("EntrenamientoEnCurso");
+	        setTitle("Entrenamiento en curso");
 	        setVisible(true);
 	    }
 	    

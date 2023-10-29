@@ -129,6 +129,7 @@ public class VentanaLogeoRegistro extends JFrame{
 			
 			}else {
 				JOptionPane.showMessageDialog(iniciarSesion,"La contraseña o el usuario no son validos","Error",JOptionPane.ERROR_MESSAGE);
+				logger.log(Level.SEVERE, "Contraseña incorrecta");
 			}
 		}
 	});
@@ -175,13 +176,12 @@ public class VentanaLogeoRegistro extends JFrame{
 	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
 		   
 		  for (Usuario usuario : BaseDeDatos.listaUsuarios) {
-			  logger.log(Level.INFO, usuario.getnombreUsuario().toString());
-			  logger.log(Level.INFO, usuario.getContraseña().toString());
+			  logger.log(Level.INFO, "Usuario: " + usuario.getnombreUsuario().toString());
 			if (usuarioSinComprobar.getnombreUsuario().equals(usuario.getnombreUsuario()) && usuarioSinComprobar.getContraseña().equals(usuario.getContraseña())) {
 				return usuario;
 			}
 		  }
-
+		  logger.log(Level.SEVERE, "Usuario inexistente");
 	      return null;
 	   }
 	
