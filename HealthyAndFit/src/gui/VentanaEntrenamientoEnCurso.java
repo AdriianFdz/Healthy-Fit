@@ -84,7 +84,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelBotones.setLayout(new FlowLayout());
 	        
 	        labelTiempo = new JLabel();
-	        labelTiempo.setFont(new Font("Consolas", Font.PLAIN, 160));
+	        labelTiempo.setFont(new Font("Consolas", Font.PLAIN, 140));
 	        labelTiempo.setHorizontalAlignment(JLabel.CENTER);
 	        labelTiempo.setIcon(new ImageIcon(iconoCronometro));
 
@@ -184,10 +184,10 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 				//Tomo la letra de cualquier JLabel y la recojo en una variable para utilizarla despues
 				Font fuenteFont = labelKcal.getFont();
 			
-			labelDificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
-			labelKcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
-			labelRepeticiones.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
-			labelSeries.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 40));
+			labelDificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
+			labelKcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
+			labelRepeticiones.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
+			labelSeries.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		
 			botonStart.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
 			botonReset.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
