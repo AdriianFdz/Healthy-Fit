@@ -173,7 +173,7 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaDieta(BaseDeDatos.listaDietas.get(0)));
+				SwingUtilities.invokeLater(() -> new VentanaDieta(BaseDeDatos.getListaDietas().get(0)));
 				dispose();
 				
 			}

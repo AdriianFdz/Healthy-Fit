@@ -141,13 +141,13 @@ public class VentanaLogeoRegistro extends JFrame{
 			if(!meterNombreRegistro.getText().isEmpty() && !meterCorreoRegistro.getText().isEmpty() && !meterContraseñaRepetidaRegistro.getText().isEmpty() && !meterContraseñaRegistro.getText().isEmpty()) {
 				if(meterContraseñaRegistro.getText().equals(meterContraseñaRepetidaRegistro.getText())){
 					//crear usuario en base de datos
-					logger.log(Level.INFO, BaseDeDatos.listaUsuarios.toString());
+					logger.log(Level.INFO, BaseDeDatos.getListaUsuarios().toString());
 					Usuario usuarioRegistrado = new Usuario();
 					usuarioRegistrado.setnombreUsuario(meterNombreRegistro.getText());
 					usuarioRegistrado.setcorreoElectronico(meterCorreoRegistro.getText());
 					usuarioRegistrado.setContraseña(meterContraseñaRegistro.getText());
-					BaseDeDatos.listaUsuarios.add(usuarioRegistrado);
-					logger.log(Level.INFO, BaseDeDatos.listaUsuarios.toString());
+					BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
+					logger.log(Level.INFO, BaseDeDatos.getListaUsuarios().toString());
 					SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioRegistrado));
 					dispose();
 				}else {
@@ -177,7 +177,7 @@ public class VentanaLogeoRegistro extends JFrame{
 	
 	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
 		   
-		  for (Usuario usuario : BaseDeDatos.listaUsuarios) {
+		  for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
 			  logger.log(Level.INFO, "Usuario: " + usuario.getnombreUsuario().toString());
 			if (usuarioSinComprobar.getnombreUsuario().equals(usuario.getnombreUsuario()) && usuarioSinComprobar.getContraseña().equals(usuario.getContraseña())) {
 				return usuario;
