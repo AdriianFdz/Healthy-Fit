@@ -23,9 +23,9 @@ public class BaseDeDatos {
 	private static List<Usuario> listaUsuarios = new ArrayList<>(Arrays.asList(p));
 	
 	
-	private static Entrenamiento e1 = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominalels", 200, 3, 20);
+	private static Entrenamiento e1 = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominales", 200, 3, 20);
 	private static Entrenamiento e2 = new Entrenamiento("Pierna", TipoEntrenamiento.INFERIOR, TipoDificultad.FACIL, 30, "Entrenamiento que mejorará los gemelos", 140, 2, 30);
-	private static List<Entrenamiento> listaEntrenamiento = new ArrayList<>(Arrays.asList(e1,e2));
+	private static List<Entrenamiento> listaEntrenamientos = new ArrayList<>(Arrays.asList(e1,e2));
 
 	
 	private static List<String> pasosD1 = new ArrayList<>(Arrays.asList("Limpia el arroz", "Cuece el arroz", "Haz el pollo"));
@@ -47,12 +47,12 @@ public class BaseDeDatos {
 		BaseDeDatos.listaUsuarios = listaUsuarios;
 	}
 
-	public static List<Entrenamiento> getListaEntrenamiento() {
-		return listaEntrenamiento;
+	public static List<Entrenamiento> getListaEntrenamientos() {
+		return listaEntrenamientos;
 	}
 
-	public static void setListaEntrenamiento(List<Entrenamiento> listaEntrenamiento) {
-		BaseDeDatos.listaEntrenamiento = listaEntrenamiento;
+	public static void setListaEntrenamientos(List<Entrenamiento> listaEntrenamiento) {
+		BaseDeDatos.listaEntrenamientos = listaEntrenamiento;
 	}
 
 	public static List<Dieta> getListaDietas() {

@@ -27,20 +27,16 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import db.BaseDeDatos;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
 
 public class VentanaEntrenamiento extends JFrame{
-
 	private static final long serialVersionUID = 1L;
-	// Propiedades de la ventana
-	List<Entrenamiento> entrenamientos = new ArrayList<Entrenamiento>(); //Falta vincular la BD con los datos de ejemplo
-	Entrenamiento e1 = new Entrenamiento("Entrenamiento 1", TipoEntrenamiento.SUPERIOR, TipoDificultad.FACIL, 120, "DESCRIPCIÓN1", 50, 5, 3);
-	Entrenamiento e2 = new Entrenamiento("Entrenamiento 2", TipoEntrenamiento.INFERIOR, TipoDificultad.MEDIO, 60, "DESCRIPCIÓN2", 70, 2, 7);
-	Entrenamiento e3 = new Entrenamiento("Entrenamiento 3", TipoEntrenamiento.SUPERIOR, TipoDificultad.DIFICIL, 180, "DESCRIPCIÓN3", 100, 1, 3);
 	
+	// Propiedades de la ventana
 	JButton botonIniciar = new JButton("Iniciar entrenamiento");
 	
 	Entrenamiento entrenamientoSeleccionado;
@@ -70,9 +66,10 @@ public class VentanaEntrenamiento extends JFrame{
 
 	
 		//Entrenamientos de ejemplo
-		modeloListaEntrenamiento.addElement(e1);
-		modeloListaEntrenamiento.addElement(e2);
-		modeloListaEntrenamiento.addElement(e3);
+		
+		for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
+			modeloListaEntrenamiento.addElement(entrenamiento);
+		}
 		
 		listaEntrenamientos.setCellRenderer(new RenderListaEntrenamientos());
 		
