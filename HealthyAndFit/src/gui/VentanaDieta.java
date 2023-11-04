@@ -124,9 +124,9 @@ public class VentanaDieta extends JFrame {
 		
 		//Ajustes de la ventana
 		this.pack();
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 		this.setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Dieta");
 		
 	}

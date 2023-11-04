@@ -164,7 +164,6 @@ public class VentanaResumen extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
-				//dispose();
 				
 			}
 		});
@@ -174,7 +173,6 @@ public class VentanaResumen extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaDieta(BaseDeDatos.getListaDietas().get(0)));
-				dispose();
 				
 			}
 		});
