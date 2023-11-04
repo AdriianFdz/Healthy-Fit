@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.ScrollPane;
@@ -62,6 +61,8 @@ public class VentanaEntrenamiento extends JFrame{
 	
 	
 	public VentanaEntrenamiento(Usuario persona) {
+		
+		botonIniciar.setVisible(false);
 		//Definir lista de entrenamientos
 				
 		DefaultListModel<Entrenamiento> modeloListaEntrenamiento = new DefaultListModel<>();
@@ -135,7 +136,6 @@ public class VentanaEntrenamiento extends JFrame{
 				componente.setFont(fuente);
 			}
 
-			//panelEntrenamientoSeleccionado.setPreferredSize(new Dimension((int)(resPantalla.getSize().getWidth()/4), (int)(resPantalla.getSize().getHeight()/2)));
 			panelEntrenamientoSeleccionado.setVisible(false);
 			
 		// Panel de componentes excepto botonIniciar
@@ -145,18 +145,6 @@ public class VentanaEntrenamiento extends JFrame{
 			panelIzquierdoEntrenamientos.add(botonIniciar);
 
 		add(panelIzquierdoEntrenamientos, BorderLayout.WEST);		
-		
-		
-		JPanel panelAbajo = new JPanel(new FlowLayout(FlowLayout.LEADING));
-			JButton botonVolver = new JButton("Volver");
-			panelAbajo.add(botonVolver);
-		
-		add(panelAbajo, BorderLayout.SOUTH);
-		
-		
-		
-		
-		
 		
 		//LISTENERS BOTONES		
 		
@@ -218,6 +206,9 @@ public class VentanaEntrenamiento extends JFrame{
 				
 				descripcionEntrenamientoSeleccionado.setText(value.getDescripcion());
 				VentanaResumen.anadirBordePanel(entrenamientoSeleccionado.getNombre(), panelEntrenamientoSeleccionado);
+				
+				botonIniciar.setVisible(true);
+				
 				pack();
 
 			}
