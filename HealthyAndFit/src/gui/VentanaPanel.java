@@ -1,6 +1,9 @@
 package gui;
 
 import java.awt.GridLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -8,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableModel;
 
 import db.BaseDeDatos;
@@ -137,9 +141,68 @@ public class VentanaPanel extends JFrame {
 		tablas.add(entrenamientos);
 		this.add(tablas);
 
+		//METODOS PARA RELLENAR DE LA BASE DE DATOS LAS TABLAS
 		rellenarUsuarios();
 		rellenarDietas();
 		rellenarEntrenamientos();
+		//AÑADIT TOOLTIP A LAS CELDAS DE LAS COLUMNAS PARA QUE SE VEA TODO EL TEXTO DE CADA CELDA
+		ToolTipManager.sharedInstance().setInitialDelay(0);
+		tablaU.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+				int fila = tablaU.rowAtPoint(e.getPoint());
+				int columna = tablaU.columnAtPoint(e.getPoint());
+				tablaU.setToolTipText(modeloU.getValueAt(fila, columna).toString());
+				
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		tablaD.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+			
+				int fila = tablaD.rowAtPoint(e.getPoint());
+				int columna = tablaD.columnAtPoint(e.getPoint());
+				tablaD.setToolTipText(modeloD.getValueAt(fila, columna).toString());
+				
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		tablaE.addMouseMotionListener(new MouseMotionListener() {
+			
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+				int fila = tablaE.rowAtPoint(e.getPoint());
+				int columna = tablaE.columnAtPoint(e.getPoint());
+				tablaE.setToolTipText(modeloE.getValueAt(fila, columna).toString());
+				
+			}
+			
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
