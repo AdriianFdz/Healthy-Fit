@@ -27,6 +27,7 @@ public class VentanaLogeoRegistro extends JFrame{
 			JLabel contraseñaLogeo;
 			JPasswordField meterContraseñaLogeo;
 			JButton iniciarSesion;
+			JButton inicioRapido;
 		JPanel logeoDerecha;
 	
 	
@@ -68,6 +69,9 @@ public class VentanaLogeoRegistro extends JFrame{
 			
 			iniciarSesion = new JButton("INICIAR SESION");
 			logeoIzquierda.add(iniciarSesion);
+			
+			inicioRapido = new JButton("INICIO RAPIDO");
+			logeoIzquierda.add(inicioRapido);
 			
 		logeoDerecha = new JPanel();	
 			
@@ -160,8 +164,23 @@ public class VentanaLogeoRegistro extends JFrame{
 			}
 		}
 	});
-	
-	
+	//INICIO RAPIDO PARA NO METER TODO EL RATO USUARIO Y CONTRASEÑA, BORRAR AL ACABAR PROYECTO
+	inicioRapido.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			Usuario usuarioSinComprobar = new Usuario();
+			usuarioSinComprobar.setnombreUsuario("juan_perez");
+			
+			usuarioSinComprobar.setContraseña("juan");
+			
+			Usuario usuarioComprobado = usuarioContraseñaCorrectos(usuarioSinComprobar);
+			if(usuarioComprobado != null) {
+				SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioComprobado));
+				dispose();
+		}
+	}});
 	
 		paneles.add(logeo,"Logeo");
 		paneles.add(registro,"Registro");
