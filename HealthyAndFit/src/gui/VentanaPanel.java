@@ -21,11 +21,11 @@ public class VentanaPanel extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	DefaultTableModel modeloU;
 	DefaultTableModel modeloD;
 	DefaultTableModel modeloE;
-	
+
 	public VentanaPanel() {
 
 		JPanel tablas = new JPanel(new GridLayout(3, 1));
@@ -34,7 +34,14 @@ public class VentanaPanel extends JFrame {
 		JPanel usuarios = new JPanel(new GridLayout(1, 3));
 		JLabel labelU = new JLabel("USUARIOS");
 
-		modeloU = new DefaultTableModel();
+		modeloU = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
+
 		modeloU.addColumn("Nombre Usuario");
 		modeloU.addColumn("Nombre");
 		modeloU.addColumn("Apellido 1");
@@ -62,7 +69,14 @@ public class VentanaPanel extends JFrame {
 		JPanel dietas = new JPanel(new GridLayout(1, 3));
 		JLabel labelD = new JLabel("DIETAS");
 
-		modeloD = new DefaultTableModel();
+		modeloD = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
+
 		modeloD.addColumn("Nombre");
 		modeloD.addColumn("Tiempo");
 		modeloD.addColumn("Dificultad");
@@ -89,7 +103,13 @@ public class VentanaPanel extends JFrame {
 		JPanel entrenamientos = new JPanel(new GridLayout(1, 3));
 		JLabel labelE = new JLabel("ENTRENAMIENTOS");
 
-		modeloE = new DefaultTableModel();
+		modeloE = new DefaultTableModel() {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
 		modeloE.addColumn("Nombre");
 		modeloE.addColumn("Tiempo");
 		modeloE.addColumn("Dificultad");
@@ -116,7 +136,7 @@ public class VentanaPanel extends JFrame {
 		tablas.add(dietas);
 		tablas.add(entrenamientos);
 		this.add(tablas);
-		
+
 		rellenarUsuarios();
 		rellenarDietas();
 		rellenarEntrenamientos();
@@ -126,25 +146,28 @@ public class VentanaPanel extends JFrame {
 		this.setTitle("Panel");
 		this.setSize(1200, 500);
 	}
-	
+
 	public void rellenarUsuarios() {
-		 for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-	            Object[] filaU = {usuario.getnombreUsuario(), usuario.getNombre(),usuario.getApellido1(),usuario.getApellido2(), usuario.getcorreoElectronico(), usuario.getPermiso()};
-	            modeloU.addRow(filaU);
-	        }
+		for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
+			Object[] filaU = { usuario.getnombreUsuario(), usuario.getNombre(), usuario.getApellido1(),
+					usuario.getApellido2(), usuario.getcorreoElectronico(), usuario.getPermiso() };
+			modeloU.addRow(filaU);
+		}
 	}
-	
+
 	public void rellenarDietas() {
-		 for (Dieta dieta : BaseDeDatos.getListaDietas()) {
-	            Object[] filaD = {dieta.getNombre(), dieta.getTiempo(),dieta.getDificultad(),dieta.getIngredientes()};
-	            modeloD.addRow(filaD);
-	        }
+		for (Dieta dieta : BaseDeDatos.getListaDietas()) {
+			Object[] filaD = { dieta.getNombre(), dieta.getTiempo(), dieta.getDificultad(), dieta.getIngredientes() };
+			modeloD.addRow(filaD);
+		}
 	}
-	
+
 	public void rellenarEntrenamientos() {
-		 for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
-	            Object[] filaE = {entrenamiento.getNombre(), entrenamiento.getTiempo(),entrenamiento.getDificultad(),entrenamiento.getCalorias()};
-	            modeloE.addRow(filaE);
-	        }
+		for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
+			Object[] filaE = { entrenamiento.getNombre(), entrenamiento.getTiempo(), entrenamiento.getDificultad(),
+					entrenamiento.getCalorias() };
+			modeloE.addRow(filaE);
+		}
 	}
+
 }
