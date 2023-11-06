@@ -140,7 +140,7 @@ public class VentanaEditarUsuario extends JFrame {
 				// TODO Auto-generated method stub
 				
 			}
-		});
+		}); 
         
 		
 		this.add(pDatos);
