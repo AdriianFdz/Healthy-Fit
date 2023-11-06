@@ -1,10 +1,10 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import db.BaseDeDatos;
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
@@ -35,8 +36,6 @@ public class VentanaPerfil extends JFrame{
 	private static Logger logger = Logger.getLogger(VentanaPerfil.class.getName());
 	private static final long serialVersionUID = 1L;
 	
-	JPanel panel1;
-	JPanel panel2;
 	JPanel panelColum1;
 	JLabel labelNombre;
 	JLabel labelApellido1;
@@ -44,13 +43,11 @@ public class VentanaPerfil extends JFrame{
 	JLabel labelTipoU;
 	JLabel labelFechaNac;
 
-	JPanel panelColum2;
 	JLabel labelEdad;
 	JLabel labelSexo;
 	JLabel labelAltura;
 	JLabel labelEnfer;
 
-	JPanel panelColum3;
 	JLabel labelCorreo;
 	JLabel labelPeso;
 	JLabel labelIMC;
@@ -58,9 +55,8 @@ public class VentanaPerfil extends JFrame{
 	JLabel labelAleg;
 	
 	public VentanaPerfil(Usuario p) {
-		panel1 = new JPanel(new GridLayout(1, 3));
-		panel2 = new JPanel(new BorderLayout());
-		add(panel2, BorderLayout.SOUTH);
+		JPanel panelAbajo = new JPanel(new BorderLayout());
+		add(panelAbajo, BorderLayout.SOUTH);
 
 		panelColum1 = new JPanel();
 		panelColum1.setLayout(new BoxLayout(panelColum1, BoxLayout.Y_AXIS));
@@ -70,18 +66,16 @@ public class VentanaPerfil extends JFrame{
 		fotoUsuario.setPreferredSize(new Dimension(320, 320));
 		panelColum1.add(fotoUsuario);
 
-		labelNombre = new JLabel(p.getNombre());
-		labelApellido1 = new JLabel(p.getApellido1());
-		labelApellido2 = new JLabel(p.getApellido2());
-		labelFechaNac = new JLabel(p.getfechaNacimiento().toString()); // esto no se como seria con lo de DATE
-		labelTipoU = new JLabel(p.getPermiso().name());
+		labelNombre = new JLabel(String.format("Nombre: %s", p.getNombre().toUpperCase()));
+		labelApellido1 = new JLabel(String.format("Apellidos: %s %s", p.getApellido1().toUpperCase(), p.getApellido2().toUpperCase()));
+		labelFechaNac = new JLabel(String.format("Nacimiento: %s",p.getfechaNacimiento().toString()));
+		labelTipoU = new JLabel(String.format("Rango: %s", p.getPermiso().name()));
 
 		panelColum1.add(labelNombre);
 		panelColum1.add(labelApellido1);
-		panelColum1.add(labelApellido2);
-		panelColum1.add(labelTipoU);
 		panelColum1.add(labelFechaNac);
-
+		panelColum1.add(labelTipoU);
+		
 		// Botones
 		JButton modificarBot = new JButton("MODIFICAR DATOS");
 		JButton accesoPanelBot = new JButton("ACCESO PANEL");
@@ -98,19 +92,18 @@ public class VentanaPerfil extends JFrame{
 			logger.log(Level.INFO, "Panel bloqueado por no tener suficientes permisos");
 		}
 
-		panel1.add(panelColum1);
+		add(panelColum1, BorderLayout.WEST);
 
-		panel2.add(volverBot, BorderLayout.WEST);
-		panel2.add(botonCerSesion, BorderLayout.EAST);
+		panelAbajo.add(volverBot, BorderLayout.WEST);
+		panelAbajo.add(botonCerSesion, BorderLayout.EAST);
 
-		panelColum2 = new JPanel();
-		panelColum2.setLayout(new BoxLayout(panelColum2, BoxLayout.Y_AXIS));
-
+		JPanel panelDatos = new JPanel(new GridLayout(6,2,0,0));
+		
 		int edad = Period.between(p.getfechaNacimiento(), LocalDate.now()).getYears();
 
-		labelEdad = new JLabel(edad + "");
-		labelSexo = new JLabel(p.getSexo().name());
-		labelAltura = new JLabel(Double.toString(p.getAltura()));
+		labelEdad = new JLabel(String.format("Edad: %d", edad));
+		labelSexo = new JLabel(String.format("Sexo: %s", p.getSexo().name()));
+		labelAltura = new JLabel(String.format("Altura: %.2f", p.getAltura()));
 		labelEnfer = new JLabel("Enfermedades");
 
 		DefaultListModel<TipoEnfermedades> modeloLista = new DefaultListModel<>();
@@ -124,27 +117,12 @@ public class VentanaPerfil extends JFrame{
 		labelPrefAli = new JLabel("PREFERENCIAS ALIMENTICIAS");
 		JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
 		preferenciasComboBox.addItem(p.getpreferenciaAlimenticia());
-		// for (TipoPreferencia preferencia : p.getpreferenciaAlimenticia() ) {
-		// preferenciasComboBox.addItem(preferencia);
-		// }
 
-		panelColum2.add(labelEdad);
-		panelColum2.add(labelSexo);
-		panelColum2.add(labelAltura);
-		panelColum2.add(new Label("ENFERMEDADES"));
-		panelColum2.add(paneEnfermedades);
-		panelColum2.add(new Label("PREFERENCIA ALIMENTICIA"));
-		panelColum2.add(preferenciasComboBox);
+		JLabel labelEnfermedades = new JLabel("ENFERMEDADES");
 
-		panel1.add(panelColum2);
-
-		
-		panelColum3 = new JPanel();
-		panelColum3.setLayout(new BoxLayout(panelColum3, BoxLayout.Y_AXIS));
-
-		labelCorreo = new JLabel(p.getcorreoElectronico());
-		labelPeso = new JLabel(Double.toString(p.getPeso()));
-		labelIMC = new JLabel(Double.toString(p.getImc()));
+		labelCorreo = new JLabel(String.format("Correo: %s", p.getcorreoElectronico()));
+		labelPeso = new JLabel(String.format("Peso: %d", p.getPeso()));
+		labelIMC = new JLabel(String.format("IMC: %.2f", p.getImc()));
 		labelAleg = new JLabel("ALERGIAS");
 
 		JScrollPane paneAlergias = new JScrollPane();
@@ -152,15 +130,33 @@ public class VentanaPerfil extends JFrame{
 			JLabel label = new JLabel(alergia.name());
 			paneAlergias.add(label);
 		}
-
-		panelColum3.add(labelCorreo);
-		panelColum3.add(labelPeso);
-		panelColum3.add(labelIMC);
-		panelColum3.add(labelAleg);
-		panelColum3.add(paneAlergias);
-
-		panel1.add(panelColum3);
 		
+		panelDatos.add(labelEdad);
+		panelDatos.add(labelCorreo);
+		panelDatos.add(labelSexo);
+		panelDatos.add(labelPeso);
+		panelDatos.add(labelAltura);
+		panelDatos.add(labelIMC);
+		//panelDatos.add(labelEnfermedades);
+		JPanel panelEnfermedades = new JPanel();
+			panelEnfermedades.setLayout(new BoxLayout(panelEnfermedades, BoxLayout.Y_AXIS));
+			panelEnfermedades.add(labelEnfermedades);
+			panelEnfermedades.add(paneEnfermedades);
+		panelDatos.add(panelEnfermedades);
+		JPanel panelAlergias = new JPanel();
+			panelAlergias.setLayout(new BoxLayout(panelAlergias, BoxLayout.Y_AXIS));
+			panelAlergias.add(labelAleg);
+			panelAlergias.add(paneAlergias);
+		panelDatos.add(panelAlergias);
+		panelDatos.add(labelPrefAli);
+		panelDatos.add(preferenciasComboBox);
+		
+		
+		JPanel panelDerecha = new JPanel(new BorderLayout());
+			panelDerecha.add(panelDatos, BorderLayout.NORTH);
+			
+		add(panelDerecha, BorderLayout.CENTER);
+			
 		// LISTENERS
 		modificarBot.addActionListener(new ActionListener() {
 
@@ -175,7 +171,6 @@ public class VentanaPerfil extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				SwingUtilities.invokeLater(() -> new VentanaPanel());
 				dispose();
 			}
@@ -200,12 +195,10 @@ public class VentanaPerfil extends JFrame{
 			}
 		});
 
-		this.add(panel1);
 		this.pack();
 		this.setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Perfil");
 	}
-	
 }

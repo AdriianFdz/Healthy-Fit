@@ -10,8 +10,6 @@ import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -29,8 +27,6 @@ import javax.swing.border.EmptyBorder;
 
 import db.BaseDeDatos;
 import domain.Entrenamiento;
-import domain.TipoDificultad;
-import domain.TipoEntrenamiento;
 import domain.Usuario;
 
 public class VentanaEntrenamiento extends JFrame{
