@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -23,6 +24,7 @@ import domain.Usuario;
 public class VentanaEditarUsuario extends JFrame {
 	
 	JPanel pIzq;
+		Integer spacing = 10;
 		JLabel labelCorreo;
 		JTextField fieldCorreo;
 		JLabel labelTipo;
@@ -46,12 +48,14 @@ public class VentanaEditarUsuario extends JFrame {
 	public VentanaEditarUsuario(Usuario p) {
 		JPanel pDatos = new JPanel(new GridLayout(1,2));
 		
+		pIzq.setBorder(BorderFactory.createEmptyBorder(2, spacing , 2, spacing)); // Izquierda
+		
 		//Panel Izquierdo
 		JPanel pIzq = new JPanel(new GridLayout(3,1));
 		pIzq.setLayout(new BoxLayout(pIzq, BoxLayout.Y_AXIS));
 		
 		// Componentes para el panel izquierdo
-		Image foto = p.getFoto().getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+		Image foto = p.getFoto().getImage().getScaledInstance(150, 300, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
 		fotoUsuario.setPreferredSize(new Dimension(320, 320));
 		
@@ -75,6 +79,7 @@ public class VentanaEditarUsuario extends JFrame {
 		//Panel Derecho
 		JPanel pDer = new JPanel();
 		pDer.setLayout(new BoxLayout(pDer, BoxLayout.Y_AXIS));
+		pDer.setBorder(BorderFactory.createEmptyBorder(2,spacing,2,spacing)); // Derecha
 		
 		 // Componentes para el panel derecho
 		labelNombreU= new JLabel("NOMBRE DE USUARIO");
@@ -125,6 +130,14 @@ public class VentanaEditarUsuario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				
+				
+			}
+		});
+        botonConfirmar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
 				
 			}
 		});
