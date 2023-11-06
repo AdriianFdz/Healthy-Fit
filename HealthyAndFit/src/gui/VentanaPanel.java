@@ -220,6 +220,7 @@ public class VentanaPanel extends JFrame {
 				
 			}
 		});
+		
 		volver.addActionListener(new ActionListener() {
 			
 			@Override
@@ -230,6 +231,15 @@ public class VentanaPanel extends JFrame {
 			}
 		});
 		
+		modificarU.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(p));
+				dispose();
+			}
+		});
 		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
