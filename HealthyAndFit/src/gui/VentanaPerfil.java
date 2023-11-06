@@ -198,12 +198,7 @@ public class VentanaPerfil extends JFrame{
 		this.pack();
 		this.setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Perfil");
-	}
-
-	
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> new VentanaPerfil(BaseDeDatos.getListaUsuarios().get(0)));
 	}
 }
