@@ -53,7 +53,7 @@ public class VentanaPanel extends JFrame {
 
 		JScrollPane scrollU = new JScrollPane(tablaU);
 
-		JPanel panelBotonesU = new JPanel(new GridLayout(3, 1));
+		JPanel panelBotonesU = new JPanel();
 		JButton añadirU = new JButton("AÑADIR");
 		JButton modificarU = new JButton("MODIFICAR");
 		JButton eliminarU = new JButton("ELIMINAR");
@@ -86,7 +86,7 @@ public class VentanaPanel extends JFrame {
 
 		JScrollPane scrollD = new JScrollPane(tablaD);
 
-		JPanel panelBotonesD = new JPanel(new GridLayout(3, 1));
+		JPanel panelBotonesD = new JPanel();
 		JButton añadirD = new JButton("AÑADIR");
 		JButton modificarD = new JButton("MODIFICAR");
 		JButton eliminarD = new JButton("ELIMINAR");
@@ -119,7 +119,7 @@ public class VentanaPanel extends JFrame {
 
 		JScrollPane scrollE = new JScrollPane(tablaE);
 
-		JPanel panelBotonesE = new JPanel(new GridLayout(3, 1));
+		JPanel panelBotonesE = new JPanel();
 		JButton añadirE = new JButton("AÑADIR");
 		JButton modificarE = new JButton("MODIFICAR");
 		JButton eliminarE = new JButton("ELIMINAR");
@@ -144,7 +144,7 @@ public class VentanaPanel extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
-		this.setSize(1200, 500);
+		this.setSize(1000, 500);
 	}
 
 	public void rellenarUsuarios() {
