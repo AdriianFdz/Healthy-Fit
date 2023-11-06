@@ -10,13 +10,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import db.BaseDeDatos;
+import domain.Dieta;
+import domain.Entrenamiento;
+import domain.Usuario;
+
 public class VentanaPanel extends JFrame {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	DefaultTableModel modeloU;
+	DefaultTableModel modeloD;
+	DefaultTableModel modeloE;
+	
 	public VentanaPanel() {
 
 		JPanel tablas = new JPanel(new GridLayout(3, 1));
@@ -25,7 +34,7 @@ public class VentanaPanel extends JFrame {
 		JPanel usuarios = new JPanel(new GridLayout(1, 3));
 		JLabel labelU = new JLabel("USUARIOS");
 
-		DefaultTableModel modeloU = new DefaultTableModel();
+		modeloU = new DefaultTableModel();
 		modeloU.addColumn("Nombre Usuario");
 		modeloU.addColumn("Nombre");
 		modeloU.addColumn("Apellido 1");
@@ -53,12 +62,11 @@ public class VentanaPanel extends JFrame {
 		JPanel dietas = new JPanel(new GridLayout(1, 3));
 		JLabel labelD = new JLabel("DIETAS");
 
-		DefaultTableModel modeloD = new DefaultTableModel();
+		modeloD = new DefaultTableModel();
 		modeloD.addColumn("Nombre");
 		modeloD.addColumn("Tiempo");
 		modeloD.addColumn("Dificultad");
 		modeloD.addColumn("Ingredientes");
-		modeloD.addColumn("Pasos");
 
 		JTable tablaD = new JTable(modeloD);
 
@@ -81,12 +89,11 @@ public class VentanaPanel extends JFrame {
 		JPanel entrenamientos = new JPanel(new GridLayout(1, 3));
 		JLabel labelE = new JLabel("ENTRENAMIENTOS");
 
-		DefaultTableModel modeloE = new DefaultTableModel();
+		modeloE = new DefaultTableModel();
 		modeloE.addColumn("Nombre");
 		modeloE.addColumn("Tiempo");
 		modeloE.addColumn("Dificultad");
 		modeloE.addColumn("Kcal");
-		modeloE.addColumn("Descripción");
 
 		JTable tablaE = new JTable(modeloE);
 
@@ -110,11 +117,34 @@ public class VentanaPanel extends JFrame {
 		tablas.add(entrenamientos);
 		this.add(tablas);
 		
-		
+		rellenarUsuarios();
+		rellenarDietas();
+		rellenarEntrenamientos();
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
-		this.setSize(1920, 1080);
+		this.setSize(1200, 500);
+	}
+	
+	public void rellenarUsuarios() {
+		 for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
+	            Object[] filaU = {usuario.getnombreUsuario(), usuario.getNombre(),usuario.getApellido1(),usuario.getApellido2(), usuario.getcorreoElectronico(), usuario.getPermiso()};
+	            modeloU.addRow(filaU);
+	        }
+	}
+	
+	public void rellenarDietas() {
+		 for (Dieta dieta : BaseDeDatos.getListaDietas()) {
+	            Object[] filaD = {dieta.getNombre(), dieta.getTiempo(),dieta.getDificultad(),dieta.getIngredientes()};
+	            modeloD.addRow(filaD);
+	        }
+	}
+	
+	public void rellenarEntrenamientos() {
+		 for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
+	            Object[] filaE = {entrenamiento.getNombre(), entrenamiento.getTiempo(),entrenamiento.getDificultad(),entrenamiento.getCalorias()};
+	            modeloE.addRow(filaE);
+	        }
 	}
 }
