@@ -48,16 +48,16 @@ public class VentanaEditarUsuario extends JFrame {
 	public VentanaEditarUsuario(Usuario p) {
 		JPanel pDatos = new JPanel(new GridLayout(1,2));
 		
-		pIzq.setBorder(BorderFactory.createEmptyBorder(2, spacing , 2, spacing)); // Izquierda
 		
 		//Panel Izquierdo
 		JPanel pIzq = new JPanel(new GridLayout(3,1));
 		pIzq.setLayout(new BoxLayout(pIzq, BoxLayout.Y_AXIS));
+		pIzq.setBorder(BorderFactory.createEmptyBorder(2, spacing , 2, spacing)); // Izquierda
 		
 		// Componentes para el panel izquierdo
-		Image foto = p.getFoto().getImage().getScaledInstance(150, 300, Image.SCALE_SMOOTH);
+		Image foto = p.getFoto().getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
-		fotoUsuario.setPreferredSize(new Dimension(320, 320));
+		fotoUsuario.setPreferredSize(new Dimension(150, 150));
 		
 		labelCorreo = new JLabel("CORREO");
 		labelTipo = new JLabel("TIPO");
