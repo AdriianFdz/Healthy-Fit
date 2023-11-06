@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -11,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -30,7 +33,7 @@ public class VentanaPanel extends JFrame {
 	DefaultTableModel modeloD;
 	DefaultTableModel modeloE;
 
-	public VentanaPanel() {
+	public VentanaPanel(Usuario p) {
 
 		JPanel tablas = new JPanel(new GridLayout(3, 1));
 
@@ -104,7 +107,7 @@ public class VentanaPanel extends JFrame {
 
 		// PANEL ENTRENAMIENTOS
 
-		JPanel entrenamientos = new JPanel(new GridLayout(1, 3));
+		JPanel entrenamientos = new JPanel(new GridLayout(2, 3));
 		JLabel labelE = new JLabel("ENTRENAMIENTOS");
 
 		modeloE = new DefaultTableModel() {
@@ -130,10 +133,24 @@ public class VentanaPanel extends JFrame {
 		panelBotonesE.add(añadirE);
 		panelBotonesE.add(modificarE);
 		panelBotonesE.add(eliminarE);
-
+		
+		//AÑADIR BOTON VOLVER
+		JPanel panelVolver = new JPanel(new GridLayout(3, 3));
+		panelVolver.add(new JLabel(""));
+		panelVolver.add(new JLabel(""));
+		panelVolver.add(new JLabel(""));
+		panelVolver.add(new JLabel(""));
+		panelVolver.add(new JLabel(""));
+		panelVolver.add(new JLabel(""));
+		JButton volver = new JButton("Volver");
+		panelVolver.add(volver);
+		
+		
 		entrenamientos.add(labelE);
 		entrenamientos.add(scrollE);
 		entrenamientos.add(panelBotonesE);
+		entrenamientos.add(panelVolver);
+		entrenamientos.add(new JLabel(""));
 
 		// METO TODAS LAS TABLAS EN EL PANEL
 		tablas.add(usuarios);
@@ -203,11 +220,21 @@ public class VentanaPanel extends JFrame {
 				
 			}
 		});
-
+		volver.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				SwingUtilities.invokeLater(() -> new VentanaPerfil(p));
+				dispose();
+			}
+		});
+		
+		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
-		this.setSize(1000, 500);
+		this.setSize(800, 500);
 	}
 
 	public void rellenarUsuarios() {
