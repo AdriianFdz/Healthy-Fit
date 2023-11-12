@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import domain.Entrenamiento;
+import domain.TipoDificultad;
 import domain.Usuario;
 
 
@@ -63,9 +64,19 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
             Image iconoFuego = tmpFuego.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
 		    
             //Inicializar las propiedades previamente definidas
-        	milisegundos = 0;
-		    segundos = 20; //e.getTiempo()
-		    minutos = 0;
+            milisegundos = 0;
+            minutos = 0;
+            
+            if (e.getDificultad() == TipoDificultad.FACIL) {
+            	segundos = 30;
+            }else if(e.getDificultad() == TipoDificultad.MEDIO) {
+            	segundos = 40;
+            }else {
+            	segundos = 50;
+            }
+        	
+		    
+		    
 		    
 		    labelNombre = new JLabel(" "+ e.getNombre());
 		    labelDificultad = new JLabel("   Dificultad: " + e.getDificultad().toString());
@@ -105,6 +116,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                } else {
 	                    if (segundos == 0 && minutos == 0) {
 	                        timer.stop();
+	                     
+	                       
 	                    } else if (segundos > 0) {
 	                        segundos--;
 	                        milisegundos = 99;
