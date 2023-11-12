@@ -35,6 +35,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    private JPanel panelAbajo;
 	    private JPanel panelBotones;
 	    
+	    private JLabel labelEstado;
 	    private JLabel labelTiempo;
 	    private JLabel labelNombre;
 	    private JLabel labelDificultad;
@@ -46,16 +47,21 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    private JButton botonReset;
 	    private JButton botonStop;
 	    private JButton botonVolver;
-
+	    
+	    private int seriesRestantes;
+	    private int repeticionesRestantes;
+	    
 	    private byte milisegundos;
 	    private byte segundos;
 	    private short minutos;
 
+	    private boolean descanso;
+	    
 	    private DecimalFormat timeFormatter;
 	  
 	    private Timer timer;
 
-	    public VentanaEntrenamientoEnCurso(Entrenamiento e, Usuario persona) {
+	    public VentanaEntrenamientoEnCurso(Entrenamiento en, Usuario persona) {
 	    
 			//Imagenes sacadas de www.flaticon.com
 		    ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
@@ -67,23 +73,27 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
             milisegundos = 0;
             minutos = 0;
             
-            if (e.getDificultad() == TipoDificultad.FACIL) {
-            	segundos = 30;
-            }else if(e.getDificultad() == TipoDificultad.MEDIO) {
+            if (en.getDificultad() == TipoDificultad.FACIL) {
+            	segundos = 50;
+            }else if(en.getDificultad() == TipoDificultad.MEDIO) {
             	segundos = 40;
             }else {
-            	segundos = 50;
+            	segundos = 30;
             }
         	
+		    descanso = false;
 		    
+		    seriesRestantes = en.getSeries();
+		    repeticionesRestantes = en.getRepeticiones();
 		    
-		    
-		    labelNombre = new JLabel(" "+ e.getNombre());
-		    labelDificultad = new JLabel("   Dificultad: " + e.getDificultad().toString());
-		    labelKcal = new JLabel(e.getCalorias() + " kcal");
+		    labelEstado = new JLabel(" ");
+		    labelEstado.setHorizontalAlignment(JLabel.CENTER);
+		    labelNombre = new JLabel(" "+ en.getNombre());
+		    labelDificultad = new JLabel("   Dificultad: " + en.getDificultad().toString());
+		    labelKcal = new JLabel(en.getCalorias() + " kcal");
 		    labelKcal.setIcon(new ImageIcon(iconoFuego));
-		    labelSeries = new JLabel(e.getSeries() + " SERIES");
-		    labelRepeticiones = new JLabel(e.getRepeticiones() + " REPETICIONES");
+		    labelSeries = new JLabel(seriesRestantes + " SERIES");
+		    labelRepeticiones = new JLabel(repeticionesRestantes + " REPETICIONES");
 		    
 	        panelPrincipal = new JPanel();
 	        panelPrincipal.setLayout(new BorderLayout());
@@ -116,21 +126,53 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                } else {
 	                    if (segundos == 0 && minutos == 0) {
 	                        timer.stop();
-	                     
-	                       
+	                        
+	                        if (!descanso) {
+	                            // Si no está en el tiempo de descanso, inicia el tiempo de descanso
+	                            descanso = true;
+	                            seriesRestantes--;
+	                            segundos = 30;  // 30 segundos de descanso entre series
+	                            milisegundos = 0;
+	                            timer.start();
+	                            labelEstado.setText("Descanso");
+	                        } else {
+	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
+	                            descanso = false;
+	                            if (seriesRestantes > 0) {
+	                                minutos = 0;
+	                                if (en.getDificultad() == TipoDificultad.FACIL) {
+	                                	segundos = 50;
+	                                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
+	                                	segundos = 40;
+	                                }else {
+	                                	segundos = 30;
+	                                }
+	                                milisegundos = 0;
+	                                timer.start();
+	                                labelEstado.setText("");
+	                            }
+	                    }
+
 	                    } else if (segundos > 0) {
 	                        segundos--;
 	                        milisegundos = 99;
+	                        
+	                        
 	                    } else if (minutos > 0) {
 	                        minutos--;
 	                        segundos = 59;
 	                        milisegundos = 99;
 	                    }
 	                }
+	             
+	                
 	                
 	                labelTiempo.setText(timeFormatter.format(minutos) + ":"
 	                        + timeFormatter.format(segundos) + "."
 	                        + timeFormatter.format(milisegundos));
+	                
+	                labelSeries.setText(seriesRestantes + " SERIES");
+	                labelRepeticiones.setText(repeticionesRestantes + " REPETICIONES");
 	            }
 	        });
 
@@ -155,9 +197,15 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	                timer.stop();
 
+	                if (en.getDificultad() == TipoDificultad.FACIL) {
+	                	segundos = 50;
+	                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
+	                	segundos = 40;
+	                }else {
+	                	segundos = 30;
+	                }
 	                milisegundos = 0;
-	                segundos = 20;
-	                minutos = 0;
+	                
 
 	                labelTiempo.setText(timeFormatter.format(minutos) + ":"
 	                        + timeFormatter.format(segundos) + "."
@@ -197,6 +245,9 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 				//Tomo la letra de cualquier JLabel y la recojo en una variable para utilizarla despues
 				Font fuenteFont = labelKcal.getFont();
 			
+			labelEstado.setFont(new Font(fuenteFont.getFontName(), Font.BOLD, 30));
+			labelEstado.setForeground(Color.RED);
+			labelEstado.setOpaque(true);
 			labelDificultad.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 			labelKcal.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 			labelRepeticiones.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
@@ -226,6 +277,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelSecundario.add(labelRepeticiones);
 	        
 	        panelAbajo.add(botonVolver);
+	        panelAbajo.add(labelEstado);
+	        panelAbajo.add(labelEstado);
 	        
 	        panelPrincipal.add(panelBotones, BorderLayout.SOUTH);
 	        panelPrincipal.add(panelSecundario, BorderLayout.NORTH);
