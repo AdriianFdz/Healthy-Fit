@@ -249,8 +249,8 @@ public class VentanaPanel extends JFrame {
 
 	public void rellenarUsuarios() {
 		for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-			Object[] filaU = { usuario.getnombreUsuario(), usuario.getNombre(), usuario.getApellido1(),
-					usuario.getApellido2(), usuario.getcorreoElectronico(), usuario.getPermiso() };
+			Object[] filaU = { usuario.getNombreUsuario(), usuario.getNombre(), usuario.getApellido1(),
+					usuario.getApellido2(), usuario.getCorreoElectronico(), usuario.getPermiso() };
 			modeloU.addRow(filaU);
 		}
 	}

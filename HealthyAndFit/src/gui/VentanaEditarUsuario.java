@@ -66,7 +66,7 @@ public class VentanaEditarUsuario extends JFrame {
 		comboTipo = new JComboBox<>(TipoPermiso.values());
 		
 		//Inicializamos con datos
-		fieldCorreo.setText(p.getcorreoElectronico());
+		fieldCorreo.setText(p.getCorreoElectronico());
 		comboTipo.setSelectedItem(p.getPermiso());
 		
 		pIzq.add(fotoUsuario);
@@ -93,7 +93,7 @@ public class VentanaEditarUsuario extends JFrame {
 		fieldApe2 = new JTextField(20);
 		
 		//Inicializar campos con datos
-		fieldNombreU.setText(p.getnombreUsuario());
+		fieldNombreU.setText(p.getNombreUsuario());
 		fieldNombre.setText(p.getNombre());
 		fieldApe1.setText(p.getApellido1());
 		fieldApe2.setText(p.getApellido2());

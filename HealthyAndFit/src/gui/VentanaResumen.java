@@ -53,11 +53,11 @@ public class VentanaResumen extends JFrame{
 	
 		
 		//ENTRENAMIENTO
-		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getcaloriasGastadas());
-		JLabel racha = new JLabel("Racha: "+persona.getrachaEntrenamiento());
-		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: "+persona.gettiempoEntrenado());
+		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getCaloriasGastadas());
+		JLabel racha = new JLabel("Racha: "+persona.getRachaEntrenamiento());
+		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: "+persona.getTiempoEntrenado());
 		JLabel objetivo = new JLabel("Objetivo: "+persona.getObjetivo());
-		JLabel ultimaVez = new JLabel("Última vez: "+persona.getultimaVezEntreno());
+		JLabel ultimaVez = new JLabel("Última vez: "+persona.getUltimaVezEntreno());
 		ultimaVez.setBorder(new EmptyBorder(0, 0, 10, 0)); //Añadir margen inferior al JLabel
 
 		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
@@ -90,8 +90,8 @@ public class VentanaResumen extends JFrame{
 		
 		
 		//DIETA
-		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getcaloriasConsumidas());
-		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getproximaComida());
+		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getCaloriasConsumidas());
+		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getProximaComida());
 		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
 		
 		JPanel panelVasosAgua = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -264,7 +264,7 @@ public class VentanaResumen extends JFrame{
 	
 	//Imagenes sacadas de www.flaticon.com
 	private void actualizarVasosDeAgua(Usuario persona, List<JLabel> listaVasos) {
-		for (int i = 0; i < persona.getvasosDeAgua(); i++) {
+		for (int i = 0; i < persona.getVasosDeAgua(); i++) {
 			ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoLleno.png");
 			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 			ImageIcon vasoBueno = new ImageIcon(vaso);
@@ -274,7 +274,7 @@ public class VentanaResumen extends JFrame{
 			listaVasos.set(i, vasoL);
 		}
 		
-		for (int i = persona.getvasosDeAgua(); i < 8; i++) {
+		for (int i = persona.getVasosDeAgua(); i < 8; i++) {
 			ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoVacio.png");
 			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 			ImageIcon vasoBueno = new ImageIcon(vaso);

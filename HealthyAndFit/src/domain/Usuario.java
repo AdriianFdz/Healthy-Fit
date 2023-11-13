@@ -28,7 +28,7 @@ public class Usuario {
 	private int caloriasConsumidas;
 	private String proximaComida;
 	private int vasosDeAgua;
-	private String contraseña;
+	private String contrasena;
 	private ImageIcon foto;
 	private TipoPermiso permiso;
 	
@@ -67,7 +67,7 @@ public class Usuario {
 		this.proximaComida = proximaComida;
 		this.vasosDeAgua = vasosDeAgua;
 		this.foto = foto;
-		this.contraseña = contraseña;
+		this.contrasena = contraseña;
 		this.permiso = permiso;
 	}
 	
@@ -95,7 +95,7 @@ public class Usuario {
 		this.caloriasConsumidas = 0;
 		this.proximaComida = "";
 		this.vasosDeAgua = 0;
-		this.contraseña = "";
+		this.contrasena = "";
 		this.foto = new ImageIcon("resources\\images\\foto.png");
 		this.permiso = TipoPermiso.USUARIO;
 	}
@@ -109,11 +109,11 @@ public class Usuario {
 		this.nombre = nombre;
 	}
 
-	public String getnombreUsuario() {
+	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
 
-	public void setnombreUsuario(String nombreUsuario) {
+	public void setNombreUsuario(String nombreUsuario) {
 		this.nombreUsuario = nombreUsuario;
 	}
 
@@ -179,11 +179,11 @@ public class Usuario {
 		this.alergias = alergias;
 	}
 
-	public String getcorreoElectronico() {
+	public String getCorreoElectronico() {
 		return correoElectronico;
 	}
 
-	public void setcorreoElectronico(String correoElectronico) {
+	public void setCorreoElectronico(String correoElectronico) {
 		this.correoElectronico = correoElectronico;
 	}
 
@@ -199,30 +199,30 @@ public class Usuario {
 		return imc;
 	}
 
-	public TipoPreferencia getpreferenciaAlimenticia() {
+	public TipoPreferencia getPreferenciaAlimenticia() {
 		return preferenciaAlimenticia;
 	}
 
-	public void setpreferenciaAlimenticia(TipoPreferencia preferenciaAlimenticia) {
+	public void setPreferenciaAlimenticia(TipoPreferencia preferenciaAlimenticia) {
 		this.preferenciaAlimenticia = preferenciaAlimenticia;
 	}
 
-	public int getcaloriasGastadas() {
+	public int getCaloriasGastadas() {
 		return caloriasGastadas;
 	}
 
-	public void setcaloriasGastadas(int caloriasGastadas) {
+	public void setCaloriasGastadas(int caloriasGastadas) {
 		if (caloriasGastadas >= 0) {
 			this.caloriasGastadas = caloriasGastadas;
 		}
 		
 	}
 
-	public int getrachaEntrenamiento() {
+	public int getRachaEntrenamiento() {
 		return rachaEntrenamiento;
 	}
 
-	public void setrachaEntrenamiento(int rachaEntrenamiento) {
+	public void setRachaEntrenamiento(int rachaEntrenamiento) {
 		if (rachaEntrenamiento >= 0) {
 			this.rachaEntrenamiento = rachaEntrenamiento;
 		}
@@ -237,60 +237,60 @@ public class Usuario {
 		this.objetivo = objetivo;
 	}
 
-	public int gettiempoEntrenado() {
+	public int getTiempoEntrenado() {
 		return tiempoEntrenado;
 	}
 
-	public void settiempoEntrenado(int tiempoEntrenado) {
+	public void setTiempoEntrenado(int tiempoEntrenado) {
 		if (tiempoEntrenado >= 0) {
 			this.tiempoEntrenado = tiempoEntrenado;
 		}
 		
 	}
 
-	public LocalDate getultimaVezEntreno() {
+	public LocalDate getUltimaVezEntreno() {
 		return ultimaVezEntreno;
 	}
 
-	public void setultimaVezEntreno(LocalDate ultimaVezEntreno) {
+	public void setUltimaVezEntreno(LocalDate ultimaVezEntreno) {
 		this.ultimaVezEntreno = ultimaVezEntreno;
 	}
 
-	public int getcaloriasConsumidas() {
+	public int getCaloriasConsumidas() {
 		return caloriasConsumidas;
 	}
 
-	public void setcaloriasConsumidas(int caloriasConsumidas) {
+	public void setCaloriasConsumidas(int caloriasConsumidas) {
 		if (caloriasConsumidas >= 0) {
 			this.caloriasConsumidas = caloriasConsumidas;
 		}
 		
 	}
 
-	public String getproximaComida() {
+	public String getProximaComida() {
 		return proximaComida;
 	}
 
-	public void setproximaComida(String proximaComida) {
+	public void setProximaComida(String proximaComida) {
 		this.proximaComida = proximaComida;
 	}
 
-	public int getvasosDeAgua() {
+	public int getVasosDeAgua() {
 		return vasosDeAgua;
 	}
 
-	public void setvasosDeAgua(int vasosDeAgua) {
+	public void setVasosDeAgua(int vasosDeAgua) {
 		if (vasosDeAgua >= 0 && vasosDeAgua < 8)
 		this.vasosDeAgua = vasosDeAgua;
 	}
 
-	public String getContraseña() {
-		return contraseña;
+	public String getContrasena() {
+		return contrasena;
 	}
 
-	public void setContraseña(String contraseña) {
-		if (contraseña.length() > 0) {
-			this.contraseña = contraseña;
+	public void setContrasena(String contrasena) {
+		if (contrasena.length() > 0) {
+			this.contrasena = contrasena;
 		}
 	
 	}
@@ -322,7 +322,7 @@ public class Usuario {
 				+ preferenciaAlimenticia + ", caloriasGastadas=" + caloriasGastadas + ", rachaEntrenamiento="
 				+ rachaEntrenamiento + ", objetivo=" + objetivo + ", tiempoEntrenado=" + tiempoEntrenado
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
-				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contraseña=" + contraseña
+				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contraseña=" + contrasena
 				+ ", foto=" + foto + ", permiso=" + permiso + "]";
 	}
 

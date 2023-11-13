@@ -116,11 +116,11 @@ public class VentanaPerfil extends JFrame{
 
 		labelPrefAli = new JLabel("PREFERENCIAS ALIMENTICIAS");
 		JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
-		preferenciasComboBox.addItem(p.getpreferenciaAlimenticia());
+		preferenciasComboBox.addItem(p.getPreferenciaAlimenticia());
 
 		JLabel labelEnfermedades = new JLabel("ENFERMEDADES");
 
-		labelCorreo = new JLabel(String.format("Correo: %s", p.getcorreoElectronico()));
+		labelCorreo = new JLabel(String.format("Correo: %s", p.getCorreoElectronico()));
 		labelPeso = new JLabel(String.format("Peso: %d", p.getPeso()));
 		labelIMC = new JLabel(String.format("IMC: %.2f", p.getImc()));
 		labelAleg = new JLabel("ALERGIAS");

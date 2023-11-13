@@ -121,10 +121,10 @@ public class VentanaLogeoRegistro extends JFrame{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			Usuario usuarioSinComprobar = new Usuario();
-			usuarioSinComprobar.setnombreUsuario(meterNombreLogeo.getText());
+			usuarioSinComprobar.setNombreUsuario(meterNombreLogeo.getText());
 			//Corregir funcion deprecated. Cambiar en Usuario la contraseña a []char.
 			//Eso evita no guardar en memoria la contraseña
-			usuarioSinComprobar.setContraseña(meterContraseñaLogeo.getText());
+			usuarioSinComprobar.setContrasena(meterContraseñaLogeo.getText());
 			
 			Usuario usuarioComprobado = usuarioContraseñaCorrectos(usuarioSinComprobar);
 			if(usuarioComprobado != null) {
@@ -147,9 +147,9 @@ public class VentanaLogeoRegistro extends JFrame{
 					//crear usuario en base de datos
 					logger.log(Level.INFO, BaseDeDatos.getListaUsuarios().toString());
 					Usuario usuarioRegistrado = new Usuario();
-					usuarioRegistrado.setnombreUsuario(meterNombreRegistro.getText());
-					usuarioRegistrado.setcorreoElectronico(meterCorreoRegistro.getText());
-					usuarioRegistrado.setContraseña(meterContraseñaRegistro.getText());
+					usuarioRegistrado.setNombreUsuario(meterNombreRegistro.getText());
+					usuarioRegistrado.setCorreoElectronico(meterCorreoRegistro.getText());
+					usuarioRegistrado.setContrasena(meterContraseñaRegistro.getText());
 					BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
 					logger.log(Level.INFO, BaseDeDatos.getListaUsuarios().toString());
 					SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioRegistrado));
@@ -171,9 +171,9 @@ public class VentanaLogeoRegistro extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Usuario usuarioSinComprobar = new Usuario();
-			usuarioSinComprobar.setnombreUsuario("juan_perez");
+			usuarioSinComprobar.setNombreUsuario("juan_perez");
 			
-			usuarioSinComprobar.setContraseña("juan");
+			usuarioSinComprobar.setContrasena("juan");
 			
 			Usuario usuarioComprobado = usuarioContraseñaCorrectos(usuarioSinComprobar);
 			if(usuarioComprobado != null) {
@@ -196,8 +196,8 @@ public class VentanaLogeoRegistro extends JFrame{
 	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
 		   
 		  for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-			  logger.log(Level.INFO, "Usuario: " + usuario.getnombreUsuario().toString());
-			if (usuarioSinComprobar.getnombreUsuario().equals(usuario.getnombreUsuario()) && usuarioSinComprobar.getContraseña().equals(usuario.getContraseña())) {
+			  logger.log(Level.INFO, "Usuario: " + usuario.getNombreUsuario().toString());
+			if (usuarioSinComprobar.getNombreUsuario().equals(usuario.getNombreUsuario()) && usuarioSinComprobar.getContrasena().equals(usuario.getContrasena())) {
 				return usuario;
 			}
 		  }
