@@ -13,6 +13,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
+import db.BaseDeDatos;
 import domain.Dieta;
 import domain.TipoDificultad;
 
@@ -68,6 +69,16 @@ public class VentanaEditarDieta extends JFrame {
 		pIzq.add(labelKcal);
 		pIzq.add(spinnerKcal);
 		
+		//Panel derecha
+		pDer = new JPanel();
+		labelPasos = new JLabel();
+		
+		
+		pDer.add(labelPasos);
+		
+		
+		datos.add(pIzq);
+		datos.add(pDer);
 		//Crear botones y añadir al panelBotones
 		JButton botonCancelar = new JButton("CANCELAR");
 		JButton botonConfirmar= new JButton("CONFIRMAR");
@@ -83,4 +94,6 @@ public class VentanaEditarDieta extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Editar Usuario");
 	}
+	
+	
 }
