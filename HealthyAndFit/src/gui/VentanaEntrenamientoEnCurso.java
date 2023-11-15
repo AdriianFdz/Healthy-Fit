@@ -155,13 +155,13 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	                    } else if (segundos > 0) {
 	                        segundos--;
-	                        milisegundos = 99;
+	                        milisegundos = 60;
 	                        
 	                        
 	                    } else if (minutos > 0) {
 	                        minutos--;
 	                        segundos = 59;
-	                        milisegundos = 99;
+	                        milisegundos = 60;
 	                    }
 	                }
 	             
