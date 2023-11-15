@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +36,7 @@ import org.jfree.data.xy.XYDataset;
 
 import db.BaseDeDatos;
 import domain.Usuario;
+import io.RegistroLogger;
 
 public class VentanaResumen extends JFrame{
 
@@ -46,8 +46,6 @@ public class VentanaResumen extends JFrame{
 
 	
 	 //LOGGER
-	 private static Logger logger = Logger.getLogger(VentanaResumen.class.getName());
-	
 	private static final long serialVersionUID = 1L;
 	public VentanaResumen(Usuario persona) {		
 	
@@ -82,7 +80,7 @@ public class VentanaResumen extends JFrame{
 		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
 		ChartPanel panelGraficaEntrenamiento = new ChartPanel(graficaEntrenamiento);
 		Dimension resPantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		logger.log(Level.INFO, resPantalla.toString());
+		RegistroLogger.anadirLogeo(Level.INFO, resPantalla.toString());
 		
 		panelGraficaEntrenamiento.setPreferredSize(new Dimension(resPantalla.getSize().width/2,resPantalla.getSize().height/2));
 		panelEntrenamiento.add(panelGraficaEntrenamiento, BorderLayout.CENTER);
@@ -222,7 +220,7 @@ public class VentanaResumen extends JFrame{
         TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(s1);
         
-        logger.log(Level.INFO, "Dataset de ejemplo creado correctamente");
+        RegistroLogger.anadirLogeo(Level.INFO, "Dataset de ejemplo creado correctamente");
         
         return dataset;
 
@@ -284,7 +282,7 @@ public class VentanaResumen extends JFrame{
 			listaVasos.set(i, vasoL);
 		}
 		
-		logger.log(Level.INFO, "Vasos de agua actualizados");
+		RegistroLogger.anadirLogeo(Level.INFO, "Vasos de agua actualizados");
 	}
 	
 }

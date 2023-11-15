@@ -6,16 +6,15 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.*;
 
 import db.BaseDeDatos;
 import domain.Usuario;
+import io.RegistroLogger;
 
 public class VentanaLogeoRegistro extends JFrame{
 	private static final long serialVersionUID = 1L;
-	private static Logger logger = Logger.getLogger(VentanaLogeoRegistro.class.getName());
 	
 	JTabbedPane paneles;
 	
@@ -133,7 +132,7 @@ public class VentanaLogeoRegistro extends JFrame{
 			
 			}else {
 				JOptionPane.showMessageDialog(iniciarSesion,"La contraseña o el usuario no son validos","Error",JOptionPane.ERROR_MESSAGE);
-				logger.log(Level.WARNING, "Contraseña incorrecta");
+				RegistroLogger.anadirLogeo(Level.WARNING, "Contraseña incorrecta");
 			}
 		}
 	});
@@ -145,22 +144,22 @@ public class VentanaLogeoRegistro extends JFrame{
 			if(!meterNombreRegistro.getText().isEmpty() && !meterCorreoRegistro.getText().isEmpty() && !meterContraseñaRepetidaRegistro.getText().isEmpty() && !meterContraseñaRegistro.getText().isEmpty()) {
 				if(meterContraseñaRegistro.getText().equals(meterContraseñaRepetidaRegistro.getText())){
 					//crear usuario en base de datos
-					logger.log(Level.INFO, BaseDeDatos.getListaUsuarios().toString());
+					RegistroLogger.anadirLogeo(Level.WARNING, "Contraseña incorrecta");
 					Usuario usuarioRegistrado = new Usuario();
 					usuarioRegistrado.setNombreUsuario(meterNombreRegistro.getText());
 					usuarioRegistrado.setCorreoElectronico(meterCorreoRegistro.getText());
 					usuarioRegistrado.setContrasena(meterContraseñaRegistro.getText());
 					BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
-					logger.log(Level.INFO, BaseDeDatos.getListaUsuarios().toString());
 					SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioRegistrado));
 					dispose();
-				}else {
+				} else {
 					 JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden", "Las contraseñas deben coincidir", JOptionPane.ERROR_MESSAGE);
-					 logger.log(Level.WARNING, "Contraseñas no coinciden");
+					 RegistroLogger.anadirLogeo(Level.WARNING, "Contraseñas no coinciden");
 
 				}
-			}else {
+			} else {
 				 JOptionPane.showMessageDialog(null, "Los datos introducidos no son correctos", "Error de datos", JOptionPane.ERROR_MESSAGE);
+				 RegistroLogger.anadirLogeo(Level.WARNING, "Datos incorrectos");
 			}
 		}
 	});
@@ -196,12 +195,12 @@ public class VentanaLogeoRegistro extends JFrame{
 	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
 		   
 		  for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-			  logger.log(Level.INFO, "Usuario: " + usuario.getNombreUsuario().toString());
 			if (usuarioSinComprobar.getNombreUsuario().equals(usuario.getNombreUsuario()) && usuarioSinComprobar.getContrasena().equals(usuario.getContrasena())) {
+				  RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
 				return usuario;
 			}
 		  }
-		  logger.log(Level.SEVERE, "Usuario inexistente");
+		  RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
 	      return null;
 	   }
 	

@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -10,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -24,16 +22,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import db.BaseDeDatos;
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
 import domain.TipoPreferencia;
 import domain.Usuario;
+import io.RegistroLogger;
 
 public class VentanaPerfil extends JFrame{
 	//LOGGER
-	private static Logger logger = Logger.getLogger(VentanaPerfil.class.getName());
 	private static final long serialVersionUID = 1L;
 	
 	JPanel panelColum1;
@@ -89,7 +86,7 @@ public class VentanaPerfil extends JFrame{
 		// Definir la condicion del boton Acceso
 		if (p.getPermiso() != TipoPermiso.ADMINISTRADOR) {
 			accesoPanelBot.setVisible(false);
-			logger.log(Level.INFO, "Panel bloqueado por no tener suficientes permisos");
+			RegistroLogger.anadirLogeo(Level.INFO, "Panel bloqueado por no tener suficientes permisos");
 		}
 
 		add(panelColum1, BorderLayout.WEST);
@@ -189,7 +186,6 @@ public class VentanaPerfil extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				SwingUtilities.invokeLater(() -> new VentanaResumen(p));
 				dispose();
 			}
