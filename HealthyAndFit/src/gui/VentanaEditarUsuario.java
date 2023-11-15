@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import domain.TipoPermiso;
 import domain.Usuario;
@@ -128,6 +129,7 @@ public class VentanaEditarUsuario extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 				dispose();
 				
 				
