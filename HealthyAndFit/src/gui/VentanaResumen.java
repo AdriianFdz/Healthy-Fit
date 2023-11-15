@@ -33,6 +33,7 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
+import org.w3c.dom.Text;
 
 import db.BaseDeDatos;
 import domain.Usuario;
@@ -58,6 +59,14 @@ public class VentanaResumen extends JFrame{
 		JLabel ultimaVez = new JLabel("Última vez: "+persona.getUltimaVezEntreno());
 		ultimaVez.setBorder(new EmptyBorder(0, 0, 10, 0)); //Añadir margen inferior al JLabel
 
+		//Cambios de estilo y tamaño de letra
+		caloriasGastadas.setFont(new Font("Consolas", Font.PLAIN ,25));
+		racha.setFont(new Font("Consolas", Font.PLAIN, 25));
+		tiempoEntrenado.setFont(new Font("Consolas", Font.PLAIN, 25));
+		objetivo.setFont(new Font("Consolas", Font.PLAIN, 25));
+		ultimaVez.setFont(new Font("Consolas", Font.PLAIN, 25));
+		
+		
 		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
 			panelTextosEntrenamiento.add(caloriasGastadas);
 			panelTextosEntrenamiento.add(racha);
@@ -96,6 +105,12 @@ public class VentanaResumen extends JFrame{
 			panelVasosAgua.add(vasosDeAgua);
 			panelVasosAgua.add(panelImagenVasos);
 		
+		//Cambios de estilo y tamaño de letra
+		caloriasConsumidas.setFont(new Font("Consolas", Font.PLAIN ,25));
+		proximaComida.setFont(new Font("Consolas", Font.PLAIN, 25));
+		vasosDeAgua.setFont(new Font("Consolas", Font.PLAIN, 25));
+		
+			
 			List<JLabel> listaVasos = new ArrayList<JLabel>();
 
 			crearVasosDeAgua(listaVasos);
@@ -135,10 +150,12 @@ public class VentanaResumen extends JFrame{
 			alertaEntrenamiento.setHorizontalAlignment(SwingConstants.CENTER);
 			alertaEntrenamiento.setBorder(new EmptyBorder(40, 0, 40, 0));
 			panelIzquierda.add(alertaEntrenamiento, BorderLayout.NORTH);
+			alertaEntrenamiento.setForeground(Color.RED);
 		
 		JLabel alertaAgua = new JLabel("          RECUERDA BEBER AGUA!          ");
 			alertaAgua.setFont(new Font("verdana", Font.BOLD, 15));
 			alertaAgua.setHorizontalAlignment(SwingConstants.CENTER);
+			alertaAgua.setForeground(Color.RED);
 		
 		JPanel panelArribaDerecha = new JPanel(new BorderLayout());
 			panelArribaDerecha.add(alertaAgua, BorderLayout.CENTER);
@@ -284,5 +301,8 @@ public class VentanaResumen extends JFrame{
 		
 		RegistroLogger.anadirLogeo(Level.INFO, "Vasos de agua actualizados");
 	}
+	
+
+	
 	
 }
