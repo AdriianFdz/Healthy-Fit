@@ -10,7 +10,7 @@ public class RegistroLogger {
 	private static Logger logger = Logger.getLogger(RegistroLogger.class.getName());
 	
 	public static void cargarLogger() {
-		try (FileInputStream fis = new FileInputStream("resources/data/registro.properties");){
+		try (FileInputStream fis = new FileInputStream("conf/registro.properties")){
 			LogManager.getLogManager().readConfiguration(fis);
 		}catch (IOException e1) {
 			logger.log(Level.SEVERE, "Lectura del fichero inicsesion.properties fallida.");

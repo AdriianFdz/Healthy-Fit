@@ -33,7 +33,6 @@ import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
-import org.w3c.dom.Text;
 
 import db.BaseDeDatos;
 import domain.Usuario;
