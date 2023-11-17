@@ -33,20 +33,20 @@ public class VentanaEntrenamiento extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	// Propiedades de la ventana
-	JButton botonIniciar = new JButton("Iniciar entrenamiento");
+	public JButton botonIniciar = new JButton("Iniciar entrenamiento");
 	
-	Entrenamiento entrenamientoSeleccionado;
+	public Entrenamiento entrenamientoSeleccionado;
 	
 	
-	JList<Entrenamiento> listaEntrenamientos;
+	public JList<Entrenamiento> listaEntrenamientos;
 
-	JLabel tiempoEntrenamientoSeleccionado;
-	JLabel caloriasEntrenamientoSeleccionado;
-	JLabel dificultadEntrenamientoSeleccionado;
-	JLabel labelDescripcion;
-	JLabel descripcionEntrenamientoSeleccionado;
+	public JLabel tiempoEntrenamientoSeleccionado;
+	public JLabel caloriasEntrenamientoSeleccionado;
+	public JLabel dificultadEntrenamientoSeleccionado;
+	public JLabel labelDescripcion;
+	public JLabel descripcionEntrenamientoSeleccionado;
 	
-	JPanel panelEntrenamientoSeleccionado = new JPanel();
+	public JPanel panelEntrenamientoSeleccionado = new JPanel();
 
 	
 	

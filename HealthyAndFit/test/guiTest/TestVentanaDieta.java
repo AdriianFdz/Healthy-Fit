@@ -39,9 +39,9 @@ public class TestVentanaDieta {
 
 	    @Test
 	    public void testEtiquetaDificultad() {
-	    	  dieta.setDificultad(TipoDificultad.FACIL);
-		        f.labelDificultad.setText("Dificultad: 🔥");
-		        assertEquals("Dificultad: 🔥", f.labelDificultad.getText());
+	    	dieta.setDificultad(TipoDificultad.FACIL);
+		    f.labelDificultad.setText("Dificultad: 🔥");
+		    assertEquals("Dificultad: 🔥", f.labelDificultad.getText());
 	    	dieta.setDificultad(TipoDificultad.MEDIO);
 	    	f.labelDificultad.setText("Dificultad: 🔥🔥");
 	        assertEquals("Dificultad: 🔥🔥", f.labelDificultad.getText());
