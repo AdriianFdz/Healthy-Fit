@@ -134,6 +134,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            segundos = 30;  // 30 segundos de descanso entre series
 	                            milisegundos = 0;
 	                            timer.start();
+	                            labelTiempo.setForeground(Color.RED);
 	                            labelEstado.setText("Descanso");
 	                        } else {
 	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
@@ -149,6 +150,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                                }
 	                                milisegundos = 0;
 	                                timer.start();
+	                                labelTiempo.setForeground(Color.BLACK);
 	                                labelEstado.setText("");
 	                            }
 	                    }
