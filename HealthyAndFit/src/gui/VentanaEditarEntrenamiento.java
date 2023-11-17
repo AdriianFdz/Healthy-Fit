@@ -25,19 +25,19 @@ import domain.TipoDificultad;
 
 public class VentanaEditarEntrenamiento extends JFrame{
 	
-	JPanel panelIzquierdo;
-		JLabel labelNombre;
-		JTextField fieldNombre;
-		JLabel labelTiempo;
-		JSpinner spinnerTiempo;
-		JLabel labelDificultad;
-		JComboBox comboDif;
-		JLabel labelKcal;
-		JSpinner spinnerKcal;
+	public JPanel panelIzquierdo;
+		public JLabel labelNombre;
+		public JTextField fieldNombre;
+		public JLabel labelTiempo;
+		public JSpinner spinnerTiempo;
+		public JLabel labelDificultad;
+		public JComboBox comboDif;
+		public JLabel labelKcal;
+		public JSpinner spinnerKcal;
 		
-	JPanel panelDerecha;
-		JLabel labelDesc;
-		JScrollPane paneDesc;
+	public JPanel panelDerecha;
+		public JLabel labelDesc;
+		public JScrollPane paneDesc;
 		
 	
 	public VentanaEditarEntrenamiento(Entrenamiento e) {

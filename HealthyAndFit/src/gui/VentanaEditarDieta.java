@@ -13,7 +13,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 
-import db.BaseDeDatos;
+
 import domain.Dieta;
 import domain.TipoDificultad;
 
@@ -23,20 +23,20 @@ public class VentanaEditarDieta extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	JPanel pIzq;
-		JLabel labelNombre;
-		JTextField fieldNombre;
-		JLabel labelTiempo;
-		JSpinner spinnerTiempo;
-		JLabel labelDiff;
-		JComboBox<TipoDificultad> comboDif;
-		JLabel labelKcal;
-		JSpinner spinnerKcal;
-		JLabel labelIng;
+	public JPanel pIzq;
+		public JLabel labelNombre;
+		public JTextField fieldNombre;
+		public JLabel labelTiempo;
+		public JSpinner spinnerTiempo;
+		public JLabel labelDiff;
+		public JComboBox<TipoDificultad> comboDif;
+		public JLabel labelKcal;
+		public JSpinner spinnerKcal;
+		public JLabel labelIng;
 		
-	JPanel pDer;
-		JLabel labelPasos;
-		JScrollPane panelDcha;
+	public JPanel pDer;
+		public JLabel labelPasos;
+		public JScrollPane panelDcha;
 	
 	public VentanaEditarDieta(Dieta d) {
 		

@@ -24,26 +24,26 @@ import domain.Usuario;
 
 public class VentanaEditarUsuario extends JFrame {
 	
-	JPanel pIzq;
-		Integer spacing = 10;
-		JLabel labelCorreo;
-		JTextField fieldCorreo;
-		JLabel labelTipo;
-		JComboBox<TipoPermiso> comboTipo;
+	public JPanel pIzq;
+		public Integer spacing = 10;
+		public JLabel labelCorreo;
+		public JTextField fieldCorreo;
+		public JLabel labelTipo;
+		public JComboBox<TipoPermiso> comboTipo;
 	
-	JPanel pDer;
-		JLabel labelNombreU;
-		JTextField fieldNombreU;
-		JLabel labelNombre;
-		JTextField fieldNombre;
-		JLabel labelApe1;
-		JTextField fieldApe1;
-		JLabel labelApe2;
-		JTextField fieldApe2;
+	public JPanel pDer;
+		public JLabel labelNombreU;
+		public JTextField fieldNombreU;
+		public JLabel labelNombre;
+		public JTextField fieldNombre;
+		public JLabel labelApe1;
+		public JTextField fieldApe1;
+		public JLabel labelApe2;
+		public JTextField fieldApe2;
 	
-	JPanel pBoto;
-		JButton botonCancelar;
-		JButton botonConfirmar;
+	public JPanel pBoto;
+		public JButton botonCancelar;
+		public JButton botonConfirmar;
 	
 	
 	public VentanaEditarUsuario(Usuario p) {
