@@ -260,6 +260,33 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
+		
+		modificarE.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int entrenamientoSeleccionado = tablaE.getSelectedRow();
+				Entrenamiento [] E = {null};
+				if (entrenamientoSeleccionado >= 0) {
+					String nombreE = (String) modeloE.getValueAt(entrenamientoSeleccionado, 0);
+
+					for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
+						if (entrenamiento.getNombre().equals(nombreE)) {
+							E[0] = entrenamiento;
+							break;
+						}
+					}
+					if (E != null) {
+						SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(E[0]));
+						dispose();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un entrenamiento");
+				}
+
+			}
+		});
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
