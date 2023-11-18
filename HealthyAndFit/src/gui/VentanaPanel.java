@@ -287,6 +287,8 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
+		
+		
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

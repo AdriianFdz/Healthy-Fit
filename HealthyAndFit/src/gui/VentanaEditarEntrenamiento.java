@@ -54,7 +54,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		labelKcal = new JLabel("KCAL");
 
 		// Inicializamos con datos
-		fieldNombre.setText(e.getNombre());
+		fieldNombre = new JTextField(e.getNombre());
 		spinnerTiempo = new JSpinner(new SpinnerNumberModel(e.getTiempo(), 0, 999, 1));
 		comboDif.setSelectedItem(e.getDificultad());
 		spinnerKcal = new JSpinner(new SpinnerNumberModel(e.getCalorias(), 0, 9999, 1));
@@ -67,6 +67,8 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		panelIzquierdo.add(comboDif);
 		panelIzquierdo.add(labelKcal);
 		panelIzquierdo.add(spinnerKcal);
+		
+		panelDerecha = new JPanel();
 		
 		// Panel botones
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -101,6 +103,12 @@ public class VentanaEditarEntrenamiento extends JFrame{
 			datos.add(panelDerecha);
 
 			this.add(datos);
+			
+			this.setVisible(true);
+			this.setSize(600, 500);
+			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+			this.setTitle("Editar Entrenamiento");
+
 
 	}
 }
