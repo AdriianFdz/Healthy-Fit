@@ -240,19 +240,20 @@ public class VentanaPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int usuarioSeleccionado = tablaU.getSelectedRow();
-				Usuario U;
+				Usuario [] U = {null};
 				if (usuarioSeleccionado >= 0) {
-					String nombreU = (String) modeloU.getValueAt(usuarioSeleccionado, 0);	
-					
+					String nombreU = (String) modeloU.getValueAt(usuarioSeleccionado, 0);
+
 					for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-					if(usuario.getNombreUsuario().equals(nombreU)) {
-						U = usuario;
+						if (usuario.getNombreUsuario().equals(nombreU)) {
+							U[0] = usuario;
+							break;
+						}
 					}
+					if (U != null) {
+						SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(U[0]));
+						dispose();
 					}
-					
-					SwingUtilities.invokeLater(
-							() -> new VentanaEditarUsuario(p));//MAL
-					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
 				}
@@ -288,8 +289,5 @@ public class VentanaPanel extends JFrame {
 			modeloE.addRow(filaE);
 		}
 	}
-
-
-
 
 }
