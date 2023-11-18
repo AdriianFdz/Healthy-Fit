@@ -8,8 +8,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -133,8 +135,8 @@ public class VentanaPanel extends JFrame {
 		panelBotonesE.add(añadirE);
 		panelBotonesE.add(modificarE);
 		panelBotonesE.add(eliminarE);
-		
-		//AÑADIR BOTON VOLVER
+
+		// AÑADIR BOTON VOLVER
 		JPanel panelVolver = new JPanel(new GridLayout(3, 3));
 		panelVolver.add(new JLabel(""));
 		panelVolver.add(new JLabel(""));
@@ -144,8 +146,7 @@ public class VentanaPanel extends JFrame {
 		panelVolver.add(new JLabel(""));
 		JButton volver = new JButton("Volver");
 		panelVolver.add(volver);
-		
-		
+
 		entrenamientos.add(labelE);
 		entrenamientos.add(scrollE);
 		entrenamientos.add(panelBotonesE);
@@ -158,71 +159,72 @@ public class VentanaPanel extends JFrame {
 		tablas.add(entrenamientos);
 		this.add(tablas);
 
-		//METODOS PARA RELLENAR DE LA BASE DE DATOS LAS TABLAS
+		// METODOS PARA RELLENAR DE LA BASE DE DATOS LAS TABLAS
 		rellenarUsuarios();
 		rellenarDietas();
 		rellenarEntrenamientos();
-		//AÑADIT TOOLTIP A LAS CELDAS DE LAS COLUMNAS PARA QUE SE VEA TODO EL TEXTO DE CADA CELDA
+		// AÑADIT TOOLTIP A LAS CELDAS DE LAS COLUMNAS PARA QUE SE VEA TODO EL TEXTO DE
+		// CADA CELDA
 		ToolTipManager.sharedInstance().setInitialDelay(0);
 		tablaU.addMouseMotionListener(new MouseMotionListener() {
-			
+
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				int fila = tablaU.rowAtPoint(e.getPoint());
 				int columna = tablaU.columnAtPoint(e.getPoint());
 				tablaU.setToolTipText(modeloU.getValueAt(fila, columna).toString());
-				
+
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		tablaD.addMouseMotionListener(new MouseMotionListener() {
-			
+
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				// TODO Auto-generated method stub
-			
+
 				int fila = tablaD.rowAtPoint(e.getPoint());
 				int columna = tablaD.columnAtPoint(e.getPoint());
 				tablaD.setToolTipText(modeloD.getValueAt(fila, columna).toString());
-				
+
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		tablaE.addMouseMotionListener(new MouseMotionListener() {
-			
+
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				int fila = tablaE.rowAtPoint(e.getPoint());
 				int columna = tablaE.columnAtPoint(e.getPoint());
 				tablaE.setToolTipText(modeloE.getValueAt(fila, columna).toString());
-				
+
 			}
-			
+
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
+
 		volver.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -230,17 +232,25 @@ public class VentanaPanel extends JFrame {
 				dispose();
 			}
 		});
-		
+
 		modificarU.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(p));
-				dispose();
+				int usuarioSeleccionado = tablaU.getSelectedRow();
+				if (usuarioSeleccionado >= 0) {
+
+					SwingUtilities.invokeLater(
+							() -> new VentanaEditarUsuario(p));
+					dispose();
+				} else {
+					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
+				}
+
 			}
 		});
-		
+
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
@@ -269,5 +279,8 @@ public class VentanaPanel extends JFrame {
 			modeloE.addRow(filaE);
 		}
 	}
+
+
+
 
 }
