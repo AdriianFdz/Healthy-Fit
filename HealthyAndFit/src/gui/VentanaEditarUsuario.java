@@ -70,6 +70,7 @@ public class VentanaEditarUsuario extends JFrame {
 		fieldCorreo.setText(p.getCorreoElectronico());
 		comboTipo.setSelectedItem(p.getPermiso());
 		
+		//Agregamos los componentes al panel de la Izquierda
 		pIzq.add(fotoUsuario);
 		pIzq.add(labelCorreo);
 		pIzq.add(fieldCorreo);
