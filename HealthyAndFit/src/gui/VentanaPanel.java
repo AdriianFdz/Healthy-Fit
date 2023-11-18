@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import db.BaseDeDatos;
@@ -239,10 +240,18 @@ public class VentanaPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int usuarioSeleccionado = tablaU.getSelectedRow();
+				Usuario U;
 				if (usuarioSeleccionado >= 0) {
-
+					String nombreU = (String) modeloU.getValueAt(usuarioSeleccionado, 0);	
+					
+					for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
+					if(usuario.getNombreUsuario().equals(nombreU)) {
+						U = usuario;
+					}
+					}
+					
 					SwingUtilities.invokeLater(
-							() -> new VentanaEditarUsuario(p));
+							() -> new VentanaEditarUsuario(p));//MAL
 					dispose();
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
