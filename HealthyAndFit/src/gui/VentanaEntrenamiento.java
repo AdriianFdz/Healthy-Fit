@@ -169,7 +169,7 @@ public class VentanaEntrenamiento extends JFrame{
 		public Component getListCellRendererComponent(JList<? extends Entrenamiento> list, Entrenamiento value,
 				int index, boolean isSelected, boolean cellHasFocus) {
 
-			Font fuente = new Font("Georgia", Font.BOLD, 15);
+			Font fuente = new Font("Georgia", Font.BOLD, 20);
 			this.setFont(fuente);
 			
 			setText(value.getNombre());
