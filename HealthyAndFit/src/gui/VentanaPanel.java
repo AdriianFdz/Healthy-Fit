@@ -333,29 +333,45 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
-		
-		//BOTONES PARA AÑADIR USUARIOS, DIETAS Y ENTRENAMIENTOS
-		
+
+		// BOTONES PARA AÑADIR USUARIOS, DIETAS Y ENTRENAMIENTOS
+
 		añadirU.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				BaseDeDatos.getListaUsuarios().add(new Usuario());
 				vaciarUsuarios();
 				rellenarUsuarios();
-				
+
 			}
-		});		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		});
+
+		añadirD.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				BaseDeDatos.getListaDietas().add(new Dieta());
+				vaciarDietas();
+				rellenarDietas();
+
+			}
+		});
+
+		añadirE.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				BaseDeDatos.getListaEntrenamientos().add(new Entrenamiento());
+				vaciarEntrenamientos();
+				rellenarEntrenamientos();
+
+			}
+		});
+
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
@@ -517,15 +533,17 @@ public class VentanaPanel extends JFrame {
 			modeloE.addRow(filaE);
 		}
 	}
-	
-	//VACIAR USUARIOS,DIETAS y ENTRENAMIENTOS
-	
+
+	// VACIAR USUARIOS,DIETAS y ENTRENAMIENTOS
+
 	public void vaciarUsuarios() {
 		modeloU.setRowCount(0);
 	}
+
 	public void vaciarDietas() {
 		modeloD.setRowCount(0);
-	}	
+	}
+
 	public void vaciarEntrenamientos() {
 		modeloE.setRowCount(0);
 	}
