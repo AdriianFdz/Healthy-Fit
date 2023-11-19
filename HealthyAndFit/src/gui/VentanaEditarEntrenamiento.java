@@ -5,7 +5,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -29,13 +28,18 @@ import domain.Usuario;
 
 public class VentanaEditarEntrenamiento extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	public JPanel panelIzquierdo;
 		public JLabel labelNombre;
 		public JTextField fieldNombre;
 		public JLabel labelTiempo;
 		public JSpinner spinnerTiempo;
 		public JLabel labelDificultad;
-		public JComboBox comboDif;
+		public JComboBox<TipoDificultad> comboDif;
 		public JLabel labelKcal;
 		public JSpinner spinnerKcal;
 		

@@ -3,10 +3,9 @@ package guiTest;
 import org.junit.Before;
 import org.junit.Test;
 
-import domain.Dieta;
-import domain.Entrenamiento;
+
 import domain.Usuario;
-import gui.VentanaDieta;
+
 import gui.VentanaEntrenamiento;
 
 public class TestVentanaEntrenamiento {

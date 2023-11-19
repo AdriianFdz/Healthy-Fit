@@ -7,12 +7,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,7 +18,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -37,9 +33,9 @@ public class VentanaPanel extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	DefaultTableModel modeloU;
-	DefaultTableModel modeloD;
-	DefaultTableModel modeloE;
+	public DefaultTableModel modeloU;
+	public DefaultTableModel modeloD;
+	public DefaultTableModel modeloE;
 
 	public VentanaPanel(Usuario p) {
 
@@ -50,6 +46,11 @@ public class VentanaPanel extends JFrame {
 		JLabel labelU = new JLabel("USUARIOS");
 
 		modeloU = new DefaultTableModel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
@@ -91,6 +92,11 @@ public class VentanaPanel extends JFrame {
 		JLabel labelD = new JLabel("DIETAS");
 
 		modeloD = new DefaultTableModel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
@@ -129,6 +135,11 @@ public class VentanaPanel extends JFrame {
 		JLabel labelE = new JLabel("ENTRENAMIENTOS");
 
 		modeloE = new DefaultTableModel() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				// TODO Auto-generated method stub
