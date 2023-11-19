@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
+import domain.Usuario;
 
 
 public class VentanaEditarEntrenamiento extends JFrame{
@@ -45,7 +46,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		public JScrollPane paneDesc;
 		
 	
-	public VentanaEditarEntrenamiento(Entrenamiento e) {
+	public VentanaEditarEntrenamiento(Entrenamiento e, Usuario p) {
 
 		JPanel datos = new JPanel(new GridLayout(1, 2));
 
@@ -109,28 +110,27 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		JButton botonCancelar = new JButton("Cancelar");
 		JButton botonConfirmar = new JButton("Confirmar");
 
-		panelBotones.add(botonCancelar);
-		panelBotones.add(botonConfirmar);
-
 		// Listeners
 		botonCancelar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// SwingUtilities.invokeLater(() -> new VentanaPanel());
+				SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 				dispose();
 
 			}
-			});
-			botonConfirmar.addActionListener(new ActionListener() {
+		});
+		botonConfirmar.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
 
-				}
-			});
-
+			}
+		});
+		panelBotones.add(botonCancelar, BorderLayout.WEST);
+		panelBotones.add(botonConfirmar, BorderLayout.EAST);
+		
 		this.add(datos, BorderLayout.NORTH);
 		this.add(panelBotones, BorderLayout.SOUTH);
 			

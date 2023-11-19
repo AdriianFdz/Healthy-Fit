@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import domain.Dieta;
 import domain.TipoDificultad;
+import domain.Usuario;
 
 
 public class VentanaEditarDieta extends JFrame {
@@ -53,7 +54,7 @@ public class VentanaEditarDieta extends JFrame {
 		public JTable tablaPasos;
 		public JScrollPane panelDcha;
 	
-	public VentanaEditarDieta(Dieta d) {
+	public VentanaEditarDieta(Dieta d, Usuario p) {
 		
 		JPanel datos = new JPanel(new GridLayout(1,2));
 		JPanel panelBotones = new JPanel();
@@ -141,9 +142,14 @@ public class VentanaEditarDieta extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//SwingUtilities.invokeLater(() -> new VentanaPanel(p));
+				SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 				dispose();
-				
+			}
+		});
+        botonConfirmar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
 				
 			}
 		});
