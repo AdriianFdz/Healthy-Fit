@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -53,17 +54,19 @@ public class VentanaEditarEntrenamiento extends JFrame{
 
 		// Componentes para el panel izquierdo
 		labelNombre = new JLabel("NOMBRE");
+		fieldNombre = new JTextField(20);
 		labelTiempo = new JLabel("TIEMPO");
 		labelDificultad = new JLabel("DIFICULTAD");
 		comboDif = new JComboBox<TipoDificultad>();
 		labelKcal = new JLabel("KCAL");
 
 		// Inicializamos con datos
-		fieldNombre = new JTextField(e.getNombre());
+		fieldNombre.setText(e.getNombre());
 		spinnerTiempo = new JSpinner(new SpinnerNumberModel(e.getTiempo(), 0, 999, 1));
 		comboDif.setSelectedItem(e.getDificultad());
 		spinnerKcal = new JSpinner(new SpinnerNumberModel(e.getCalorias(), 0, 9999, 1));
 
+		//Añadimos los elemetos al panel Izquierdo
 		panelIzquierdo.add(labelNombre);
 		panelIzquierdo.add(fieldNombre);
 		panelIzquierdo.add(labelTiempo);
@@ -73,14 +76,16 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		panelIzquierdo.add(labelKcal);
 		panelIzquierdo.add(spinnerKcal);
 		
+		//Creamos la parte derecha para el scroll panel
 		panelDerecha = new JPanel();
 		panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
 
 		//Componentes para el panel de la derecha
 		labelDesc = new JLabel("DESCRIPCION");
+		
+		//Cargar la descripcion del entrenamiento en una tabla
 		descTableModel = new DefaultTableModel();
 		descTableModel.addColumn("DESCRIPCION DEL ENTRENAMIENTO");
-		
 		descTableModel.addRow(new Object[] {e.getDescripcion()});
 		
 		// Crear la JTable con el modelo
@@ -90,10 +95,16 @@ public class VentanaEditarEntrenamiento extends JFrame{
 	    tableDesc.setShowGrid(false);
 	    
         JScrollPane panelDcha = new JScrollPane(tableDesc);
+       
+        panelDerecha.add(panelDcha);
+        
+        //Añadimos al panel de los datos los dos paneles
+        datos.add(panelIzquierdo);
+		datos.add(panelDerecha);
 		
 		// Panel botones
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
+		
 		// Botones
 		JButton botonCancelar = new JButton("Cancelar");
 		JButton botonConfirmar = new JButton("Confirmar");
@@ -120,17 +131,14 @@ public class VentanaEditarEntrenamiento extends JFrame{
 				}
 			});
 
-			datos.add(panelIzquierdo);
-			datos.add(panelDerecha);
-
-			this.add(datos);
-			this.add(panelBotones);
+		this.add(datos, BorderLayout.NORTH);
+		this.add(panelBotones, BorderLayout.SOUTH);
 			
-			this.setVisible(true);
-			this.setSize(600, 500);
-			this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-			this.setTitle("Editar Entrenamiento");
-
+		pack();
+		this.setVisible(true);
+		this.setSize(600, 500);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setTitle("Editar Entrenamiento");
 
 	}
 }
