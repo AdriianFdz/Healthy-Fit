@@ -7,12 +7,15 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.time.LocalDate;
 import java.time.Period;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -58,6 +61,7 @@ public class VentanaEditarPerfil extends JFrame {
 		Image foto = u.getFoto().getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
 		fotoUsuario.setPreferredSize(new Dimension(320, 320));
+		fotoUsuario.setToolTipText("Haz click para elegir otra foto");
 		panelColumna1.add(fotoUsuario);
 		
 		//Elementos del panel
@@ -138,6 +142,43 @@ public class VentanaEditarPerfil extends JFrame {
 				}
 			}
 		});
+		
+		fotoUsuario.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				 //JFileChooser elegirFoto = new JFileChooser();
+				//int resultado = elegirFoto.showOpenDialog
+				//if(resultado == JFileChooser.APPROVE_OPTION){
+				
+				//}
+			        
+		}});
 		
 		this.pack();
 		this.setVisible(true);
