@@ -33,23 +33,23 @@ public class VentanaPerfil extends JFrame{
 	//LOGGER
 	private static final long serialVersionUID = 1L;
 	
-	JPanel panelColum1;
-	JLabel labelNombre;
-	JLabel labelApellido1;
-	JLabel labelApellido2;
-	JLabel labelTipoU;
-	JLabel labelFechaNac;
+	public JPanel panelColum1;
+	public JLabel labelNombre;
+	public JLabel labelApellido1;
+	public JLabel labelApellido2;
+	public JLabel labelTipoU;
+	public JLabel labelFechaNac;
 
-	JLabel labelEdad;
-	JLabel labelSexo;
-	JLabel labelAltura;
-	JLabel labelEnfer;
+	public JLabel labelEdad;
+	public JLabel labelSexo;
+	public JLabel labelAltura;
+	public JLabel labelEnfer;
 
-	JLabel labelCorreo;
-	JLabel labelPeso;
-	JLabel labelIMC;
-	JLabel labelPrefAli;
-	JLabel labelAleg;
+	public JLabel labelCorreo;
+	public JLabel labelPeso;
+	public JLabel labelIMC;
+	public JLabel labelPrefAli;
+	public JLabel labelAleg;
 	
 	public VentanaPerfil(Usuario p) {
 		JPanel panelAbajo = new JPanel(new BorderLayout());

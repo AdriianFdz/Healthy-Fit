@@ -16,31 +16,31 @@ import io.RegistroLogger;
 public class VentanaLogeoRegistro extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
-	JTabbedPane paneles;
+	public JTabbedPane paneles;
 	
-	JPanel logeo;
-		JPanel logeoIzquierda;
-			JLabel preguntaYaTienesCuenta;
-			JLabel nombreLogeo;
-			JTextField meterNombreLogeo;
-			JLabel contraseñaLogeo;
-			JPasswordField meterContraseñaLogeo;
-			JButton iniciarSesion;
-			JButton inicioRapido;
-		JPanel logeoDerecha;
+	public JPanel logeo;
+		public JPanel logeoIzquierda;
+			public JLabel preguntaYaTienesCuenta;
+			public JLabel nombreLogeo;
+			public JTextField meterNombreLogeo;
+			public JLabel contraseñaLogeo;
+			public JPasswordField meterContraseñaLogeo;
+			public JButton iniciarSesion;
+			public JButton inicioRapido;
+		public JPanel logeoDerecha;
 	
 	
-	JPanel registro;
-	JLabel preguntaTodaviaSinCuenta;
-	JLabel nombreRegistro;
-	JTextField meterNombreRegistro;
-	JLabel correoRegistro;
-	JTextField meterCorreoRegistro;
-	JLabel contraseñaRegistro;
-	JTextField meterContraseñaRegistro;
-	JLabel contraseñaRepetidaRegistro;
-	JTextField meterContraseñaRepetidaRegistro;
-	JButton registrarse;
+	public JPanel registro;
+	public JLabel preguntaTodaviaSinCuenta;
+	public JLabel nombreRegistro;
+	public JTextField meterNombreRegistro;
+	public JLabel correoRegistro;
+	public JTextField meterCorreoRegistro;
+	public JLabel contraseñaRegistro;
+	public JTextField meterContraseñaRegistro;
+	public JLabel contraseñaRepetidaRegistro;
+	public JTextField meterContraseñaRepetidaRegistro;
+	public JButton registrarse;
 	
 	
 	

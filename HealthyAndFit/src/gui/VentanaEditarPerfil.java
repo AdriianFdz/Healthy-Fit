@@ -24,21 +24,26 @@ import domain.Usuario;
 
 public class VentanaEditarPerfil extends JFrame {
 	
-	JPanel panelColumna1;
-		JTextField fieldNombre;
-		JTextField fieldApellidos;
-		JTextField fieldFechaNac;
-		JLabel labelTipoU;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public JPanel panelColumna1;
+		public JTextField fieldNombre;
+		public JTextField fieldApellidos;
+		public JTextField fieldFechaNac;
+		public JLabel labelTipoU;
 		
-	JPanel panelDatos;
-		JTextField fieldEdad;
-		JTextField fieldSexo;
-		JTextField fieldAltura;
-		JLabel labelEnfer;
-		JTextField fieldCorreo;
-		JTextField fieldPeso;
-		JLabel labelIMC;
-		JLabel labelAleg;
+	public JPanel panelDatos;
+		public JTextField fieldEdad;
+		public JTextField fieldSexo;
+		public JTextField fieldAltura;
+		public JLabel labelEnfer;
+		public JTextField fieldCorreo;
+		public JTextField fieldPeso;
+		public JLabel labelIMC;
+		public JLabel labelAleg;
 	
 	public VentanaEditarPerfil(Usuario u) {
 		
