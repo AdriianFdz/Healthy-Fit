@@ -144,7 +144,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                                if (en.getDificultad() == TipoDificultad.FACIL) {
 	                                	segundos = 50;
 	                                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-	                                	segundos = 40;
+	                                	segundos = 20;
 	                                }else {
 	                                	segundos = 30;
 	                                }
@@ -202,7 +202,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                if (en.getDificultad() == TipoDificultad.FACIL) {
 	                	segundos = 50;
 	                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-	                	segundos = 40;
+	                	segundos = 20;
 	                }else {
 	                	segundos = 30;
 	                }
@@ -291,7 +291,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        this.add(labelNombre, BorderLayout.NORTH);
 	        this.add(panelAbajo, BorderLayout.SOUTH);
 	        this.add(panelPrincipal);
-	      
+	        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	        //Ajustes de la ventana
 	        setSize(1920,1080);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
