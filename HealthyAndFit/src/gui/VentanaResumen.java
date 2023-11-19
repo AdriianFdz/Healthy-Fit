@@ -151,6 +151,7 @@ public class VentanaResumen extends JFrame{
 			panelIzquierda.add(alertaEntrenamiento, BorderLayout.NORTH);
 			alertaEntrenamiento.setForeground(Color.RED);
 		
+			
 		JLabel alertaAgua = new JLabel("          RECUERDA BEBER AGUA!          ");
 			alertaAgua.setFont(new Font("verdana", Font.BOLD, 15));
 			alertaAgua.setHorizontalAlignment(SwingConstants.CENTER);
