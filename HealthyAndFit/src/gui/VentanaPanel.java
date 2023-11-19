@@ -371,6 +371,37 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
+		
+		//BOTONES PARA ELIMINAR USUARIOS, DIETAS Y ENTRENAMIENTOS
+		
+		eliminarU.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int usuarioSeleccionado = tablaU.getSelectedRow();
+				Usuario[] U = { null };
+				if (usuarioSeleccionado >= 0) {
+					String nombreU = (String) modeloU.getValueAt(usuarioSeleccionado, 0);
+
+					for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
+						if (usuario.getNombreUsuario().equals(nombreU)) {
+							U[0] = usuario;
+							break;
+						}
+					}
+					if (U != null) {
+						int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar este usuario?","hola",JOptionPane.YES_NO_OPTION);
+						if(respuesta == JOptionPane.YES_OPTION) {
+						eliminarUsuario(U[0]);}
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
+				}
+				
+			}
+		});
+		
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -557,6 +588,13 @@ public class VentanaPanel extends JFrame {
 
 	public void vaciarEntrenamientos() {
 		modeloE.setRowCount(0);
+	}
+	
+	//ELIMINAR USUARIOS,DIETAS Y ENTRENAMIENTOS
+	public void eliminarUsuario(Usuario u) {
+		BaseDeDatos.getListaUsuarios().remove(u);
+		vaciarUsuarios();
+		rellenarUsuarios();
 	}
 
 }
