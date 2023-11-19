@@ -64,6 +64,12 @@ public class VentanaPanel extends JFrame {
 		modeloU.addColumn("Tipo");
 
 		JTable tablaU = new JTable(modeloU);
+		tablaU.getColumnModel().getColumn(0).setCellRenderer(new RendererDietas());
+		tablaU.getColumnModel().getColumn(1).setCellRenderer(new RendererDietas());
+		tablaU.getColumnModel().getColumn(2).setCellRenderer(new RendererDietas());
+		tablaU.getColumnModel().getColumn(3).setCellRenderer(new RendererDietas());
+		tablaU.getColumnModel().getColumn(4).setCellRenderer(new RendererDietas());
+		tablaU.getColumnModel().getColumn(5).setCellRenderer(new RendererDietas());
 
 		JScrollPane scrollU = new JScrollPane(tablaU);
 
@@ -97,7 +103,10 @@ public class VentanaPanel extends JFrame {
 		modeloD.addColumn("Ingredientes");
 
 		JTable tablaD = new JTable(modeloD);
-		tablaD.getColumnModel().getColumn(2).setCellRenderer(new RendererEntrenamientoDieta());
+		tablaD.getColumnModel().getColumn(0).setCellRenderer(new RendererDietas());
+		tablaD.getColumnModel().getColumn(1).setCellRenderer(new RendererDietas());
+		tablaD.getColumnModel().getColumn(2).setCellRenderer(new RendererDietas());
+		tablaD.getColumnModel().getColumn(3).setCellRenderer(new RendererDietas());
 
 		JScrollPane scrollD = new JScrollPane(tablaD);
 
@@ -131,7 +140,10 @@ public class VentanaPanel extends JFrame {
 		modeloE.addColumn("Kcal");
 
 		JTable tablaE = new JTable(modeloE);
-		tablaE.getColumnModel().getColumn(2).setCellRenderer(new RendererEntrenamientoDieta());
+		tablaE.getColumnModel().getColumn(0).setCellRenderer(new RendererDietas());
+		tablaE.getColumnModel().getColumn(1).setCellRenderer(new RendererDietas());
+		tablaE.getColumnModel().getColumn(2).setCellRenderer(new RendererDietas());
+		tablaE.getColumnModel().getColumn(3).setCellRenderer(new RendererDietas());
 
 
 		JScrollPane scrollE = new JScrollPane(tablaE);
@@ -329,9 +341,9 @@ public class VentanaPanel extends JFrame {
 		this.setTitle("Panel");
 		this.setSize(800, 500);
 	}
-	//RENDERER PERSONALIZADO
+	//RENDERER PERSONALIZADO PARA LAS DIETAS
 	
-	public class RendererEntrenamientoDieta extends JLabel implements TableCellRenderer{
+	public class RendererDietas extends JLabel implements TableCellRenderer{
 
 		/**
 		 * 
@@ -342,24 +354,42 @@ public class VentanaPanel extends JFrame {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 			// TODO Auto-generated method stub
-			
+			this.setOpaque(true);
 			this.setFont(new Font("fuente",Font.PLAIN, 12));
-			setBackground(Color.RED);
+			this.setText(value.toString());
+			this.setForeground(Color.black);
+			
+			
+			if(column ==2) {
 			String valor = value.toString();
 			switch (valor) {
-			case "FACIL":
+			case "FACIL" :
 				this.setText("🔥");
+				this.setForeground(Color.RED);
 				break;
 			case "MEDIO":
 				this.setText("🔥🔥");
+				this.setForeground(Color.RED);
 				break;
 			case "DIFICIL":
 				this.setText("🔥🔥🔥");
+				this.setForeground(Color.RED);
 				break;
 
 			default:
+				this.setText(valor);
+				this.setForeground(Color.black);
 				break;
 			}
+			}
+			
+			if(row%2==0) {
+				this.setBackground(new Color(179, 246, 182));
+			}else {
+				this.setBackground(new Color(189, 236, 182));
+			}
+			System.out.println(this.getName());
+			
 			
 			
 			return this;
