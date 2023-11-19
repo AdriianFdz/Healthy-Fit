@@ -33,25 +33,37 @@ public class VentanaEntrenamiento extends JFrame{
 	private static final long serialVersionUID = 1L;
 	
 	// Propiedades de la ventana
-	public JButton botonIniciar = new JButton("Iniciar entrenamiento");
+	JButton botonIniciar = new JButton("Iniciar entrenamiento");
 	
-	public Entrenamiento entrenamientoSeleccionado;
+	Entrenamiento entrenamientoSeleccionado;
 	
 	
-	public JList<Entrenamiento> listaEntrenamientos;
+	JList<Entrenamiento> listaEntrenamientos;
 
-	public JLabel tiempoEntrenamientoSeleccionado;
-	public JLabel caloriasEntrenamientoSeleccionado;
-	public JLabel dificultadEntrenamientoSeleccionado;
-	public JLabel labelDescripcion;
-	public JLabel descripcionEntrenamientoSeleccionado;
+	JLabel tiempoEntrenamientoSeleccionado;
+	JLabel caloriasEntrenamientoSeleccionado;
+	JLabel dificultadEntrenamientoSeleccionado;
+	JLabel labelDescripcion;
+	JLabel descripcionEntrenamientoSeleccionado;
 	
-	public JPanel panelEntrenamientoSeleccionado = new JPanel();
+	JPanel panelEntrenamientoSeleccionado = new JPanel();
 
 	
 	
 	
 	
+	public void setEntrenamientoSeleccionado(Entrenamiento entrenamientoSeleccionado) {
+		this.entrenamientoSeleccionado = entrenamientoSeleccionado;
+	}
+	public JList<Entrenamiento> getListaEntrenamientos() {
+		return listaEntrenamientos;
+	}
+	public JButton getBotonIniciar() {
+		return botonIniciar;
+	}
+
+
+
 	public VentanaEntrenamiento(Usuario persona) {
 		
 		botonIniciar.setVisible(false);
@@ -145,7 +157,7 @@ public class VentanaEntrenamiento extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaEntrenamientoEnCurso(listaEntrenamientos.getSelectedValue(), persona));
+				SwingUtilities.invokeLater(() -> new VentanaEntrenamientoEnCurso(entrenamientoSeleccionado, persona));
 				dispose();
 			}
 		});
