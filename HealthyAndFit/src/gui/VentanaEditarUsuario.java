@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -145,8 +146,25 @@ public class VentanaEditarUsuario extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// Obtener los nuevos valores del usuario desde los campos de texto y la JComboBox
+		        String nuevoNombreU = fieldNombreU.getText();
+				String nuevoNombre = fieldNombre.getText();
+				String nuevoApellido1 = fieldApe1.getText();
+				String nuevoApellido2 = fieldApe2.getText();
+				String nuevoCorreo = fieldCorreo.getText();
+				TipoPermiso nuevoTipo = (TipoPermiso) comboTipo.getSelectedItem();
 				
+				// Actualizar los atributos del usuario
+			    mod.setNombre(nuevoNombre);
+			    mod.setApellido1(nuevoApellido1);
+			    mod.setApellido2(nuevoApellido2);
+			    mod.setCorreoElectronico(nuevoCorreo);
+			    mod.setPermiso(nuevoTipo);
+			    
+			    // Mostrar un mensaje de éxito
+		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
+		        dispose();
+		        SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 			}
 		}); 
         
