@@ -11,14 +11,12 @@ import org.junit.Test;
 
 import domain.Dieta;
 import domain.TipoAlergias;
-import domain.TipoDificultad;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
 import domain.TipoPreferencia;
 import domain.TipoSexo;
 import domain.Usuario;
 import gui.VentanaEditarDieta;
-import gui.VentanaPerfil;
 
 public class TestVentanaEditarDieta {
 	Usuario usuario;
