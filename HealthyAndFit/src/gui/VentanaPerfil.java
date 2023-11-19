@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -94,7 +95,7 @@ public class VentanaPerfil extends JFrame{
 		panelAbajo.add(volverBot, BorderLayout.WEST);
 		panelAbajo.add(botonCerSesion, BorderLayout.EAST);
 
-		JPanel panelDatos = new JPanel(new GridLayout(6,2,0,0));
+		JPanel panelDatos = new JPanel(new GridLayout(7,2,0,0));
 		
 		int edad = Period.between(p.getfechaNacimiento(), LocalDate.now()).getYears();
 
@@ -113,7 +114,10 @@ public class VentanaPerfil extends JFrame{
 
 		labelPrefAli = new JLabel("PREFERENCIAS ALIMENTICIAS");
 		JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
-		preferenciasComboBox.addItem(p.getPreferenciaAlimenticia());
+		for (TipoPreferencia preferencia :TipoPreferencia.values()) {
+			preferenciasComboBox.addItem(preferencia);
+		}
+		
 
 		JLabel labelEnfermedades = new JLabel("ENFERMEDADES");
 
@@ -127,6 +131,25 @@ public class VentanaPerfil extends JFrame{
 			JLabel label = new JLabel(alergia.name());
 			paneAlergias.add(label);
 		}
+		
+		//Cambios de estilo y tamaño de letra
+		labelNombre.setFont(new Font("Consolas", Font.PLAIN, 20));
+		labelApellido1.setFont(new Font("Consolas", Font.PLAIN, 20));
+		labelTipoU.setFont(new Font("Consolas", Font.PLAIN, 20));
+		labelFechaNac.setFont(new Font("Consolas", Font.PLAIN, 20));
+
+		labelEdad.setFont(new Font("Consolas", Font.PLAIN, 22));
+		labelSexo.setFont(new Font("Consolas", Font.PLAIN, 22));
+		labelAltura.setFont(new Font("Consolas", Font.PLAIN, 22));
+		labelEnfer.setFont(new Font("Consolas", Font.PLAIN, 22));
+
+		labelCorreo.setFont(new Font("Consolas", Font.PLAIN, 22));
+		labelPeso.setFont(new Font("Consolas", Font.PLAIN, 22));
+		labelIMC.setFont(new Font("Consolas", Font.PLAIN, 22));
+		labelPrefAli.setFont(new Font("Consolas", Font.BOLD, 22));
+		labelAleg.setFont(new Font("Consolas", Font.BOLD, 22));
+		labelEnfermedades.setFont(new Font("Consolas", Font.BOLD, 22));
+		
 		
 		panelDatos.add(labelEdad);
 		panelDatos.add(labelCorreo);
@@ -144,9 +167,15 @@ public class VentanaPerfil extends JFrame{
 			panelAlergias.setLayout(new BoxLayout(panelAlergias, BoxLayout.Y_AXIS));
 			panelAlergias.add(labelAleg);
 			panelAlergias.add(paneAlergias);
+		JPanel panelPreferencias = new JPanel();
+			panelPreferencias.setLayout(new BoxLayout(panelPreferencias, BoxLayout.Y_AXIS));
+			panelPreferencias.add(labelPrefAli);
+			panelPreferencias.add(preferenciasComboBox);
+			
+			
 		panelDatos.add(panelAlergias);
-		panelDatos.add(labelPrefAli);
-		panelDatos.add(preferenciasComboBox);
+		panelDatos.add(panelPreferencias);
+	
 		
 		
 		JPanel panelDerecha = new JPanel(new BorderLayout());
