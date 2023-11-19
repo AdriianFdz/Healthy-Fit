@@ -64,12 +64,12 @@ public class VentanaPanel extends JFrame {
 		modeloU.addColumn("Tipo");
 
 		JTable tablaU = new JTable(modeloU);
-		tablaU.getColumnModel().getColumn(0).setCellRenderer(new RendererDietas());
-		tablaU.getColumnModel().getColumn(1).setCellRenderer(new RendererDietas());
-		tablaU.getColumnModel().getColumn(2).setCellRenderer(new RendererDietas());
-		tablaU.getColumnModel().getColumn(3).setCellRenderer(new RendererDietas());
-		tablaU.getColumnModel().getColumn(4).setCellRenderer(new RendererDietas());
-		tablaU.getColumnModel().getColumn(5).setCellRenderer(new RendererDietas());
+		tablaU.getColumnModel().getColumn(0).setCellRenderer(new RendererUsuarios());
+		tablaU.getColumnModel().getColumn(1).setCellRenderer(new RendererUsuarios());
+		tablaU.getColumnModel().getColumn(2).setCellRenderer(new RendererUsuarios());
+		tablaU.getColumnModel().getColumn(3).setCellRenderer(new RendererUsuarios());
+		tablaU.getColumnModel().getColumn(4).setCellRenderer(new RendererUsuarios());
+		tablaU.getColumnModel().getColumn(5).setCellRenderer(new RendererUsuarios());
 
 		JScrollPane scrollU = new JScrollPane(tablaU);
 
@@ -338,7 +338,35 @@ public class VentanaPanel extends JFrame {
 		this.setTitle("Panel");
 		this.setSize(800, 500);
 	}
-	
+	// RENDERER PERSONALIZADO PARA LOS USUARIOS
+
+	public class RendererUsuarios extends JLabel implements TableCellRenderer {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			// TODO Auto-generated method stub
+			this.setOpaque(true);
+			this.setFont(new Font("fuente", Font.PLAIN, 12));
+			this.setText(value.toString());
+			this.setForeground(Color.black);
+
+			if (row % 2 == 0) {
+				this.setBackground(new Color(179, 179, 255));
+			} else {
+				this.setBackground(new Color(189, 154, 255));
+			}
+
+			return this;
+		}
+
+	}
+
 	// RENDERER PERSONALIZADO PARA LAS DIETAS
 
 	public class RendererDietas extends JLabel implements TableCellRenderer {
@@ -442,8 +470,6 @@ public class VentanaPanel extends JFrame {
 		}
 
 	}
-	
-	
 
 	// RELLENAR USUARIOS, DIETAS Y ENTRENAMIENTOS DE LA BD
 	public void rellenarUsuarios() {
