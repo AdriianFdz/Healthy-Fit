@@ -46,7 +46,7 @@ public class VentanaEditarUsuario extends JFrame {
 		public JButton botonConfirmar;
 	
 	
-	public VentanaEditarUsuario(Usuario p) {
+	public VentanaEditarUsuario(Usuario p, Usuario mod) {
 		JPanel pDatos = new JPanel(new GridLayout(1,2));
 		
 		
@@ -56,7 +56,7 @@ public class VentanaEditarUsuario extends JFrame {
 		pIzq.setBorder(BorderFactory.createEmptyBorder(2, spacing , 2, spacing)); // Izquierda
 		
 		// Componentes para el panel izquierdo
-		Image foto = p.getFoto().getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+		Image foto = mod.getFoto().getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
 		fotoUsuario.setPreferredSize(new Dimension(150, 150));
 		
@@ -67,8 +67,8 @@ public class VentanaEditarUsuario extends JFrame {
 		comboTipo = new JComboBox<>(TipoPermiso.values());
 		
 		//Inicializamos con datos
-		fieldCorreo.setText(p.getCorreoElectronico());
-		comboTipo.setSelectedItem(p.getPermiso());
+		fieldCorreo.setText(mod.getCorreoElectronico());
+		comboTipo.setSelectedItem(mod.getPermiso());
 		
 		//Agregamos los componentes al panel de la Izquierda
 		pIzq.add(fotoUsuario);
@@ -95,10 +95,10 @@ public class VentanaEditarUsuario extends JFrame {
 		fieldApe2 = new JTextField(20);
 		
 		//Inicializar campos con datos
-		fieldNombreU.setText(p.getNombreUsuario());
-		fieldNombre.setText(p.getNombre());
-		fieldApe1.setText(p.getApellido1());
-		fieldApe2.setText(p.getApellido2());
+		fieldNombreU.setText(mod.getNombreUsuario());
+		fieldNombre.setText(mod.getNombre());
+		fieldApe1.setText(mod.getApellido1());
+		fieldApe2.setText(mod.getApellido2());
 		
 		
 		pDer.add(labelNombreU);
