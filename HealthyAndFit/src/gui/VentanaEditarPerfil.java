@@ -65,10 +65,6 @@ public class VentanaEditarPerfil extends JFrame {
 		// Botones
 		JButton cancelaBot = new JButton("CANCELAR");
 		JButton aceptarBot = new JButton("ACEPTAR");
-		JButton accesoPanelBot = new JButton("ACCESO PANEL");
-		
-		JButton volverBot = new JButton("VOLVER");
-		JButton botonCerSesion = new JButton("CERRAR SESION");
 		
 		JPanel panelBotonesCanAcep = new JPanel();
 			panelBotonesCanAcep.setLayout(new BoxLayout(panelBotonesCanAcep, BoxLayout.X_AXIS));
@@ -76,12 +72,9 @@ public class VentanaEditarPerfil extends JFrame {
 			panelBotonesCanAcep.add(aceptarBot);
 		
 		panelColumna1.add(panelBotonesCanAcep);
-		panelColumna1.add(accesoPanelBot);
 	
 		add(panelColumna1, BorderLayout.WEST);
 		
-		panelAbajo.add(volverBot, BorderLayout.WEST);
-		panelAbajo.add(botonCerSesion, BorderLayout.EAST);
 
 		//Panel del resto de datos
 		JPanel panelDatos = new JPanel(new GridLayout(6,2,0,0));
@@ -112,7 +105,8 @@ public class VentanaEditarPerfil extends JFrame {
 		
 		this.pack();
 		this.setVisible(true);
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setSize(600, 600);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Perfil");
 	}
