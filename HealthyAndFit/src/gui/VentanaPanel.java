@@ -45,7 +45,8 @@ public class VentanaPanel extends JFrame {
 
 		// PANEL USUARIOS
 		JPanel usuarios = new JPanel(new GridLayout(1, 3));
-		JLabel labelU = new JLabel("USUARIOS");
+		JLabel labelU = new JLabel("  USUARIOS:");
+		labelU.setFont(new Font("Consolas", Font.BOLD, 20));
 
 		modeloU = new DefaultTableModel() {
 			/**
@@ -91,7 +92,8 @@ public class VentanaPanel extends JFrame {
 
 		// PANEL DIETAS
 		JPanel dietas = new JPanel(new GridLayout(1, 3));
-		JLabel labelD = new JLabel("DIETAS");
+		JLabel labelD = new JLabel("  DIETAS:");
+		labelD.setFont(new Font("Consolas", Font.BOLD, 20));
 
 		modeloD = new DefaultTableModel() {
 			/**
@@ -134,8 +136,9 @@ public class VentanaPanel extends JFrame {
 		// PANEL ENTRENAMIENTOS
 
 		JPanel entrenamientos = new JPanel(new GridLayout(2, 3));
-		JLabel labelE = new JLabel("ENTRENAMIENTOS");
-
+		JLabel labelE = new JLabel("  ENTRENAMIENTOS:");
+		labelE.setFont(new Font("Consolas", Font.BOLD, 20));
+		
 		modeloE = new DefaultTableModel() {
 			/**
 			 * 

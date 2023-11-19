@@ -1,19 +1,16 @@
 package guiTest;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
 
-import java.awt.event.ActionEvent;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.Dataset;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.junit.Before;
 import org.junit.Test;

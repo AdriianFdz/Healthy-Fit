@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
 import domain.TipoAlergias;
@@ -181,7 +182,13 @@ public class VentanaPerfil extends JFrame{
 		JPanel panelDerecha = new JPanel(new BorderLayout());
 			panelDerecha.add(panelDatos, BorderLayout.NORTH);
 			
-		add(panelDerecha, BorderLayout.CENTER);
+			 JScrollPane scrollPane = new JScrollPane(panelDerecha);
+		        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		        scrollPane.getVerticalScrollBar().setUnitIncrement(16); // Ajusta el desplazamiento vertical	
+		 
+		VentanaResumen.anadirBordePanel("PERFIL", panelDerecha);
+		add(scrollPane, BorderLayout.CENTER);
 			
 		// LISTENERS
 		modificarBot.addActionListener(new ActionListener() {
