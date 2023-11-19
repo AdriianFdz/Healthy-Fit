@@ -140,11 +140,10 @@ public class VentanaPanel extends JFrame {
 		modeloE.addColumn("Kcal");
 
 		JTable tablaE = new JTable(modeloE);
-		tablaE.getColumnModel().getColumn(0).setCellRenderer(new RendererDietas());
-		tablaE.getColumnModel().getColumn(1).setCellRenderer(new RendererDietas());
-		tablaE.getColumnModel().getColumn(2).setCellRenderer(new RendererDietas());
-		tablaE.getColumnModel().getColumn(3).setCellRenderer(new RendererDietas());
-
+		tablaE.getColumnModel().getColumn(0).setCellRenderer(new RendererEntrenamientos());
+		tablaE.getColumnModel().getColumn(1).setCellRenderer(new RendererEntrenamientos());
+		tablaE.getColumnModel().getColumn(2).setCellRenderer(new RendererEntrenamientos());
+		tablaE.getColumnModel().getColumn(3).setCellRenderer(new RendererEntrenamientos());
 
 		JScrollPane scrollE = new JScrollPane(tablaE);
 
@@ -259,7 +258,7 @@ public class VentanaPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int usuarioSeleccionado = tablaU.getSelectedRow();
-				Usuario [] U = {null};
+				Usuario[] U = { null };
 				if (usuarioSeleccionado >= 0) {
 					String nombreU = (String) modeloU.getValueAt(usuarioSeleccionado, 0);
 
@@ -279,14 +278,14 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
-		
+
 		modificarE.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int entrenamientoSeleccionado = tablaE.getSelectedRow();
-				Entrenamiento [] E = {null};
+				Entrenamiento[] E = { null };
 				if (entrenamientoSeleccionado >= 0) {
 					String nombreE = (String) modeloE.getValueAt(entrenamientoSeleccionado, 0);
 
@@ -306,14 +305,14 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
-		
+
 		modificarD.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int dietaSeleccionada = tablaD.getSelectedRow();
-				Dieta [] D = {null};
+				Dieta[] D = { null };
 				if (dietaSeleccionada >= 0) {
 					String nombreD = (String) modeloD.getValueAt(dietaSeleccionada, 0);
 
@@ -333,17 +332,16 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
-		
-		
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
 		this.setSize(800, 500);
 	}
-	//RENDERER PERSONALIZADO PARA LAS DIETAS
 	
-	public class RendererDietas extends JLabel implements TableCellRenderer{
+	// RENDERER PERSONALIZADO PARA LAS DIETAS
+
+	public class RendererDietas extends JLabel implements TableCellRenderer {
 
 		/**
 		 * 
@@ -355,49 +353,99 @@ public class VentanaPanel extends JFrame {
 				int row, int column) {
 			// TODO Auto-generated method stub
 			this.setOpaque(true);
-			this.setFont(new Font("fuente",Font.PLAIN, 12));
+			this.setFont(new Font("fuente", Font.PLAIN, 12));
 			this.setText(value.toString());
 			this.setForeground(Color.black);
-			
-			
-			if(column ==2) {
-			String valor = value.toString();
-			switch (valor) {
-			case "FACIL" :
-				this.setText("🔥");
-				this.setForeground(Color.RED);
-				break;
-			case "MEDIO":
-				this.setText("🔥🔥");
-				this.setForeground(Color.RED);
-				break;
-			case "DIFICIL":
-				this.setText("🔥🔥🔥");
-				this.setForeground(Color.RED);
-				break;
 
-			default:
-				this.setText(valor);
-				this.setForeground(Color.black);
-				break;
+			if (column == 2) {
+				String valor = value.toString();
+				switch (valor) {
+				case "FACIL":
+					this.setText("🔥");
+					this.setForeground(Color.RED);
+					break;
+				case "MEDIO":
+					this.setText("🔥🔥");
+					this.setForeground(Color.RED);
+					break;
+				case "DIFICIL":
+					this.setText("🔥🔥🔥");
+					this.setForeground(Color.RED);
+					break;
+
+				default:
+					this.setText(valor);
+					this.setForeground(Color.black);
+					break;
+				}
 			}
-			}
-			
-			if(row%2==0) {
+
+			if (row % 2 == 0) {
 				this.setBackground(new Color(179, 246, 182));
-			}else {
+			} else {
 				this.setBackground(new Color(189, 236, 182));
 			}
-			System.out.println(this.getName());
-			
-			
-			
+
 			return this;
 		}
-		
+
+	}
+
+	// RENDERER PERSONALIZADO PARA LOS ENTRENAMIENTOS
+
+	public class RendererEntrenamientos extends JLabel implements TableCellRenderer {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			// TODO Auto-generated method stub
+			this.setOpaque(true);
+			this.setFont(new Font("fuente", Font.PLAIN, 12));
+			this.setText(value.toString());
+			this.setForeground(Color.black);
+
+			if (column == 2) {
+				String valor = value.toString();
+				switch (valor) {
+				case "FACIL":
+					this.setText("🔥");
+					this.setForeground(Color.RED);
+					break;
+				case "MEDIO":
+					this.setText("🔥🔥");
+					this.setForeground(Color.RED);
+					break;
+				case "DIFICIL":
+					this.setText("🔥🔥🔥");
+					this.setForeground(Color.RED);
+					break;
+
+				default:
+					this.setText(valor);
+					this.setForeground(Color.black);
+					break;
+				}
+			}
+
+			if (row % 2 == 0) {
+				this.setBackground(new Color(255, 192, 192));
+			} else {
+				this.setBackground(new Color(255, 170, 160));
+			}
+
+			return this;
+		}
+
 	}
 	
-	//RELLENAR USUARIOS, DIETAS Y ENTRENAMIENTOS DE LA BD
+	
+
+	// RELLENAR USUARIOS, DIETAS Y ENTRENAMIENTOS DE LA BD
 	public void rellenarUsuarios() {
 		for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
 			Object[] filaU = { usuario.getNombreUsuario(), usuario.getNombre(), usuario.getApellido1(),
