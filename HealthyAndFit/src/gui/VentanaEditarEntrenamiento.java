@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -13,10 +15,11 @@ import javax.swing.JPanel;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-
+import javax.swing.table.DefaultTableModel;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
@@ -36,6 +39,8 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		
 	public JPanel panelDerecha;
 		public JLabel labelDesc;
+		public DefaultTableModel descTableModel;
+		public JTable tableDesc;
 		public JScrollPane paneDesc;
 		
 	
@@ -69,6 +74,22 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		panelIzquierdo.add(spinnerKcal);
 		
 		panelDerecha = new JPanel();
+		panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
+
+		//Componentes para el panel de la derecha
+		labelDesc = new JLabel("DESCRIPCION");
+		descTableModel = new DefaultTableModel();
+		descTableModel.addColumn("DESCRIPCION DEL ENTRENAMIENTO");
+		
+		descTableModel.addRow(new Object[] {e.getDescripcion()});
+		
+		// Crear la JTable con el modelo
+	    tableDesc= new JTable(descTableModel);
+
+	    //Personalizado de la tabla
+	    tableDesc.setShowGrid(false);
+	    
+        JScrollPane panelDcha = new JScrollPane(tableDesc);
 		
 		// Panel botones
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -103,6 +124,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 			datos.add(panelDerecha);
 
 			this.add(datos);
+			this.add(panelBotones);
 			
 			this.setVisible(true);
 			this.setSize(600, 500);
