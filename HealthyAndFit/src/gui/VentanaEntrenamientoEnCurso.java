@@ -76,7 +76,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
             if (en.getDificultad() == TipoDificultad.FACIL) {
             	segundos = 50;
             }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-            	segundos = 40;
+            	segundos = 20;
             }else {
             	segundos = 30;
             }
