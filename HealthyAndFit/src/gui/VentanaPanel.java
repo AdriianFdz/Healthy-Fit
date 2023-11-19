@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -332,7 +333,29 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
-
+		
+		//BOTONES PARA AÑADIR USUARIOS, DIETAS Y ENTRENAMIENTOS
+		
+		añadirU.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				BaseDeDatos.getListaUsuarios().add(new Usuario());
+				vaciarUsuarios();
+				rellenarUsuarios();
+				
+			}
+		});		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
@@ -493,6 +516,18 @@ public class VentanaPanel extends JFrame {
 					entrenamiento.getCalorias() };
 			modeloE.addRow(filaE);
 		}
+	}
+	
+	//VACIAR USUARIOS,DIETAS y ENTRENAMIENTOS
+	
+	public void vaciarUsuarios() {
+		modeloU.setRowCount(0);
+	}
+	public void vaciarDietas() {
+		modeloD.setRowCount(0);
+	}	
+	public void vaciarEntrenamientos() {
+		modeloE.setRowCount(0);
 	}
 
 }
