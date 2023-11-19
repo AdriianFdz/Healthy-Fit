@@ -371,11 +371,11 @@ public class VentanaPanel extends JFrame {
 
 			}
 		});
-		
-		//BOTONES PARA ELIMINAR USUARIOS, DIETAS Y ENTRENAMIENTOS
-		
+
+		// BOTONES PARA ELIMINAR USUARIOS, DIETAS Y ENTRENAMIENTOS
+
 		eliminarU.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -391,17 +391,78 @@ public class VentanaPanel extends JFrame {
 						}
 					}
 					if (U != null) {
-						int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar este usuario?","hola",JOptionPane.YES_NO_OPTION);
-						if(respuesta == JOptionPane.YES_OPTION) {
-						eliminarUsuario(U[0]);}
+						int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar este usuario?",
+								"", JOptionPane.YES_NO_OPTION);
+						if (respuesta == JOptionPane.YES_OPTION) {
+							eliminarUsuario(U[0]);
+						}
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
 				}
-				
+
 			}
 		});
-		
+
+		eliminarD.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int dietaSeleccionada = tablaD.getSelectedRow();
+				Dieta[] D = { null };
+				if (dietaSeleccionada >= 0) {
+					String nombreD = (String) modeloD.getValueAt(dietaSeleccionada, 0);
+
+					for (Dieta dieta : BaseDeDatos.getListaDietas()) {
+						if (dieta.getNombre().equals(nombreD)) {
+							D[0] = dieta;
+							break;
+						}
+					}
+					if (D != null) {
+						int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar esta dieta?", "",
+								JOptionPane.YES_NO_OPTION);
+						if (respuesta == JOptionPane.YES_OPTION) {
+							eliminarDieta(D[0]);
+						}
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Tienes que seleccionar una dieta");
+				}
+
+			}
+		});
+
+		eliminarE.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int entrenamientoSeleccionado = tablaE.getSelectedRow();
+				Entrenamiento[] E = { null };
+				if (entrenamientoSeleccionado >= 0) {
+					String nombreE = (String) modeloE.getValueAt(entrenamientoSeleccionado, 0);
+
+					for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
+						if (entrenamiento.getNombre().equals(nombreE)) {
+							E[0] = entrenamiento;
+							break;
+						}
+					}
+					if (E != null) {
+						int respuesta = JOptionPane.showConfirmDialog(null,
+								"Seguro que quieres borrar este entrenamiento?", "", JOptionPane.YES_NO_OPTION);
+						if (respuesta == JOptionPane.YES_OPTION) {
+							eliminarEntrenamiento(E[0]);
+						}
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un entrenamiento");
+				}
+
+			}
+		});
 
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -426,16 +487,15 @@ public class VentanaPanel extends JFrame {
 			this.setText(value.toString());
 			this.setForeground(Color.black);
 
-			if(!isSelected) {
-			if (row % 2 == 0) {
-				this.setBackground(new Color(179, 179, 255));
+			if (!isSelected) {
+				if (row % 2 == 0) {
+					this.setBackground(new Color(179, 179, 255));
+				} else {
+					this.setBackground(new Color(189, 154, 255));
+				}
 			} else {
-				this.setBackground(new Color(189, 154, 255));
-			}
-			}else {
 				this.setBackground(new Color(230, 230, 255));
 			}
-			
 
 			return this;
 		}
@@ -482,16 +542,16 @@ public class VentanaPanel extends JFrame {
 					break;
 				}
 			}
-			if(!isSelected) {
-			if (row % 2 == 0) {
-				this.setBackground(new Color(179, 246, 182));
+			if (!isSelected) {
+				if (row % 2 == 0) {
+					this.setBackground(new Color(179, 246, 182));
+				} else {
+					this.setBackground(new Color(189, 236, 182));
+				}
 			} else {
-				this.setBackground(new Color(189, 236, 182));
-			}
-			}else {
 				this.setBackground(new Color(230, 255, 230));
 			}
-			
+
 			return this;
 		}
 
@@ -537,16 +597,16 @@ public class VentanaPanel extends JFrame {
 					break;
 				}
 			}
-			if(!isSelected) {
-			if (row % 2 == 0) {
-				this.setBackground(new Color(255, 192, 192));
+			if (!isSelected) {
+				if (row % 2 == 0) {
+					this.setBackground(new Color(255, 192, 192));
+				} else {
+					this.setBackground(new Color(255, 170, 160));
+				}
 			} else {
-				this.setBackground(new Color(255, 170, 160));
-			}
-			}else {
 				this.setBackground(new Color(255, 230, 230));
 			}
-			
+
 			return this;
 		}
 
@@ -589,12 +649,24 @@ public class VentanaPanel extends JFrame {
 	public void vaciarEntrenamientos() {
 		modeloE.setRowCount(0);
 	}
-	
-	//ELIMINAR USUARIOS,DIETAS Y ENTRENAMIENTOS
+
+	// ELIMINAR USUARIOS,DIETAS Y ENTRENAMIENTOS
 	public void eliminarUsuario(Usuario u) {
 		BaseDeDatos.getListaUsuarios().remove(u);
 		vaciarUsuarios();
 		rellenarUsuarios();
+	}
+
+	public void eliminarDieta(Dieta d) {
+		BaseDeDatos.getListaDietas().remove(d);
+		vaciarDietas();
+		rellenarDietas();
+	}
+
+	public void eliminarEntrenamiento(Entrenamiento e) {
+		BaseDeDatos.getListaEntrenamientos().remove(e);
+		vaciarEntrenamientos();
+		rellenarEntrenamientos();
 	}
 
 }
