@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import db.BaseDeDatos;
 import domain.Dieta;
@@ -93,6 +96,7 @@ public class VentanaPanel extends JFrame {
 		modeloD.addColumn("Ingredientes");
 
 		JTable tablaD = new JTable(modeloD);
+		tablaD.getColumnModel().getColumn(2).setCellRenderer(new RendererEntrenamientoDieta());
 
 		JScrollPane scrollD = new JScrollPane(tablaD);
 
@@ -126,6 +130,8 @@ public class VentanaPanel extends JFrame {
 		modeloE.addColumn("Kcal");
 
 		JTable tablaE = new JTable(modeloE);
+		tablaE.getColumnModel().getColumn(2).setCellRenderer(new RendererEntrenamientoDieta());
+
 
 		JScrollPane scrollE = new JScrollPane(tablaE);
 
@@ -322,7 +328,44 @@ public class VentanaPanel extends JFrame {
 		this.setTitle("Panel");
 		this.setSize(800, 500);
 	}
+	//RENDERER PERSONALIZADO
+	
+	public class RendererEntrenamientoDieta extends JLabel implements TableCellRenderer{
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			// TODO Auto-generated method stub
+			
+			setBackground(Color.RED);
+			String valor = value.toString();
+			switch (valor) {
+			case "FACIL":
+				this.setText("🔥");
+				break;
+			case "MEDIO":
+				this.setText("🔥🔥");
+				break;
+			case "DIFICIL":
+				this.setText("🔥🔥🔥");
+				break;
+
+			default:
+				break;
+			}
+			
+			
+			return this;
+		}
+		
+	}
+	
+	//RELLENAR USUARIOS, DIETAS Y ENTRENAMIENTOS DE LA BD
 	public void rellenarUsuarios() {
 		for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
 			Object[] filaU = { usuario.getNombreUsuario(), usuario.getNombre(), usuario.getApellido1(),
