@@ -2,18 +2,25 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import domain.Dieta;
@@ -29,6 +36,7 @@ public class VentanaEditarDieta extends JFrame {
 		public JLabel labelNombre;
 		public JTextField fieldNombre;
 		public JLabel labelTiempo;
+		public SpinnerNumberModel modeloSpin;
 		public JSpinner spinnerTiempo;
 		public JLabel labelDiff;
 		public JComboBox<TipoDificultad> comboDif;
@@ -41,6 +49,8 @@ public class VentanaEditarDieta extends JFrame {
 		
 	public JPanel pDer;
 		public JLabel labelPasos;
+		public DefaultTableModel pasosTableModel;
+		public JTable tablaPasos;
 		public JScrollPane panelDcha;
 	
 	public VentanaEditarDieta(Dieta d) {
@@ -59,7 +69,7 @@ public class VentanaEditarDieta extends JFrame {
 		comboDif = new JComboBox<>(TipoDificultad.values());
 		labelKcal = new JLabel("KCAL");
 		labelIng = new JLabel("INGREDIENTES");
-		
+	
 		// Crear el modelo de la tabla
         modeloTabla = new DefaultTableModel();
         modeloTabla.addColumn("INGREDIENTES");
@@ -77,8 +87,9 @@ public class VentanaEditarDieta extends JFrame {
        
 		//Inicializamos los otros elementos con los datos del usuario
 		fieldNombre.setText(d.getNombre());
-		spinnerTiempo = new JSpinner(new SpinnerNumberModel(d.getTiempo(),0,999,1));
 		comboDif.setSelectedItem(d.getDificultad());
+		SpinnerNumberModel modeloSpin = new SpinnerNumberModel(d.getTiempo(),0,999,1);
+		spinnerTiempo = new JSpinner(modeloSpin);
 		spinnerKcal = new JSpinner(new SpinnerNumberModel(d.getTiempo(), 0, 9999, 1));
 	
 		JScrollPane paneIng = new JScrollPane(tablaIngredientes);
@@ -100,18 +111,42 @@ public class VentanaEditarDieta extends JFrame {
 		pDer.setLayout(new BoxLayout(pDer, BoxLayout.Y_AXIS));
 
 		//Componentes para el panel de la derecha
-		labelPasos = new JLabel();
+		labelPasos = new JLabel("PASOS");
+		pasosTableModel = new DefaultTableModel();
+		pasosTableModel.addColumn("LISTA DE PASOS");
+        
+		for (String paso : d.getPasos()) {
+        	pasosTableModel.addRow(new Object[]{paso});
+        }
+		// Crear la JTable con el modelo
+	    tablaPasos= new JTable(pasosTableModel);
+
+	    //Personalizado de la tabla
+	    tablaPasos.setShowGrid(false);
+	    
+        JScrollPane panelDcha = new JScrollPane(tablaPasos);
 		
-		
-		pDer.add(labelPasos);
-		
+        pDer.add(labelPasos);
+		pDer.add(panelDcha);
 		
 		datos.add(pIzq);
 		datos.add(pDer);
+		
 		//Crear botones y añadir al panelBotones
 		JButton botonCancelar = new JButton("CANCELAR");
 		JButton botonConfirmar= new JButton("CONFIRMAR");
 		
+		//Listeners
+        botonCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//SwingUtilities.invokeLater(() -> new VentanaPanel(p));
+				dispose();
+				
+				
+			}
+		});
 		panelBotones.add(botonCancelar, BorderLayout.WEST);
 		panelBotones.add(botonConfirmar, BorderLayout.EAST);
 		
