@@ -270,7 +270,7 @@ public class VentanaPanel extends JFrame {
 						}
 					}
 					if (U != null) {
-						SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(U[0]));
+						SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(p,U[0]));
 						dispose();
 					}
 				} else {
@@ -297,7 +297,7 @@ public class VentanaPanel extends JFrame {
 						}
 					}
 					if (E != null) {
-						SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(E[0]));
+						SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(E[0],p));
 						dispose();
 					}
 				} else {
@@ -324,7 +324,7 @@ public class VentanaPanel extends JFrame {
 						}
 					}
 					if (D != null) {
-						SwingUtilities.invokeLater(() -> new VentanaEditarDieta(D[0]));
+						SwingUtilities.invokeLater(() -> new VentanaEditarDieta(D[0],p));
 						dispose();
 					}
 				} else {
