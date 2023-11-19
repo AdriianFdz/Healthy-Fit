@@ -288,6 +288,33 @@ public class VentanaPanel extends JFrame {
 			}
 		});
 		
+		modificarD.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int dietaSeleccionada = tablaD.getSelectedRow();
+				Dieta [] D = {null};
+				if (dietaSeleccionada >= 0) {
+					String nombreD = (String) modeloD.getValueAt(dietaSeleccionada, 0);
+
+					for (Dieta dieta : BaseDeDatos.getListaDietas()) {
+						if (dieta.getNombre().equals(nombreD)) {
+							D[0] = dieta;
+							break;
+						}
+					}
+					if (D != null) {
+						SwingUtilities.invokeLater(() -> new VentanaEditarDieta(D[0]));
+						dispose();
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Tienes que seleccionar una dieta");
+				}
+
+			}
+		});
+		
 		
 
 		this.setVisible(true);
