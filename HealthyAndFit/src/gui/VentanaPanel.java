@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -342,6 +343,7 @@ public class VentanaPanel extends JFrame {
 				int row, int column) {
 			// TODO Auto-generated method stub
 			
+			this.setFont(new Font("fuente",Font.PLAIN, 12));
 			setBackground(Color.RED);
 			String valor = value.toString();
 			switch (valor) {
