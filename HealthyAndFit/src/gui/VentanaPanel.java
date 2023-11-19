@@ -395,11 +395,16 @@ public class VentanaPanel extends JFrame {
 			this.setText(value.toString());
 			this.setForeground(Color.black);
 
+			if(!isSelected) {
 			if (row % 2 == 0) {
 				this.setBackground(new Color(179, 179, 255));
 			} else {
 				this.setBackground(new Color(189, 154, 255));
 			}
+			}else {
+				this.setBackground(new Color(230, 230, 255));
+			}
+			
 
 			return this;
 		}
@@ -446,13 +451,16 @@ public class VentanaPanel extends JFrame {
 					break;
 				}
 			}
-
+			if(!isSelected) {
 			if (row % 2 == 0) {
 				this.setBackground(new Color(179, 246, 182));
 			} else {
 				this.setBackground(new Color(189, 236, 182));
 			}
-
+			}else {
+				this.setBackground(new Color(230, 255, 230));
+			}
+			
 			return this;
 		}
 
@@ -498,13 +506,16 @@ public class VentanaPanel extends JFrame {
 					break;
 				}
 			}
-
+			if(!isSelected) {
 			if (row % 2 == 0) {
 				this.setBackground(new Color(255, 192, 192));
 			} else {
 				this.setBackground(new Color(255, 170, 160));
 			}
-
+			}else {
+				this.setBackground(new Color(255, 230, 230));
+			}
+			
 			return this;
 		}
 
