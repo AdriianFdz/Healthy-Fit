@@ -2,8 +2,11 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -12,8 +15,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import domain.Usuario;
 
@@ -77,7 +82,8 @@ public class VentanaEditarPerfil extends JFrame {
 		
 
 		//Panel del resto de datos
-		JPanel panelDatos = new JPanel(new GridLayout(6,2,0,0));
+		panelDatos = new JPanel();
+		panelDatos.setLayout(new BoxLayout(panelDatos, BoxLayout.Y_AXIS));
 
 		int edad = Period.between(u.getfechaNacimiento(), LocalDate.now()).getYears();
 		fieldEdad = new JTextField(String.format("Edad: %d", edad));
@@ -97,11 +103,36 @@ public class VentanaEditarPerfil extends JFrame {
 		panelDatos.add(fieldPeso);
 		panelDatos.add(fieldAltura);
 		panelDatos.add(labelIMC);
+		panelDatos.add(labelEnfer);
+		panelDatos.add(labelAleg);
 		
 		JPanel panelDerecha = new JPanel(new BorderLayout());
 		panelDerecha.add(panelDatos, BorderLayout.NORTH);
 		
 		add(panelDerecha, BorderLayout.CENTER);
+		
+		aceptarBot.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		cancelaBot.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres salir sin guardar?",
+						"", JOptionPane.YES_NO_OPTION);
+				if(respuesta == JOptionPane.YES_OPTION) {
+				SwingUtilities.invokeLater(() -> new VentanaPerfil(u));
+				dispose();
+				}
+			}
+		});
 		
 		this.pack();
 		this.setVisible(true);
