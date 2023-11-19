@@ -30,7 +30,7 @@ public class VentanaEditarUsuario extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	public JPanel pIzq;
-		public Integer spacing = 10;
+		public int spacing = 10;
 		public JLabel labelCorreo;
 		public JTextField fieldCorreo;
 		public JLabel labelTipo;

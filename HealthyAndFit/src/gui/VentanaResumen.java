@@ -42,6 +42,8 @@ public class VentanaResumen extends JFrame{
 
 	//Propiedades de la ventana
 	 JButton botonEntrenar;
+	 JButton fotoPerfil;
+	 JButton botonDieta;
 	 JPanel panelImagenVasos = new JPanel();
 
 	
@@ -125,7 +127,7 @@ public class VentanaResumen extends JFrame{
 			panelDieta.add(panelTextosDieta, BorderLayout.NORTH);
 		
 		
-			JButton botonDieta = new JButton("Revisar dieta");
+			botonDieta = new JButton("Revisar dieta");
 			panelDieta.add(botonDieta, BorderLayout.SOUTH);
 
 			anadirBordePanel("DIETA", panelDieta);
@@ -159,7 +161,7 @@ public class VentanaResumen extends JFrame{
 		JPanel panelArribaDerecha = new JPanel(new BorderLayout());
 			panelArribaDerecha.add(alertaAgua, BorderLayout.CENTER);
 			Image foto = persona.getFoto().getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
-			JButton fotoPerfil = new JButton(new ImageIcon(foto));
+			fotoPerfil = new JButton(new ImageIcon(foto));
 			fotoPerfil.setPreferredSize(new Dimension(100,100));
 			panelArribaDerecha.add(fotoPerfil, BorderLayout.EAST);
 
@@ -218,14 +220,14 @@ public class VentanaResumen extends JFrame{
 	}
 	
 	//Crear grafica
-	private JFreeChart crearGrafica(String titulo, String tiempo, String valores, XYDataset xydataset) {
+	public JFreeChart crearGrafica(String titulo, String tiempo, String valores, XYDataset xydataset) {
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(titulo, tiempo, valores, xydataset);
 		chart.setBackgroundPaint(Color.WHITE);
 		return chart;
 	}
 	
 	//Dataset Ejemplo
-	private TimeSeriesCollection crearDatasetEjemplo(String titulo) {
+	public TimeSeriesCollection crearDatasetEjemplo(String titulo) {
         TimeSeries s1 = new TimeSeries(titulo);
         
         for (int i = 1; i < LocalDateTime.now().getMonth().length(true)+1; i++) { //Incluye años bisiestos
@@ -301,7 +303,16 @@ public class VentanaResumen extends JFrame{
 		RegistroLogger.anadirLogeo(Level.INFO, "Vasos de agua actualizados");
 	}
 	
-
+	//GETTERS
+	public JButton getBotonEntrenar() {
+		return botonEntrenar;
+	}
+	public JButton getFotoPerfil() {
+		return fotoPerfil;
+	}
+	public JButton getBotonDieta() {
+		return botonDieta;
+	}
 	
 	
 }
