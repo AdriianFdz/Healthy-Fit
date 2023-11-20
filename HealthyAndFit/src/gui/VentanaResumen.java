@@ -68,7 +68,7 @@ public class VentanaResumen extends JFrame{
 		ultimaVez.setFont(new Font("Consolas", Font.PLAIN, 25));
 		
 		
-		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 100, 50));
+		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 50, 30));
 			panelTextosEntrenamiento.add(caloriasGastadas);
 			panelTextosEntrenamiento.add(racha);
 			panelTextosEntrenamiento.add(tiempoEntrenado);
