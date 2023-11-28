@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -147,7 +148,22 @@ public class VentanaEditarDieta extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				String nuevoNombre = fieldNombre.getText();
+				Integer nuevoTiempo = spinnerTiempo.getComponentCount();
+				TipoDificultad nuevoTipo = (TipoDificultad) comboDif.getSelectedItem();
+				Integer nuevoKCAL = spinnerKcal.getComponentCount();
 				
+				// Actualizar los atributos de Dieta
+				d.setNombre(nuevoNombre);
+				d.setTiempo(nuevoTiempo);
+				d.setDificultad(nuevoTipo);
+				d.setKcal(nuevoKCAL);
+				//d.setPasos(null)
+				
+				// Mostrar un mensaje de éxito
+		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
+		        dispose();
+		        SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 			}
 		});
 		panelBotones.add(botonCancelar, BorderLayout.WEST);
