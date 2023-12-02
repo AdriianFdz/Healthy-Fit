@@ -1,6 +1,7 @@
 package io;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
@@ -83,7 +84,7 @@ public class DBManager {
 			stmt.setString(17, usuario.getProximaComida());
 			stmt.setInt(18, usuario.getVasosDeAgua());
 			stmt.setString(19, usuario.getContrasena());
-			//stmt.setBlob(20, convertirFotoABlob(usuario.getFoto(), conn));
+			stmt.setBytes(20, convertirFotoABytes(usuario.getFoto().getImage()));
 			 
 			stmt.executeUpdate();
 			stmt.close();
@@ -136,25 +137,17 @@ public class DBManager {
 		}
 		return resultado;
 	}
-//	
-//	public static Blob convertirFotoABlob(ImageIcon foto, Connection con) {
-//	    BufferedImage bi = new BufferedImage(foto.getIconWidth(), foto.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-//	    Graphics g = bi.createGraphics();
-//	    foto.paintIcon(null, g, 0, 0);
-//	    g.dispose();
-//
-//	    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-//	        ImageIO.write(bi, "png", baos);
-//	        byte[] imagenEnBytes = baos.toByteArray();
-//	        
-//	        Blob blob = con.createBlob();
-//	        blob.setBytes(1, imagenEnBytes);
-//	        
-//	        return blob;
-//	    } catch (IOException | SQLException e) {
-//	        e.printStackTrace();
-//	    }
-//
-//	    return null;
-//	}
+	
+	public static byte[] convertirFotoABytes(Image foto) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BufferedImage bi = new BufferedImage(foto.getWidth(null), foto.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        try {
+			ImageIO.write(bi, "png", baos);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+		return baos.toByteArray();
+	   
+	}
 }
