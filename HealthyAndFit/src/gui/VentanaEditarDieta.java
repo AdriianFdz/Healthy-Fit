@@ -150,9 +150,9 @@ public class VentanaEditarDieta extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Obtener los nuevos valores de la dieta
 				String nuevoNombre = fieldNombre.getText();
-				int nuevoTiempo = spinnerTiempo.getComponentCount();
+				Integer nuevoTiempo = (Integer) spinnerTiempo.getValue();
 				TipoDificultad nuevoTipo = (TipoDificultad) comboDif.getSelectedItem();
-				int nuevoKCAL = spinnerKcal.getComponentCount();
+				Integer nuevoKCAL = (Integer) spinnerKcal.getValue();
 				
 				// Actualizar los atributos de Dieta
 				d.setNombre(nuevoNombre);

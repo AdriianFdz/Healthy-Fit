@@ -63,7 +63,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		fieldNombre = new JTextField(20);
 		labelTiempo = new JLabel("TIEMPO");
 		labelDificultad = new JLabel("DIFICULTAD");
-		comboDif = new JComboBox<TipoDificultad>();
+		comboDif = new JComboBox<>(TipoDificultad.values());
 		labelKcal = new JLabel("KCAL");
 
 		// Inicializamos con datos
@@ -131,15 +131,15 @@ public class VentanaEditarEntrenamiento extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// Obtener los nuevos valores de la dieta
 				String nuevoNombre = fieldNombre.getText();
-				int nuevoTiempo = spinnerTiempo.getComponentCount();
+				Integer nuevoTiempo = (Integer) spinnerTiempo.getValue();
 				TipoDificultad nuevaDif = (TipoDificultad) comboDif.getSelectedItem();
-				int nuevoKCAl = spinnerKcal.getComponentCount();
+				Integer nuevoKCAL = (Integer) spinnerKcal.getValue();
 				
 				// Actualizar los atributos del Entrenamiento
 				ent.setNombre(nuevoNombre);
 				ent.setTiempo(nuevoTiempo);
 				ent.setDificultad(nuevaDif);
-				ent.setCalorias(nuevoKCAl);
+				ent.setCalorias(nuevoKCAL);
 				
 				// Obtener el número de filas en la tabla
 		        int rowCount = descTableModel.getRowCount();
