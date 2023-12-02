@@ -127,11 +127,12 @@ public class VentanaPerfil extends JFrame{
 		labelIMC = new JLabel(String.format("IMC: %.2f", p.getImc()));
 		labelAleg = new JLabel("ALERGIAS");
 
-		JScrollPane paneAlergias = new JScrollPane();
-		for (TipoAlergias alergia : p.getAlergias()) {
-			JLabel label = new JLabel(alergia.name());
-			paneAlergias.add(label);
-		}
+		DefaultListModel<TipoAlergias> modeloAlergias = new DefaultListModel<>();
+        for (TipoAlergias alergia : p.getAlergias()) {
+            modeloAlergias.addElement(alergia);
+        }
+        JList<TipoAlergias> listaAlergias = new JList<>(modeloAlergias);
+		JScrollPane paneAlergias = new JScrollPane(listaAlergias);
 		
 		//Cambios de estilo y tamaño de letra
 		labelNombre.setFont(new Font("Consolas", Font.PLAIN, 20));
@@ -163,7 +164,6 @@ public class VentanaPerfil extends JFrame{
 			panelEnfermedades.setLayout(new BoxLayout(panelEnfermedades, BoxLayout.Y_AXIS));
 			panelEnfermedades.add(labelEnfermedades);
 			panelEnfermedades.add(paneEnfermedades);
-		panelDatos.add(panelEnfermedades);
 		JPanel panelAlergias = new JPanel();
 			panelAlergias.setLayout(new BoxLayout(panelAlergias, BoxLayout.Y_AXIS));
 			panelAlergias.add(labelAleg);
@@ -174,6 +174,7 @@ public class VentanaPerfil extends JFrame{
 			panelPreferencias.add(preferenciasComboBox);
 			
 			
+		panelDatos.add(panelEnfermedades);
 		panelDatos.add(panelAlergias);
 		panelDatos.add(panelPreferencias);
 	
