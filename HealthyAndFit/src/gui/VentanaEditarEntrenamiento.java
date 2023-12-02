@@ -141,6 +141,9 @@ public class VentanaEditarEntrenamiento extends JFrame{
 				ent.setDificultad(nuevaDif);
 				ent.setCalorias(nuevoKCAl);
 				
+				// Obtener el número de filas en la tabla
+		        int rowCount = descTableModel.getRowCount();
+				
 				// Mostrar un mensaje de éxito
 		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
 		        dispose();

@@ -148,18 +148,25 @@ public class VentanaEditarDieta extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Obtener los nuevos valores de la dieta
 				String nuevoNombre = fieldNombre.getText();
-				Integer nuevoTiempo = spinnerTiempo.getComponentCount();
+				int nuevoTiempo = spinnerTiempo.getComponentCount();
 				TipoDificultad nuevoTipo = (TipoDificultad) comboDif.getSelectedItem();
-				Integer nuevoKCAL = spinnerKcal.getComponentCount();
+				int nuevoKCAL = spinnerKcal.getComponentCount();
 				
 				// Actualizar los atributos de Dieta
 				d.setNombre(nuevoNombre);
 				d.setTiempo(nuevoTiempo);
 				d.setDificultad(nuevoTipo);
 				d.setKcal(nuevoKCAL);
-				//d.setPasos(null)
 				
+				// Obtener el número de filas en la tabla
+		        int rowCount = pasosTableModel.getRowCount();
+		        // Actualizar la lista de pasos en la Dieta con los nuevos valores de la tabla
+		        for (int i = 0; i < rowCount; i++) {
+		            String nuevoPaso = (String) pasosTableModel.getValueAt(i, 0);
+		            
+		        }
 				// Mostrar un mensaje de éxito
 		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
 		        dispose();
