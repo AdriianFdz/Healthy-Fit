@@ -22,6 +22,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import domain.TipoAlergias;
+import domain.TipoEnfermedades;
 import domain.TipoPermiso;
 import domain.Usuario;
 
@@ -36,29 +38,36 @@ public class VentanaEditarPerfil extends JFrame {
 		public JPanel panelColumna;
 			public JTextField fieldNombre;
 			public JLabel labelNombre; 
+			
 			public JTextField fieldApellido1;
 			public JLabel labelApellido1;
+			
 			public JTextField fieldApellido2;
 			public JLabel labelApellido2;
+			
 			public JTextField fieldFechaNac;
 			public JLabel labelFechaNac;
-			public JComboBox<TipoPermiso> comboTipoU;
-			public JLabel labelTipoU;
 		
 		
 	public JPanel panelColumna2;
-		public JTextField fieldEdad;
-		public JLabel labelEdad;
+		
 		public JTextField fieldSexo;
 		public JLabel labelSexo;
+		
 		public JTextField fieldAltura;
 		public JLabel labelAltura;
+		
 		public JTextField fieldCorreo;
 		public JLabel labelCorreo;
+		
 		public JTextField fieldPeso;
 		public JLabel labelPeso;
+		
 		public JLabel labelAleg;
+		public JComboBox<TipoAlergias> comboAleg;
+		
 		public JLabel labelEnfer;
+		public JComboBox<TipoEnfermedades> comboEnfer;
 		
 	public VentanaEditarPerfil(Usuario u) {
 		
@@ -70,9 +79,9 @@ public class VentanaEditarPerfil extends JFrame {
 		panelColumna1.setLayout(new BoxLayout(panelColumna1, BoxLayout.Y_AXIS));
 		
 		//Para imagen
-		Image foto = u.getFoto().getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+		Image foto = u.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
-		fotoUsuario.setPreferredSize(new Dimension(320, 320));
+		fotoUsuario.setPreferredSize(new Dimension(200, 200));
 		fotoUsuario.setToolTipText("Haz click para elegir otra foto");
 		panelColumna1.add(fotoUsuario);
 		
@@ -91,9 +100,6 @@ public class VentanaEditarPerfil extends JFrame {
 		fieldFechaNac = new JTextField(u.getfechaNacimiento().toString());
 		labelFechaNac = new JLabel("Fecha nacimiento:");
 		
-		comboTipoU = new JComboBox<>(TipoPermiso.values());
-	
-		labelTipoU = new JLabel("Tipo Usuario");
 		
 		//Añadir elementos al panel 
 		panelColumna.add(labelNombre);
@@ -107,9 +113,6 @@ public class VentanaEditarPerfil extends JFrame {
 		
 		panelColumna.add(labelFechaNac);
 		panelColumna.add(fieldFechaNac);
-		
-		panelColumna.add(labelTipoU);
-		panelColumna.add(comboTipoU);
 		
 		panelColumna1.add(panelColumna);
 		
@@ -130,27 +133,46 @@ public class VentanaEditarPerfil extends JFrame {
 		//Panel del resto de datos
 		panelColumna2 = new JPanel();
 		panelColumna2.setLayout(new BoxLayout(panelColumna2, BoxLayout.Y_AXIS));
-
-		int edad = Period.between(u.getfechaNacimiento(), LocalDate.now()).getYears();
-		fieldEdad = new JTextField(String.format("Edad: %d", edad));
-		fieldSexo = new JTextField(String.format("Sexo: %s", u.getSexo().name()));
-		fieldAltura = new JTextField(String.format("Altura: %.2f", u.getAltura()));
-		labelEnfer = new JLabel("Enfermedades");
+	
+		fieldSexo = new JTextField(u.getSexo().toString());
+		labelSexo = new JLabel("Sexo");
 		
-		fieldCorreo = new JTextField(String.format("Correo: %s", u.getCorreoElectronico()));
-		fieldPeso = new JTextField(String.format("Peso: %d", u.getPeso()));
-		labelAleg = new JLabel("ALERGIAS");
+		fieldAltura = new JTextField(String.valueOf(u.getAltura()));
+		labelAltura = new JLabel("Altura");
+		
+		fieldCorreo = new JTextField(u.getCorreoElectronico());
+		labelCorreo = new JLabel("Correo");
+		
+		fieldPeso = new JTextField(String.valueOf(u.getPeso()));
+		labelPeso = new JLabel("Peso");
+		
+		labelAleg = new JLabel("Alergias");
+		comboAleg = new JComboBox<>(TipoAlergias.values());
+		
+		labelEnfer = new JLabel("Enfermedades");
+		comboEnfer = new JComboBox<>(TipoEnfermedades.values());
 
 		//Agregar al panel
-		panelColumna2.add(fieldEdad);
+		panelColumna2.add(labelCorreo);
 		panelColumna2.add(fieldCorreo);
+		
+		panelColumna2.add(labelSexo);
 		panelColumna2.add(fieldSexo);
+		
+		panelColumna2.add(labelPeso);
 		panelColumna2.add(fieldPeso);
+		
+		panelColumna2.add(labelAltura);
 		panelColumna2.add(fieldAltura);
+		
 		panelColumna2.add(labelEnfer);
+		panelColumna2.add(comboEnfer);
+		
 		panelColumna2.add(labelAleg);
+		panelColumna2.add(comboAleg);
 		
 		JPanel panelDerecha = new JPanel(new BorderLayout());
+		
 		panelDerecha.add(panelColumna2, BorderLayout.NORTH);
 		
 		add(panelDerecha, BorderLayout.CENTER);
