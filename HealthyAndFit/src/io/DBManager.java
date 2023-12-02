@@ -1,23 +1,19 @@
 package io;
 
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
@@ -61,6 +57,24 @@ public class DBManager {
 
 	}
 
+	public static void anadirAlergia(Connection connection, TipoAlergias alergia) {
+		Connection conn = connection;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Alergias VALUES (null, ?)");
+			 stmt.setString(1, alergia.toString());
+			 stmt.executeUpdate();
+			 
+			 stmt.close();
+		} catch (SQLException e) {
+			//MODIFICAR EXCP
+			e.printStackTrace();
+		}
+			
+		
+
+	}
+
+	
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
 		Connection conn = connection;
 		try {
@@ -123,20 +137,7 @@ public class DBManager {
 			e.printStackTrace();
 		}
 	}
-	
-	public static ResultSet recuperarDatosTabla(Connection connection, String tabla) {
-		Connection conn = connection;
-		ResultSet resultado = null;
-		try {
-			PreparedStatement stmt = conn.prepareStatement(String.format("SELECT * from %s", tabla));
-			resultado = stmt.executeQuery();
-			stmt.close();
-		} catch (SQLException e) {
-			//MODIFICAR EXCP
-			e.printStackTrace();
-		}
-		return resultado;
-	}
+
 	
 	public static byte[] convertirFotoABytes(Image foto) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
