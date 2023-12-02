@@ -1,22 +1,19 @@
 package io;
 
-import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
@@ -60,6 +57,24 @@ public class DBManager {
 
 	}
 
+	public static void anadirAlergia(Connection connection, TipoAlergias alergia) {
+		Connection conn = connection;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Alergias VALUES (null, ?)");
+			 stmt.setString(1, alergia.toString());
+			 stmt.executeUpdate();
+			 
+			 stmt.close();
+		} catch (SQLException e) {
+			//MODIFICAR EXCP
+			e.printStackTrace();
+		}
+			
+		
+
+	}
+
+	
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
 		Connection conn = connection;
 		try {
@@ -83,7 +98,7 @@ public class DBManager {
 			stmt.setString(17, usuario.getProximaComida());
 			stmt.setInt(18, usuario.getVasosDeAgua());
 			stmt.setString(19, usuario.getContrasena());
-			//stmt.setBlob(20, convertirFotoABlob(usuario.getFoto(), conn));
+			stmt.setBytes(20, convertirFotoABytes(usuario.getFoto().getImage()));
 			 
 			stmt.executeUpdate();
 			stmt.close();
@@ -122,39 +137,18 @@ public class DBManager {
 			e.printStackTrace();
 		}
 	}
+
 	
-	public static ResultSet recuperarDatosTabla(Connection connection, String tabla) {
-		Connection conn = connection;
-		ResultSet resultado = null;
-		try {
-			PreparedStatement stmt = conn.prepareStatement(String.format("SELECT * from %s", tabla));
-			resultado = stmt.executeQuery();
-			stmt.close();
-		} catch (SQLException e) {
-			//MODIFICAR EXCP
+	public static byte[] convertirFotoABytes(Image foto) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        BufferedImage bi = new BufferedImage(foto.getWidth(null), foto.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        try {
+			ImageIO.write(bi, "png", baos);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return resultado;
+        
+		return baos.toByteArray();
+	   
 	}
-//	
-//	public static Blob convertirFotoABlob(ImageIcon foto, Connection con) {
-//	    BufferedImage bi = new BufferedImage(foto.getIconWidth(), foto.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
-//	    Graphics g = bi.createGraphics();
-//	    foto.paintIcon(null, g, 0, 0);
-//	    g.dispose();
-//
-//	    try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-//	        ImageIO.write(bi, "png", baos);
-//	        byte[] imagenEnBytes = baos.toByteArray();
-//	        
-//	        Blob blob = con.createBlob();
-//	        blob.setBytes(1, imagenEnBytes);
-//	        
-//	        return blob;
-//	    } catch (IOException | SQLException e) {
-//	        e.printStackTrace();
-//	    }
-//
-//	    return null;
-//	}
 }
