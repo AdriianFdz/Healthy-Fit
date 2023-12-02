@@ -114,10 +114,12 @@ public class VentanaPerfil extends JFrame{
 	
 
 		labelPrefAli = new JLabel("PREFERENCIAS ALIMENTICIAS");
-		JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
+		JLabel labelPrefAlimentaria = new JLabel(p.getPreferenciaAlimenticia().name());
+		
+		/*JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
 		for (TipoPreferencia preferencia :TipoPreferencia.values()) {
 			preferenciasComboBox.addItem(preferencia);
-		}
+		}*/
 		
 
 		JLabel labelEnfermedades = new JLabel("ENFERMEDADES");
@@ -171,7 +173,7 @@ public class VentanaPerfil extends JFrame{
 		JPanel panelPreferencias = new JPanel();
 			panelPreferencias.setLayout(new BoxLayout(panelPreferencias, BoxLayout.Y_AXIS));
 			panelPreferencias.add(labelPrefAli);
-			panelPreferencias.add(preferenciasComboBox);
+			panelPreferencias.add(labelPrefAlimentaria);
 			
 			
 		panelDatos.add(panelAlergias);
