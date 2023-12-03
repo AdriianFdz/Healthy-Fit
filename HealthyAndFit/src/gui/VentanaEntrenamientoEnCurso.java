@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
@@ -21,9 +22,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import org.sqlite.core.DB;
+
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.Usuario;
+import io.DBManager;
 
 
 public class VentanaEntrenamientoEnCurso extends JFrame{
@@ -75,11 +79,11 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
             minutos = 0;
             
             if (en.getDificultad() == TipoDificultad.FACIL) {
-            	segundos = 50;
+            	segundos = (byte) (en.getTiempo() + 20);
             }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-            	segundos = 10;
+            	segundos = (byte) (en.getTiempo() + 10);
             }else {
-            	segundos = 30;
+            	segundos = (byte) en.getTiempo();
             }
         	
 		    descanso = false;
@@ -138,6 +142,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
 	                        	if (opcion == JOptionPane.YES_OPTION) {
 	                            	persona.getRegistroEntrenamiento().add(en);
+	                            	Connection conn = DBManager.obtenerConexion();
+	                            	DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
 	                            }
 	                            if (opcion == JOptionPane.NO_OPTION) {
 	                            	SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
@@ -148,7 +154,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            // Si no está en el tiempo de descanso, inicia el tiempo de descanso
 	                            descanso = true;
 	                            seriesRestantes--;
-	                            segundos = 10;  // 30 segundos de descanso entre series
+	                            segundos = 30;  // 30 segundos de descanso entre series
 	                            milisegundos = 0;
 	                            timer.start();
 	                            labelTiempo.setForeground(Color.RED);
@@ -159,11 +165,11 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            if (seriesRestantes > 0) {
 	                                minutos = 0;
 	                                if (en.getDificultad() == TipoDificultad.FACIL) {
-	                                	segundos = 50;
+	                                	segundos = (byte) (en.getTiempo() + 20);
 	                                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-	                                	segundos = 20;
+	                                	segundos = (byte) (en.getTiempo() + 10);
 	                                }else {
-	                                	segundos = 30;
+	                                	segundos = (byte) en.getTiempo();
 	                                }
 	                                milisegundos = 0;
 	                                timer.start();
@@ -216,13 +222,21 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	                timer.stop();
 
-	                if (en.getDificultad() == TipoDificultad.FACIL) {
-	                	segundos = 50;
-	                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-	                	segundos = 20;
+	                if (!descanso) {
+	                	if (en.getDificultad() == TipoDificultad.FACIL) {
+		                	segundos = (byte) (en.getTiempo() + 20);
+		                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
+		                	segundos = (byte) (en.getTiempo() + 10);
+		                }else {
+		                	segundos = (byte) en.getTiempo();
+		                }
 	                }else {
 	                	segundos = 30;
 	                }
+	                
+	                
+	                
+	                
 	                milisegundos = 0;
 	                
 

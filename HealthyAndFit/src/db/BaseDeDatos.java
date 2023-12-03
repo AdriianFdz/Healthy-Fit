@@ -23,7 +23,7 @@ public class BaseDeDatos {
 	private static List<Usuario> listaUsuarios = new ArrayList<>(Arrays.asList(p));
 	
 	
-	private static Entrenamiento e1 = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominales", 200, 3, 20);
+	private static Entrenamiento e1 = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 30, "Entrenamiento que mejorará los abdominales", 200, 3, 20);
 	private static Entrenamiento e2 = new Entrenamiento("Pierna", TipoEntrenamiento.INFERIOR, TipoDificultad.FACIL, 30, "Entrenamiento que mejorará los gemelos", 140, 2, 30);
 	private static List<Entrenamiento> listaEntrenamientos = new ArrayList<>(Arrays.asList(e1,e2));
 

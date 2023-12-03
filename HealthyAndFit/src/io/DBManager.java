@@ -10,6 +10,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Properties;
 import java.util.logging.Level; 
 
@@ -210,4 +214,25 @@ public class DBManager {
 			
 		}
 	}
+	
+	public static void anadirUsuarioEntrenamientos(Connection connection, Usuario usuario, Entrenamiento entrenamiento) {
+		Connection conn = connection;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO usuario_entrenamientos VALUES (?, ?, ?)");
+			stmt.setString(1, usuario.getNombreUsuario());
+			stmt.setString(2, entrenamiento.getNombre());
+			stmt.setString(3, LocalDateTime.now(ZoneId.of("Europe/Madrid")).toString());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
+	
 }
