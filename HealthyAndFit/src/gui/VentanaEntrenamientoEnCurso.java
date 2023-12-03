@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -28,7 +29,7 @@ import domain.Usuario;
 public class VentanaEntrenamientoEnCurso extends JFrame{
 	
 	 private static final long serialVersionUID = 1L;
-
+	 
 	 //Definir propiedades necesarias para la ventana
 	    public JPanel panelPrincipal;
 	    public JPanel panelSecundario;
@@ -42,7 +43,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    public JLabel labelKcal;
 	    public JLabel labelRepeticiones;
 	    public JLabel labelSeries;
-	   
+	    
 	    public JButton botonStart;
 	    public JButton botonReset;
 	    public JButton botonStop;
@@ -126,6 +127,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                } else {
 	                    if (segundos == 0 && minutos == 0) {
 	                        timer.stop();
+	                        
 	                        
 	                        if (!descanso) {
 	                            // Si no está en el tiempo de descanso, inicia el tiempo de descanso

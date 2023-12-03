@@ -31,13 +31,16 @@ public class Usuario {
 	private String contrasena;
 	private ImageIcon foto;
 	private TipoPermiso permiso;
+	private List<Entrenamiento> registroEntrenamiento;
+	private List<Dieta> registroDietas;
 	
 	//Constructor con argumentos
 	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, LocalDate fechaNacimiento,
 			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
 			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
 			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
-			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso) {
+			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso,
+			List<Entrenamiento> registroEntrenamiento, List<Dieta> dietas) {
 		super();
 		this.nombre = nombre;
 		this.nombreUsuario = nombreUsuario;
@@ -69,6 +72,14 @@ public class Usuario {
 		this.foto = foto;
 		this.contrasena = contraseña;
 		this.permiso = permiso;
+		this.registroEntrenamiento = new ArrayList<Entrenamiento>();
+		for (Entrenamiento e : registroEntrenamiento) {
+			this.registroEntrenamiento.add(e);
+		}
+		this.registroDietas = new ArrayList<Dieta>();
+		for (Dieta d : registroDietas) {
+			this.registroDietas.add(d);
+		}
 	}
 	
 	//Constructor sin argumentos
@@ -98,6 +109,8 @@ public class Usuario {
 		this.contrasena = "";
 		this.foto = new ImageIcon("resources\\images\\foto.png");
 		this.permiso = TipoPermiso.USUARIO;
+		this.registroEntrenamiento = new ArrayList<Entrenamiento>();
+		this.registroDietas = new ArrayList<Dieta>();
 	}
 	
 	//getters y setters
@@ -312,6 +325,25 @@ public class Usuario {
 		this.permiso = permiso;
 	}
 
+	
+	public List<Entrenamiento> getRegistroEntrenamiento() {
+		return registroEntrenamiento;
+	}
+
+	public void setRegistroEntrenamiento(List<Entrenamiento> registroEntrenamiento) {
+		this.registroEntrenamiento = registroEntrenamiento;
+	}
+
+	public List<Dieta> getRegistroDietas() {
+		return registroDietas;
+	}
+
+	public void setRegistroDietas(List<Dieta> registroDietas) {
+		this.registroDietas = registroDietas;
+	}
+
+	
+	
 	//Metodo toString
 	@Override
 	public String toString() {
@@ -322,8 +354,9 @@ public class Usuario {
 				+ preferenciaAlimenticia + ", caloriasGastadas=" + caloriasGastadas + ", rachaEntrenamiento="
 				+ rachaEntrenamiento + ", objetivo=" + objetivo + ", tiempoEntrenado=" + tiempoEntrenado
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
-				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contraseña=" + contrasena
-				+ ", foto=" + foto + ", permiso=" + permiso + "]";
+				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contrasena=" + contrasena
+				+ ", foto=" + foto + ", permiso=" + permiso + ", registroEntrenamiento=" + registroEntrenamiento
+				+ ", registroDietas=" + registroDietas + "]";
 	}
 
 	
