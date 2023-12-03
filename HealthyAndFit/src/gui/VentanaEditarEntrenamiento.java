@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import javax.swing.JScrollPane;
@@ -50,7 +51,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		public JScrollPane paneDesc;
 		
 	
-	public VentanaEditarEntrenamiento(Entrenamiento e, Usuario p) {
+	public VentanaEditarEntrenamiento(Entrenamiento ent, Usuario p) {
 
 		JPanel datos = new JPanel(new GridLayout(1, 2));
 
@@ -62,14 +63,14 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		fieldNombre = new JTextField(20);
 		labelTiempo = new JLabel("TIEMPO");
 		labelDificultad = new JLabel("DIFICULTAD");
-		comboDif = new JComboBox<TipoDificultad>();
+		comboDif = new JComboBox<>(TipoDificultad.values());
 		labelKcal = new JLabel("KCAL");
 
 		// Inicializamos con datos
-		fieldNombre.setText(e.getNombre());
-		spinnerTiempo = new JSpinner(new SpinnerNumberModel(e.getTiempo(), 0, 999, 1));
-		comboDif.setSelectedItem(e.getDificultad());
-		spinnerKcal = new JSpinner(new SpinnerNumberModel(e.getCalorias(), 0, 9999, 1));
+		fieldNombre.setText(ent.getNombre());
+		spinnerTiempo = new JSpinner(new SpinnerNumberModel(ent.getTiempo(), 0, 999, 1));
+		comboDif.setSelectedItem(ent.getDificultad());
+		spinnerKcal = new JSpinner(new SpinnerNumberModel(ent.getCalorias(), 0, 9999, 1));
 
 		//Añadimos los elemetos al panel Izquierdo
 		panelIzquierdo.add(labelNombre);
@@ -91,7 +92,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		//Cargar la descripcion del entrenamiento en una tabla
 		descTableModel = new DefaultTableModel();
 		descTableModel.addColumn("DESCRIPCION DEL ENTRENAMIENTO");
-		descTableModel.addRow(new Object[] {e.getDescripcion()});
+		descTableModel.addRow(new Object[] {ent.getDescripcion()});
 		
 		// Crear la JTable con el modelo
 	    tableDesc= new JTable(descTableModel);
@@ -128,8 +129,25 @@ public class VentanaEditarEntrenamiento extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
+				// Obtener los nuevos valores de la dieta
+				String nuevoNombre = fieldNombre.getText();
+				Integer nuevoTiempo = (Integer) spinnerTiempo.getValue();
+				TipoDificultad nuevaDif = (TipoDificultad) comboDif.getSelectedItem();
+				Integer nuevoKCAL = (Integer) spinnerKcal.getValue();
+				
+				// Actualizar los atributos del Entrenamiento
+				ent.setNombre(nuevoNombre);
+				ent.setTiempo(nuevoTiempo);
+				ent.setDificultad(nuevaDif);
+				ent.setCalorias(nuevoKCAL);
+				
+				// Obtener el número de filas en la tabla
+		        int rowCount = descTableModel.getRowCount();
+				
+				// Mostrar un mensaje de éxito
+		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
+		        dispose();
+		        SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 			}
 		});
 		panelBotones.add(botonCancelar, BorderLayout.WEST);
