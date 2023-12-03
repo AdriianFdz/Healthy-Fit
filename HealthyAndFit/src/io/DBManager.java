@@ -170,7 +170,18 @@ public class DBManager {
 			for (String s : dieta.getPasos()) {
 				stmtAnadirPasos.setString(1, s);
 				stmtAnadirPasos.setString(2, dieta.getNombre());
+				stmtAnadirPasos.executeUpdate();
+				
 			}
+			stmtAnadirPasos.close();
+			
+			PreparedStatement stmtAnadirIngredientes = conn.prepareStatement("INSERT INTO ingredientes_dietas VALUES (null, ?, ?)");
+			for (String s : dieta.getIngredientes()) {
+				stmtAnadirIngredientes.setString(1, s);
+				stmtAnadirIngredientes.setString(2, dieta.getNombre());
+				stmtAnadirIngredientes.executeUpdate();
+			}
+			stmtAnadirIngredientes.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
