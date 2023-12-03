@@ -177,7 +177,7 @@ public class DBManager {
 	public static void anadirEntrenamiento(Connection connection, Entrenamiento entrenamiento) {
 		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Entrenamiento VALUES (?, ?, ?, ? ,?, ?, ?, ?");
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?)");
 			stmt.setString(1, entrenamiento.getNombre());
 			stmt.setString(2, entrenamiento.getTipoEntrenamiento().toString());
 			stmt.setString(3, entrenamiento.getDificultad().toString());
