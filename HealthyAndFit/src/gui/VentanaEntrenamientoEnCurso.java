@@ -77,7 +77,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
             if (en.getDificultad() == TipoDificultad.FACIL) {
             	segundos = 50;
             }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-            	segundos = 20;
+            	segundos = 10;
             }else {
             	segundos = 30;
             }
@@ -120,20 +120,35 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        timeFormatter = new DecimalFormat("00");
 	        
 	        timer = new Timer(10, new ActionListener() {
-	            @Override
+	            @Override 
 	            public void actionPerformed(ActionEvent e) {
+	            	if (!timer.isRunning()) {
+	            		int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
+	            	}
 	                if (milisegundos > 0) {
 	                    milisegundos--;
 	                } else {
 	                    if (segundos == 0 && minutos == 0) {
 	                        timer.stop();
 	                        
-	                        
+	                        if (seriesRestantes == 0) {
+	                            // Solo muestra el JOptionPane al final del ejercicio
+	                            labelTiempo.setVisible(false);
+	                            labelEstado.setText("Entrenamiento finalizado");
+	                            int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
+	                        	if (opcion == JOptionPane.YES_OPTION) {
+	                            	persona.getRegistroEntrenamiento().add(en);
+	                            }
+	                            if (opcion == JOptionPane.NO_OPTION) {
+	                            	SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
+	                				dispose();
+	                            }
+	                        }
 	                        if (!descanso) {
 	                            // Si no está en el tiempo de descanso, inicia el tiempo de descanso
 	                            descanso = true;
 	                            seriesRestantes--;
-	                            segundos = 30;  // 30 segundos de descanso entre series
+	                            segundos = 10;  // 30 segundos de descanso entre series
 	                            milisegundos = 0;
 	                            timer.start();
 	                            labelTiempo.setForeground(Color.RED);
