@@ -15,6 +15,8 @@ import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 
+import domain.Dieta;
+import domain.Entrenamiento;
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
 import domain.Usuario;
@@ -150,5 +152,47 @@ public class DBManager {
         
 		return baos.toByteArray();
 	   
+	}
+	
+	public static void anadirDieta(Connection connection, Dieta dieta)  {
+		Connection conn = connection;	
+		try {
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Dieta VALUES (?, ?, ?, ?, ?, ?)");
+			stmt.setString(1, dieta.getNombre());
+			stmt.setInt(2, dieta.getTiempo());
+			stmt.setString(3, dieta.getDificultad().toString());
+			stmt.setInt(4, dieta.getKcal());
+			stmt.setString(5, dieta.getPasos().toString());
+			stmt.setString(6, dieta.getIngredientes().toString());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+			
+	}
+	
+	public static void anadirEntrenamiento(Connection connection, Entrenamiento entrenamiento) {
+		Connection conn = connection;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Entrenamiento VALUES (?, ?, ?, ? ,?, ?, ?, ?");
+			stmt.setString(1, entrenamiento.getNombre());
+			stmt.setString(2, entrenamiento.getTipoEntrenamiento().toString());
+			stmt.setString(3, entrenamiento.getDificultad().toString());
+			stmt.setInt(4, entrenamiento.getTiempo());
+			stmt.setString(5, entrenamiento.getDescripcion());
+			stmt.setInt(6, entrenamiento.getCalorias());
+			stmt.setInt(7, entrenamiento.getSeries());
+			stmt.setInt(8, entrenamiento.getRepeticiones());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			
+		}
 	}
 }
