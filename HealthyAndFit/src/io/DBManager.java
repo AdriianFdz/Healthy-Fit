@@ -157,27 +157,31 @@ public class DBManager {
 	public static void anadirDieta(Connection connection, Dieta dieta)  {
 		Connection conn = connection;	
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Dieta VALUES (?, ?, ?, ?, ?, ?)");
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Dieta VALUES (?, ?, ?, ?)");
 			stmt.setString(1, dieta.getNombre());
 			stmt.setInt(2, dieta.getTiempo());
 			stmt.setString(3, dieta.getDificultad().toString());
 			stmt.setInt(4, dieta.getKcal());
-			stmt.setString(5, dieta.getPasos().toString());
-			stmt.setString(6, dieta.getIngredientes().toString());
 			
 			stmt.executeUpdate();
 			stmt.close();
 			
+			PreparedStatement stmtAnadirPasos = conn.prepareStatement("INSERT INTO pasos_dietas VALUES (null, ?, ?)");
+			for (String s : dieta.getPasos()) {
+				stmtAnadirPasos.setString(1, s);
+				stmtAnadirPasos.setString(2, dieta.getNombre());
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 			
 	}
 	
 	public static void anadirEntrenamiento(Connection connection, Entrenamiento entrenamiento) {
 		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?)");
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?)");
 			stmt.setString(1, entrenamiento.getNombre());
 			stmt.setString(2, entrenamiento.getTipoEntrenamiento().toString());
 			stmt.setString(3, entrenamiento.getDificultad().toString());
