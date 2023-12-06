@@ -29,7 +29,8 @@ public class VentanaLogeoRegistro extends JFrame{
 			public JButton inicioRapido;
 		public JPanel logeoDerecha;
 	
-	
+	//INFORMACIÓN PRIMARIA PARA REGISTRARSE
+		
 	public JPanel registro;
 	public JLabel preguntaTodaviaSinCuenta;
 	public JLabel nombreRegistro;
@@ -40,6 +41,38 @@ public class VentanaLogeoRegistro extends JFrame{
 	public JTextField meterContraseñaRegistro;
 	public JLabel contraseñaRepetidaRegistro;
 	public JTextField meterContraseñaRepetidaRegistro;
+	
+	
+	//METER TODA LA INFORMACIÓN DEL USUARIO
+	public JPanel registro2;
+	
+	public JLabel apellido1;
+	public JTextField meterApellido1;
+	
+	public JLabel apellido2;
+	public JTextField meterApellido2;
+	
+	public JLabel altura;
+	public JTextField meterAltura;
+	
+	public JLabel peso;
+	public JTextField meterPeso;
+	
+	public JLabel genero;
+	public JTextField meterGenero;
+	
+	public JLabel fechaNac;
+	public JTextField meterFechaNac;
+	
+	public JPanel registro3;
+	
+	public JLabel enfermedades;
+	public JTable meterEnfermedades;
+	
+	public JLabel alergias;
+	public JTable meterAlergias;
+	
+	public JButton siguiente;
 	public JButton registrarse;
 	
 	
@@ -77,6 +110,7 @@ public class VentanaLogeoRegistro extends JFrame{
 		logeo.add(logeoIzquierda);
 		logeo.add(logeoDerecha);
 		
+		//REGISTRO
 		
 		registro = new JPanel(new BorderLayout());
 		preguntaTodaviaSinCuenta = new JLabel("¿Todavía no tienes cuenta?");
@@ -109,9 +143,34 @@ public class VentanaLogeoRegistro extends JFrame{
 		registrarse = new JButton("REGISTRARSE");
 		registro.add(registrarse, BorderLayout.SOUTH);
 		
+		//REGISTRO 2
 		
+		registro2 = new JPanel(new GridLayout(6, 2));
+		
+		apellido1 = new JLabel("Primer Apellido");
+		meterApellido1 = new JTextField();
 	
+		apellido2 = new JLabel("Segundo Apellido");
+		meterApellido2 = new JTextField();
+		
+		altura = new JLabel("Peso");
+		meterAltura = new JTextField();
 	
+		peso = new JLabel("Altura");
+		meterPeso = new JTextField();
+		
+		registro2.add(apellido1);
+		registro2.add(meterApellido1);
+		registro2.add(apellido2);
+		registro2.add(meterApellido2);
+		registro2.add(peso);
+		registro2.add(meterPeso);
+		registro2.add(altura);
+		registro2.add(meterAltura);
+		
+		//REGISTRO 3
+		
+		registro3 = new JPanel();
 	
 	
 	iniciarSesion.addActionListener(new ActionListener() {
@@ -183,11 +242,13 @@ public class VentanaLogeoRegistro extends JFrame{
 	
 		paneles.add(logeo,"Logeo");
 		paneles.add(registro,"Registro");
+		paneles.add(registro2,"Registro 2");
+		paneles.add(registro3,"Registro 3");
 		this.add(paneles);
 		
 		this.setVisible(true);
 		this.pack();
-		this.setResizable(false);
+		//this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Healthy & Fit");
 	}
