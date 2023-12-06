@@ -9,9 +9,13 @@ import java.util.logging.Level;
 
 import javax.swing.*;
 
+import com.toedter.calendar.JCalendar;
+
 import db.BaseDeDatos;
 import domain.Usuario;
 import io.RegistroLogger;
+
+
 
 public class VentanaLogeoRegistro extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -44,7 +48,8 @@ public class VentanaLogeoRegistro extends JFrame{
 	
 	
 	//METER TODA LA INFORMACIÓN DEL USUARIO
-	public JPanel registro2;
+	public JScrollPane registro2;
+	public JPanel registro2Grid;
 	
 	public JLabel apellido1;
 	public JTextField meterApellido1;
@@ -62,7 +67,7 @@ public class VentanaLogeoRegistro extends JFrame{
 	public JTextField meterGenero;
 	
 	public JLabel fechaNac;
-	public JTextField meterFechaNac;
+	public JCalendar meterFechaNac;
 	
 	public JPanel registro3;
 	
@@ -75,6 +80,7 @@ public class VentanaLogeoRegistro extends JFrame{
 	public JButton siguiente;
 	public JButton registrarse;
 	
+	public JPanel registro4;
 	
 	
 	public VentanaLogeoRegistro() {
@@ -110,7 +116,7 @@ public class VentanaLogeoRegistro extends JFrame{
 		logeo.add(logeoIzquierda);
 		logeo.add(logeoDerecha);
 		
-		//REGISTRO
+		//REGISTRO  INFORMACIÓN BASICA
 		
 		registro = new JPanel(new BorderLayout());
 		preguntaTodaviaSinCuenta = new JLabel("¿Todavía no tienes cuenta?");
@@ -143,9 +149,10 @@ public class VentanaLogeoRegistro extends JFrame{
 		registrarse = new JButton("REGISTRARSE");
 		registro.add(registrarse, BorderLayout.SOUTH);
 		
-		//REGISTRO 2
+		//REGISTRO 2  INFORMACIÓN ADICIONAL
 		
-		registro2 = new JPanel(new GridLayout(6, 2));
+		registro2Grid = new JPanel(new GridLayout(6, 2,10,10));
+		
 		
 		apellido1 = new JLabel("Primer Apellido");
 		meterApellido1 = new JTextField();
@@ -159,20 +166,33 @@ public class VentanaLogeoRegistro extends JFrame{
 		peso = new JLabel("Altura");
 		meterPeso = new JTextField();
 		
-		registro2.add(apellido1);
-		registro2.add(meterApellido1);
-		registro2.add(apellido2);
-		registro2.add(meterApellido2);
-		registro2.add(peso);
-		registro2.add(meterPeso);
-		registro2.add(altura);
-		registro2.add(meterAltura);
+		genero = new JLabel("Genero");
+		meterGenero = new JTextField();
 		
-		//REGISTRO 3
+		fechaNac = new JLabel("Fecha Nacimiento");
+		meterFechaNac = new JCalendar();
+		
+		registro2Grid.add(apellido1);
+		registro2Grid.add(meterApellido1);
+		registro2Grid.add(apellido2);
+		registro2Grid.add(meterApellido2);
+		registro2Grid.add(peso);
+		registro2Grid.add(meterPeso);
+		registro2Grid.add(altura);
+		registro2Grid.add(meterAltura);
+		registro2Grid.add(genero);
+		registro2Grid.add(meterGenero);
+		registro2Grid.add(fechaNac);
+		registro2Grid.add(meterFechaNac);
+		registro2= new JScrollPane(registro2Grid);
+		
+		//REGISTRO 3  ALERGIAS Y ENFERMEDADES
 		
 		registro3 = new JPanel();
+		
+		//REGISTRO 4  FOTO DE PERFIL
 	
-	
+		registro4 = new JPanel();
 	iniciarSesion.addActionListener(new ActionListener() {
 		
 		@SuppressWarnings("deprecation")
@@ -244,13 +264,15 @@ public class VentanaLogeoRegistro extends JFrame{
 		paneles.add(registro,"Registro");
 		paneles.add(registro2,"Registro 2");
 		paneles.add(registro3,"Registro 3");
+		paneles.add(registro4,"Registro 4");
 		this.add(paneles);
 		
 		this.setVisible(true);
-		this.pack();
-		//this.setResizable(false);
+		this.setSize(500, 400);
+		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Healthy & Fit");
+		this.setLocationRelativeTo(null);
 	}
 	
 	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
