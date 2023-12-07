@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -26,9 +27,7 @@ public class VentanaHistorial extends JFrame {
 	private JTable table;
 	
 	private static final long serialVersionUID = 1L;
-	
-	JPanel panel;
-	
+		
 	public VentanaHistorial(Usuario u) throws SQLException {
 		Map<String, String> mapa= new HashMap<>();
 		    Connection conn = DBManager.obtenerConexion();
@@ -44,11 +43,8 @@ public class VentanaHistorial extends JFrame {
 			table = new JTable();
 			table.setModel(new ModeloDatos(header, mapa));
 		
-			panel = new JPanel();		
-			panel.setLayout(new BorderLayout());
-			panel.add(table);
+			this.add(new JScrollPane(table));
 			
-			this.add(panel, BorderLayout.CENTER);
 		 	setSize(1920,1080);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("Historial");
@@ -66,8 +62,7 @@ public class VentanaHistorial extends JFrame {
 		Map<String, String> mapa;
 		
 		public ModeloDatos(Vector<String> header, Map<String, String> mapa) {
-			this.header = new Vector<>();
-			this.header.addAll(header);
+			this.header = new Vector<>(header);
 			this.mapa = mapa;
 		}
 		
@@ -87,7 +82,6 @@ public class VentanaHistorial extends JFrame {
 		
 		@Override
 		public String getColumnName(int column) {
-			System.out.println(header.get(column));
 			return header.get(column);
 		}
 		
