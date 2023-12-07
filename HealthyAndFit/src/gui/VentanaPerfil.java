@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.logging.Level;
@@ -219,7 +220,13 @@ public class VentanaPerfil extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaHistorial());
+				SwingUtilities.invokeLater(() -> {
+					try {
+						new VentanaHistorial(p);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+				});
 				dispose();
 				
 			}
