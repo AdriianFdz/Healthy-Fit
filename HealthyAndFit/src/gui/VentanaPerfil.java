@@ -78,12 +78,15 @@ public class VentanaPerfil extends JFrame{
 		// Botones
 		JButton modificarBot = new JButton("MODIFICAR DATOS");
 		JButton accesoPanelBot = new JButton("ACCESO PANEL");
-
+		JButton historialBot = new JButton("ACCESO HISTORIAL");
+ 
 		JButton volverBot = new JButton("VOLVER");
 		JButton botonCerSesion = new JButton("CERRAR SESION");
 
 		panelColum1.add(modificarBot);
+		panelColum1.add(historialBot);
 		panelColum1.add(accesoPanelBot);
+		
 
 		// Definir la condicion del boton Acceso
 		if (p.getPermiso() != TipoPermiso.ADMINISTRADOR) {
@@ -209,6 +212,16 @@ public class VentanaPerfil extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 				dispose();
+			}
+		});
+		
+		historialBot.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(() -> new VentanaHistorial());
+				dispose();
+				
 			}
 		});
 
