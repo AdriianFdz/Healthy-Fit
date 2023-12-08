@@ -203,7 +203,6 @@ public class VentanaPerfil extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p));
-				dispose();
 			}
 		});
 
@@ -227,7 +226,6 @@ public class VentanaPerfil extends JFrame{
 						e1.printStackTrace();
 					}
 				});
-				dispose();
 				
 			}
 		});

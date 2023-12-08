@@ -194,7 +194,6 @@ public class VentanaEditarPerfil extends JFrame {
 				int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres salir sin guardar?",
 						"", JOptionPane.YES_NO_OPTION);
 				if(respuesta == JOptionPane.YES_OPTION) {
-				SwingUtilities.invokeLater(() -> new VentanaPerfil(u));
 				dispose();
 				}
 			}
@@ -239,7 +238,6 @@ public class VentanaEditarPerfil extends JFrame {
 		
 		this.pack();
 		this.setVisible(true);
-		setSize(600, 600);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Perfil");

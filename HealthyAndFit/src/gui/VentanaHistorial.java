@@ -94,7 +94,7 @@ public class VentanaHistorial extends JFrame {
 
 	        // Establecer la imagen como fondo de la etiqueta foto
 	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
-	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(1024, 1024, Image.SCALE_SMOOTH)));
+	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(700, 700, Image.SCALE_SMOOTH)));
 
 	        // Superponer la tabla sobre la etiqueta de la foto
 	        panelDerecha = new JPanel(new GridLayout());
@@ -139,7 +139,7 @@ public class VentanaHistorial extends JFrame {
 				}
 			});
 	        
-	        setDefaultCloseOperation(EXIT_ON_CLOSE);
+	        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	        setTitle("Historial");
 	        pack(); 
 	        setLocationRelativeTo(null); 

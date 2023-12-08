@@ -106,21 +106,22 @@ public class VentanaResumen extends JFrame{
 			panelVasosAgua.add(vasosDeAgua);
 			panelVasosAgua.add(panelImagenVasos);
 			JPanel botonesVasos = new JPanel();
-			botonesVasos.setLayout(new BoxLayout(botonesVasos, BoxLayout.Y_AXIS));
+			
+				JButton btnEliminarVaso = new JButton();
+					ImageIcon iconoMinus = new ImageIcon("resources\\images\\minus.png");
+					Image iconoMinusImg = iconoMinus.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+					ImageIcon iconoMinusResized = new ImageIcon(iconoMinusImg);
+					btnEliminarVaso.setIcon(iconoMinusResized);
+					
 				JButton btnAnadirVaso = new JButton();
 					ImageIcon iconoPlus = new ImageIcon("resources\\images\\plus.png");
 					Image iconoPlusImg = iconoPlus.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 					ImageIcon iconoPlusResized = new ImageIcon(iconoPlusImg);
 					btnAnadirVaso.setIcon(iconoPlusResized);
 				
-				JButton btnEliminarVaso = new JButton();
-					ImageIcon iconoMinus = new ImageIcon("resources\\images\\minus.png");
-					Image iconoMinusImg = iconoMinus.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
-					ImageIcon iconoMinusResized = new ImageIcon(iconoMinusImg);
-					btnEliminarVaso.setIcon(iconoMinusResized);
-				
-				botonesVasos.add(btnAnadirVaso);
+					
 				botonesVasos.add(btnEliminarVaso);
+				botonesVasos.add(btnAnadirVaso);
 			panelVasosAgua.add(botonesVasos);
 		//Cambios de estilo y tamaño de letra
 		caloriasConsumidas.setFont(new Font("Consolas", Font.PLAIN ,25));
@@ -292,7 +293,7 @@ public class VentanaResumen extends JFrame{
 					String textoAnterior = texto.getText();
 					// Cojo el texto anterior desde la 2 letra hasta el final, y le sumo la primera letra
 					String textoDesplazado = textoAnterior.substring(1)+texto.getText().substring(0,1);  
-					texto.setText(textoDesplazado);
+					SwingUtilities.invokeLater(() -> texto.setText(textoDesplazado));
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
