@@ -7,11 +7,15 @@ import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -39,8 +44,8 @@ public class VentanaHistorial extends JFrame {
 	private JPanel panelIzquierda;
 	private JPanel panelBotones;
 	
-	private JButton volverButton;
-	private JButton eliminarButton;
+	private JButton botonVolver;
+	private JButton botonEliminar;
 	
 	private JLabel foto;
 	private JLabel label;
@@ -55,6 +60,7 @@ public class VentanaHistorial extends JFrame {
 			while (rs.next()) {
 				String nombreEntrenamiento = rs.getString("nombreEntrenamiento");
 				String fecha = rs.getString("fecha");
+				LocalDateTime f = LocalDateTime.parse(rs.getString("fecha"));
 				mapa.put(fecha.substring(0, 16).replace("T", " / "), nombreEntrenamiento);
 				
 			}
@@ -85,18 +91,6 @@ public class VentanaHistorial extends JFrame {
 				}
 			});
 			
-//			table.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
-//				
-//				@Override
-//				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-//						int row, int column) {
-//					JLabel label = new JLabel();
-//					label.setText(value.toString());
-//					//label.setFont(new Font("Tahoma", Font.PLAIN, 12));
-//					
-//					return label;
-//				}
-//			});
 
 	        // Establecer la imagen como fondo de la etiqueta foto
 	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
@@ -107,23 +101,43 @@ public class VentanaHistorial extends JFrame {
 	        panelDerecha.setOpaque(false); // Hacer el panel transparente
 	        panelDerecha.add(foto);
 	    
-	        volverButton = new JButton("Volver");
-	        eliminarButton = new JButton("Eliminar");
+	        botonVolver = new JButton("Volver");
+	        botonEliminar = new JButton("Eliminar");
 	        
 	        panelBotones = new JPanel(new BorderLayout());
 	        label = new JLabel("▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄");
 	        label.setFont(new Font("Tahoma", Font.BOLD, 20));
 	        label.setHorizontalAlignment(JLabel.CENTER);
-	        panelBotones.add(eliminarButton, BorderLayout.NORTH);
+	        panelBotones.add(botonEliminar, BorderLayout.NORTH);
 	        panelBotones.add(label, BorderLayout.CENTER);
-	        panelBotones.add(volverButton, BorderLayout.SOUTH);
+	        panelBotones.add(botonVolver, BorderLayout.SOUTH);
 	        
 	        panelIzquierda = new JPanel(new BorderLayout());
 	        panelIzquierda.add(new JScrollPane(table), BorderLayout.CENTER);
 	        panelIzquierda.add(panelBotones, BorderLayout.SOUTH);
-	    
+	   
 	        this.add(panelIzquierda, BorderLayout.WEST);
 	        this.add(panelDerecha);
+	        
+	        
+	        botonVolver.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					SwingUtilities.invokeLater(() -> new VentanaPerfil(u));
+    				dispose();
+					
+				}
+			});
+	        
+	        botonEliminar.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+					
+				}
+			});
 	        
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("Historial");
