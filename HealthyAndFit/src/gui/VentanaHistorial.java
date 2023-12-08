@@ -4,22 +4,17 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
@@ -31,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
@@ -63,7 +57,6 @@ public class VentanaHistorial extends JFrame {
 			ResultSet rs = s.executeQuery("SELECT nombreEntrenamiento, fecha, dificultad FROM usuario_entrenamientos WHERE nombreUsuario = 'juan_perez'");
 			while (rs.next()) {
 				String nombreEntrenamiento = rs.getString("nombreEntrenamiento");
-				String fecha = rs.getString("fecha");
 				LocalDateTime f = LocalDateTime.parse(rs.getString("fecha"));
 				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad").toUpperCase());
 				Entrenamiento e = new Entrenamiento(nombreEntrenamiento, null, dificultad, 0, "", 0, 0, 0);
@@ -136,7 +129,6 @@ public class VentanaHistorial extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					SwingUtilities.invokeLater(() -> new VentanaPerfil(u));
     				dispose();
 					
 				}

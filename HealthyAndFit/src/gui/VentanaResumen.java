@@ -14,17 +14,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -41,8 +40,6 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
 import db.BaseDeDatos;
-import domain.Entrenamiento;
-import domain.TipoDificultad;
 import domain.Usuario;
 import io.DBManager;
 import io.RegistroLogger;
@@ -350,6 +347,7 @@ public class VentanaResumen extends JFrame{
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						System.out.println("Hilo de animaciones de texto interrumpido");
+						JOptionPane.showConfirmDialog(null, "Error en la animación del texto", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}
 				

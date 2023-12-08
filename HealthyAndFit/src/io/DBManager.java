@@ -10,14 +10,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Properties;
 import java.util.logging.Level; 
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 import domain.Dieta;
 import domain.Entrenamiento;
@@ -38,9 +37,10 @@ public class DBManager {
 			
 		} catch (IOException e1) {
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo leer el archivo db.properties");
+			JOptionPane.showConfirmDialog(null, "Error al leer el archivo db.properties", "Error", JOptionPane.PLAIN_MESSAGE);
 		} catch (SQLException e) {
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 		return conn;
@@ -55,8 +55,8 @@ public class DBManager {
 			 
 			 stmt.close();
 		} catch (SQLException e) {
-			//MODIFICAR EXCP
 			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 			
 		
@@ -72,8 +72,8 @@ public class DBManager {
 			 
 			 stmt.close();
 		} catch (SQLException e) {
-			//MODIFICAR EXCP
 			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 			
 		
@@ -139,8 +139,8 @@ public class DBManager {
 			stmtAnadirEnfermedades.close();
 			stmtAnadirAlergias.close();
 			} catch (SQLException e) {
-			//MODIFICAR EXCP
 			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
@@ -152,6 +152,7 @@ public class DBManager {
 			ImageIO.write(bi, "png", baos);
 		} catch (IOException e) {
 			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
         
 		return baos.toByteArray();
@@ -189,6 +190,7 @@ public class DBManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		} 
 			
 	}
@@ -211,6 +213,7 @@ public class DBManager {
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			
 		}
 	}
@@ -229,6 +232,7 @@ public class DBManager {
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 	}

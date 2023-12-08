@@ -16,10 +16,10 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -28,7 +28,6 @@ import javax.swing.SwingUtilities;
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
-import domain.TipoPreferencia;
 import domain.Usuario;
 import io.RegistroLogger;
 
@@ -224,6 +223,7 @@ public class VentanaPerfil extends JFrame{
 						new VentanaHistorial(p);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						JOptionPane.showConfirmDialog(null, "Error al cargar la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				});
 				
