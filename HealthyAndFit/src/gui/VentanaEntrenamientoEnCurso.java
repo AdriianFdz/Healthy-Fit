@@ -22,7 +22,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import org.sqlite.core.DB;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
@@ -126,9 +125,6 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        timer = new Timer(10, new ActionListener() {
 	            @Override 
 	            public void actionPerformed(ActionEvent e) {
-	            	if (!timer.isRunning()) {
-	            		int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
-	            	}
 	                if (milisegundos > 0) {
 	                    milisegundos--;
 	                } else {

@@ -8,8 +8,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.time.LocalDate;
-import java.time.Period;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -20,11 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
-import domain.TipoPermiso;
 import domain.Usuario;
 
 public class VentanaEditarPerfil extends JFrame {
@@ -97,7 +93,7 @@ public class VentanaEditarPerfil extends JFrame {
 		fieldApellido2 = new JTextField(u.getApellido2());
 		labelApellido2 = new JLabel("Segundo Apellido:");
 		
-		fieldFechaNac = new JTextField(u.getfechaNacimiento().toString());
+		fieldFechaNac = new JTextField(u.getFechaNacimiento().toString());
 		labelFechaNac = new JLabel("Fecha nacimiento:");
 		
 		
