@@ -293,7 +293,7 @@ public class Usuario {
 	}
 
 	public void setVasosDeAgua(int vasosDeAgua) {
-		if (vasosDeAgua >= 0 && vasosDeAgua < 8)
+		if (vasosDeAgua >= 0 && vasosDeAgua <= 8)
 		this.vasosDeAgua = vasosDeAgua;
 	}
 

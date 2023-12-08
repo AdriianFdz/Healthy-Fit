@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -101,11 +102,26 @@ public class VentanaResumen extends JFrame{
 		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getCaloriasConsumidas());
 		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getProximaComida());
 		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
-		
 		JPanel panelVasosAgua = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			panelVasosAgua.add(vasosDeAgua);
 			panelVasosAgua.add(panelImagenVasos);
-		
+			JPanel botonesVasos = new JPanel();
+			botonesVasos.setLayout(new BoxLayout(botonesVasos, BoxLayout.Y_AXIS));
+				JButton btnAnadirVaso = new JButton();
+					ImageIcon iconoPlus = new ImageIcon("resources\\images\\plus.png");
+					Image iconoPlusImg = iconoPlus.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+					ImageIcon iconoPlusResized = new ImageIcon(iconoPlusImg);
+					btnAnadirVaso.setIcon(iconoPlusResized);
+				
+				JButton btnEliminarVaso = new JButton();
+					ImageIcon iconoMinus = new ImageIcon("resources\\images\\minus.png");
+					Image iconoMinusImg = iconoMinus.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+					ImageIcon iconoMinusResized = new ImageIcon(iconoMinusImg);
+					btnEliminarVaso.setIcon(iconoMinusResized);
+				
+				botonesVasos.add(btnAnadirVaso);
+				botonesVasos.add(btnEliminarVaso);
+			panelVasosAgua.add(botonesVasos);
 		//Cambios de estilo y tamaño de letra
 		caloriasConsumidas.setFont(new Font("Consolas", Font.PLAIN ,25));
 		proximaComida.setFont(new Font("Consolas", Font.PLAIN, 25));
@@ -203,6 +219,25 @@ public class VentanaResumen extends JFrame{
 			}
 		});
 
+		btnAnadirVaso.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int cantidad = persona.getVasosDeAgua() + 1;
+				SwingUtilities.invokeLater(() -> modificarVasosDeAgua(persona, listaVasos, cantidad));
+			}
+		});
+		
+		
+		btnEliminarVaso.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int cantidad = persona.getVasosDeAgua() - 1;
+				SwingUtilities.invokeLater(() -> modificarVasosDeAgua(persona, listaVasos, cantidad));
+			}
+		});
+		
 		
 		pack();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -302,6 +337,29 @@ public class VentanaResumen extends JFrame{
 		}
 		
 		RegistroLogger.anadirLogeo(Level.INFO, "Vasos de agua actualizados");
+	}
+	
+	
+	private void modificarVasosDeAgua(Usuario persona, List<JLabel> listaVasos, int cantidad) {
+		if (cantidad >= 0 && cantidad <= 8) {			
+			persona.setVasosDeAgua(cantidad);
+			
+			for (int i = 0; i < cantidad; i++) {
+				ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoLleno.png");
+				Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+				ImageIcon vasoBueno = new ImageIcon(vaso);
+				
+				listaVasos.get(i).setIcon(vasoBueno);
+			}
+			
+			for (int i = cantidad; i < 8; i++) {
+				ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoVacio.png");
+				Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+				ImageIcon vasoBueno = new ImageIcon(vaso);
+				
+				listaVasos.get(i).setIcon(vasoBueno);
+			}
+		}
 	}
 	
 	//GETTERS
