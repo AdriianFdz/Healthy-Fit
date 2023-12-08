@@ -89,7 +89,7 @@ public class DBManager {
 			stmt.setString(2, usuario.getNombre());
 			stmt.setString(3, usuario.getApellido1());
 			stmt.setString(4, usuario.getApellido2());
-		 	stmt.setString(5, usuario.getfechaNacimiento().toString());
+		 	stmt.setString(5, usuario.getFechaNacimiento().toString());
 			stmt.setString(6, usuario.getSexo().toString());
 			stmt.setDouble(7, usuario.getAltura());
 			stmt.setInt(8, usuario.getPeso());
