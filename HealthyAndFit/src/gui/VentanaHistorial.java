@@ -136,7 +136,6 @@ public class VentanaHistorial extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					SwingUtilities.invokeLater(() -> new VentanaPerfil(u));
     				dispose();
 					
 				}

@@ -20,6 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -298,6 +299,7 @@ public class VentanaResumen extends JFrame{
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						System.out.println("Hilo de animaciones de texto interrumpido");
+						JOptionPane.showConfirmDialog(null, "Error en la animación del texto", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}
 				
