@@ -97,7 +97,7 @@ public class VentanaEditarPerfil extends JFrame {
 		fieldApellido2 = new JTextField(u.getApellido2());
 		labelApellido2 = new JLabel("Segundo Apellido:");
 		
-		fieldFechaNac = new JTextField(u.getfechaNacimiento().toString());
+		fieldFechaNac = new JTextField(u.getFechaNacimiento().toString());
 		labelFechaNac = new JLabel("Fecha nacimiento:");
 		
 		

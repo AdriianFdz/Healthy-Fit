@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+import org.jfree.data.general.Dataset;
+import org.jfree.data.time.TimeSeriesCollection;
+
 public class Usuario {
 	private String nombre;
 	private String nombreUsuario;
@@ -33,6 +36,8 @@ public class Usuario {
 	private TipoPermiso permiso;
 	private List<Entrenamiento> registroEntrenamiento;
 	private List<Dieta> registroDietas;
+	private TimeSeriesCollection datasetEntrenamientos;
+	private TimeSeriesCollection datasetDietas;
 	
 	//Constructor con argumentos
 	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, LocalDate fechaNacimiento,
@@ -40,7 +45,7 @@ public class Usuario {
 			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
 			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
 			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso,
-			List<Entrenamiento> registroEntrenamiento, List<Dieta> dietas) {
+			List<Entrenamiento> registroEntrenamiento, List<Dieta> dietas, TimeSeriesCollection datasetEntrenamientos, TimeSeriesCollection datasetDietas) {
 		super();
 		this.nombre = nombre;
 		this.nombreUsuario = nombreUsuario;
@@ -80,6 +85,9 @@ public class Usuario {
 		for (Dieta d : registroDietas) {
 			this.registroDietas.add(d);
 		}
+		
+		this.datasetEntrenamientos = datasetEntrenamientos;
+		this.datasetDietas = datasetDietas;
 	}
 	
 	//Constructor sin argumentos
@@ -111,6 +119,8 @@ public class Usuario {
 		this.permiso = TipoPermiso.USUARIO;
 		this.registroEntrenamiento = new ArrayList<Entrenamiento>();
 		this.registroDietas = new ArrayList<Dieta>();
+		this.datasetEntrenamientos = new TimeSeriesCollection();
+		this.datasetDietas = new TimeSeriesCollection();
 	}
 	
 	//getters y setters
@@ -146,11 +156,11 @@ public class Usuario {
 		this.apellido2 = apellido2;
 	}
 
-	public LocalDate getfechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setfechaNacimiento(LocalDate fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
@@ -342,8 +352,23 @@ public class Usuario {
 		this.registroDietas = registroDietas;
 	}
 
-	
-	
+		
+	public TimeSeriesCollection getDatasetEntrenamientos() {
+		return datasetEntrenamientos;
+	}
+
+	public void setDatasetEntrenamientos(TimeSeriesCollection datasetEntrenamientos) {
+		this.datasetEntrenamientos = datasetEntrenamientos;
+	}
+
+	public TimeSeriesCollection getDatasetDietas() {
+		return datasetDietas;
+	}
+
+	public void setDatasetDietas(TimeSeriesCollection datasetDietas) {
+		this.datasetDietas = datasetDietas;
+	}
+
 	//Metodo toString
 	@Override
 	public String toString() {

@@ -68,7 +68,7 @@ public class VentanaPerfil extends JFrame{
 
 		labelNombre = new JLabel(String.format("Nombre: %s", p.getNombre().toUpperCase()));
 		labelApellido1 = new JLabel(String.format("Apellidos: %s %s", p.getApellido1().toUpperCase(), p.getApellido2().toUpperCase()));
-		labelFechaNac = new JLabel(String.format("Nacimiento: %s",p.getfechaNacimiento().toString()));
+		labelFechaNac = new JLabel(String.format("Nacimiento: %s",p.getFechaNacimiento().toString()));
 		labelTipoU = new JLabel(String.format("Rango: %s", p.getPermiso().name()));
 
 		panelColum1.add(labelNombre);
@@ -102,7 +102,7 @@ public class VentanaPerfil extends JFrame{
 
 		JPanel panelDatos = new JPanel(new GridLayout(7,2,0,0));
 		
-		int edad = Period.between(p.getfechaNacimiento(), LocalDate.now()).getYears();
+		int edad = Period.between(p.getFechaNacimiento(), LocalDate.now()).getYears();
 
 		labelEdad = new JLabel(String.format("Edad: %d", edad));
 		labelSexo = new JLabel(String.format("Sexo: %s", p.getSexo().name()));

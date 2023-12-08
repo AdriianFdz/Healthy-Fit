@@ -16,8 +16,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
@@ -33,6 +35,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import domain.Entrenamiento;
+import domain.TipoDificultad;
 import domain.Usuario;
 import io.DBManager;
 
@@ -53,21 +57,24 @@ public class VentanaHistorial extends JFrame {
 	private static final long serialVersionUID = 1L;
 		
 	public VentanaHistorial(Usuario u) throws SQLException {
-		Map<String, String> mapa= new HashMap<>();
+		Map<LocalDateTime, Entrenamiento> map= new HashMap<LocalDateTime, Entrenamiento>();
 		    Connection conn = DBManager.obtenerConexion();
 			Statement s = conn.createStatement();
-			ResultSet rs = s.executeQuery("SELECT nombreEntrenamiento, fecha FROM usuario_entrenamientos WHERE nombreUsuario = 'juan_perez'");
+			ResultSet rs = s.executeQuery("SELECT nombreEntrenamiento, fecha, dificultad FROM usuario_entrenamientos WHERE nombreUsuario = 'juan_perez'");
 			while (rs.next()) {
 				String nombreEntrenamiento = rs.getString("nombreEntrenamiento");
 				String fecha = rs.getString("fecha");
 				LocalDateTime f = LocalDateTime.parse(rs.getString("fecha"));
-				mapa.put(fecha.substring(0, 16).replace("T", " / "), nombreEntrenamiento);
+				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad").toUpperCase());
+				Entrenamiento e = new Entrenamiento(nombreEntrenamiento, null, dificultad, 0, "", 0, 0, 0);
+				map.put(f, e);
+			
+				
 				
 			}
-			System.out.println(mapa);
-			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Fecha"));
+			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha" ));
 			table = new JTable();
-			table.setModel(new ModeloDatos(header, mapa));
+			table.setModel(new ModeloDatos(header, map));
 		
 			table.setDefaultRenderer(Object.class, new TableCellRenderer() {
 				
@@ -78,6 +85,10 @@ public class VentanaHistorial extends JFrame {
 					label.setOpaque(true);
 					label.setText(value.toString());
 					label.setFont(new Font("Tahoma", Font.PLAIN, 15));
+						if (column == 2) {
+							label.setText(value.toString().substring(0, 16).replace("T", " / "));
+							
+						}
 						if (isSelected) {
 							label.setBackground(Color.CYAN);
 							if (value.equals("Pierna")) {
@@ -86,6 +97,7 @@ public class VentanaHistorial extends JFrame {
 								foto.setIcon(new ImageIcon("resources\\images\\abdominales.jpg"));
 							}
 						}
+					label.setHorizontalAlignment(JLabel.CENTER);
 					table.setRowHeight(30);
 					return label;
 				}
@@ -154,11 +166,11 @@ public class VentanaHistorial extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		Vector<String> header;
-		Map<String, String> mapa;
+		Map<LocalDateTime, Entrenamiento> map;
 		
-		public ModeloDatos(Vector<String> header, Map<String, String> mapa) {
+		public ModeloDatos(Vector<String> header, Map<LocalDateTime, Entrenamiento> map) {
 			this.header = new Vector<>(header);
-			this.mapa = mapa;
+			this.map = map;
 		}
 		
 		
@@ -171,7 +183,7 @@ public class VentanaHistorial extends JFrame {
 		
 		@Override
 		public int getRowCount() {
-			return mapa.size();
+			return map.size();
 		}
 		
 		
@@ -189,12 +201,14 @@ public class VentanaHistorial extends JFrame {
 		@Override
 		public Object getValueAt(int rowIndex, int columnIndex) {
 			 int i = 0;
-			    for (Entry<String, String> entry : mapa.entrySet()) {
+			    for (Entry<LocalDateTime, Entrenamiento> entry : map.entrySet()) {
 			        if (i == rowIndex) {
 			            if (columnIndex == 0) {
-			                return entry.getValue(); 
-			            } else if (columnIndex == 1) {
+			                return entry.getValue().getNombre(); 
+			            } else if (columnIndex == 2) {
 			                return entry.getKey();   
+			            }else if (columnIndex == 1) {
+			            	return entry.getValue().getDificultad().toString();
 			            }
 			        }
 			        i++;

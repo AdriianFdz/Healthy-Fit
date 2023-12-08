@@ -10,6 +10,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +41,9 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
 import db.BaseDeDatos;
+import domain.Entrenamiento;
 import domain.Usuario;
+import io.DBManager;
 import io.RegistroLogger;
 
 public class VentanaResumen extends JFrame{
@@ -279,6 +286,28 @@ public class VentanaResumen extends JFrame{
         
         return dataset;
 
+	}
+	
+	public TimeSeriesCollection crearDatasetEntrenamiento(Usuario usuario){
+		TimeSeries ts = new TimeSeries("Calorias quemadas");
+		
+		Connection conn = DBManager.obtenerConexion();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario_entrenamientos WHERE nombreUsuario = ?");
+			stmt.setString(1, usuario.getNombreUsuario());
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				LocalDateTime fecha = LocalDateTime.parse(rs.getString("fecha"));
+				
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	
 	}
 	
 	//Animacion de las alertas
