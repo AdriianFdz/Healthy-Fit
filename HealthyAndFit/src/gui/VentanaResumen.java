@@ -52,6 +52,7 @@ public class VentanaResumen extends JFrame{
 	 JButton botonDieta;
 	 JPanel panelImagenVasos = new JPanel();
 	 Usuario persona;
+	 // Hacer mapa con dia y dieta
 	
 	 //LOGGER
 	private static final long serialVersionUID = 1L;
@@ -317,6 +318,7 @@ public class VentanaResumen extends JFrame{
 					}
 					ts.addOrUpdate(fechaConvertida, caloriasTotales);
 				}
+				
 			}
 	        dataset.addSeries(ts);	        
 	        
@@ -329,9 +331,6 @@ public class VentanaResumen extends JFrame{
 	
 	}
 	
-	public void recargarGrafica() {
-		
-	}
 	//Animacion de las alertas
 	
 	//Programa basado en https://www.tutorialspoint.com/how-can-we-implement-a-moving-text-using-a-jlabel-in-java

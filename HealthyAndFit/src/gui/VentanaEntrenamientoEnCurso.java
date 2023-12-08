@@ -140,10 +140,11 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            	persona.getRegistroEntrenamiento().add(en);
 	                            	Connection conn = DBManager.obtenerConexion();
 	                            	DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
+	                            	SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
 	                            	dispose();
 	                            }
 	                            if (opcion == JOptionPane.NO_OPTION) {
-	                            	SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona, vResumen));
+	                            	SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
 	                				dispose();
 	                            }
 	                        }
