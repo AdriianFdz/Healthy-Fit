@@ -64,7 +64,7 @@ public class VentanaEntrenamiento extends JFrame{
 
 
 
-	public VentanaEntrenamiento(Usuario persona) {
+	public VentanaEntrenamiento(Usuario persona, VentanaResumen vResumen) {
 		
 		botonIniciar.setVisible(false);
 		//Definir lista de entrenamientos
@@ -157,8 +157,9 @@ public class VentanaEntrenamiento extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaEntrenamientoEnCurso(entrenamientoSeleccionado, persona));
+				SwingUtilities.invokeLater(() -> new VentanaEntrenamientoEnCurso(entrenamientoSeleccionado, persona,vResumen));
 				dispose();
+				vResumen.dispose();
 			}
 		});
 		

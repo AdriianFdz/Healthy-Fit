@@ -51,12 +51,12 @@ public class VentanaResumen extends JFrame{
 	 JButton fotoPerfil;
 	 JButton botonDieta;
 	 JPanel panelImagenVasos = new JPanel();
-
+	 Usuario persona;
 	
 	 //LOGGER
 	private static final long serialVersionUID = 1L;
 	public VentanaResumen(Usuario persona) {		
-	
+		this.persona = persona;
 		
 		//ENTRENAMIENTO
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getCaloriasGastadas());
@@ -162,7 +162,6 @@ public class VentanaResumen extends JFrame{
 		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
-		
 		panelGraficaDieta.setPreferredSize(new Dimension(resPantalla.getSize().width/2-35,resPantalla.getSize().height/2-35));
 		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
 				
@@ -204,7 +203,7 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
+				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona, VentanaResumen.this));
 				
 			}
 		});
@@ -319,8 +318,8 @@ public class VentanaResumen extends JFrame{
 					ts.addOrUpdate(fechaConvertida, caloriasTotales);
 				}
 			}
-			ts.add(new Day(9,12,2023), 300);
-	        dataset.addSeries(ts);
+	        dataset.addSeries(ts);	        
+	        
 	        
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -330,6 +329,9 @@ public class VentanaResumen extends JFrame{
 	
 	}
 	
+	public void recargarGrafica() {
+		
+	}
 	//Animacion de las alertas
 	
 	//Programa basado en https://www.tutorialspoint.com/how-can-we-implement-a-moving-text-using-a-jlabel-in-java

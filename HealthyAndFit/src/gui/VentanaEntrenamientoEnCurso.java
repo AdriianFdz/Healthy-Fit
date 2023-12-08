@@ -65,7 +65,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	  
 	    public Timer timer;
 
-	    public VentanaEntrenamientoEnCurso(Entrenamiento en, Usuario persona) {
+	    public VentanaEntrenamientoEnCurso(Entrenamiento en, Usuario persona, VentanaResumen vResumen) {
 	    
 			//Imagenes sacadas de www.flaticon.com
 		    ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
@@ -140,11 +140,10 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            	persona.getRegistroEntrenamiento().add(en);
 	                            	Connection conn = DBManager.obtenerConexion();
 	                            	DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
-	                            	
 	                            	dispose();
 	                            }
 	                            if (opcion == JOptionPane.NO_OPTION) {
-	                            	SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
+	                            	SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona, vResumen));
 	                				dispose();
 	                            }
 	                        }
@@ -259,7 +258,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
+				SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
 				dispose();
 				
 			}
