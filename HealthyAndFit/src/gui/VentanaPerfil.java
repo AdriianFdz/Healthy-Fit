@@ -223,7 +223,9 @@ public class VentanaPerfil extends JFrame{
 						new VentanaHistorial(p);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 						JOptionPane.showConfirmDialog(null, "Error al cargar la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+						
 					}
 				});
 				
