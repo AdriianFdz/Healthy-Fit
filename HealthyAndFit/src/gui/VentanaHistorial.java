@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -27,15 +28,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import db.BaseDeDatos;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.Usuario;
 import io.DBManager;
+import io.RegistroLogger;
 
 public class VentanaHistorial extends JFrame {
 
@@ -49,7 +50,6 @@ public class VentanaHistorial extends JFrame {
 	private JButton botonEliminar;
 	
 	private JLabel foto;
-	private JLabel label;
 	
 	private Map<LocalDateTime, Entrenamiento> map;
 	
@@ -57,11 +57,9 @@ public class VentanaHistorial extends JFrame {
 		
 	public VentanaHistorial(Usuario u) throws SQLException {
 	map = new HashMap<LocalDateTime, Entrenamiento>();
+	
 			getUsuarios(map, u);
-			
 		
-			
-
 	
 			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha" ));
 			table = new JTable();
@@ -95,24 +93,25 @@ public class VentanaHistorial extends JFrame {
 			});
 			
 
-	        // Establecer la imagen como fondo de la etiqueta foto
+	        
 	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
 	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(700, 700, Image.SCALE_SMOOTH)));
 
-	        // Superponer la tabla sobre la etiqueta de la foto
+	    
 	        panelDerecha = new JPanel(new GridLayout());
-	        panelDerecha.setOpaque(false); // Hacer el panel transparente
+	        panelDerecha.setOpaque(false);
 	        panelDerecha.add(foto);
 	    
 	        botonVolver = new JButton("Volver");
 	        botonEliminar = new JButton("Eliminar");
 	        
 	        panelBotones = new JPanel(new BorderLayout());
-	        label = new JLabel("▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄");
-	        label.setFont(new Font("Tahoma", Font.BOLD, 20));
-	        label.setHorizontalAlignment(JLabel.CENTER);
+	        JTextArea area = new JTextArea();
+	        recursividad(area);
+	        area.setFont((new Font("Tahoma", Font.BOLD, 20)));
+	        
 	        panelBotones.add(botonEliminar, BorderLayout.NORTH);
-	        panelBotones.add(label, BorderLayout.CENTER);
+	        panelBotones.add(area, BorderLayout.CENTER);
 	        panelBotones.add(botonVolver, BorderLayout.SOUTH);
 	        
 	        panelIzquierda = new JPanel(new BorderLayout());
@@ -136,13 +135,13 @@ public class VentanaHistorial extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
 					 try {
 						eliminar();
 						refresh(u);
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 			          
 			        }
@@ -241,7 +240,7 @@ public class VentanaHistorial extends JFrame {
 	public void eliminar() throws SQLException {
 		int selectedRow = table.getSelectedRow();
 		String fecha = table.getModel().getValueAt(selectedRow, 2).toString();
-		 int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
+		 int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres eliminar el entrenamiento?", "Eliminar Entrenamiento", JOptionPane.YES_NO_OPTION);
          if (opcion == JOptionPane.YES_OPTION) {
         	 Connection conn = DBManager.obtenerConexion();
         	 Statement s = null;
@@ -250,8 +249,9 @@ public class VentanaHistorial extends JFrame {
 				s.executeUpdate("DELETE FROM usuario_entrenamientos WHERE fecha = " + "'" + fecha + "'");
 				table.repaint();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			
 			} 
         	s.close();
@@ -263,6 +263,15 @@ public class VentanaHistorial extends JFrame {
 	public void refresh(Usuario u) throws SQLException {
 		dispose();
 		new VentanaHistorial(u);
+	}
+	
+	public static JTextArea recursividad(JTextArea area) {
+		if (area.getText().length() > 33) {
+			return area;
+		}
+		
+		area.append("▀▄");
+		return recursividad(area);
 	}
 }
 
