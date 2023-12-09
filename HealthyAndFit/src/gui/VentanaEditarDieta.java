@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
@@ -44,6 +46,7 @@ public class VentanaEditarDieta extends JFrame {
 		public JLabel labelIng;
 		public DefaultTableModel modeloTabla;
 		public JTable tablaIngredientes;
+		public List<String> listaIngredientes;
 
 		
 	public JPanel pDer;
@@ -53,7 +56,7 @@ public class VentanaEditarDieta extends JFrame {
 		public JScrollPane panelDcha;
 	
 	public VentanaEditarDieta(Dieta d, Usuario p) {
-		
+	
 		JPanel datos = new JPanel(new GridLayout(1,2));
 		JPanel panelBotones = new JPanel();
 		
@@ -69,6 +72,8 @@ public class VentanaEditarDieta extends JFrame {
 		labelKcal = new JLabel("KCAL");
 		labelIng = new JLabel("INGREDIENTES");
 	
+		listaIngredientes = new ArrayList<>(d.getIngredientes());
+		
 		// Crear el modelo de la tabla
         modeloTabla = new DefaultTableModel();
         modeloTabla.addColumn("INGREDIENTES");
@@ -76,13 +81,16 @@ public class VentanaEditarDieta extends JFrame {
         for (String ingrediente : d.getIngredientes()) {
         	 modeloTabla.addRow(new Object[]{ingrediente});
        }
-       
+               
         // Crear la JTable con el modelo
        tablaIngredientes = new JTable(modeloTabla);
         
        
        // Configurar la JTable para permitir la edición directa
        tablaIngredientes.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()));
+       
+       JButton botonAñadirIngrediente = new JButton("AÑADIR ING");
+       JButton botonElimiarIngrediente = new JButton("ELIMINAR ING");
        
 		//Inicializamos los otros elementos con los datos del usuario
 		fieldNombre.setText(d.getNombre());
@@ -104,6 +112,8 @@ public class VentanaEditarDieta extends JFrame {
 		pIzq.add(spinnerKcal);
 		pIzq.add(labelIng);
 		pIzq.add(paneIng);
+		pIzq.add(botonAñadirIngrediente);
+		pIzq.add(botonElimiarIngrediente);
 		
 		//Panel derecha
 		pDer = new JPanel();
@@ -159,6 +169,7 @@ public class VentanaEditarDieta extends JFrame {
 				d.setTiempo(nuevoTiempo);
 				d.setDificultad(nuevoTipo);
 				d.setKcal(nuevoKCAL);
+				d.setIngredientes(listaIngredientes);
 				
 				// Obtener el número de filas en la tabla
 		        int rowCount = pasosTableModel.getRowCount();
@@ -173,7 +184,30 @@ public class VentanaEditarDieta extends JFrame {
 		        SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 			}
 		});
-		panelBotones.add(botonCancelar, BorderLayout.WEST);
+		
+        botonAñadirIngrediente.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String nuevoIngrediente = obtenerNuevoIngrediente();
+
+		        // Añade la nueva fila al modelo de la tabla
+				if (nuevoIngrediente != null && !nuevoIngrediente.isEmpty()) {
+		            // Añade la nueva fila al modelo de la tabla
+		            modeloTabla.addRow(new Object[]{nuevoIngrediente});
+		            listaIngredientes.add(nuevoIngrediente);
+		        }
+			}
+		});
+        botonElimiarIngrediente.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				eliminarFila();
+				
+			}
+		});
+        panelBotones.add(botonCancelar, BorderLayout.WEST);
 		panelBotones.add(botonConfirmar, BorderLayout.EAST);
 		
 		this.add(datos, BorderLayout.NORTH);
@@ -184,6 +218,29 @@ public class VentanaEditarDieta extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Editar Usuario");
 	}
+	public String obtenerNuevoIngrediente() {
+        return JOptionPane.showInputDialog(this, "Ingrese el nombre del nuevo ingrediente:", "Nuevo Ingrediente", JOptionPane.PLAIN_MESSAGE);
+    }
 	
-	
+	public void eliminarFila() {
+		int filaSeleccionada = tablaIngredientes.getSelectedRow();
+		if (filaSeleccionada != -1) {
+			int confirmacion = JOptionPane.showConfirmDialog(this, 
+					"¿Seguro que quieres eliminar esta fila?", "Confirmar Eliminación", 
+					JOptionPane.YES_NO_OPTION);
+			if (confirmacion == JOptionPane.YES_OPTION) {
+                // Obtiene el nombre del ingrediente a eliminar
+                String nombreIngrediente = (String) modeloTabla.getValueAt(filaSeleccionada, 0);
+                
+                // Elimina la fila del modelo de la tabla
+                modeloTabla.removeRow(filaSeleccionada);
+                
+                // Elimina el ingrediente de la lista asociada a la dieta
+                listaIngredientes.remove(nombreIngrediente);
+            }
+		 } else {
+	            JOptionPane.showMessageDialog(this, "Selecciona una fila para eliminar.", "Error", 
+	            		JOptionPane.ERROR_MESSAGE);
+	        }
+		}
 }

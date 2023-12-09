@@ -51,12 +51,13 @@ public class VentanaResumen extends JFrame{
 	 JButton fotoPerfil;
 	 JButton botonDieta;
 	 JPanel panelImagenVasos = new JPanel();
-
+	 Usuario persona;
+	 // Hacer mapa con dia y dieta
 	
 	 //LOGGER
 	private static final long serialVersionUID = 1L;
 	public VentanaResumen(Usuario persona) {		
-	
+		this.persona = persona;
 		
 		//ENTRENAMIENTO
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getCaloriasGastadas());
@@ -92,7 +93,9 @@ public class VentanaResumen extends JFrame{
 		add(panelIzquierda, BorderLayout.WEST);
 		
 		//Grafica entrenamiento
-		TimeSeriesCollection datasetEntrenamiento = crearDatasetEjemplo("Calorías quemadas");
+//		TimeSeriesCollection datasetEntrenamiento = crearDatasetEjemplo("Calorías quemadas");
+		TimeSeriesCollection datasetEntrenamiento = crearDatasetEntrenamiento(persona);
+	
 		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
 		ChartPanel panelGraficaEntrenamiento = new ChartPanel(graficaEntrenamiento);
 		Dimension resPantalla = Toolkit.getDefaultToolkit().getScreenSize();
@@ -160,7 +163,6 @@ public class VentanaResumen extends JFrame{
 		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
-		
 		panelGraficaDieta.setPreferredSize(new Dimension(resPantalla.getSize().width/2-35,resPantalla.getSize().height/2-35));
 		panelDieta.add(panelGraficaDieta, BorderLayout.CENTER);
 				
@@ -202,7 +204,7 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona));
+				SwingUtilities.invokeLater(() -> new VentanaEntrenamiento(persona, VentanaResumen.this));
 				
 			}
 		});
@@ -288,6 +290,7 @@ public class VentanaResumen extends JFrame{
 	
 	public TimeSeriesCollection crearDatasetEntrenamiento(Usuario usuario){
 		TimeSeries ts = new TimeSeries("Calorias quemadas");
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
 		
 		Connection conn = DBManager.obtenerConexion();
 		try {
@@ -297,16 +300,36 @@ public class VentanaResumen extends JFrame{
 			
 			while (rs.next()) {
 				LocalDateTime fecha = LocalDateTime.parse(rs.getString("fecha"));
+				String nombreEntrenamiento = rs.getString("nombreEntrenamiento");
+				String dificultad = rs.getString("dificultad");
+				PreparedStatement stmtEntrena = conn.prepareStatement("SELECT calorias FROM entrenamientos WHERE nombre = ? AND dificultad = ?");
+				stmtEntrena.setString(1, nombreEntrenamiento);
+				stmtEntrena.setString(2, dificultad);
+				ResultSet rsEntrena = stmtEntrena.executeQuery();
 				
+				int caloriasTotales = 0;
+				while (rsEntrena.next()) {
+					int calorias = rsEntrena.getInt("calorias");
+					Day fechaConvertida = new Day(fecha.getDayOfMonth(), fecha.getMonthValue(), fecha.getYear());
+					if (ts.getValue(fechaConvertida) != null) {
+						caloriasTotales = ts.getValue(fechaConvertida).intValue()+calorias;
+					} else {						
+						caloriasTotales = calorias;
+					}
+					ts.addOrUpdate(fechaConvertida, caloriasTotales);
+				}
 				
 			}
+	        dataset.addSeries(ts);	        
+	        
+	        
 		} catch (SQLException e) {
 			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
-		
-		return null;
+		repaint();
+		return dataset;
 	
 	}
 	
@@ -393,6 +416,7 @@ public class VentanaResumen extends JFrame{
 			}
 		}
 	}
+	
 	
 	//GETTERS
 	public JButton getBotonEntrenar() {
