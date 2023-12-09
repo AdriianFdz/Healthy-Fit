@@ -19,8 +19,8 @@ public class TestDieta {
 	
 	@Before
 	public void setUp() {
-		 dieta = new Dieta("Pollo", 20, TipoDificultad.FACIL, 400, new ArrayList<String>(Arrays.asList("1.Freir huevo...")), new ArrayList<String>(Arrays.asList("1.Tomate...")), new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.GLUTEN)));
-		 dietaSinArgs = new Dieta();
+		dieta = new Dieta("Pollo", 20, TipoDificultad.FACIL, 400, new ArrayList<String>(Arrays.asList("1.Freir huevo...")), new ArrayList<String>(Arrays.asList("1.Tomate...")), new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.GLUTEN)));
+		dietaSinArgs = new Dieta();
 	}
 
 	@Test
@@ -96,6 +96,7 @@ public class TestDieta {
 	
 	@Test
 	public void testToString() {
-		assertEquals("Dieta [nombre=Pollo, tiempo=20, dificultad=FACIL, kcal=400, pasos=[1.Freir huevo...], ingredientes=[1.Tomate...]]", dieta.toString());
+		assertEquals("Dieta [nombre=Pollo, tiempo=20, dificultad=FACIL, kcal=400, pasos=[1.Freir huevo...], ingredientes=[1.Tomate...], alergias=[GLUTEN]]", dieta.toString());
+		
 	}
 }

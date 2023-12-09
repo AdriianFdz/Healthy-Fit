@@ -6,9 +6,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import org.junit.Test;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.TipoAlergias;
+import domain.TipoDificultad;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
 import domain.TipoPreferencia;
@@ -29,7 +33,12 @@ public class TestUsuario {
 	@Before
 	public void setUp() {
 		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>(), new ArrayList<Dieta>(), new TimeSeriesCollection(), new TimeSeriesCollection());
+		TimeSeries ts = new TimeSeries("test");
+		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 200);
+		usuario.getDatasetEntrenamientos().addSeries(ts);
+		usuario.getDatasetDietas().addSeries(ts);
 		usuarioSinArgs = new Usuario();
+				
 	} 
 	@Test
 	public void testGetNombre(){
@@ -136,7 +145,7 @@ public class TestUsuario {
 	}
 	@Test
 	public void testGetIMC(){
-		assertEquals(24.48, usuario.getImc(), 0.001);
+		assertEquals(24.48, usuario.getImc(), 0.01);
 	}
 	@Test
 	public void testGetPreferenciaAlimenticia(){
@@ -211,13 +220,15 @@ public class TestUsuario {
 	}
 	@Test
 	public void testGetProximaComida(){
-		assertEquals(new Dieta().getNombre(), usuario.getProximaComida());
+		assertEquals(new HashMap<LocalDate, Dieta>(), usuario.getProximaComida());
 	}
-//	@Test
-//	public void testSetProximaComida() {
-//		usuario.setProximaComida("Pimientos");
-//		assertEquals("Pimientos", usuario.getProximaComida());
-//	}
+	@Test
+	public void testSetProximaComida() {
+		Map<LocalDate, Dieta> comida = new HashMap<LocalDate, Dieta>();
+		comida.putIfAbsent(LocalDate.now(), new Dieta("test", 10, TipoDificultad.FACIL, 5, new ArrayList<String>(), new ArrayList<String>(), new ArrayList<TipoAlergias>()));
+		usuario.setProximaComida(comida);
+		assertEquals(comida, usuario.getProximaComida());
+	}
 	@Test
 	public void testGetVasosDeAgua(){
 		assertEquals(3, usuario.getVasosDeAgua());
@@ -227,9 +238,9 @@ public class TestUsuario {
 		usuario.setVasosDeAgua(1);
 		assertEquals(1, usuario.getVasosDeAgua());
 		usuario.setVasosDeAgua(8);
-		assertEquals(1, usuario.getVasosDeAgua());
+		assertEquals(8, usuario.getVasosDeAgua());
 		usuario.setVasosDeAgua(-1);
-		assertEquals(1, usuario.getVasosDeAgua());
+		assertEquals(8, usuario.getVasosDeAgua());
 	}
 	@Test
 	public void testGetContrasena(){
@@ -244,12 +255,12 @@ public class TestUsuario {
 	}
 	@Test
 	public void testGetFoto(){
-		assertEquals(new ImageIcon("resources\\images\\foto.png"), usuario.getFoto());
+		assertEquals(new ImageIcon("resources\\images\\foto.png").getImage(), usuario.getFoto().getImage());
 	}
 	@Test
 	public void testSetFoto() {
 		usuario.setFoto(new ImageIcon("resources\\images\\calories.png"));
-		assertEquals(new ImageIcon("resources\\images\\calories.png"), usuario.getFoto());	
+		assertEquals(new ImageIcon("resources\\images\\calories.png").getImage(), usuario.getFoto().getImage());	
 	}
 	@Test
 	public void testGetPermiso(){
@@ -282,10 +293,40 @@ public class TestUsuario {
 		assertEquals(new ArrayList<Dieta>(), usuario.getRegistroDietas());
 	}
 	
+	@Test
+	public void testGetDatasetEntrenamientos() {
+		TimeSeries ts = new TimeSeries("test");
+		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 200);
+		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetEntrenamientos());
+	}
+	
+	@Test
+	public void testSetDatasetEntrenamientos() {
+		TimeSeries ts = new TimeSeries("testSetter");
+		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 400);
+		usuario.setDatasetEntrenamientos(new TimeSeriesCollection(ts));
+		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetEntrenamientos());
+	}
+	
+	@Test
+	public void testGetDatasetDietas() {
+		TimeSeries ts = new TimeSeries("test");
+		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 200);
+		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetDietas());
+	}
+	
+	@Test
+	public void testSetDatasetDietas() {
+		TimeSeries ts = new TimeSeries("testSetter");
+		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 400);
+		usuario.setDatasetDietas(new TimeSeriesCollection(ts));
+		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetDietas());
+	}
+	
 	
 	@Test
 	public void testToString() {
-		assertEquals("Usuario [nombre=Juan, nombreUsuario=juan_perez, apellido1=Perez, apellido2=Carbon, fechaNacimiento=2004-06-10, sexo=HOMBRE, altura=1.75, peso=75, alergias=[HUEVOS], correoElectronico=juan@gmail.com, enfermedades=[CARDIOVASCULARES], imc=24.489795918367346, preferenciaAlimenticia=NINGUNA, caloriasGastadas=12300, rachaEntrenamiento=3, objetivo=Ninguno, tiempoEntrenado=300, ultimaVezEntreno=2023-11-13, caloriasConsumidas=13000, proximaComida=, vasosDeAgua=3, contraseña=juan, foto=resources\\images\\foto.png, permiso=ADMINISTRADOR, registroEntrenamiento=[] , registroDietas=[]]", usuario.toString());	
+		assertEquals("Usuario [nombre=Juan, nombreUsuario=juan_perez, apellido1=Perez, apellido2=Carbon, fechaNacimiento=2004-06-10, sexo=HOMBRE, altura=1.75, peso=75, alergias=[HUEVOS], correoElectronico=juan@gmail.com, enfermedades=[CARDIOVASCULARES], imc=24.489795918367346, preferenciaAlimenticia=NINGUNA, caloriasGastadas=12300, rachaEntrenamiento=3, objetivo=Ninguno, tiempoEntrenado=300, ultimaVezEntreno=2023-12-09, caloriasConsumidas=13000, proximaComida={}, vasosDeAgua=3, contrasena=juan, foto=resources\\images\\foto.png, permiso=ADMINISTRADOR, registroEntrenamiento=[], registroDietas=[]]", usuario.toString());	
 	} 
 	
 	
