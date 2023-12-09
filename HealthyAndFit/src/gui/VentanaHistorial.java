@@ -8,6 +8,9 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +25,7 @@ import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -48,6 +52,7 @@ public class VentanaHistorial extends JFrame {
 	
 	private JButton botonVolver;
 	private JButton botonEliminar;
+	private JButton botonGuardar;
 	
 	private JLabel foto;
 	
@@ -104,15 +109,22 @@ public class VentanaHistorial extends JFrame {
 	    
 	        botonVolver = new JButton("Volver");
 	        botonEliminar = new JButton("Eliminar");
+	        botonGuardar = new JButton("Exportar Datos");
 	        
-	        panelBotones = new JPanel(new BorderLayout());
+	        
+	        panelBotones = new JPanel(new GridLayout(5,1));
 	        JTextArea area = new JTextArea();
+	        JTextArea area2 = new JTextArea();
 	        recursividad(area);
+	        recursividad(area2);
 	        area.setFont((new Font("Tahoma", Font.BOLD, 20)));
+	        area2.setFont((new Font("Tahoma", Font.BOLD, 20)));
 	        
-	        panelBotones.add(botonEliminar, BorderLayout.NORTH);
-	        panelBotones.add(area, BorderLayout.CENTER);
-	        panelBotones.add(botonVolver, BorderLayout.SOUTH);
+	        panelBotones.add(botonEliminar);
+	        panelBotones.add(area);
+	        panelBotones.add(botonGuardar);
+	        panelBotones.add(area2);
+	        panelBotones.add(botonVolver);
 	        
 	        panelIzquierda = new JPanel(new BorderLayout());
 	        panelIzquierda.add(new JScrollPane(table), BorderLayout.CENTER);
@@ -121,6 +133,15 @@ public class VentanaHistorial extends JFrame {
 	        this.add(panelIzquierda, BorderLayout.WEST);
 	        this.add(panelDerecha);
 	        
+	        botonGuardar.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					guardarHistorial(map);
+					
+					
+				}
+			});
 	        
 	        botonVolver.addActionListener(new ActionListener() {
 				
@@ -272,6 +293,33 @@ public class VentanaHistorial extends JFrame {
 		
 		area.append("▀▄");
 		return recursividad(area);
+	}
+	
+	public static void guardarHistorial(Map<LocalDateTime, Entrenamiento> map) {
+		JFileChooser fileChooser = new JFileChooser();
+		
+		fileChooser.setDialogTitle("Guardar Historial");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        int userSelection = fileChooser.showSaveDialog(null);
+        
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+		try {
+			PrintWriter pw = new PrintWriter(new File(fileToSave + ".csv"));
+			for (Entry<LocalDateTime, Entrenamiento> entry : map.entrySet()) {
+				String s = entry.getKey().toString().substring(0, 16).replace("T", " / ");
+				pw.write(entry.getValue().getNombre() + ";" + entry.getValue().getDificultad() + ";" + s + "\n");
+			}
+			pw.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo csv");
+			JOptionPane.showConfirmDialog(null, "Error al crear el archivo csv", "Error", JOptionPane.PLAIN_MESSAGE);
+		} finally {
+			JOptionPane.showConfirmDialog(null, "Historial guardado correctamente", "Exito", JOptionPane.PLAIN_MESSAGE);
+		}
+		}
 	}
 }
 
