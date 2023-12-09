@@ -14,10 +14,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -40,6 +47,9 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
 import db.BaseDeDatos;
+import domain.Dieta;
+import domain.TipoAlergias;
+import domain.TipoDificultad;
 import domain.Usuario;
 import io.DBManager;
 import io.RegistroLogger;
@@ -54,10 +64,14 @@ public class VentanaResumen extends JFrame{
 	 Usuario persona;
 	 // Hacer mapa con dia y dieta
 	
-	 //LOGGER
 	private static final long serialVersionUID = 1L;
 	public VentanaResumen(Usuario persona) {		
 		this.persona = persona;
+		
+		persona.setProximaComida(asignarDietaADia());
+		
+		
+		
 		
 		//ENTRENAMIENTO
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getCaloriasGastadas());
@@ -108,7 +122,7 @@ public class VentanaResumen extends JFrame{
 		
 		//DIETA
 		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getCaloriasConsumidas());
-		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getProximaComida());
+		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getProximaComida().get(LocalDate.now()).getNombre());
 		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
 		JPanel panelVasosAgua = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			panelVasosAgua.add(vasosDeAgua);
@@ -213,7 +227,7 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaDieta(BaseDeDatos.getListaDietas().get((int) (Math.random()*BaseDeDatos.getListaDietas().size()))));
+				SwingUtilities.invokeLater(() -> new VentanaDieta(persona.getProximaComida().get(LocalDate.now())));
 				
 			}
 		});
@@ -414,6 +428,71 @@ public class VentanaResumen extends JFrame{
 		}
 	}
 	
+	
+	private Map<LocalDate, Dieta> asignarDietaADia() {
+		//Asignar dieta diaria
+		Connection conn = DBManager.obtenerConexion();
+		Statement stmt;
+		Map<LocalDate, Dieta> dietaPorDia = new HashMap<LocalDate, Dieta>();
+		List<Dieta> dietas = new ArrayList<Dieta>();
+		try {		
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM dietas");
+			while (rs.next()) {
+				String nombre = rs.getString("nombre");
+				int tiempo = rs.getInt("tiempo");
+				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad"));
+				int kcal = rs.getInt("kcal");
+				
+				PreparedStatement stmtPasos = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+				stmtPasos.setString(1, nombre);
+				ResultSet rsPasos = stmtPasos.executeQuery();
+				List<String> pasosDieta = new ArrayList<String>();
+				while (rsPasos.next()) {
+					pasosDieta.add(rsPasos.getString("denominacion"));
+				}
+				stmtPasos.close();
+				
+				PreparedStatement stmtIngredientes = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+				stmtIngredientes.setString(1, nombre);
+				ResultSet rsIngredientes = stmtIngredientes.executeQuery();
+				List<String> ingredientesDieta = new ArrayList<String>();
+				while (rsIngredientes.next()) {
+					ingredientesDieta.add(rsIngredientes.getString("nombreIngrediente"));
+				}
+				stmtIngredientes.close();
+				
+				PreparedStatement stmtAlergias= conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				stmtAlergias.setString(1, nombre);
+				ResultSet rsAlergias = stmtAlergias.executeQuery();
+				List<TipoAlergias> alergiasDieta = new ArrayList<TipoAlergias>();
+				while (rsAlergias.next()) {
+					alergiasDieta.add(TipoAlergias.valueOf(rsAlergias.getString("alergia")));
+				}
+				stmtAlergias.close();
+				Dieta dieta = new Dieta(nombre, tiempo, dificultad, kcal, pasosDieta, ingredientesDieta, alergiasDieta);
+				dietas.add(dieta);
+	
+			}
+			
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		Dieta dietaHoy;
+		do {
+			dietaHoy = dietas.get((int) (Math.random()*dietas.size()));		
+		} while (!Collections.disjoint(dietaHoy.getAlergias(), persona.getAlergias()));
+		
+		dietaPorDia.putIfAbsent(LocalDate.now(ZoneId.of("Europe/Madrid")), dietaHoy);
+		
+		
+		DBManager.anadirUsuarioDieta(conn, persona, dietaHoy, LocalDate.now());
+		
+		return dietaPorDia;
+	}
 	
 	//GETTERS
 	public JButton getBotonEntrenar() {

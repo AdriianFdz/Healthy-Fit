@@ -10,10 +10,11 @@ public class Dieta {
 	private int kcal;
 	private List<String> pasos;
 	private List<String> ingredientes;
+	private List<TipoAlergias> alergias;
 	
 	//Constructor con argumentos
 	public Dieta(String nombre, int tiempo, TipoDificultad dificultad, int kcal, List<String> pasos,
-			List<String> ingredientes) {
+			List<String> ingredientes, List<TipoAlergias> alergias) {
 		super();
 		this.nombre = nombre;
 		this.tiempo = tiempo;
@@ -27,6 +28,11 @@ public class Dieta {
 		for (String s: ingredientes) {
 			this.ingredientes.add(s);
 		}
+		
+		this.alergias = new ArrayList<TipoAlergias>();
+		for (TipoAlergias alergia : alergias) {
+			this.alergias.add(alergia);
+		}
 	}
 
 	//Constructor sin argumentos
@@ -38,6 +44,7 @@ public class Dieta {
 		this.kcal = 0;
 		this.pasos = new ArrayList<String>();
 		this.ingredientes = new ArrayList<String>();
+		this.alergias = new ArrayList<TipoAlergias>();
 	}
 
 	//getters y setters
@@ -95,11 +102,18 @@ public class Dieta {
 		this.ingredientes = ingredientes;
 	}
 
-	//Metodo toString
+	public List<TipoAlergias> getAlergias() {
+		return alergias;
+	}
+
+	public void setAlergias(List<TipoAlergias> alergias) {
+		this.alergias = alergias;
+	}
+
 	@Override
 	public String toString() {
 		return "Dieta [nombre=" + nombre + ", tiempo=" + tiempo + ", dificultad=" + dificultad + ", kcal=" + kcal
-				+ ", pasos=" + pasos + ", ingredientes=" + ingredientes + "]";
+				+ ", pasos=" + pasos + ", ingredientes=" + ingredientes + ", alergias=" + alergias + "]";
 	}
 	
 	

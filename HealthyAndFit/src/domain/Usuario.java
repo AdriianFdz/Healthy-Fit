@@ -2,7 +2,9 @@ package domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 
@@ -29,7 +31,7 @@ public class Usuario {
 	private int tiempoEntrenado;
 	private LocalDate ultimaVezEntreno;
 	private int caloriasConsumidas;
-	private String proximaComida;
+	private Map<LocalDate, Dieta> proximaComida;
 	private int vasosDeAgua;
 	private String contrasena;
 	private ImageIcon foto;
@@ -44,7 +46,7 @@ public class Usuario {
 			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
 			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
 			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
-			int caloriasConsumidas, String proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso,
+			int caloriasConsumidas, Map<LocalDate, Dieta> proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso,
 			List<Entrenamiento> registroEntrenamiento, List<Dieta> dietas, TimeSeriesCollection datasetEntrenamientos, TimeSeriesCollection datasetDietas) {
 		super();
 		this.nombre = nombre;
@@ -72,7 +74,7 @@ public class Usuario {
 		this.tiempoEntrenado = tiempoEntrenado;
 		this.ultimaVezEntreno = ultimaVezEntreno;
 		this.caloriasConsumidas = caloriasConsumidas;
-		this.proximaComida = proximaComida;
+		this.proximaComida = new HashMap<LocalDate, Dieta>(proximaComida);
 		this.vasosDeAgua = vasosDeAgua;
 		this.foto = foto;
 		this.contrasena = contraseña;
@@ -112,7 +114,7 @@ public class Usuario {
 		this.tiempoEntrenado = 0;
 		this.ultimaVezEntreno = LocalDate.now();
 		this.caloriasConsumidas = 0;
-		this.proximaComida = "";
+		this.proximaComida = new HashMap<LocalDate, Dieta>();
 		this.vasosDeAgua = 0;
 		this.contrasena = "";
 		this.foto = new ImageIcon("resources\\images\\foto.png");
@@ -290,11 +292,11 @@ public class Usuario {
 		
 	}
 
-	public String getProximaComida() {
+	public Map<LocalDate, Dieta> getProximaComida() {
 		return proximaComida;
 	}
 
-	public void setProximaComida(String proximaComida) {
+	public void setProximaComida(Map<LocalDate, Dieta> proximaComida) {
 		this.proximaComida = proximaComida;
 	}
 

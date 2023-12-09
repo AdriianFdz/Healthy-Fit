@@ -10,8 +10,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level; 
 
@@ -84,7 +86,7 @@ public class DBManager {
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
 		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, usuario.getNombre());
 			stmt.setString(3, usuario.getApellido1());
@@ -101,10 +103,9 @@ public class DBManager {
 			stmt.setInt(14, usuario.getTiempoEntrenado());
 			stmt.setString(15, usuario.getUltimaVezEntreno().toString());
 			stmt.setInt(16, usuario.getCaloriasConsumidas());
-			stmt.setString(17, usuario.getProximaComida());
-			stmt.setInt(18, usuario.getVasosDeAgua());
-			stmt.setString(19, usuario.getContrasena());
-			stmt.setBytes(20, convertirFotoABytes(usuario.getFoto().getImage()));
+			stmt.setInt(17, usuario.getVasosDeAgua());
+			stmt.setString(18, usuario.getContrasena());
+			stmt.setBytes(19, convertirFotoABytes(usuario.getFoto().getImage()));
 			 
 			stmt.executeUpdate();
 			stmt.close();
@@ -136,6 +137,7 @@ public class DBManager {
 				 
 				stmConsultarID.close();
 			}
+			
 			stmtAnadirEnfermedades.close();
 			stmtAnadirAlergias.close();
 			} catch (SQLException e) {
@@ -162,7 +164,7 @@ public class DBManager {
 	public static void anadirDieta(Connection connection, Dieta dieta)  {
 		Connection conn = connection;	
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Dieta VALUES (?, ?, ?, ?)");
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Dietas VALUES (?, ?, ?, ?)");
 			stmt.setString(1, dieta.getNombre());
 			stmt.setInt(2, dieta.getTiempo());
 			stmt.setString(3, dieta.getDificultad().toString());
@@ -187,6 +189,14 @@ public class DBManager {
 				stmtAnadirIngredientes.executeUpdate();
 			}
 			stmtAnadirIngredientes.close();
+
+			PreparedStatement stmtAnadirAlergias = conn.prepareStatement("INSERT INTO dieta_alergias VALUES (null, ?, ?)");
+			for (TipoAlergias alergia : dieta.getAlergias()) {
+				stmtAnadirAlergias.setString(1, dieta.getNombre());
+				stmtAnadirAlergias.setString(2, alergia.toString());
+				stmtAnadirAlergias.executeUpdate();
+			}
+			stmtAnadirAlergias.close();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -237,7 +247,21 @@ public class DBManager {
 		
 	}
 	
-	
+	public static void anadirUsuarioDieta (Connection connection, Usuario usuario, Dieta dieta, LocalDate fecha){
+		Connection conn = connection;
+		try {
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO usuario_dieta VALUES (?, ?, ?)");
+			stmt.setString(1, usuario.getNombreUsuario());
+			stmt.setString(2, fecha.toString());
+			stmt.setString(3, dieta.getNombre());
+			
+			stmt.executeUpdate();
+			stmt.close();
+			
+		}catch (SQLException e) {
+			//NO ANADIR NINGUN ERROR
+		}
+	}
 	
 	
 }
