@@ -44,7 +44,7 @@ public class DBManager {
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
-		
+	
 		return conn;
 	}
 	
@@ -254,7 +254,7 @@ public class DBManager {
 		
 	}
 	
-	public static void anadirUsuarioDieta (Connection connection, Usuario usuario, Dieta dieta, LocalDate fecha){
+	public static void anadirUsuarioDieta(Connection connection, Usuario usuario, Dieta dieta, LocalDate fecha){
 		Connection conn = connection;
 		try {
 			PreparedStatement stmt = conn.prepareStatement("INSERT INTO usuario_dieta VALUES (?, ?, ?)");
@@ -270,5 +270,18 @@ public class DBManager {
 		}
 	}
 	
+	public static void modificarVasosAgua(Connection connection, Usuario usuario, int cantidad) {
+		try {
+			PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET vasosDeAgua = ? WHERE nombreUsuario = ?");
+			pstmt.setInt(1, cantidad);
+			pstmt.setString(2, usuario.getNombreUsuario());
+			pstmt.executeUpdate();
+			
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 }

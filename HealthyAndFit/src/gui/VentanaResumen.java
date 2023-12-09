@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +45,6 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
-import db.BaseDeDatos;
 import domain.Dieta;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
@@ -222,7 +220,7 @@ public class VentanaResumen extends JFrame{
 				
 			}
 		});
-		
+	
 		botonDieta.addActionListener(new ActionListener() {
 			
 			@Override
@@ -337,6 +335,7 @@ public class VentanaResumen extends JFrame{
 	        dataset.addSeries(ts);	        
 	        
 	        
+	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
@@ -412,6 +411,13 @@ public class VentanaResumen extends JFrame{
 	private void modificarVasosDeAgua(Usuario persona, List<JLabel> listaVasos, int cantidad) {
 		if (cantidad >= 0 && cantidad <= 8) {			
 			persona.setVasosDeAgua(cantidad);
+			Connection conn = DBManager.obtenerConexion();
+			DBManager.modificarVasosAgua(conn, persona, cantidad);
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			
 			for (int i = 0; i < cantidad; i++) {
 				ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoLleno.png");
@@ -479,21 +485,22 @@ public class VentanaResumen extends JFrame{
 			}
 			
 			stmt.close();
+
+			Dieta dietaHoy;
+			do {
+				dietaHoy = dietas.get((int) (Math.random()*dietas.size()));		
+			} while (!Collections.disjoint(dietaHoy.getAlergias(), persona.getAlergias()));
+			
+			dietaPorDia.putIfAbsent(LocalDate.now(ZoneId.of("Europe/Madrid")), dietaHoy);
+			
+			DBManager.anadirUsuarioDieta(conn, persona, dietaHoy, LocalDate.now());
+			
+			conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	
-		Dieta dietaHoy;
-		do {
-			dietaHoy = dietas.get((int) (Math.random()*dietas.size()));		
-		} while (!Collections.disjoint(dietaHoy.getAlergias(), persona.getAlergias()));
-		
-		dietaPorDia.putIfAbsent(LocalDate.now(ZoneId.of("Europe/Madrid")), dietaHoy);
-		
-		
-		DBManager.anadirUsuarioDieta(conn, persona, dietaHoy, LocalDate.now());
-		
 		return dietaPorDia;
 	}
 	
