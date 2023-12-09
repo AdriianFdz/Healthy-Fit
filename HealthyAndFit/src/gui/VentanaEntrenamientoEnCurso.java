@@ -128,11 +128,9 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                if (milisegundos > 0) {
 	                    milisegundos--;
 	                } else {
-	                    if (segundos == 0 && minutos == 0) {
-	                        timer.stop();
-	                        
-	                        if (seriesRestantes == 0) {
+	                	  if (seriesRestantes == 0) {
 	                            // Solo muestra el JOptionPane al final del ejercicio
+	                        	timer.stop();
 	                            labelTiempo.setVisible(false);
 	                            labelEstado.setText("Entrenamiento finalizado");
 	                            int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
@@ -148,6 +146,11 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                				dispose();
 	                            }
 	                        }
+	                	  
+	                    if (segundos == 0 && minutos == 0) {
+	                        timer.stop();
+	                        
+	                      
 	                        if (!descanso) {
 	                            // Si no está en el tiempo de descanso, inicia el tiempo de descanso
 	                            descanso = true;
