@@ -301,12 +301,12 @@ public class VentanaHistorial extends JFrame {
 		fileChooser.setDialogTitle("Guardar Historial");
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-        int userSelection = fileChooser.showSaveDialog(null);
+        int dialog = fileChooser.showSaveDialog(null);
         
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            File fileToSave = fileChooser.getSelectedFile();
+        if (dialog == JFileChooser.APPROVE_OPTION) {
+            File seleccion = fileChooser.getSelectedFile();
 		try {
-			PrintWriter pw = new PrintWriter(new File(fileToSave + ".csv"));
+			PrintWriter pw = new PrintWriter(new File(seleccion + ".csv"));
 			for (Entry<LocalDateTime, Entrenamiento> entry : map.entrySet()) {
 				String s = entry.getKey().toString().substring(0, 16).replace("T", " / ");
 				pw.write(entry.getValue().getNombre() + ";" + entry.getValue().getDificultad() + ";" + s + "\n");
