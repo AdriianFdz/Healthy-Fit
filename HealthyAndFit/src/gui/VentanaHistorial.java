@@ -23,12 +23,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import db.BaseDeDatos;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.Usuario;
@@ -48,23 +51,18 @@ public class VentanaHistorial extends JFrame {
 	private JLabel foto;
 	private JLabel label;
 	
+	private Map<LocalDateTime, Entrenamiento> map;
+	
 	private static final long serialVersionUID = 1L;
 		
 	public VentanaHistorial(Usuario u) throws SQLException {
-		Map<LocalDateTime, Entrenamiento> map= new HashMap<LocalDateTime, Entrenamiento>();
-		    Connection conn = DBManager.obtenerConexion();
-			Statement s = conn.createStatement();
-			ResultSet rs = s.executeQuery("SELECT nombreEntrenamiento, fecha, dificultad FROM usuario_entrenamientos WHERE nombreUsuario = 'juan_perez'");
-			while (rs.next()) {
-				String nombreEntrenamiento = rs.getString("nombreEntrenamiento");
-				LocalDateTime f = LocalDateTime.parse(rs.getString("fecha"));
-				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad").toUpperCase());
-				Entrenamiento e = new Entrenamiento(nombreEntrenamiento, null, dificultad, 0, "", 0, 0, 0);
-				map.put(f, e);
+	map = new HashMap<LocalDateTime, Entrenamiento>();
+			getUsuarios(map, u);
 			
-				
-				
-			}
+		
+			
+
+	
 			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha" ));
 			table = new JTable();
 			table.setModel(new ModeloDatos(header, map));
@@ -139,8 +137,17 @@ public class VentanaHistorial extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					
+					 try {
+						eliminar();
+						refresh(u);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+			          
+			        }
 					
-				}
+				
 			});
 	        
 	        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -208,6 +215,54 @@ public class VentanaHistorial extends JFrame {
 			    return "";
 		}
 		
+	}
+	
+	public void getUsuarios(Map<LocalDateTime, Entrenamiento> map, Usuario u) throws SQLException {
+	    Connection conn = DBManager.obtenerConexion();
+		Statement s = conn.createStatement();
+		try {
+			ResultSet rs = s.executeQuery("SELECT nombreEntrenamiento, fecha, dificultad FROM usuario_entrenamientos WHERE nombreUsuario =" + "'" + u.getNombreUsuario() + "'");
+			while (rs.next()) {
+				String nombreEntrenamiento = rs.getString("nombreEntrenamiento");
+				LocalDateTime f = LocalDateTime.parse(rs.getString("fecha"));
+				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad").toUpperCase());
+				Entrenamiento e = new Entrenamiento(nombreEntrenamiento, null, dificultad, 0, "", 0, 0, 0);
+				map.put(f, e);								
+			}
+			rs.close();
+		} finally {
+			
+			s.close();
+			conn.close();
+		}
+						
+	}
+	
+	public void eliminar() throws SQLException {
+		int selectedRow = table.getSelectedRow();
+		String fecha = table.getModel().getValueAt(selectedRow, 2).toString();
+		 int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
+         if (opcion == JOptionPane.YES_OPTION) {
+        	 Connection conn = DBManager.obtenerConexion();
+        	 Statement s = null;
+        	 try {
+				s = conn.createStatement();
+				s.executeUpdate("DELETE FROM usuario_entrenamientos WHERE fecha = " + "'" + fecha + "'");
+				table.repaint();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			
+			} 
+        	s.close();
+        	conn.close();
+        	
+         }
+	}
+	
+	public void refresh(Usuario u) throws SQLException {
+		dispose();
+		new VentanaHistorial(u);
 	}
 }
 
