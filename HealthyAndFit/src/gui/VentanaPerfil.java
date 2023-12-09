@@ -35,23 +35,24 @@ public class VentanaPerfil extends JFrame{
 	//LOGGER
 	private static final long serialVersionUID = 1L;
 	
-	public JPanel panelColum1;
-	public JLabel labelNombre;
-	public JLabel labelApellido1;
-	public JLabel labelApellido2;
-	public JLabel labelTipoU;
-	public JLabel labelFechaNac;
+	private JPanel panelColum1;
+	private JLabel labelNombre;
+	private JLabel labelApellido1;
+	private JLabel labelApellido2;
+	private JLabel labelTipoU;
+	private JLabel labelFechaNac;
 
-	public JLabel labelEdad;
-	public JLabel labelSexo;
-	public JLabel labelAltura;
-	public JLabel labelEnfer;
+	private JLabel labelEdad;
+	private JLabel labelSexo;
+	private JLabel labelAltura;
+	private JLabel labelEnfer;
 
-	public JLabel labelCorreo;
-	public JLabel labelPeso;
-	public JLabel labelIMC;
-	public JLabel labelPrefAli;
-	public JLabel labelAleg;
+	private JLabel labelCorreo;
+	private JLabel labelPeso;
+	private JLabel labelIMC;
+	private JLabel labelPrefAli;
+	private JLabel labelAleg;
+	private JLabel fotoUsuario;
 	
 	public VentanaPerfil(Usuario p) {
 		JPanel panelAbajo = new JPanel(new BorderLayout());
@@ -61,7 +62,7 @@ public class VentanaPerfil extends JFrame{
 		panelColum1.setLayout(new BoxLayout(panelColum1, BoxLayout.Y_AXIS));
 
 		Image foto = p.getFoto().getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
-		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
+		fotoUsuario = new JLabel(new ImageIcon(foto));
 		fotoUsuario.setPreferredSize(new Dimension(320, 320));
 		panelColum1.add(fotoUsuario);
 
@@ -201,7 +202,7 @@ public class VentanaPerfil extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p));
+				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, VentanaPerfil.this));
 			}
 		});
 
@@ -249,11 +250,17 @@ public class VentanaPerfil extends JFrame{
 				dispose();
 			}
 		});
-
+		
 		this.pack();
 		this.setVisible(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Perfil");
+	}
+	
+	// METODOS UTILIDAD
+	public void cambiarFoto(ImageIcon foto){
+		fotoUsuario.setIcon(foto);
+		repaint();
 	}
 }

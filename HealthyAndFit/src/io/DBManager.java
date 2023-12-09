@@ -44,7 +44,7 @@ public class DBManager {
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
-	
+
 		return conn;
 	}
 	
@@ -149,6 +149,21 @@ public class DBManager {
 		}
 	}
 
+	public static void actualizarFoto(Connection connection, Usuario usuario, Image foto) {
+		try {
+			PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET foto = ? WHERE nombreUsuario = ?");
+			pstmt.setBytes(1, convertirFotoABytes(usuario.getFoto().getImage()));
+			pstmt.setString(2, usuario.getNombreUsuario());
+			
+			pstmt.executeUpdate();
+			pstmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+
+	}	
 	
 	public static byte[] convertirFotoABytes(Image foto) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

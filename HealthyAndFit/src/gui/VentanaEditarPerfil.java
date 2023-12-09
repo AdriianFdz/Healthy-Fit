@@ -6,22 +6,32 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
 import domain.Usuario;
+import io.DBManager;
+import io.RegistroLogger;
 
 public class VentanaEditarPerfil extends JFrame {
 	
@@ -65,7 +75,7 @@ public class VentanaEditarPerfil extends JFrame {
 		public JLabel labelEnfer;
 		public JComboBox<TipoEnfermedades> comboEnfer;
 		
-	public VentanaEditarPerfil(Usuario u) {
+	public VentanaEditarPerfil(Usuario u, VentanaPerfil vPerfil) {
 		
 		JPanel panelAbajo = new JPanel(new BorderLayout());
 		add(panelAbajo, BorderLayout.SOUTH);
@@ -177,7 +187,10 @@ public class VentanaEditarPerfil extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				//cambiar datos
+				
+				
+				vPerfil.cambiarFoto(u.getFoto());
 				
 			}
 		});
@@ -194,43 +207,35 @@ public class VentanaEditarPerfil extends JFrame {
 				}
 			}
 		});
-		
-		fotoUsuario.addMouseListener(new MouseListener() {
-			
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
+	
+
+		fotoUsuario.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				 //JFileChooser elegirFoto = new JFileChooser();
-				//int resultado = elegirFoto.showOpenDialog
-				//if(resultado == JFileChooser.APPROVE_OPTION){
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.setDialogTitle("Selecciona una foto para subirla (.png)");
+				fileChooser.setFileFilter(new FileNameExtensionFilter("foto.png", "png"));
+				int resp = fileChooser.showOpenDialog(VentanaEditarPerfil.this);
+				File file = fileChooser.getSelectedFile();
 				
-				//}
-			        
-		}});
+				if (resp==JFileChooser.APPROVE_OPTION && file!=null) {					
+					try {
+						Image imagen = ImageIO.read(file).getScaledInstance(200, 200, Image.SCALE_SMOOTH);;
+						ImageIcon imagenResized = new ImageIcon(imagen);
+						u.setFoto(imagenResized);
+						Connection conn = DBManager.obtenerConexion();
+						DBManager.actualizarFoto(conn, u, foto);
+						fotoUsuario.setIcon(imagenResized);
+						repaint();
+					} catch (IOException e1) {
+						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al convertir fichero a imagen al subir una foto");
+						JOptionPane.showConfirmDialog(null, "Error al convertir fichero a imagen", "Error", JOptionPane.PLAIN_MESSAGE);
+					}
+				}
+			}
+		});
 		
 		this.pack();
 		this.setVisible(true);
