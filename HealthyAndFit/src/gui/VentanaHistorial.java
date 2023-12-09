@@ -27,11 +27,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import db.BaseDeDatos;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.Usuario;
@@ -49,7 +48,6 @@ public class VentanaHistorial extends JFrame {
 	private JButton botonEliminar;
 	
 	private JLabel foto;
-	private JLabel label;
 	
 	private Map<LocalDateTime, Entrenamiento> map;
 	
@@ -57,11 +55,9 @@ public class VentanaHistorial extends JFrame {
 		
 	public VentanaHistorial(Usuario u) throws SQLException {
 	map = new HashMap<LocalDateTime, Entrenamiento>();
+	
 			getUsuarios(map, u);
-			
 		
-			
-
 	
 			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha" ));
 			table = new JTable();
@@ -95,24 +91,25 @@ public class VentanaHistorial extends JFrame {
 			});
 			
 
-	        // Establecer la imagen como fondo de la etiqueta foto
+	        
 	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
 	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(700, 700, Image.SCALE_SMOOTH)));
 
-	        // Superponer la tabla sobre la etiqueta de la foto
+	    
 	        panelDerecha = new JPanel(new GridLayout());
-	        panelDerecha.setOpaque(false); // Hacer el panel transparente
+	        panelDerecha.setOpaque(false);
 	        panelDerecha.add(foto);
 	    
 	        botonVolver = new JButton("Volver");
 	        botonEliminar = new JButton("Eliminar");
 	        
 	        panelBotones = new JPanel(new BorderLayout());
-	        label = new JLabel("▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄▀▄");
-	        label.setFont(new Font("Tahoma", Font.BOLD, 20));
-	        label.setHorizontalAlignment(JLabel.CENTER);
+	        JTextArea area = new JTextArea();
+	        recursividad(area);
+	        area.setFont((new Font("Tahoma", Font.BOLD, 20)));
+	        
 	        panelBotones.add(botonEliminar, BorderLayout.NORTH);
-	        panelBotones.add(label, BorderLayout.CENTER);
+	        panelBotones.add(area, BorderLayout.CENTER);
 	        panelBotones.add(botonVolver, BorderLayout.SOUTH);
 	        
 	        panelIzquierda = new JPanel(new BorderLayout());
@@ -263,6 +260,15 @@ public class VentanaHistorial extends JFrame {
 	public void refresh(Usuario u) throws SQLException {
 		dispose();
 		new VentanaHistorial(u);
+	}
+	
+	public static JTextArea recursividad(JTextArea area) {
+		if (area.getText().length() > 33) {
+			return area;
+		}
+		
+		area.append("▀▄");
+		return recursividad(area);
 	}
 }
 
