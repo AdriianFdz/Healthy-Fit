@@ -380,8 +380,9 @@ public class VentanaResumen extends JFrame{
 			conn.close();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 		repaint();
@@ -458,6 +459,8 @@ public class VentanaResumen extends JFrame{
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 			
 			for (int i = 0; i < cantidad; i++) {
@@ -538,8 +541,9 @@ public class VentanaResumen extends JFrame{
 			
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	
 		return dietaPorDia;

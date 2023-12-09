@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -35,6 +36,7 @@ import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.Usuario;
 import io.DBManager;
+import io.RegistroLogger;
 
 public class VentanaHistorial extends JFrame {
 
@@ -133,13 +135,13 @@ public class VentanaHistorial extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					
 					 try {
 						eliminar();
 						refresh(u);
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 			          
 			        }
@@ -247,8 +249,9 @@ public class VentanaHistorial extends JFrame {
 				s.executeUpdate("DELETE FROM usuario_entrenamientos WHERE fecha = " + "'" + fecha + "'");
 				table.repaint();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			
 			} 
         	s.close();
