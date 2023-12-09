@@ -302,6 +302,8 @@ public class VentanaResumen extends JFrame{
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 		return null;
@@ -325,6 +327,7 @@ public class VentanaResumen extends JFrame{
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						System.out.println("Hilo de animaciones de texto interrumpido");
+						RegistroLogger.anadirLogeo(Level.SEVERE, "Hilo de animacion de texto interrumpido");
 						JOptionPane.showConfirmDialog(null, "Error en la animación del texto", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}

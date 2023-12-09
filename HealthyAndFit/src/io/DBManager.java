@@ -56,6 +56,7 @@ public class DBManager {
 			 stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 			
@@ -73,6 +74,7 @@ public class DBManager {
 			 stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 			
@@ -140,6 +142,7 @@ public class DBManager {
 			stmtAnadirAlergias.close();
 			} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
@@ -152,6 +155,7 @@ public class DBManager {
 			ImageIO.write(bi, "png", baos);
 		} catch (IOException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
         
@@ -190,6 +194,7 @@ public class DBManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		} 
 			
@@ -213,6 +218,7 @@ public class DBManager {
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			
 		}
@@ -232,6 +238,7 @@ public class DBManager {
 			
 		}catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
