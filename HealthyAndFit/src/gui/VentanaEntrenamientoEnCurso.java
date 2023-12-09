@@ -38,6 +38,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    public JPanel panelSecundario;
 	    public JPanel panelAbajo;
 	    public JPanel panelBotones;
+	    public JPanel panelDerecha;
 	    
 	    public JLabel labelEstado;
 	    public JLabel labelTiempo;
@@ -46,6 +47,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    public JLabel labelKcal;
 	    public JLabel labelRepeticiones;
 	    public JLabel labelSeries;
+	    public JLabel foto;
 	    
 	    public JButton botonStart;
 	    public JButton botonReset;
@@ -69,7 +71,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    
 			//Imagenes sacadas de www.flaticon.com
 		    ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
-            Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(200, 190, Image.SCALE_SMOOTH);
+            Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
             ImageIcon tmpFuego = new ImageIcon("resources\\images\\calories.png");
             Image iconoFuego = tmpFuego.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
 		    
@@ -91,7 +93,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 		    repeticionesRestantes = en.getRepeticiones();
 		    
 		    labelEstado = new JLabel(" ");
-		    labelEstado.setHorizontalAlignment(JLabel.CENTER);
+		    //labelEstado.setHorizontalAlignment(JLabel.CENTER);
+		    labelEstado.setBackground(Color.GRAY);
 		    labelNombre = new JLabel(" "+ en.getNombre());
 		    labelDificultad = new JLabel("   Dificultad: " + en.getDificultad().toString());
 		    labelKcal = new JLabel(en.getCalorias() + " kcal");
@@ -102,14 +105,23 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelPrincipal = new JPanel();
 	        panelPrincipal.setLayout(new BorderLayout());
 	        panelSecundario = new JPanel();
-	        panelSecundario.setLayout(new GridLayout(3, 2, 1100, 80));
+	        panelSecundario.setLayout(new GridLayout(3, 2, 50, 0));
 	        panelAbajo = new JPanel();
+	        panelAbajo.setBackground(Color.GRAY);
 	        panelAbajo.setLayout(new FlowLayout(FlowLayout.LEADING));
 	        panelBotones = new JPanel();
 	        panelBotones.setLayout(new FlowLayout());
 	        
+	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
+	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(700, 700, Image.SCALE_SMOOTH)));
+
+	    
+	        panelDerecha = new JPanel(new GridLayout());
+	        panelDerecha.setOpaque(false);
+	        panelDerecha.add(foto);
+	        
 	        labelTiempo = new JLabel();
-	        labelTiempo.setFont(new Font("Consolas", Font.PLAIN, 140));
+	        labelTiempo.setFont(new Font("Consolas", Font.PLAIN, 70));
 	        labelTiempo.setHorizontalAlignment(JLabel.CENTER);
 	        labelTiempo.setIcon(new ImageIcon(iconoCronometro));
 
@@ -159,7 +171,10 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            milisegundos = 0;
 	                            timer.start();
 	                            labelTiempo.setForeground(Color.RED);
-	                            labelEstado.setText("Descanso");
+	                            labelEstado.setText("  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  ");
+	                            VentanaResumen.animacionTexto(labelEstado); 
+	                            
+	                          
 	                        } else {
 	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
 	                            descanso = false;
@@ -322,13 +337,16 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        //Añadir paneles y el nombre a la ventana
 	        this.add(labelNombre, BorderLayout.NORTH);
 	        this.add(panelAbajo, BorderLayout.SOUTH);
-	        this.add(panelPrincipal);
+	        this.add(panelPrincipal, BorderLayout.WEST);
+	        this.add(panelDerecha);
 	        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	        //Ajustes de la ventana
 	        setSize(1920,1080);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("Entrenamiento en curso");
 	        setVisible(true);
+	        pack(); 
+	        setLocationRelativeTo(null); 
 	    }
 	    
 

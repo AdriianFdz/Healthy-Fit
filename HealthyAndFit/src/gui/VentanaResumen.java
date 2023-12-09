@@ -391,7 +391,7 @@ public class VentanaResumen extends JFrame{
 	//Animacion de las alertas
 	
 	//Programa basado en https://www.tutorialspoint.com/how-can-we-implement-a-moving-text-using-a-jlabel-in-java
-	private void animacionTexto(JLabel texto) {
+	public static void animacionTexto(JLabel texto) {
 		Thread hilo = new Thread(new Runnable() {
 			
 			@Override
@@ -399,8 +399,12 @@ public class VentanaResumen extends JFrame{
 				while (true) {
 					String textoAnterior = texto.getText();
 					// Cojo el texto anterior desde la 2 letra hasta el final, y le sumo la primera letra
+					try {
 					String textoDesplazado = textoAnterior.substring(1)+texto.getText().substring(0,1);  
 					SwingUtilities.invokeLater(() -> texto.setText(textoDesplazado));
+					} catch (Exception e) {
+						//NO AÑADIR NADA
+					}
 					try {
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
