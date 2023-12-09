@@ -241,7 +241,7 @@ public class VentanaHistorial extends JFrame {
 	public void eliminar() throws SQLException {
 		int selectedRow = table.getSelectedRow();
 		String fecha = table.getModel().getValueAt(selectedRow, 2).toString();
-		 int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
+		 int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres eliminar el entrenamiento?", "Eliminar Entrenamiento", JOptionPane.YES_NO_OPTION);
          if (opcion == JOptionPane.YES_OPTION) {
         	 Connection conn = DBManager.obtenerConexion();
         	 Statement s = null;
