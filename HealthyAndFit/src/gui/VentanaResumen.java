@@ -43,6 +43,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.time.TimeSeriesDataItem;
 import org.jfree.data.xy.XYDataset;
 
 import domain.Dieta;
@@ -172,7 +173,8 @@ public class VentanaResumen extends JFrame{
 
 			
 		//Grafica dieta
-		TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
+		//TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
+		TimeSeriesCollection datasetDieta = crearDatasetDietas(persona);
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
 		panelGraficaDieta.setPreferredSize(new Dimension(resPantalla.getSize().width/2-35,resPantalla.getSize().height/2-35));
@@ -330,11 +332,11 @@ public class VentanaResumen extends JFrame{
 					}
 					ts.addOrUpdate(fechaConvertida, caloriasTotales);
 				}
-				
+				stmtEntrena.close();
 			}
 	        dataset.addSeries(ts);	        
 	        
-	        
+	        stmt.close();
 	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -346,6 +348,45 @@ public class VentanaResumen extends JFrame{
 	
 	}
 	
+	public TimeSeriesCollection crearDatasetDietas(Usuario usuario) {
+		TimeSeries ts = new TimeSeries("Calorias consumidas");
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+		
+		Connection conn = DBManager.obtenerConexion();
+		
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
+			stmt.setString(1, usuario.getNombreUsuario());
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				LocalDate fecha = LocalDate.parse(rs.getString("fecha"));
+				String nombreDieta = rs.getString("nombreDieta");
+				
+				PreparedStatement stmtDieta = conn.prepareStatement("SELECT kcal FROM dietas WHERE nombre = ?");
+				stmtDieta.setString(1, nombreDieta);
+				ResultSet rsDieta = stmtDieta.executeQuery();
+				
+				while (rsDieta.next()) {
+					int calorias = rsDieta.getInt("kcal");
+					Day fechaConvertida = new Day(fecha.getDayOfMonth(), fecha.getMonthValue(), fecha.getYear());
+
+					ts.addOrUpdate(new TimeSeriesDataItem(fechaConvertida, calorias));
+				}
+				stmtDieta.close();
+			}
+			dataset.addSeries(ts);
+			stmt.close();
+			conn.close();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		repaint();
+		return dataset;
+	}
 	//Animacion de las alertas
 	
 	//Programa basado en https://www.tutorialspoint.com/how-can-we-implement-a-moving-text-using-a-jlabel-in-java
