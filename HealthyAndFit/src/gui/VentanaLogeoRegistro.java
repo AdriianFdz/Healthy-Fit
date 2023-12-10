@@ -3,16 +3,43 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import org.jfree.data.time.TimeSeriesCollection;
 
 import com.toedter.calendar.JCalendar;
 
 import db.BaseDeDatos;
+import domain.Dieta;
+import domain.Entrenamiento;
+import domain.TipoAlergias;
+import domain.TipoDificultad;
+import domain.TipoEnfermedades;
+import domain.TipoEntrenamiento;
+import domain.TipoPermiso;
+import domain.TipoPreferencia;
+import domain.TipoSexo;
 import domain.Usuario;
+import io.DBManager;
 import io.RegistroLogger;
 
 
@@ -275,16 +302,212 @@ public class VentanaLogeoRegistro extends JFrame{
 		this.setLocationRelativeTo(null);
 	}
 	
+//	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
+//		  
+//		  for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
+//			if (usuarioSinComprobar.getNombreUsuario().equals(usuario.getNombreUsuario()) && usuarioSinComprobar.getContrasena().equals(usuario.getContrasena())) {
+//				  RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
+//				return usuario;
+//			}
+//		  }
+//		  RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
+//	      return null;
+//	   }
+	
 	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
-		   
-		  for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-			if (usuarioSinComprobar.getNombreUsuario().equals(usuario.getNombreUsuario()) && usuarioSinComprobar.getContrasena().equals(usuario.getContrasena())) {
-				  RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
-				return usuario;
+		  
+		  Connection conn = DBManager.obtenerConexion();
+		  
+		try {
+			
+			PreparedStatement countStmt = conn.prepareStatement("SELECT COUNT(*) FROM usuarios WHERE nombreUsuario = ? AND contrasena = ?");
+			countStmt.setString(1, usuarioSinComprobar.getNombreUsuario());
+			countStmt.setString(2, usuarioSinComprobar.getContrasena());
+			ResultSet count = countStmt.executeQuery();
+			int size = 0;
+			while (count.next()) {
+				size = count.getInt(1);
 			}
-		  }
-		  RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
-	      return null;
-	   }
+			
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM usuarios WHERE nombreUsuario = ? AND contrasena = ?");
+			pstmt.setString(1, usuarioSinComprobar.getNombreUsuario());
+			pstmt.setString(2, usuarioSinComprobar.getContrasena());
+			
+			ResultSet rs = pstmt.executeQuery();
+
+			
+			if (size == 1) {
+				RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
+				while (rs.next()) {
+					String nombreUsuario = usuarioSinComprobar.getNombreUsuario();
+					String nombre = rs.getString("nombre");
+					String apellido1 = rs.getString("apellido1");
+					String apellido2 = rs.getString("apellido2");
+					LocalDate fechaNacimiento = LocalDate.parse(rs.getString("fechaNacimiento"));
+					TipoSexo sexo = TipoSexo.valueOf(rs.getString("sexo"));
+					double altura = rs.getDouble("altura");
+					int peso = rs.getInt("peso");
+					String correoElectronico = rs.getString("correoElectronico");
+					int caloriasGastadas = rs.getInt("caloriasGastadas");
+					int rachaEntrenamiento = rs.getInt("rachaEntrenamiento");
+					String objetivo = rs.getString("objetivo");
+					int tiempoEntrenado = rs.getInt("tiempoEntrenado");
+					LocalDate ultimaVezEntreno = LocalDate.parse(rs.getString("ultimaVezEntreno"));
+					int caloriasConsumidas = rs.getInt("caloriasConsumidas");
+					int vasosDeAgua = rs.getInt("vasosDeAgua");
+					String contrasena = rs.getString("contrasena");
+					ImageIcon foto = new ImageIcon(rs.getBytes("foto"));
+					TipoPreferencia preferencia = TipoPreferencia.valueOf(rs.getString("preferenciaAlimenticia"));
+					TipoPermiso permiso = TipoPermiso.valueOf(rs.getString("permiso"));
+					
+					PreparedStatement pstmtAlergias = conn.prepareStatement("SELECT * FROM usuario_alergias WHERE nombreUsuario = ?");
+					pstmtAlergias.setString(1, usuarioSinComprobar.getNombreUsuario());
+					ResultSet rsAlergias = pstmtAlergias.executeQuery();
+					
+					List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
+					while (rsAlergias.next()) {
+						alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")]);
+					}
+
+					PreparedStatement pstmtEnfermedades = conn.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
+					pstmtEnfermedades.setString(1, usuarioSinComprobar.getNombreUsuario());
+					ResultSet rsEnfermedades = pstmtEnfermedades.executeQuery();
+					
+					List<TipoEnfermedades> enfermedades = new ArrayList<TipoEnfermedades>();
+					while (rsEnfermedades.next()) {
+						enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")]);
+					}
+
+					PreparedStatement pstmtProximaComida = conn.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
+					pstmtProximaComida.setString(1, usuarioSinComprobar.getNombreUsuario());
+					ResultSet rsProximaComida = pstmtProximaComida.executeQuery();
+					Map<LocalDate, Dieta> proximaComida = new HashMap<LocalDate, Dieta>();
+					while (rsProximaComida.next()) {
+						LocalDate fecha = LocalDate.parse(rsProximaComida.getString("fecha"));
+						String nombreDieta = rsProximaComida.getString("nombreDieta");
+						
+						PreparedStatement pstmtObtenerDieta = conn.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+						pstmtObtenerDieta.setString(1, nombreDieta);
+						ResultSet rsObtenerDieta = pstmtObtenerDieta.executeQuery();
+						while (rsObtenerDieta.next()) {
+							int tiempo = rsObtenerDieta.getInt("tiempo");
+							TipoDificultad dificultad = TipoDificultad.valueOf(rsObtenerDieta.getString("dificultad"));
+							int kcal = rsObtenerDieta.getInt("kcal");	
+							
+							PreparedStatement pstmtObtenerPasosDieta = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+							pstmtObtenerPasosDieta.setString(1, nombreDieta);
+							ResultSet rsObtenerPasosDieta = pstmtObtenerPasosDieta.executeQuery();
+							List<String> pasos = new ArrayList<String>();
+							while (rsObtenerPasosDieta.next()) {
+								pasos.add(rsObtenerPasosDieta.getString("denominacion"));
+							}
+
+							PreparedStatement pstmtObtenerIngredientesDieta = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+							pstmtObtenerIngredientesDieta.setString(1, nombreDieta);
+							ResultSet rsObtenerIngredientesDieta = pstmtObtenerIngredientesDieta.executeQuery();
+							List<String> ingredientes = new ArrayList<String>();
+							while (rsObtenerIngredientesDieta.next()) {
+								ingredientes.add(rsObtenerIngredientesDieta.getString("nombreIngrediente"));
+							}
+
+							PreparedStatement pstmtObtenerAlergiasDieta = conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+							pstmtObtenerAlergiasDieta.setString(1, nombreDieta);
+							ResultSet rsObtenerAlergiasDieta = pstmtObtenerAlergiasDieta.executeQuery();
+							List<TipoAlergias> alergiasDieta = new ArrayList<TipoAlergias>();
+							while (rsObtenerAlergiasDieta.next()) {
+								alergiasDieta.add(TipoAlergias.valueOf(rsObtenerAlergiasDieta.getString("alergia")));
+							}
+							
+							Dieta dieta = new Dieta(nombreDieta, tiempo, dificultad, kcal, pasos, ingredientes, alergiasDieta);
+							proximaComida.putIfAbsent(fecha, dieta);									
+						}
+						
+						// OBTENER REGISTRO ENTRENAMIENTOS del usuario
+						PreparedStatement pstmtRegEntrenamientos = conn.prepareStatement("SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
+						pstmtRegEntrenamientos.setString(1, nombreUsuario);
+						ResultSet rsUsuarioEntrenamientos = pstmtRegEntrenamientos.executeQuery();
+						
+						List<Entrenamiento> listaEntrenamientos = new ArrayList<Entrenamiento>();
+						while (rsUsuarioEntrenamientos.next()) {
+							String nombreEntrenamiento = rsUsuarioEntrenamientos.getString("nombre");
+							TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento.valueOf(rsUsuarioEntrenamientos.getString("tipoEntrenamiento"));
+							TipoDificultad dificultad = TipoDificultad.valueOf(rsUsuarioEntrenamientos.getString("dificultad"));
+							int tiempo = rsUsuarioEntrenamientos.getInt("tiempo");
+							String descripcion = rsUsuarioEntrenamientos.getString("descripcion");
+							int calorias = rsUsuarioEntrenamientos.getInt("calorias");
+							int series = rsUsuarioEntrenamientos.getInt("series");
+							int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
+							
+							Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);
+							listaEntrenamientos.add(entrenamiento);
+							
+							pstmtRegEntrenamientos.close();
+						}
+						// OBTENER REGISTRO DIETAS del usuario
+						
+						PreparedStatement pstmtRegDietas = conn.prepareStatement("SELECT * FROM DIETAS WHERE nombre = (SELECT nombreDieta FROM usuario_dieta WHERE nombreUsuario = ?)");
+						pstmtRegDietas.setString(1, nombreUsuario);
+						ResultSet rsRegDietas = pstmtRegDietas.executeQuery();
+						
+						List<Dieta> listaDietas = new ArrayList<Dieta>();
+						while (rsRegDietas.next()) {
+							String nombreDietaReg = rsRegDietas.getString("nombre"); 
+							int tiempoDietaReg = rsRegDietas.getInt("tiempo");
+							TipoDificultad dificultadDietaReg = TipoDificultad.valueOf(rsRegDietas.getString("dificultad"));
+							int kcal = rsRegDietas.getInt("kcal");
+							
+							PreparedStatement pstmtPasosDieta = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+							pstmtPasosDieta.setString(1, nombreDietaReg);
+							ResultSet rsPasosDietaReg = pstmtPasosDieta.executeQuery();
+							List<String> pasosDieta = new ArrayList<String>();
+							while (rsPasosDietaReg.next()) {
+								String paso = rsPasosDietaReg.getString("denominacion");
+								pasosDieta.add(paso);
+							}
+							pstmtPasosDieta.close();
+							
+							PreparedStatement pstmtIngredientesDieta = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+							pstmtIngredientesDieta.setString(1, nombreDietaReg);
+							ResultSet rsIngredientesDieta = pstmtIngredientesDieta.executeQuery();
+							List<String> ingredientesDieta = new ArrayList<String>();
+							while (rsIngredientesDieta.next()) {
+								String ingrediente = rsIngredientesDieta.getString("nombreIngrediente");
+								ingredientesDieta.add(ingrediente);
+							}
+							pstmtIngredientesDieta.close();
+
+							PreparedStatement pstmtAlergiaDieta = conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+							pstmtAlergiaDieta.setString(1, nombreDietaReg);
+							ResultSet rsAlergiasDieta = pstmtAlergiaDieta.executeQuery();
+							List<TipoAlergias> alergiasDieta = new ArrayList<TipoAlergias>();
+							while (rsAlergiasDieta.next()) {
+								TipoAlergias alergia = TipoAlergias.valueOf(rsAlergiasDieta.getString("alergia"));
+								alergiasDieta.add(alergia);
+							}
+							pstmtAlergiaDieta.close();
+							
+							Dieta d = new Dieta(nombreDietaReg, tiempoDietaReg, dificultadDietaReg, kcal, pasosDieta, ingredientesDieta, alergiasDieta);
+							listaDietas.add(d);
+							pstmtRegDietas.close();
+						}
+						
+						Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, preferencia, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, listaEntrenamientos, listaDietas, new TimeSeriesCollection(), new TimeSeriesCollection());
+						conn.close();
+						return usuario;
+					}
+				}
+
+				
+				//Usuario usuarioCorrecto = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, null, correoElectronico, null, null, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, null, vasosDeAgua, contrasena, foto, null, null, null, null, null)
+			}
+			
+			RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		  
+		  return null;
+	  }
 	
 }

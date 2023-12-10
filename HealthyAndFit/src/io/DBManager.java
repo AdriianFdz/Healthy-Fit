@@ -18,12 +18,14 @@ import java.util.Properties;
 import java.util.logging.Level; 
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
+import domain.TipoPermiso;
 import domain.Usuario;
 
 public class DBManager {
@@ -88,7 +90,7 @@ public class DBManager {
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
 		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, usuario.getNombre());
 			stmt.setString(3, usuario.getApellido1());
@@ -107,7 +109,9 @@ public class DBManager {
 			stmt.setInt(16, usuario.getCaloriasConsumidas());
 			stmt.setInt(17, usuario.getVasosDeAgua());
 			stmt.setString(18, usuario.getContrasena());
-			stmt.setBytes(19, convertirFotoABytes(usuario.getFoto().getImage()));
+			stmt.setBytes(19, convertirFotoABytes(usuario.getFoto()));
+			stmt.setString(20, usuario.getPreferenciaAlimenticia().toString());
+			stmt.setString(21, usuario.getPermiso().toString());
 			 
 			stmt.executeUpdate();
 			stmt.close();
@@ -149,12 +153,11 @@ public class DBManager {
 		}
 	}
 
-	public static void actualizarFoto(Connection connection, Usuario usuario, Image foto) {
+	public static void actualizarFoto(Connection connection, Usuario usuario, ImageIcon foto) {
 		try {
 			PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET foto = ? WHERE nombreUsuario = ?");
-			pstmt.setBytes(1, convertirFotoABytes(usuario.getFoto().getImage()));
+			pstmt.setBytes(1, convertirFotoABytes(foto));
 			pstmt.setString(2, usuario.getNombreUsuario());
-			
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
@@ -165,20 +168,22 @@ public class DBManager {
 
 	}	
 	
-	public static byte[] convertirFotoABytes(Image foto) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BufferedImage bi = new BufferedImage(foto.getWidth(null), foto.getHeight(null), BufferedImage.TYPE_INT_RGB);
-        try {
-			ImageIO.write(bi, "png", baos);
-		} catch (IOException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
-		}
-        
-		return baos.toByteArray();
-	   
-	}
+	 public static byte[] convertirFotoABytes(ImageIcon foto) {
+	        BufferedImage bi = new BufferedImage(foto.getIconWidth(), foto.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+
+	        bi.createGraphics().drawImage(foto.getImage(), 0, 0, null);
+
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+	        try {
+	            ImageIO.write(bi, "png", baos);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+
+	        return baos.toByteArray();
+	    }
+
 	
 	public static void anadirDieta(Connection connection, Dieta dieta)  {
 		Connection conn = connection;	

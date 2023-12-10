@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
@@ -226,12 +227,15 @@ public class VentanaEditarPerfil extends JFrame {
 						ImageIcon imagenResized = new ImageIcon(imagen);
 						u.setFoto(imagenResized);
 						Connection conn = DBManager.obtenerConexion();
-						DBManager.actualizarFoto(conn, u, foto);
+						DBManager.actualizarFoto(conn, u, imagenResized);
 						fotoUsuario.setIcon(imagenResized);
 						repaint();
+						conn.close();
 					} catch (IOException e1) {
 						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al convertir fichero a imagen al subir una foto");
 						JOptionPane.showConfirmDialog(null, "Error al convertir fichero a imagen", "Error", JOptionPane.PLAIN_MESSAGE);
+					} catch (SQLException e1) {
+						e1.printStackTrace();
 					}
 				}
 			}
