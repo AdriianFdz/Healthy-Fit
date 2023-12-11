@@ -63,20 +63,21 @@ public class VentanaLogeoRegistro extends JFrame{
 	//INFORMACIÓN PRIMARIA PARA REGISTRARSE
 		
 	public JPanel registro;
+	public JScrollPane registroScroll;
+	public JPanel meterDatos;
 	public JLabel preguntaTodaviaSinCuenta;
+	
 	public JLabel nombreRegistro;
 	public JTextField meterNombreRegistro;
+	
 	public JLabel correoRegistro;
 	public JTextField meterCorreoRegistro;
+	
 	public JLabel contraseñaRegistro;
 	public JTextField meterContraseñaRegistro;
+	
 	public JLabel contraseñaRepetidaRegistro;
 	public JTextField meterContraseñaRepetidaRegistro;
-	
-	
-	//METER TODA LA INFORMACIÓN DEL USUARIO
-	public JScrollPane registro2;
-	public JPanel registro2Grid;
 	
 	public JLabel apellido1;
 	public JTextField meterApellido1;
@@ -91,12 +92,16 @@ public class VentanaLogeoRegistro extends JFrame{
 	public JTextField meterPeso;
 	
 	public JLabel genero;
-	public JTextField meterGenero;
+	public JPanel generoB;
+	public ButtonGroup meterGenero;
+	public JRadioButton M;
+	public JRadioButton H;
+	public JRadioButton O;
+	
+	
 	
 	public JLabel fechaNac;
 	public JCalendar meterFechaNac;
-	
-	public JPanel registro3;
 	
 	public JLabel enfermedades;
 	public JTable meterEnfermedades;
@@ -104,10 +109,9 @@ public class VentanaLogeoRegistro extends JFrame{
 	public JLabel alergias;
 	public JTable meterAlergias;
 	
-	public JButton siguiente;
 	public JButton registrarse;
 	
-	public JPanel registro4;
+	
 	
 	
 	public VentanaLogeoRegistro() {
@@ -143,43 +147,27 @@ public class VentanaLogeoRegistro extends JFrame{
 		logeo.add(logeoIzquierda);
 		logeo.add(logeoDerecha);
 		
-		//REGISTRO  INFORMACIÓN BASICA
+		//REGISTRO  
 		
 		registro = new JPanel(new BorderLayout());
 		preguntaTodaviaSinCuenta = new JLabel("¿Todavía no tienes cuenta?");
 		registro.add(preguntaTodaviaSinCuenta, BorderLayout.NORTH);
 
-		JPanel meterDatos = new JPanel(new GridLayout(4, 2));
-		nombreRegistro = new JLabel("NOMBRE DE USUARIO");
+		meterDatos = new JPanel(new GridLayout(12, 2,10,10));
+		nombreRegistro = new JLabel("Nombre de Usuario");
 		meterNombreRegistro = new JTextField();
 
-		correoRegistro = new JLabel("CORREO ELECTRONICO");
+		correoRegistro = new JLabel("Correo Electronico");
 		meterCorreoRegistro = new JTextField();
 
-		contraseñaRegistro = new JLabel("CONTRASEÑA");
+		contraseñaRegistro = new JLabel("Contraseña");
 		meterContraseñaRegistro = new JPasswordField();
 
-		contraseñaRepetidaRegistro = new JLabel("REPETIR CONTRASEÑA");
+		contraseñaRepetidaRegistro = new JLabel("Repetir Contraseña");
 		meterContraseñaRepetidaRegistro = new JPasswordField();
-		
-		meterDatos.add(nombreRegistro);
-		meterDatos.add(correoRegistro);
-		meterDatos.add(meterNombreRegistro);
-		meterDatos.add(meterCorreoRegistro);
-		meterDatos.add(contraseñaRegistro);
-		meterDatos.add(contraseñaRepetidaRegistro);
-		meterDatos.add(meterContraseñaRegistro);
-		meterDatos.add(meterContraseñaRepetidaRegistro);
-
-		registro.add(meterDatos, BorderLayout.CENTER);
 
 		registrarse = new JButton("REGISTRARSE");
 		registro.add(registrarse, BorderLayout.SOUTH);
-		
-		//REGISTRO 2  INFORMACIÓN ADICIONAL
-		
-		registro2Grid = new JPanel(new GridLayout(6, 2,10,10));
-		
 		
 		apellido1 = new JLabel("Primer Apellido");
 		meterApellido1 = new JTextField();
@@ -194,32 +182,47 @@ public class VentanaLogeoRegistro extends JFrame{
 		meterPeso = new JTextField();
 		
 		genero = new JLabel("Genero");
-		meterGenero = new JTextField();
+		generoB = new JPanel(new BorderLayout());
+		meterGenero = new ButtonGroup();
+		M = new JRadioButton("Mujer");
+		H = new JRadioButton("Hombre");
+		O = new JRadioButton("Otro");
+		meterGenero.add(H);
+		meterGenero.add(M);
+		meterGenero.add(O);
+		generoB.add(M,BorderLayout.NORTH);
+		generoB.add(H,BorderLayout.CENTER);
+		generoB.add(O,BorderLayout.SOUTH);
+		
 		
 		fechaNac = new JLabel("Fecha Nacimiento");
 		meterFechaNac = new JCalendar();
 		
-		registro2Grid.add(apellido1);
-		registro2Grid.add(meterApellido1);
-		registro2Grid.add(apellido2);
-		registro2Grid.add(meterApellido2);
-		registro2Grid.add(peso);
-		registro2Grid.add(meterPeso);
-		registro2Grid.add(altura);
-		registro2Grid.add(meterAltura);
-		registro2Grid.add(genero);
-		registro2Grid.add(meterGenero);
-		registro2Grid.add(fechaNac);
-		registro2Grid.add(meterFechaNac);
-		registro2= new JScrollPane(registro2Grid);
+		meterDatos.add(nombreRegistro);
+		meterDatos.add(meterNombreRegistro);
+		meterDatos.add(correoRegistro);
+		meterDatos.add(meterCorreoRegistro);
+		meterDatos.add(contraseñaRegistro);
+		meterDatos.add(meterContraseñaRegistro);
+		meterDatos.add(contraseñaRepetidaRegistro);
+		meterDatos.add(meterContraseñaRepetidaRegistro);
+		meterDatos.add(apellido1);
+		meterDatos.add(meterApellido1);
+		meterDatos.add(apellido2);
+		meterDatos.add(meterApellido2);
+		meterDatos.add(peso);
+		meterDatos.add(meterPeso);
+		meterDatos.add(altura);
+		meterDatos.add(meterAltura);
+		meterDatos.add(genero);
+		meterDatos.add(generoB);
+		meterDatos.add(fechaNac);
+		meterDatos.add(meterFechaNac);
 		
-		//REGISTRO 3  ALERGIAS Y ENFERMEDADES
-		
-		registro3 = new JPanel();
-		
-		//REGISTRO 4  FOTO DE PERFIL
+		registroScroll = new JScrollPane(meterDatos);
+		registro.add(registroScroll, BorderLayout.CENTER);
 	
-		registro4 = new JPanel();
+		
 	iniciarSesion.addActionListener(new ActionListener() {
 		
 		@SuppressWarnings("deprecation")
@@ -289,9 +292,6 @@ public class VentanaLogeoRegistro extends JFrame{
 	
 		paneles.add(logeo,"Logeo");
 		paneles.add(registro,"Registro");
-		paneles.add(registro2,"Registro 2");
-		paneles.add(registro3,"Registro 3");
-		paneles.add(registro4,"Registro 4");
 		this.add(paneles);
 		
 		this.setVisible(true);
