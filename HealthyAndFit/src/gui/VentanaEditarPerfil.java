@@ -76,6 +76,9 @@ public class VentanaEditarPerfil extends JFrame {
 		public JLabel labelEnfer;
 		public JComboBox<TipoEnfermedades> comboEnfer;
 		
+		
+		ImageIcon imagenResized;
+		
 	public VentanaEditarPerfil(Usuario u, VentanaPerfil vPerfil) {
 		
 		JPanel panelAbajo = new JPanel(new BorderLayout());
@@ -191,7 +194,16 @@ public class VentanaEditarPerfil extends JFrame {
 				//cambiar datos
 				
 				
+				u.setFoto(imagenResized);
 				vPerfil.cambiarFoto(u.getFoto());
+				Connection conn = DBManager.obtenerConexion();
+				DBManager.actualizarFoto(conn, u, imagenResized);
+				try {
+					conn.close();
+				} catch (SQLException e1) {
+					RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al conectar con la base de datos");
+					JOptionPane.showConfirmDialog(null, "ERROR al conectar con la BD", "Error", JOptionPane.PLAIN_MESSAGE);
+				}
 				
 			}
 		});
@@ -224,18 +236,12 @@ public class VentanaEditarPerfil extends JFrame {
 				if (resp==JFileChooser.APPROVE_OPTION && file!=null) {					
 					try {
 						Image imagen = ImageIO.read(file).getScaledInstance(200, 200, Image.SCALE_SMOOTH);;
-						ImageIcon imagenResized = new ImageIcon(imagen);
-						u.setFoto(imagenResized);
-						Connection conn = DBManager.obtenerConexion();
-						DBManager.actualizarFoto(conn, u, imagenResized);
+						imagenResized = new ImageIcon(imagen);
 						fotoUsuario.setIcon(imagenResized);
 						repaint();
-						conn.close();
 					} catch (IOException e1) {
 						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al convertir fichero a imagen al subir una foto");
-						JOptionPane.showConfirmDialog(null, "Error al convertir fichero a imagen", "Error", JOptionPane.PLAIN_MESSAGE);
-					} catch (SQLException e1) {
-						e1.printStackTrace();
+						JOptionPane.showConfirmDialog(null, "ERROR al convertir fichero a imagen", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}
 			}

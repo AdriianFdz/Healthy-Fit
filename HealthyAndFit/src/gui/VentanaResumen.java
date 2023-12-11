@@ -396,14 +396,15 @@ public class VentanaResumen extends JFrame{
 			
 			@Override
 			public void run() {
-				while (true) {
+				boolean detener = false;
+				while (!detener) {
 					String textoAnterior = texto.getText();
 					// Cojo el texto anterior desde la 2 letra hasta el final, y le sumo la primera letra
 					try {
 					String textoDesplazado = textoAnterior.substring(1)+texto.getText().substring(0,1);  
 					SwingUtilities.invokeLater(() -> texto.setText(textoDesplazado));
-					} catch (Exception e) {
-						//NO AÑADIR NADA
+					} catch (StringIndexOutOfBoundsException e) {
+						detener = true;
 					}
 					try {
 						Thread.sleep(200);
