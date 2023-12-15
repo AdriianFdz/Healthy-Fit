@@ -24,7 +24,6 @@ public class Usuario {
 	private String correoElectronico;
 	private List<TipoEnfermedades> enfermedades;
 	private double imc;
-	private TipoPreferencia preferenciaAlimenticia;
 	private int caloriasGastadas;
 	private int rachaEntrenamiento;
 	private String objetivo;
@@ -42,7 +41,7 @@ public class Usuario {
 	//Constructor con argumentos
 	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, LocalDate fechaNacimiento,
 			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
-			List<TipoEnfermedades> enfermedades, TipoPreferencia preferenciaAlimenticia, int caloriasGastadas,
+			List<TipoEnfermedades> enfermedades, int caloriasGastadas,
 			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
 			int caloriasConsumidas, Map<LocalDate, Dieta> proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso,
 			List<Entrenamiento> registroEntrenamiento, List<Dieta> dietas) {
@@ -65,7 +64,6 @@ public class Usuario {
 			this.enfermedades.add(e);
 		}
 		this.imc = peso / (altura * altura);
-		this.preferenciaAlimenticia = preferenciaAlimenticia;
 		this.caloriasGastadas = caloriasGastadas;
 		this.rachaEntrenamiento = rachaEntrenamiento;
 		this.objetivo = objetivo;
@@ -103,7 +101,6 @@ public class Usuario {
 		this.correoElectronico = "";
 		this.enfermedades = new ArrayList<TipoEnfermedades>();
 		this.imc = 0.0;
-		this.preferenciaAlimenticia = TipoPreferencia.NINGUNA;
 		this.caloriasGastadas = 0;
 		this.rachaEntrenamiento = 0;
 		this.objetivo = "";
@@ -217,14 +214,6 @@ public class Usuario {
 
 	public double getImc() {
 		return imc;
-	}
-
-	public TipoPreferencia getPreferenciaAlimenticia() {
-		return preferenciaAlimenticia;
-	}
-
-	public void setPreferenciaAlimenticia(TipoPreferencia preferenciaAlimenticia) {
-		this.preferenciaAlimenticia = preferenciaAlimenticia;
 	}
 
 	public int getCaloriasGastadas() {
@@ -356,8 +345,8 @@ public class Usuario {
 		return "Usuario [nombre=" + nombre + ", nombreUsuario=" + nombreUsuario + ", apellido1=" + apellido1
 				+ ", apellido2=" + apellido2 + ", fechaNacimiento=" + fechaNacimiento + ", sexo=" + sexo + ", altura="
 				+ altura + ", peso=" + peso + ", alergias=" + alergias + ", correoElectronico=" + correoElectronico
-				+ ", enfermedades=" + enfermedades + ", imc=" + imc + ", preferenciaAlimenticia="
-				+ preferenciaAlimenticia + ", caloriasGastadas=" + caloriasGastadas + ", rachaEntrenamiento="
+				+ ", enfermedades=" + enfermedades + ", imc=" + imc
+				+ ", caloriasGastadas=" + caloriasGastadas + ", rachaEntrenamiento="
 				+ rachaEntrenamiento + ", objetivo=" + objetivo + ", tiempoEntrenado=" + tiempoEntrenado
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
 				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contrasena=" + contrasena

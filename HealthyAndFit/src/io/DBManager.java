@@ -90,7 +90,7 @@ public class DBManager {
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
 		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, usuario.getNombre());
 			stmt.setString(3, usuario.getApellido1());
@@ -110,8 +110,7 @@ public class DBManager {
 			stmt.setInt(17, usuario.getVasosDeAgua());
 			stmt.setString(18, usuario.getContrasena());
 			stmt.setBytes(19, convertirFotoABytes(usuario.getFoto()));
-			stmt.setString(20, usuario.getPreferenciaAlimenticia().toString());
-			stmt.setString(21, usuario.getPermiso().toString());
+			stmt.setString(20, usuario.getPermiso().toString());
 			 
 			stmt.executeUpdate();
 			stmt.close();

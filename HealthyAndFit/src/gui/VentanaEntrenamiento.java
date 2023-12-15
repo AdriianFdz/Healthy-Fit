@@ -83,7 +83,7 @@ public class VentanaEntrenamiento extends JFrame{
 		listaEntrenamientos = new JList<Entrenamiento>(modeloListaEntrenamiento);
 
 	
-		//Entrenamientos de ejemplo
+		//Recuperar entrenamientos de la BD
 		
 		Connection conn = DBManager.obtenerConexion();
 		Statement stmt;
@@ -103,6 +103,9 @@ public class VentanaEntrenamiento extends JFrame{
 				Entrenamiento e = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);	
 				modeloListaEntrenamiento.addElement(e);
 			}
+			conn.close();
+			stmt.close();
+			rs.close();
 		} catch (SQLException e) {
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);

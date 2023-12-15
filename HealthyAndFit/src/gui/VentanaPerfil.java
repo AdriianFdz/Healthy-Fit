@@ -50,7 +50,6 @@ public class VentanaPerfil extends JFrame{
 	private JLabel labelCorreo;
 	private JLabel labelPeso;
 	private JLabel labelIMC;
-	private JLabel labelPrefAli;
 	private JLabel labelAleg;
 	private JLabel fotoUsuario;
 	
@@ -117,15 +116,6 @@ public class VentanaPerfil extends JFrame{
 		JScrollPane paneEnfermedades = new JScrollPane(listaEnfe);
 	
 
-		labelPrefAli = new JLabel("PREFERENCIAS ALIMENTICIAS");
-		JLabel labelPrefAlimentaria = new JLabel(p.getPreferenciaAlimenticia().name());
-		
-		/*JComboBox<TipoPreferencia> preferenciasComboBox = new JComboBox<TipoPreferencia>();
-		for (TipoPreferencia preferencia :TipoPreferencia.values()) {
-			preferenciasComboBox.addItem(preferencia);
-		}*/
-		
-
 		JLabel labelEnfermedades = new JLabel("ENFERMEDADES");
 
 		labelCorreo = new JLabel(String.format("Correo: %s", p.getCorreoElectronico()));
@@ -154,7 +144,6 @@ public class VentanaPerfil extends JFrame{
 		labelCorreo.setFont(new Font("Consolas", Font.PLAIN, 22));
 		labelPeso.setFont(new Font("Consolas", Font.PLAIN, 22));
 		labelIMC.setFont(new Font("Consolas", Font.PLAIN, 22));
-		labelPrefAli.setFont(new Font("Consolas", Font.BOLD, 22));
 		labelAleg.setFont(new Font("Consolas", Font.BOLD, 22));
 		labelEnfermedades.setFont(new Font("Consolas", Font.BOLD, 22));
 		
@@ -174,15 +163,10 @@ public class VentanaPerfil extends JFrame{
 			panelAlergias.setLayout(new BoxLayout(panelAlergias, BoxLayout.Y_AXIS));
 			panelAlergias.add(labelAleg);
 			panelAlergias.add(paneAlergias);
-		JPanel panelPreferencias = new JPanel();
-			panelPreferencias.setLayout(new BoxLayout(panelPreferencias, BoxLayout.Y_AXIS));
-			panelPreferencias.add(labelPrefAli);
-			panelPreferencias.add(labelPrefAlimentaria);
 			
 			
 		panelDatos.add(panelEnfermedades);
 		panelDatos.add(panelAlergias);
-		panelDatos.add(panelPreferencias);
 	
 		
 		

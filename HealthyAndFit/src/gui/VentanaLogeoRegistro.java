@@ -1,15 +1,9 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,21 +11,18 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
-import org.jfree.data.time.TimeSeriesCollection;
 
 import com.toedter.calendar.JCalendar;
 
-import db.BaseDeDatos;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.TipoAlergias;
@@ -39,7 +30,6 @@ import domain.TipoDificultad;
 import domain.TipoEnfermedades;
 import domain.TipoEntrenamiento;
 import domain.TipoPermiso;
-import domain.TipoPreferencia;
 import domain.TipoSexo;
 import domain.Usuario;
 import io.DBManager;
@@ -75,11 +65,13 @@ public class VentanaLogeoRegistro extends JFrame {
 	public JTextField meterCorreoRegistro;
 
 	public JLabel contraseñaRegistro;
-	public JTextField meterContraseñaRegistro;
+	public JPasswordField meterContraseñaRegistro;
 
 	public JLabel contraseñaRepetidaRegistro;
-	public JTextField meterContraseñaRepetidaRegistro;
+	public JPasswordField meterContraseñaRepetidaRegistro;
 
+	private JTextField meterNombre;
+	
 	public JLabel apellido1;
 	public JTextField meterApellido1;
 
@@ -102,11 +94,7 @@ public class VentanaLogeoRegistro extends JFrame {
 	public JLabel fechaNac;
 	public JCalendar meterFechaNac;
 
-	public JLabel enfermedades;
-	public JTable meterEnfermedades;
 
-	public JLabel alergias;
-	public JTable meterAlergias;
 
 	public JButton registrarse;
 
@@ -151,7 +139,9 @@ public class VentanaLogeoRegistro extends JFrame {
 
 		meterDatos = new JPanel();
 		meterDatos.setLayout(new BoxLayout(meterDatos, BoxLayout.Y_AXIS));
-
+		meterDatos.setAlignmentX(LEFT_ALIGNMENT);
+		
+		
 		nombreRegistro = new JLabel("Nombre de Usuario");
 		meterNombreRegistro = new JTextField();
 
@@ -167,16 +157,19 @@ public class VentanaLogeoRegistro extends JFrame {
 		registrarse = new JButton("REGISTRARSE");
 		registro.add(registrarse, BorderLayout.SOUTH);
 
+		JLabel nombre = new JLabel("Nombre");
+		meterNombre= new JTextField();
+
 		apellido1 = new JLabel("Primer Apellido");
 		meterApellido1 = new JTextField();
 
 		apellido2 = new JLabel("Segundo Apellido");
 		meterApellido2 = new JTextField();
 
-		altura = new JLabel("Peso");
+		altura = new JLabel("Altura");
 		meterAltura = new JTextField();
 
-		peso = new JLabel("Altura");
+		peso = new JLabel("Peso");
 		meterPeso = new JTextField();
 
 		genero = new JLabel("Genero");
@@ -192,46 +185,6 @@ public class VentanaLogeoRegistro extends JFrame {
 		generoB.add(H, BorderLayout.CENTER);
 		generoB.add(O, BorderLayout.SOUTH);
 
-		enfermedades = new JLabel("Enfermedades");
-		DefaultTableModel modeloEnfermedades = new DefaultTableModel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			public boolean isCellEditable(int row, int column) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-		};
-		modeloEnfermedades.addColumn("Enfermedades");
-		meterEnfermedades = new JTable(modeloEnfermedades);
-		//JPanel enfermedadesScroll = new JPanel();
-		//enfermedadesScroll.add(meterEnfermedades);
-		for (TipoEnfermedades enfermedad : TipoEnfermedades.values()) {
-			modeloEnfermedades.addRow(new Object[] { enfermedad });
-		}
-
-		alergias = new JLabel("Alergias");
-		DefaultTableModel modeloAlergias = new DefaultTableModel() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			public boolean isCellEditable(int row, int column) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-		};
-		modeloAlergias.addColumn("Alergias");
-		meterAlergias = new JTable(modeloAlergias);
-		for (TipoAlergias alergia : TipoAlergias.values()) {
-			modeloAlergias.addRow(new Object[] { alergia });
-		}
-		
 		
 		fechaNac = new JLabel("Fecha Nacimiento");
 		meterFechaNac = new JCalendar();
@@ -244,6 +197,8 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterDatos.add(meterContraseñaRegistro);
 		meterDatos.add(contraseñaRepetidaRegistro);
 		meterDatos.add(meterContraseñaRepetidaRegistro);
+		meterDatos.add(nombre);
+		meterDatos.add(meterNombre);
 		meterDatos.add(apellido1);
 		meterDatos.add(meterApellido1);
 		meterDatos.add(apellido2);
@@ -256,10 +211,6 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterDatos.add(generoB);
 		meterDatos.add(fechaNac);
 		meterDatos.add(meterFechaNac);
-		meterDatos.add(enfermedades);
-		meterDatos.add(meterEnfermedades);
-		meterDatos.add(alergias);
-		meterDatos.add(meterAlergias);
 
 		registroScroll = new JScrollPane(meterDatos);
 		registro.add(registroScroll, BorderLayout.CENTER);
@@ -292,31 +243,75 @@ public class VentanaLogeoRegistro extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!meterNombreRegistro.getText().isEmpty() && !meterCorreoRegistro.getText().isEmpty()
-						&& !meterContraseñaRepetidaRegistro.getText().isEmpty()
-						&& !meterContraseñaRegistro.getText().isEmpty()) {
+				if (
+						!meterNombre.getText().isEmpty()
+						&& !meterNombreRegistro.getText().isBlank() 
+						&& !meterApellido1.getText().isBlank()
+						&& !meterApellido2.getText().isBlank() 
+						&& meterFechaNac.getDate() != null
+						&& meterGenero.getButtonCount() != 0
+						&& !meterAltura.getText().isBlank()
+						&& !meterPeso.getText().isBlank()
+						&& !meterCorreoRegistro.getText().isBlank()
+						&& !meterContraseñaRegistro.getText().isBlank()
+						&& !meterContraseñaRepetidaRegistro.getText().isBlank()		
+						) {
+								
+								
+					
+					
 					if (meterContraseñaRegistro.getText().equals(meterContraseñaRepetidaRegistro.getText())) {
 						// crear usuario en base de datos
-						RegistroLogger.anadirLogeo(Level.WARNING, "Contraseña incorrecta");
-						Usuario usuarioRegistrado = new Usuario();
-						usuarioRegistrado.setNombreUsuario(meterNombreRegistro.getText());
-						usuarioRegistrado.setCorreoElectronico(meterCorreoRegistro.getText());
-						usuarioRegistrado.setContrasena(meterContraseñaRegistro.getText());
-						usuarioRegistrado.setApellido1(meterApellido1.getText());
-						usuarioRegistrado.setApellido2(meterApellido2.getText());
-						usuarioRegistrado.setAltura(Double.parseDouble(meterAltura.getText()));
-						usuarioRegistrado.setPeso(Integer.parseInt(meterPeso.getText()));
-						if(M.isSelected()) {
-							usuarioRegistrado.setSexo(TipoSexo.MUJER);
-						}else if(H.isSelected()) {
-							usuarioRegistrado.setSexo(TipoSexo.HOMBRE);
-						}else {
-							usuarioRegistrado.setSexo(TipoSexo.OTRO);
+						
+						String nombre = meterNombre.getText();
+						String nombreUsuario = meterNombreRegistro.getText();
+						String apellido1 = meterApellido1.getText();
+						String apellido2 = meterApellido2.getText();
+						LocalDate fechaNacimiento = meterFechaNac.getDate().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate();
+						TipoSexo sexo = TipoSexo.OTRO;
+						Enumeration<AbstractButton> elementosBotones = meterGenero.getElements();
+						while(elementosBotones.hasMoreElements()) {	
+							AbstractButton botonSexo = elementosBotones.nextElement();
+							if (botonSexo.isSelected()) {
+								sexo = TipoSexo.valueOf(botonSexo.getText().toUpperCase());
+							}
 						}
+						
+						double altura = Double.valueOf(meterAltura.getText());
+						int peso = Integer.valueOf(meterPeso.getText());
+						String correoElectronico = meterCorreoRegistro.getText();
+						List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
+						List<TipoEnfermedades> enfermedades = new ArrayList<TipoEnfermedades>();
+						int caloriasGastadas = 0;
+						int rachaEntrenamiento = 0;
+						String objetivo = "Ninguno";
+						int tiempoEntrenado = 0;
+						LocalDate ultimaVezEntreno = LocalDate.now(); 
+						int caloriasConsumidas = 0;
+						Map<LocalDate, Dieta> proximaComida = new HashMap<LocalDate, Dieta>();
+						int vasosDeAgua = 0;
+						String contrasena = meterContraseñaRegistro.getText();
+						ImageIcon foto = new ImageIcon("resources\\images\\foto.png");
+						TipoPermiso permiso = TipoPermiso.USUARIO;
+						List<Entrenamiento> registroEntrenamiento = new ArrayList<Entrenamiento>();
+						List<Dieta> registroDietas = new ArrayList<Dieta>();
+						
+						Usuario usuarioRegistrado = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, registroEntrenamiento, registroDietas);
+						
 						usuarioRegistrado.setFechaNacimiento(meterFechaNac.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 						usuarioRegistrado.setPermiso(TipoPermiso.USUARIO);
 						
-						BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
+						//BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
+						try {
+							Connection conn = DBManager.obtenerConexion();
+							DBManager.anadirUsuario(conn, usuarioRegistrado);
+							conn.close();
+						} catch (SQLException e1) {
+							RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+							JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+						}
+						
+						
 						SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioRegistrado));
 						dispose();
 					} else {
@@ -420,7 +415,6 @@ public class VentanaLogeoRegistro extends JFrame {
 					int vasosDeAgua = rs.getInt("vasosDeAgua");
 					String contrasena = rs.getString("contrasena");
 					ImageIcon foto = new ImageIcon(rs.getBytes("foto"));
-					TipoPreferencia preferencia = TipoPreferencia.valueOf(rs.getString("preferenciaAlimenticia"));
 					TipoPermiso permiso = TipoPermiso.valueOf(rs.getString("permiso"));
 
 					PreparedStatement pstmtAlergias = conn
@@ -573,7 +567,7 @@ public class VentanaLogeoRegistro extends JFrame {
 						}
 
 						Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
-								sexo, altura, peso, alergias, correoElectronico, enfermedades, preferencia,
+								sexo, altura, peso, alergias, correoElectronico, enfermedades,
 								caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
 								caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso,
 								listaEntrenamientos, listaDietas);
@@ -591,8 +585,8 @@ public class VentanaLogeoRegistro extends JFrame {
 
 			RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 
 		return null;
