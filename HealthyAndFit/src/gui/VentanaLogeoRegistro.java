@@ -1,9 +1,16 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -102,13 +109,17 @@ public class VentanaLogeoRegistro extends JFrame {
 
 		paneles = new JTabbedPane(); // El panel para seleccionar la ventana de logeo o registro
 
-		logeo = new JPanel(new GridLayout(1, 3));
+		logeo = new JPanel();
 
 		logeoIzquierda = new JPanel();
 		logeoIzquierda.setLayout(new BoxLayout(logeoIzquierda, BoxLayout.Y_AXIS));
 
 		preguntaYaTienesCuenta = new JLabel("¿Ya tienes cuenta?");
 		logeoIzquierda.add(preguntaYaTienesCuenta);
+		
+		JSeparator separador = new JSeparator();
+		separador.setForeground(Color.BLACK);
+		logeoIzquierda.add(separador);
 
 		nombreLogeo = new JLabel("NOMBRE DE USUARIO ");
 		meterNombreLogeo = new JTextField(20);
@@ -126,10 +137,7 @@ public class VentanaLogeoRegistro extends JFrame {
 		inicioRapido = new JButton("INICIO RAPIDO");
 		logeoIzquierda.add(inicioRapido);
 
-		logeoDerecha = new JPanel();
-
 		logeo.add(logeoIzquierda);
-		logeo.add(logeoDerecha);
 
 		// REGISTRO
 
@@ -139,7 +147,6 @@ public class VentanaLogeoRegistro extends JFrame {
 
 		meterDatos = new JPanel();
 		meterDatos.setLayout(new BoxLayout(meterDatos, BoxLayout.Y_AXIS));
-		meterDatos.setAlignmentX(LEFT_ALIGNMENT);
 		
 		
 		nombreRegistro = new JLabel("Nombre de Usuario");
@@ -173,7 +180,9 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterPeso = new JTextField();
 
 		genero = new JLabel("Genero");
-		generoB = new JPanel(new BorderLayout());
+		generoB = new JPanel();
+		generoB.setLayout(new BoxLayout(generoB, BoxLayout.X_AXIS));
+		generoB.setAlignmentX(SwingConstants.CENTER);
 		meterGenero = new ButtonGroup();
 		M = new JRadioButton("Mujer");
 		H = new JRadioButton("Hombre");
@@ -181,9 +190,9 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterGenero.add(H);
 		meterGenero.add(M);
 		meterGenero.add(O);
-		generoB.add(M, BorderLayout.NORTH);
-		generoB.add(H, BorderLayout.CENTER);
-		generoB.add(O, BorderLayout.SOUTH);
+		generoB.add(M);
+		generoB.add(H);
+		generoB.add(O);
 
 		
 		fechaNac = new JLabel("Fecha Nacimiento");
@@ -210,7 +219,12 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterDatos.add(genero);
 		meterDatos.add(generoB);
 		meterDatos.add(fechaNac);
-		meterDatos.add(meterFechaNac);
+		
+		JPanel panelCalendario = new JPanel();
+		panelCalendario.setAlignmentX(SwingConstants.CENTER);
+		panelCalendario.add(meterFechaNac);
+		meterDatos.add(panelCalendario);
+		//meterDatos.add(meterFechaNac);
 
 		registroScroll = new JScrollPane(meterDatos);
 		registro.add(registroScroll, BorderLayout.CENTER);
@@ -346,13 +360,14 @@ public class VentanaLogeoRegistro extends JFrame {
 				}
 			}
 		});
-
+	
+		
 		paneles.add(logeo, "Logeo");
 		paneles.add(registro, "Registro");
 		this.add(paneles);
 
+		this.setSize(500,500);
 		this.setVisible(true);
-		this.setSize(500, 400);
 		this.setResizable(false);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Healthy & Fit");
