@@ -88,10 +88,8 @@ public class VentanaLogeoRegistro extends JFrame {
 	public JTextField meterApellido2;
 
 	public JLabel altura;
-	public JTextField meterAltura;
 
 	public JLabel peso;
-	public JTextField meterPeso;
 
 	public JLabel genero;
 	public JPanel generoB;
@@ -176,9 +174,9 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterApellido2 = new JTextField();
 
 		altura = new JLabel("Altura (m)");
-		JSpinner spinnerAltura = new JSpinner();
+		JSpinner meterAltura = new JSpinner();
         SpinnerNumberModel model1 = new SpinnerNumberModel(0.000, 0.000, 3.000, 0.1);
-        spinnerAltura.setModel(model1);
+        meterAltura.setModel(model1);
 		
         model1.addChangeListener(new ChangeListener() {
 			
@@ -192,9 +190,9 @@ public class VentanaLogeoRegistro extends JFrame {
 		});
         
 		peso = new JLabel("Peso (kg)");
-		JSpinner spinnerPeso = new JSpinner();
+		JSpinner meterPeso = new JSpinner();
         SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, 300, 1);
-        spinnerPeso.setModel(model2);
+        meterPeso.setModel(model2);
 
 		genero = new JLabel("Genero");
 		generoB = new JPanel();
@@ -230,9 +228,9 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterDatos.add(apellido2);
 		meterDatos.add(meterApellido2);
 		meterDatos.add(peso);
-		meterDatos.add(spinnerPeso);
+		meterDatos.add(meterPeso);
 		meterDatos.add(altura);
-		meterDatos.add(spinnerAltura);
+		meterDatos.add(meterAltura);
 		meterDatos.add(genero);
 		meterDatos.add(generoB);
 		meterDatos.add(fechaNac);
@@ -281,8 +279,8 @@ public class VentanaLogeoRegistro extends JFrame {
 						&& !meterApellido2.getText().isBlank() 
 						&& meterFechaNac.getDate() != null
 						&& meterGenero.getButtonCount() != 0
-						&& !meterAltura.getText().isBlank()
-						&& !meterPeso.getText().isBlank()
+						&& (int)meterAltura.getValue() != 0
+						&& (int)meterPeso.getValue() != 0
 						&& !meterCorreoRegistro.getText().isBlank()
 						&& !meterContraseñaRegistro.getText().isBlank()
 						&& !meterContraseñaRepetidaRegistro.getText().isBlank()		
@@ -308,8 +306,8 @@ public class VentanaLogeoRegistro extends JFrame {
 							}
 						}
 						
-						double altura = Double.valueOf(meterAltura.getText());
-						int peso = Integer.valueOf(meterPeso.getText());
+						double altura = (Double)meterAltura.getValue();
+						int peso = (int)meterPeso.getValue();
 						String correoElectronico = meterCorreoRegistro.getText();
 						List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
 						List<TipoEnfermedades> enfermedades = new ArrayList<TipoEnfermedades>();
