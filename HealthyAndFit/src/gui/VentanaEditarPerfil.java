@@ -193,16 +193,17 @@ public class VentanaEditarPerfil extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				//cambiar datos
 				
-				
-				u.setFoto(imagenResized);
-				vPerfil.cambiarFoto(u.getFoto());
-				Connection conn = DBManager.obtenerConexion();
-				DBManager.actualizarFoto(conn, u, imagenResized);
-				try {
-					conn.close();
-				} catch (SQLException e1) {
-					RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al conectar con la base de datos");
-					JOptionPane.showConfirmDialog(null, "ERROR al conectar con la BD", "Error", JOptionPane.PLAIN_MESSAGE);
+				if (imagenResized != null) {					
+					u.setFoto(imagenResized);
+					vPerfil.cambiarFoto(u.getFoto());
+					Connection conn = DBManager.obtenerConexion();
+					DBManager.actualizarFoto(conn, u, imagenResized);
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "ERROR al conectar con la BD", "Error", JOptionPane.PLAIN_MESSAGE);
+					}
 				}
 				
 			}
