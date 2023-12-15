@@ -576,8 +576,7 @@ public class VentanaLogeoRegistro extends JFrame {
 								sexo, altura, peso, alergias, correoElectronico, enfermedades, preferencia,
 								caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
 								caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso,
-								listaEntrenamientos, listaDietas, new TimeSeriesCollection(),
-								new TimeSeriesCollection());
+								listaEntrenamientos, listaDietas);
 						conn.close();
 						return usuario;
 					}

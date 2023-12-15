@@ -32,11 +32,7 @@ public class TestUsuario {
 	 
 	@Before
 	public void setUp() {
-		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>(), new ArrayList<Dieta>(), new TimeSeriesCollection(), new TimeSeriesCollection());
-		TimeSeries ts = new TimeSeries("test");
-		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 200);
-		usuario.getDatasetEntrenamientos().addSeries(ts);
-		usuario.getDatasetDietas().addSeries(ts);
+		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), TipoPreferencia.NINGUNA, 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>(), new ArrayList<Dieta>());
 		usuarioSinArgs = new Usuario();
 				
 	} 
@@ -291,36 +287,6 @@ public class TestUsuario {
 	public void testSetRegistroDietas() {
 		usuario.setRegistroDietas(new ArrayList<Dieta>());
 		assertEquals(new ArrayList<Dieta>(), usuario.getRegistroDietas());
-	}
-	
-	@Test
-	public void testGetDatasetEntrenamientos() {
-		TimeSeries ts = new TimeSeries("test");
-		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 200);
-		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetEntrenamientos());
-	}
-	
-	@Test
-	public void testSetDatasetEntrenamientos() {
-		TimeSeries ts = new TimeSeries("testSetter");
-		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 400);
-		usuario.setDatasetEntrenamientos(new TimeSeriesCollection(ts));
-		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetEntrenamientos());
-	}
-	
-	@Test
-	public void testGetDatasetDietas() {
-		TimeSeries ts = new TimeSeries("test");
-		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 200);
-		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetDietas());
-	}
-	
-	@Test
-	public void testSetDatasetDietas() {
-		TimeSeries ts = new TimeSeries("testSetter");
-		ts.add(new Day(LocalDate.now().getDayOfMonth(), LocalDate.now().getMonthValue(), LocalDate.now().getYear()), 400);
-		usuario.setDatasetDietas(new TimeSeriesCollection(ts));
-		assertEquals(new TimeSeriesCollection(ts), usuario.getDatasetDietas());
 	}
 	
 	
