@@ -177,15 +177,16 @@ public class VentanaLogeoRegistro extends JFrame {
 
 		altura = new JLabel("Altura (m)");
 		JSpinner spinnerAltura = new JSpinner();
-        SpinnerNumberModel model1 = new SpinnerNumberModel(0.000, 0.000, 3.000, 0.1);
+		spinnerAltura.setAlignmentX(SwingConstants.CENTER);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(0.500, 0.000, 3.000, 0.1);
         spinnerAltura.setModel(model1);
 		
         model1.addChangeListener(new ChangeListener() {
 			
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				if ((double) model1.getValue() < 0.000) {
-					model1.setValue(0.000);
+				if ((double) model1.getValue() < 0.500) {
+					model1.setValue(0.500);
 				}
 				
 			}
@@ -193,7 +194,8 @@ public class VentanaLogeoRegistro extends JFrame {
         
 		peso = new JLabel("Peso (kg)");
 		JSpinner spinnerPeso = new JSpinner();
-        SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, 300, 1);
+		spinnerPeso.setAlignmentX(SwingConstants.CENTER);
+        SpinnerNumberModel model2 = new SpinnerNumberModel(1, 1, 300, 1);
         spinnerPeso.setModel(model2);
 
 		genero = new JLabel("Genero");
