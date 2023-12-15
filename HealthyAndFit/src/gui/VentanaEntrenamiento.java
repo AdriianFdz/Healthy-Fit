@@ -10,6 +10,11 @@ import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -19,6 +24,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
@@ -27,7 +33,11 @@ import javax.swing.border.EmptyBorder;
 
 import db.BaseDeDatos;
 import domain.Entrenamiento;
+import domain.TipoDificultad;
+import domain.TipoEntrenamiento;
 import domain.Usuario;
+import io.DBManager;
+import io.RegistroLogger;
 
 public class VentanaEntrenamiento extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -75,10 +85,30 @@ public class VentanaEntrenamiento extends JFrame{
 	
 		//Entrenamientos de ejemplo
 		
-		for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
-			modeloListaEntrenamiento.addElement(entrenamiento);
+		Connection conn = DBManager.obtenerConexion();
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM entrenamientos");
+			while (rs.next()) {			
+				String nombre = rs.getString("nombre");
+				TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento.valueOf(rs.getString("tipoEntrenamiento"));
+				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad"));
+				int tiempo = rs.getInt("tiempo");
+				String descripcion = rs.getString("descripcion");
+				int calorias = rs.getInt("calorias");
+				int series = rs.getInt("series");
+				int repeticiones = rs.getInt("repeticiones");
+				
+				Entrenamiento e = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);	
+				modeloListaEntrenamiento.addElement(e);
+			}
+		} catch (SQLException e) {
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
+				
 		listaEntrenamientos.setCellRenderer(new RenderListaEntrenamientos());
 		
 		//Diseño de la ventana
