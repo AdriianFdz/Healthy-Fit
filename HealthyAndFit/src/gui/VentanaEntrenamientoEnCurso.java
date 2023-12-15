@@ -105,7 +105,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelPrincipal = new JPanel();
 	        panelPrincipal.setLayout(new BorderLayout());
 	        panelSecundario = new JPanel();
-	        panelSecundario.setLayout(new GridLayout(3, 2, 50, 0));
+	        panelSecundario.setLayout(new GridLayout(3, 2, 80, 0));
 	        panelAbajo = new JPanel();
 	        panelAbajo.setBackground(Color.GRAY);
 	        panelAbajo.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -121,7 +121,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelDerecha.add(foto);
 	        
 	        labelTiempo = new JLabel();
-	        labelTiempo.setFont(new Font("Consolas", Font.PLAIN, 70));
+	        labelTiempo.setFont(new Font("Consolas", Font.PLAIN, 80));
 	        labelTiempo.setHorizontalAlignment(JLabel.CENTER);
 	        labelTiempo.setIcon(new ImageIcon(iconoCronometro));
 

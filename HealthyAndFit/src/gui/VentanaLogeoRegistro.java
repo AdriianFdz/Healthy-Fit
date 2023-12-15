@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -173,11 +175,26 @@ public class VentanaLogeoRegistro extends JFrame {
 		apellido2 = new JLabel("Segundo Apellido");
 		meterApellido2 = new JTextField();
 
-		altura = new JLabel("Altura");
-		meterAltura = new JTextField();
-
-		peso = new JLabel("Peso");
-		meterPeso = new JTextField();
+		altura = new JLabel("Altura (m)");
+		JSpinner spinnerAltura = new JSpinner();
+        SpinnerNumberModel model1 = new SpinnerNumberModel(0.000, 0.000, 3.000, 0.1);
+        spinnerAltura.setModel(model1);
+		
+        model1.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if ((double) model1.getValue() < 0.000) {
+					model1.setValue(0.000);
+				}
+				
+			}
+		});
+        
+		peso = new JLabel("Peso (kg)");
+		JSpinner spinnerPeso = new JSpinner();
+        SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, 300, 1);
+        spinnerPeso.setModel(model2);
 
 		genero = new JLabel("Genero");
 		generoB = new JPanel();
@@ -213,9 +230,9 @@ public class VentanaLogeoRegistro extends JFrame {
 		meterDatos.add(apellido2);
 		meterDatos.add(meterApellido2);
 		meterDatos.add(peso);
-		meterDatos.add(meterPeso);
+		meterDatos.add(spinnerPeso);
 		meterDatos.add(altura);
-		meterDatos.add(meterAltura);
+		meterDatos.add(spinnerAltura);
 		meterDatos.add(genero);
 		meterDatos.add(generoB);
 		meterDatos.add(fechaNac);
