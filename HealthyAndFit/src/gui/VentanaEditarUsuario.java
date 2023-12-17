@@ -155,6 +155,7 @@ public class VentanaEditarUsuario extends JFrame {
 				TipoPermiso nuevoTipo = (TipoPermiso) comboTipo.getSelectedItem();
 				
 				// Actualizar los atributos del usuario
+				mod.setNombreUsuario(nuevoNombreU);
 			    mod.setNombre(nuevoNombre);
 			    mod.setApellido1(nuevoApellido1);
 			    mod.setApellido2(nuevoApellido2);
