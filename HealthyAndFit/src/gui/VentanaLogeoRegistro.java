@@ -326,10 +326,7 @@ public class VentanaLogeoRegistro extends JFrame {
 						List<Dieta> registroDietas = new ArrayList<Dieta>();
 						
 						Usuario usuarioRegistrado = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, registroEntrenamiento, registroDietas);
-						
-						usuarioRegistrado.setFechaNacimiento(meterFechaNac.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-						usuarioRegistrado.setPermiso(TipoPermiso.USUARIO);
-						
+											
 						//BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
 						try {
 							Connection conn = DBManager.obtenerConexion();
@@ -339,7 +336,6 @@ public class VentanaLogeoRegistro extends JFrame {
 							RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 							JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 						}
-						
 						
 						SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioRegistrado));
 						dispose();
@@ -447,8 +443,7 @@ public class VentanaLogeoRegistro extends JFrame {
 					ImageIcon foto = new ImageIcon(rs.getBytes("foto"));
 					TipoPermiso permiso = TipoPermiso.valueOf(rs.getString("permiso"));
 
-					PreparedStatement pstmtAlergias = conn
-							.prepareStatement("SELECT * FROM usuario_alergias WHERE nombreUsuario = ?");
+					PreparedStatement pstmtAlergias = conn.prepareStatement("SELECT * FROM usuario_alergias WHERE nombreUsuario = ?");
 					pstmtAlergias.setString(1, usuarioSinComprobar.getNombreUsuario());
 					ResultSet rsAlergias = pstmtAlergias.executeQuery();
 
@@ -457,8 +452,7 @@ public class VentanaLogeoRegistro extends JFrame {
 						alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")]);
 					}
 
-					PreparedStatement pstmtEnfermedades = conn
-							.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
+					PreparedStatement pstmtEnfermedades = conn.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
 					pstmtEnfermedades.setString(1, usuarioSinComprobar.getNombreUsuario());
 					ResultSet rsEnfermedades = pstmtEnfermedades.executeQuery();
 
@@ -467,8 +461,7 @@ public class VentanaLogeoRegistro extends JFrame {
 						enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")]);
 					}
 
-					PreparedStatement pstmtProximaComida = conn
-							.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
+					PreparedStatement pstmtProximaComida = conn.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
 					pstmtProximaComida.setString(1, usuarioSinComprobar.getNombreUsuario());
 					ResultSet rsProximaComida = pstmtProximaComida.executeQuery();
 					Map<LocalDate, Dieta> proximaComida = new HashMap<LocalDate, Dieta>();
@@ -476,8 +469,7 @@ public class VentanaLogeoRegistro extends JFrame {
 						LocalDate fecha = LocalDate.parse(rsProximaComida.getString("fecha"));
 						String nombreDieta = rsProximaComida.getString("nombreDieta");
 
-						PreparedStatement pstmtObtenerDieta = conn
-								.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+						PreparedStatement pstmtObtenerDieta = conn.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
 						pstmtObtenerDieta.setString(1, nombreDieta);
 						ResultSet rsObtenerDieta = pstmtObtenerDieta.executeQuery();
 						while (rsObtenerDieta.next()) {
@@ -485,8 +477,7 @@ public class VentanaLogeoRegistro extends JFrame {
 							TipoDificultad dificultad = TipoDificultad.valueOf(rsObtenerDieta.getString("dificultad"));
 							int kcal = rsObtenerDieta.getInt("kcal");
 
-							PreparedStatement pstmtObtenerPasosDieta = conn
-									.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+							PreparedStatement pstmtObtenerPasosDieta = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
 							pstmtObtenerPasosDieta.setString(1, nombreDieta);
 							ResultSet rsObtenerPasosDieta = pstmtObtenerPasosDieta.executeQuery();
 							List<String> pasos = new ArrayList<String>();
@@ -494,8 +485,7 @@ public class VentanaLogeoRegistro extends JFrame {
 								pasos.add(rsObtenerPasosDieta.getString("denominacion"));
 							}
 
-							PreparedStatement pstmtObtenerIngredientesDieta = conn
-									.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+							PreparedStatement pstmtObtenerIngredientesDieta = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
 							pstmtObtenerIngredientesDieta.setString(1, nombreDieta);
 							ResultSet rsObtenerIngredientesDieta = pstmtObtenerIngredientesDieta.executeQuery();
 							List<String> ingredientes = new ArrayList<String>();
@@ -516,6 +506,7 @@ public class VentanaLogeoRegistro extends JFrame {
 									alergiasDieta);
 							proximaComida.putIfAbsent(fecha, dieta);
 						}
+					}
 
 						// OBTENER REGISTRO ENTRENAMIENTOS del usuario
 						PreparedStatement pstmtRegEntrenamientos = conn.prepareStatement(
@@ -603,7 +594,6 @@ public class VentanaLogeoRegistro extends JFrame {
 								listaEntrenamientos, listaDietas);
 						conn.close();
 						return usuario;
-					}
 				}
 
 				// Usuario usuarioCorrecto = new Usuario(nombre, nombreUsuario, apellido1,

@@ -66,8 +66,7 @@ public class VentanaResumen extends JFrame{
 	private static final long serialVersionUID = 1L;
 	public VentanaResumen(Usuario persona) {		
 		this.persona = persona;
-		
-		persona.setProximaComida(asignarDietaADia());
+		this.persona.setProximaComida(asignarDietaADia(this.persona.getProximaComida()));
 		
 		
 		
@@ -120,8 +119,8 @@ public class VentanaResumen extends JFrame{
 		
 		
 		//DIETA
-		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+persona.getCaloriasConsumidas());
-		JLabel proximaComida = new JLabel("Próxima comida: "+persona.getProximaComida().get(LocalDate.now()).getNombre());
+		JLabel caloriasConsumidas = new JLabel("Calorías consumidas: "+this.persona.getCaloriasConsumidas());
+		JLabel proximaComida = new JLabel("Próxima comida: "+this.persona.getProximaComida().get(LocalDate.now()).getNombre());
 		JLabel vasosDeAgua = new JLabel("Vasos de agua: ");
 		JPanel panelVasosAgua = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			panelVasosAgua.add(vasosDeAgua);
@@ -153,7 +152,7 @@ public class VentanaResumen extends JFrame{
 			List<JLabel> listaVasos = new ArrayList<JLabel>();
 
 			crearVasosDeAgua(listaVasos);
-			actualizarVasosDeAgua(persona, listaVasos);
+			actualizarVasosDeAgua(this.persona, listaVasos);
 		
 				
 		JPanel panelTextosDieta = new JPanel(new GridLayout(3, 1, 0, 0));
@@ -174,7 +173,7 @@ public class VentanaResumen extends JFrame{
 			
 		//Grafica dieta
 		//TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
-		TimeSeriesCollection datasetDieta = crearDatasetDietas(persona);
+		TimeSeriesCollection datasetDieta = crearDatasetDietas(this.persona);
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
 		panelGraficaDieta.setPreferredSize(new Dimension(resPantalla.getSize().width/2-35,resPantalla.getSize().height/2-35));
@@ -199,7 +198,7 @@ public class VentanaResumen extends JFrame{
 		
 		JPanel panelArribaDerecha = new JPanel(new BorderLayout());
 			panelArribaDerecha.add(alertaAgua, BorderLayout.CENTER);
-			Image foto = persona.getFoto().getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+			Image foto = this.persona.getFoto().getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
 			fotoPerfil = new JButton(new ImageIcon(foto));
 			fotoPerfil.setPreferredSize(new Dimension(100,100));
 			panelArribaDerecha.add(fotoPerfil, BorderLayout.EAST);
@@ -487,11 +486,10 @@ public class VentanaResumen extends JFrame{
 	}
 	
 	
-	private Map<LocalDate, Dieta> asignarDietaADia() {
+	private Map<LocalDate, Dieta> asignarDietaADia(Map<LocalDate, Dieta> dietaPorDia) {
 		//Asignar dieta diaria
 		Connection conn = DBManager.obtenerConexion();
 		Statement stmt;
-		Map<LocalDate, Dieta> dietaPorDia = new HashMap<LocalDate, Dieta>();
 		List<Dieta> dietas = new ArrayList<Dieta>();
 		try {		
 			stmt = conn.createStatement();
@@ -537,11 +535,9 @@ public class VentanaResumen extends JFrame{
 
 			Dieta dietaHoy;
 			do {
-				dietaHoy = dietas.get((int) (Math.random()*dietas.size()));		
+				dietaHoy = dietas.get((int) (Math.random()*dietas.size()));
 			} while (!Collections.disjoint(dietaHoy.getAlergias(), persona.getAlergias()));
-			
 			dietaPorDia.putIfAbsent(LocalDate.now(ZoneId.of("Europe/Madrid")), dietaHoy);
-			
 			DBManager.anadirUsuarioDieta(conn, persona, dietaHoy, LocalDate.now());
 			
 			conn.close();
