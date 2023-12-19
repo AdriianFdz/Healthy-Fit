@@ -15,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,6 +42,9 @@ import javax.swing.border.TitledBorder;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
@@ -279,10 +284,12 @@ public class VentanaResumen extends JFrame{
 	//Crear grafica
 	public JFreeChart crearGrafica(String titulo, String tiempo, String valores, XYDataset xydataset) {
 		JFreeChart chart = ChartFactory.createTimeSeriesChart(titulo, tiempo, valores, xydataset);
-		chart.setBackgroundPaint(Color.WHITE);
+		
+        NumberAxis ejeY = (NumberAxis) chart.getXYPlot().getRangeAxis();
+        ejeY.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+       
 		return chart;
 	}
-	
 	//Dataset Ejemplo
 	public TimeSeriesCollection crearDatasetEjemplo(String titulo) {
         TimeSeries s1 = new TimeSeries(titulo);
@@ -369,8 +376,7 @@ public class VentanaResumen extends JFrame{
 				while (rsDieta.next()) {
 					int calorias = rsDieta.getInt("kcal");
 					Day fechaConvertida = new Day(fecha.getDayOfMonth(), fecha.getMonthValue(), fecha.getYear());
-
-					ts.addOrUpdate(new TimeSeriesDataItem(fechaConvertida, calorias));
+					ts.add(fechaConvertida, calorias);
 				}
 				stmtDieta.close();
 			}
@@ -383,7 +389,6 @@ public class VentanaResumen extends JFrame{
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
-		
 		repaint();
 		return dataset;
 	}
