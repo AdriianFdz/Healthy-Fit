@@ -421,7 +421,6 @@ public class VentanaLogeoRegistro extends JFrame {
 			ResultSet rs = pstmt.executeQuery();
 
 			if (size == 1) {
-				RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
 				while (rs.next()) {
 					String nombreUsuario = usuarioSinComprobar.getNombreUsuario();
 					String nombre = rs.getString("nombre");
@@ -593,6 +592,7 @@ public class VentanaLogeoRegistro extends JFrame {
 								caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso,
 								listaEntrenamientos, listaDietas);
 						conn.close();
+						RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
 						return usuario;
 				}
 
