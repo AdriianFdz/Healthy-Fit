@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +29,7 @@ import javax.swing.table.DefaultTableModel;
 import domain.Dieta;
 import domain.TipoDificultad;
 import domain.Usuario;
+import io.DBManager;
 
 
 public class VentanaEditarDieta extends JFrame {
@@ -141,7 +145,6 @@ public class VentanaEditarDieta extends JFrame {
 	    
         JScrollPane panelDcha = new JScrollPane(tablaPasos);
         JPanel btnAñaEliPasos = new JPanel();
-		btnAñaEliPasos.setLayout(new BoxLayout(btnAñaEliPasos, BoxLayout.X_AXIS));
 		
         JButton botonAñadirPaso= new JButton("AÑADIR PASO");
         JButton botonElimiarPaso= new JButton("ELIMINAR PASO");
@@ -180,13 +183,16 @@ public class VentanaEditarDieta extends JFrame {
 				TipoDificultad nuevoTipo = (TipoDificultad) comboDif.getSelectedItem();
 				Integer nuevoKCAL = (Integer) spinnerKcal.getValue();
 				
+				Dieta dietaAntigua = new Dieta(d);
+				
 				// Actualizar los atributos de Dieta
 				d.setNombre(nuevoNombre);
 				d.setTiempo(nuevoTiempo);
 				d.setDificultad(nuevoTipo);
 				d.setKcal(nuevoKCAL);
-				d.setIngredientes(listaIngredientes);
-				d.setPasos(listaPasos);
+				d.setIngredientes(new ArrayList<String>(listaIngredientes));
+				d.setPasos(new ArrayList<String>(listaPasos));
+				
 				
 				//Para Ingrediente
 				// Obtener el número de filas en la tabla
@@ -207,6 +213,39 @@ public class VentanaEditarDieta extends JFrame {
 		            String nuevoPaso = (String) pasosTableModel.getValueAt(i, 0);
 		            listaPasos.add(nuevoPaso);
 		        }
+		        
+		        //ANADIR A LA BD
+		        Connection conn = DBManager.obtenerConexion();
+		        try {
+			        if (!DBManager.existeDieta(conn, dietaAntigua)) {
+			        		DBManager.anadirDieta(conn, d);
+			        		conn.close();
+					} else {
+	//					PreparedStatement nombreStmt = conn.prepareStatement("UPDATE dietas set nombre = ? where nombre = ?");
+	//					nombreStmt.setString(1, d.getNombre());
+	//					PreparedStatement tiempoStmt = conn.prepareStatement("UPDATE dietas set tiempo = ? where nombre = ?");
+	//					PreparedStatement difiicultadStmt = conn.prepareStatement("UPDATE dietas set dificultad = ? where nombre = ?");
+	//					PreparedStatement kcalStmt = conn.prepareStatement("UPDATE dietas set kcal = ? where nombre = ?");
+	//				 
+						DBManager.eliminarDieta(conn, dietaAntigua);
+						PreparedStatement pstmt = conn.prepareStatement("UPDATE usuario_dieta set nombreDieta = ? WHERE nombreDieta = ?");
+						pstmt.setString(1, nuevoNombre);
+						pstmt.setString(2, dietaAntigua.getNombre());
+						
+						System.out.println(d.getNombre());
+						System.out.println(dietaAntigua.getNombre());
+						pstmt.executeUpdate();
+						
+
+						
+						DBManager.anadirDieta(conn, d);
+					
+					}
+			        conn.close();
+		        } catch (SQLException e1) {
+		        	e1.printStackTrace();
+		        }					
+		        
 		        
 				// Mostrar un mensaje de éxito
 		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");

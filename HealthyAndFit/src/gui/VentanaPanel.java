@@ -9,7 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,6 +30,7 @@ import db.BaseDeDatos;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.Usuario;
+import io.DBManager;
 
 public class VentanaPanel extends JFrame {
 
@@ -79,10 +83,10 @@ public class VentanaPanel extends JFrame {
 		JScrollPane scrollU = new JScrollPane(tablaU);
 
 		JPanel panelBotonesU = new JPanel();
-		JButton añadirU = new JButton("AÑADIR");
+		JButton anadirU = new JButton("AÑADIR");
 		JButton modificarU = new JButton("MODIFICAR");
 		JButton eliminarU = new JButton("ELIMINAR");
-		panelBotonesU.add(añadirU);
+		panelBotonesU.add(anadirU);
 		panelBotonesU.add(modificarU);
 		panelBotonesU.add(eliminarU);
 
@@ -122,10 +126,10 @@ public class VentanaPanel extends JFrame {
 		JScrollPane scrollD = new JScrollPane(tablaD);
 
 		JPanel panelBotonesD = new JPanel();
-		JButton añadirD = new JButton("AÑADIR");
+		JButton anadirD = new JButton("AÑADIR");
 		JButton modificarD = new JButton("MODIFICAR");
 		JButton eliminarD = new JButton("ELIMINAR");
-		panelBotonesD.add(añadirD);
+		panelBotonesD.add(anadirD);
 		panelBotonesD.add(modificarD);
 		panelBotonesD.add(eliminarD);
 
@@ -165,10 +169,10 @@ public class VentanaPanel extends JFrame {
 		JScrollPane scrollE = new JScrollPane(tablaE);
 
 		JPanel panelBotonesE = new JPanel();
-		JButton añadirE = new JButton("AÑADIR");
+		JButton anadirE = new JButton("AÑADIR");
 		JButton modificarE = new JButton("MODIFICAR");
 		JButton eliminarE = new JButton("ELIMINAR");
-		panelBotonesE.add(añadirE);
+		panelBotonesE.add(anadirE);
 		panelBotonesE.add(modificarE);
 		panelBotonesE.add(eliminarE);
 
@@ -199,7 +203,7 @@ public class VentanaPanel extends JFrame {
 		rellenarUsuarios();
 		rellenarDietas();
 		rellenarEntrenamientos();
-		// AÑADIT TOOLTIP A LAS CELDAS DE LAS COLUMNAS PARA QUE SE VEA TODO EL TEXTO DE
+		// AnADIT TOOLTIP A LAS CELDAS DE LAS COLUMNAS PARA QUE SE VEA TODO EL TEXTO DE
 		// CADA CELDA
 		ToolTipManager.sharedInstance().setInitialDelay(0);
 		tablaU.addMouseMotionListener(new MouseMotionListener() {
@@ -327,22 +331,14 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				int dietaSeleccionada = tablaD.getSelectedRow();
-				Dieta[] D = { null };
-				if (dietaSeleccionada >= 0) {
-					String nombreD = (String) modeloD.getValueAt(dietaSeleccionada, 0);
+				int filaSeleccionada = tablaD.getSelectedRow();
+				if (filaSeleccionada >= 0) {
+					String nombreD = (String) modeloD.getValueAt(filaSeleccionada, 0);
 
-					for (Dieta dieta : BaseDeDatos.getListaDietas()) {
-						if (dieta.getNombre().equals(nombreD)) {
-							D[0] = dieta;
-							break;
-						}
-					}
-					if (D != null) {
-						SwingUtilities.invokeLater(() -> new VentanaEditarDieta(D[0],p));
-						dispose();
-					}
+					Connection conn = DBManager.obtenerConexion();
+					Dieta dietaSeleccionada = DBManager.obtenerDietas(conn, nombreD);
+					dispose();
+					SwingUtilities.invokeLater(() -> new VentanaEditarDieta(dietaSeleccionada, p));
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar una dieta");
 				}
@@ -352,31 +348,30 @@ public class VentanaPanel extends JFrame {
 
 		// BOTONES PARA AÑADIR USUARIOS, DIETAS Y ENTRENAMIENTOS
 
-		añadirU.addActionListener(new ActionListener() {
+		anadirU.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				BaseDeDatos.getListaUsuarios().add(new Usuario());
-				vaciarUsuarios();
-				rellenarUsuarios();
-
+				Usuario nuevoUsuario = new Usuario();
+				SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(p, new Usuario()));
 			}
 		});
 
-		añadirD.addActionListener(new ActionListener() {
+		anadirD.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				BaseDeDatos.getListaDietas().add(new Dieta());
+				Dieta nuevaDieta = new Dieta();
+				SwingUtilities.invokeLater(() -> new VentanaEditarDieta(nuevaDieta,p));
+				
+				
 				vaciarDietas();
 				rellenarDietas();
 
 			}
 		});
 
-		añadirE.addActionListener(new ActionListener() {
+		anadirE.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -638,7 +633,9 @@ public class VentanaPanel extends JFrame {
 	}
 
 	public void rellenarDietas() {
-		for (Dieta dieta : BaseDeDatos.getListaDietas()) {
+		Connection conn = DBManager.obtenerConexion();
+		
+		for (Dieta dieta : DBManager.obtenerDietas(conn)) {
 			Object[] filaD = { dieta.getNombre(), dieta.getTiempo(), dieta.getDificultad(), dieta.getIngredientes() };
 			modeloD.addRow(filaD);
 		}

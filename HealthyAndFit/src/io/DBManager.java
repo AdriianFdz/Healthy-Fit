@@ -5,14 +5,18 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level; 
@@ -24,13 +28,14 @@ import javax.swing.JOptionPane;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.TipoAlergias;
+import domain.TipoDificultad;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
 import domain.Usuario;
 
 public class DBManager {
 	private static Connection conn;
-	
+
 	public static Connection obtenerConexion() {
 		try (FileReader reader = new FileReader("conf/db.properties")){
 			Properties propiedades = new Properties();
@@ -167,7 +172,7 @@ public class DBManager {
 
 	}	
 	
-	 public static byte[] convertirFotoABytes(ImageIcon foto) {
+	public static byte[] convertirFotoABytes(ImageIcon foto) {
 	        BufferedImage bi = new BufferedImage(foto.getIconWidth(), foto.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 
 	        bi.createGraphics().drawImage(foto.getImage(), 0, 0, null);
@@ -306,4 +311,171 @@ public class DBManager {
 		
 	}
 	
+	public static boolean existeUsuario(Connection connection, Usuario usuario) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = connection.prepareStatement("SELECT * FROM usuarios WHERE nombreUsuario = ?");
+			pstmt.setString(1, usuario.getNombreUsuario());
+			ResultSet rs = pstmt.executeQuery();
+			if (!rs.next()) {
+				rs.close();
+				pstmt.close();
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public static boolean existeDieta(Connection connection, Dieta dieta) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = connection.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+			pstmt.setString(1, dieta.getNombre());
+			ResultSet rs = pstmt.executeQuery();
+			if (!rs.next()) {
+				rs.close();
+				pstmt.close();
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	public static void eliminarDieta(Connection connection, Dieta dieta) {
+		try {
+			PreparedStatement stmtDieta = connection.prepareStatement("DELETE FROM dietas WHERE nombre = ?");
+				stmtDieta.setString(1, dieta.getNombre());
+			PreparedStatement stmtPasosDieta = connection.prepareStatement("DELETE FROM pasos_dietas WHERE nombreDieta = ?");
+				stmtPasosDieta.setString(1, dieta.getNombre());
+			PreparedStatement stmtIngredientesDieta = connection.prepareStatement("DELETE FROM ingredientes_dietas WHERE nombreDieta = ?");
+				stmtIngredientesDieta.setString(1, dieta.getNombre());
+				stmtDieta.executeUpdate();
+				stmtPasosDieta.executeUpdate();
+				stmtIngredientesDieta.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static List<Dieta> obtenerDietas (Connection connection){
+		Connection conn = DBManager.obtenerConexion();
+		List<Dieta> resultado = new ArrayList<Dieta>();
+		
+		try {
+			Statement stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery("SELECT * FROM dietas");
+			while (rs.next()) {
+				Dieta d = new Dieta();
+				String nombre = rs.getString("nombre");
+				int tiempo = rs.getInt("tiempo");
+				TipoDificultad difiicultad = TipoDificultad.valueOf(rs.getString("dificultad"));
+				int kcal = rs.getInt("kcal");
+				
+				PreparedStatement stmtPasos = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+				stmtPasos.setString(1, nombre);
+				ResultSet rsPasos = stmtPasos.executeQuery();
+				List<String> pasos = new ArrayList<String>();
+				while (rsPasos.next()) {
+					pasos.add(rsPasos.getString("denominacion"));
+				}
+				d.setPasos(new ArrayList<String>(pasos));
+				
+				PreparedStatement stmtIngredientes = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+				stmtIngredientes.setString(1, nombre);
+				ResultSet rsIngredientes = stmtIngredientes.executeQuery();
+				List<String> ingredientes = new ArrayList<String>();
+				while (rsIngredientes.next()) {
+					ingredientes.add(rsIngredientes.getString("nombreIngrediente"));
+				}
+				d.setIngredientes(new ArrayList<String>(ingredientes));
+
+				PreparedStatement stmtAlergias = conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				stmtAlergias.setString(1, nombre);
+				ResultSet rsAlergias = stmtAlergias.executeQuery();
+				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
+				while (rsAlergias.next()) {
+					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("alergia")));
+				}
+				d.setAlergias(new ArrayList<TipoAlergias>(alergias));
+				
+				d.setNombre(nombre);
+				d.setTiempo(tiempo);
+				d.setDificultad(difiicultad);
+				d.setKcal(kcal);
+				
+				
+				resultado.add(d);
+				}
+			}	catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+		return resultado;
+			
+	}
+	
+	public static Dieta obtenerDietas (Connection connection, String nombreCondicion){
+		Connection conn = DBManager.obtenerConexion();
+		
+		Dieta d = new Dieta();
+		try {
+			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+			stmt.setString(1, nombreCondicion);
+			
+			ResultSet rs = stmt.executeQuery();
+		
+			
+			while (rs.next()) {
+				String nombre = rs.getString("nombre");
+				int tiempo = rs.getInt("tiempo");
+				TipoDificultad difiicultad = TipoDificultad.valueOf(rs.getString("dificultad"));
+				int kcal = rs.getInt("kcal");
+				
+				PreparedStatement stmtPasos = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+				stmtPasos.setString(1, nombre);
+				ResultSet rsPasos = stmtPasos.executeQuery();
+				List<String> pasos = new ArrayList<String>();
+				while (rsPasos.next()) {
+					pasos.add(rsPasos.getString("denominacion"));
+				}
+				d.setPasos(new ArrayList<String>(pasos));
+				
+				PreparedStatement stmtIngredientes = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+				stmtIngredientes.setString(1, nombre);
+				ResultSet rsIngredientes = stmtIngredientes.executeQuery();
+				List<String> ingredientes = new ArrayList<String>();
+				while (rsIngredientes.next()) {
+					ingredientes.add(rsIngredientes.getString("nombreIngrediente"));
+				}
+				d.setIngredientes(new ArrayList<String>(ingredientes));
+				
+				PreparedStatement stmtAlergias = conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				stmtAlergias.setString(1, nombre);
+				ResultSet rsAlergias = stmtAlergias.executeQuery();
+				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
+				while (rsAlergias.next()) {
+					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("alergia")));
+				}
+				d.setAlergias(new ArrayList<TipoAlergias>(alergias));
+				
+				d.setNombre(nombre);
+				d.setTiempo(tiempo);
+				d.setDificultad(difiicultad);
+				d.setKcal(kcal);
+				
+			}
+		}	catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return d;
+		
+		
+	}
+	
 }
+	
