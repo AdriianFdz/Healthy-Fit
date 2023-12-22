@@ -212,7 +212,7 @@ public class VentanaLogeoRegistro extends JFrame {
 		generoB.add(O);
 
 		
-		fechaNac = new JLabel("Fecha Nacimiento");
+		fechaNac = new JLabel(" Fecha Nacimiento");
 		meterFechaNac = new JCalendar();
 
 		meterDatos.add(nombreRegistro);

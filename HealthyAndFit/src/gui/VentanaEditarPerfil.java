@@ -1,7 +1,10 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,20 +16,39 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.toedter.calendar.JCalendar;
 
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
@@ -43,6 +65,18 @@ public class VentanaEditarPerfil extends JFrame {
 	
 	public JPanel panelColumna1;
 		public JPanel panelColumna;
+			private JTextField fieldNombreUsuario;
+			private JLabel labelNombreUsuario;
+			
+			private JPasswordField fieldContraseña;
+			private JLabel labelContraseña;
+			
+			private JPasswordField fieldContraseña2;
+			private JLabel labelrepetirContraseña;
+			
+			private JSpinner spinnerGenero;
+			private JLabel labelGenero;
+			
 			public JTextField fieldNombre;
 			public JLabel labelNombre; 
 			
@@ -78,25 +112,60 @@ public class VentanaEditarPerfil extends JFrame {
 		
 		
 		ImageIcon imagenResized;
+
+		private JLabel genero;
+
+		private JPanel generoB;
+
+		private ButtonGroup meterGenero;
+
+		private JRadioButton M;
+
+		private JRadioButton O;
+
+		private JRadioButton H;
+
+		private JCalendar meterFechaNac;
+		
+		private JPanel panelDerecha;
+
+		private Container panelDerecha2;
 		
 	public VentanaEditarPerfil(Usuario u, VentanaPerfil vPerfil) {
 		
 		JPanel panelAbajo = new JPanel(new BorderLayout());
 		add(panelAbajo, BorderLayout.SOUTH);
 		
-		//Panel Columna 1
+		//Panel Columna 
+		panelColumna = new JPanel(new BorderLayout());
 		panelColumna1 = new JPanel();
 		panelColumna1.setLayout(new BoxLayout(panelColumna1, BoxLayout.Y_AXIS));
+		panelColumna2 = new JPanel();
+		panelColumna2.setLayout(new BoxLayout(panelColumna2, BoxLayout.Y_AXIS));
+		panelDerecha = new JPanel();
+		panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
+		panelDerecha2 = new JPanel(new BorderLayout());
 		
 		//Para imagen
 		Image foto = u.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
-		fotoUsuario.setPreferredSize(new Dimension(200, 200));
+		//fotoUsuario.setPreferredSize(new Dimension(300, 200));
 		fotoUsuario.setToolTipText("Haz click para elegir otra foto");
+		anadirBordeLabel("Fotografia", fotoUsuario);
 		panelColumna1.add(fotoUsuario);
 		
 		//Elementos del panel
-		panelColumna = new JPanel(new GridLayout(5, 2));
+		fieldNombreUsuario = new JTextField(u.getNombreUsuario());
+		labelNombreUsuario = new JLabel("Nombre Usuario:");
+		
+		fieldCorreo = new JTextField(u.getCorreoElectronico());
+		labelCorreo = new JLabel("Correo");
+		
+		fieldContraseña = new JPasswordField(u.getContrasena());
+		labelContraseña = new JLabel("Contraseña:");
+		
+		fieldContraseña2 = new JPasswordField(u.getContrasena());
+		labelrepetirContraseña = new JLabel("Repetir Contraseña");
 		
 		fieldNombre = new JTextField(u.getNombre());
 		labelNombre = new JLabel("Nombre:");
@@ -108,84 +177,240 @@ public class VentanaEditarPerfil extends JFrame {
 		labelApellido2 = new JLabel("Segundo Apellido:");
 		
 		fieldFechaNac = new JTextField(u.getFechaNacimiento().toString());
-		labelFechaNac = new JLabel("Fecha nacimiento:");
+		labelFechaNac = new JLabel(" Fecha nacimiento:");
 		
 		
-		//Añadir elementos al panel 
-		panelColumna.add(labelNombre);
-		panelColumna.add(fieldNombre);
+		meterFechaNac = new JCalendar();
 		
-		panelColumna.add(labelApellido1);
-		panelColumna.add(fieldApellido1);
+		genero = new JLabel("Genero");
+		generoB = new JPanel();
+		generoB.setLayout(new BoxLayout(generoB, BoxLayout.X_AXIS));
+		generoB.setAlignmentX(SwingConstants.CENTER);
+		meterGenero = new ButtonGroup();
+		M = new JRadioButton("Mujer");
+		H = new JRadioButton("Hombre");
+		O = new JRadioButton("Otro");
+		meterGenero.add(H);
+		meterGenero.add(M);
+		meterGenero.add(O);
+		generoB.add(M);
+		generoB.add(H);
+		generoB.add(O);
 		
-		panelColumna.add(labelApellido2);
-		panelColumna.add(fieldApellido2);
 		
-		panelColumna.add(labelFechaNac);
-		panelColumna.add(fieldFechaNac);
 		
-		panelColumna1.add(panelColumna);
+		labelAltura = new JLabel("Altura (m)");
+		JSpinner meterAltura = new JSpinner();
+		meterAltura.setAlignmentX(SwingConstants.CENTER);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(0.500, 0.000, 3.000, 0.1);
+        meterAltura.setModel(model1);
 		
-		// Botones
-		JButton cancelaBot = new JButton("CANCELAR");
-		JButton aceptarBot = new JButton("ACEPTAR");
-		
-		JPanel panelBotonesCanAcep = new JPanel();
-			panelBotonesCanAcep.setLayout(new BoxLayout(panelBotonesCanAcep, BoxLayout.X_AXIS));
-			panelBotonesCanAcep.add(cancelaBot);
-			panelBotonesCanAcep.add(aceptarBot);
-		
-		panelColumna1.add(panelBotonesCanAcep);
-	
-		add(panelColumna1, BorderLayout.WEST);
-		
-
-		//Panel del resto de datos
-		panelColumna2 = new JPanel();
-		panelColumna2.setLayout(new BoxLayout(panelColumna2, BoxLayout.Y_AXIS));
-	
-		fieldSexo = new JTextField(u.getSexo().toString());
-		labelSexo = new JLabel("Sexo");
-		
-		fieldAltura = new JTextField(String.valueOf(u.getAltura()));
-		labelAltura = new JLabel("Altura");
-		
-		fieldCorreo = new JTextField(u.getCorreoElectronico());
-		labelCorreo = new JLabel("Correo");
-		
-		fieldPeso = new JTextField(String.valueOf(u.getPeso()));
-		labelPeso = new JLabel("Peso");
+        model1.addChangeListener(new ChangeListener() {
+			
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if ((double) model1.getValue() < 0.500) {
+					model1.setValue(0.500);
+				}
+				
+			}
+		});
+        
+		labelPeso = new JLabel("Peso (kg)");
+		JSpinner meterPeso = new JSpinner();
+		meterPeso.setAlignmentX(SwingConstants.CENTER);
+        SpinnerNumberModel model2 = new SpinnerNumberModel(1, 1, 300, 1);
+        meterPeso.setModel(model2);
 		
 		labelAleg = new JLabel("Alergias");
 		comboAleg = new JComboBox<>(TipoAlergias.values());
 		
 		labelEnfer = new JLabel("Enfermedades");
 		comboEnfer = new JComboBox<>(TipoEnfermedades.values());
+		
+		JList<TipoEnfermedades> listaEnfermedades = new JList<>();
+		DefaultListModel<TipoEnfermedades> modeloEnfermedades = new DefaultListModel<>();
+		listaEnfermedades.setModel(modeloEnfermedades);
+		if (!u.getEnfermedades().isEmpty()) {
+			for (TipoEnfermedades enfermedad : u.getEnfermedades()) {
+				modeloEnfermedades.addElement(enfermedad);
+			}
+			
+		}else {
+			modeloEnfermedades.addElement(TipoEnfermedades.NINGUNA);
+		}
+		
+		 
+		JButton anadirEnfermedad = new JButton("Añadir");
+		JButton eliminarEnfermedad = new JButton("Eliminar");
+		JPanel panelEnfermedad = new JPanel(new BorderLayout());
+		JPanel panelEnfermedadBotones = new JPanel();
+		
+		panelEnfermedad.add(labelEnfer, BorderLayout.NORTH);
+		panelEnfermedad.add(listaEnfermedades,BorderLayout.CENTER);
+		panelEnfermedadBotones.add(anadirEnfermedad);
+		panelEnfermedadBotones.add(eliminarEnfermedad);
+		panelEnfermedad.add(panelEnfermedadBotones, BorderLayout.SOUTH);
+		
+		anadirEnfermedad.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int result = JOptionPane.showConfirmDialog(
+		                null,
+		                comboEnfer,
+		                "Selecciona una enfermedad",
+		                JOptionPane.OK_CANCEL_OPTION,
+		                JOptionPane.QUESTION_MESSAGE);
+				
+				if (result == JOptionPane.OK_OPTION) {
+					if (!modeloEnfermedades.contains(comboEnfer.getSelectedItem())) {
+						modeloEnfermedades.addElement((TipoEnfermedades) comboEnfer.getSelectedItem());
+						if (modeloEnfermedades.contains(TipoEnfermedades.NINGUNA)) {
+							modeloEnfermedades.removeElement(TipoEnfermedades.NINGUNA);
+						}
+					} else {
+						JOptionPane.showConfirmDialog(null, "Enfermedad ya añadida", "Error", JOptionPane.PLAIN_MESSAGE);	
+					}
+					
+				}
+				
+			}
+		});
+		
+		eliminarEnfermedad.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TipoEnfermedades enfermedad = listaEnfermedades.getSelectedValue();
+				modeloEnfermedades.removeElement(enfermedad);
+				if (modeloEnfermedades.isEmpty()) {
+					modeloEnfermedades.addElement(TipoEnfermedades.NINGUNA);
+				}
+			}
+		});
+		
+		JList<TipoAlergias> listaAlergia = new JList<>();
+		DefaultListModel<TipoAlergias> modeloAlergia = new DefaultListModel<>();
+		listaAlergia.setModel(modeloAlergia);
+		
 
+		
+		 //return JOptionPane.showInputDialog(this, "Ingrese el nuevo paso:", "Nuevo Paso", JOptionPane.PLAIN_MESSAGE);
+		JButton anadirAlergia = new JButton("Añadir");
+		JButton eliminarAlergia = new JButton("Eliminar");
+		JPanel panelAlergia = new JPanel(new BorderLayout());
+		JPanel panelAlergiaBotones = new JPanel();
+		
+		panelAlergia.add(labelAleg, BorderLayout.NORTH);
+		panelAlergia.add(listaAlergia,BorderLayout.CENTER);
+		panelAlergiaBotones.add(anadirAlergia);
+		panelAlergiaBotones.add(eliminarAlergia);
+		panelAlergia.add(panelAlergiaBotones, BorderLayout.SOUTH);
+		
+		if (!u.getAlergias().isEmpty()) {
+			for (TipoAlergias alergia : u.getAlergias()) {
+				modeloAlergia.addElement(alergia);
+			}
+		}else {
+			modeloAlergia.addElement(TipoAlergias.NINGUNA);
+		}
+		
+		anadirAlergia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int result = JOptionPane.showConfirmDialog(
+		                null,
+		                comboAleg,
+		                "Selecciona una alergia",
+		                JOptionPane.OK_CANCEL_OPTION,
+		                JOptionPane.QUESTION_MESSAGE);
+				
+				if (result == JOptionPane.OK_OPTION) {
+					if (!modeloAlergia.contains(comboAleg.getSelectedItem())) {
+						modeloAlergia.addElement((TipoAlergias) comboAleg.getSelectedItem());
+						if (modeloAlergia.contains(TipoAlergias.NINGUNA)) {
+							modeloAlergia.removeElement(TipoAlergias.NINGUNA);
+						}
+					} else {
+						JOptionPane.showConfirmDialog(null, "Alergia ya añadida", "Error", JOptionPane.PLAIN_MESSAGE);	
+					}
+					
+				}
+				
+			}
+		});
+		
+		eliminarAlergia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TipoAlergias alergia = listaAlergia.getSelectedValue();
+				modeloAlergia.removeElement(alergia);
+				if (modeloAlergia.isEmpty()) {
+					modeloAlergia.addElement(TipoAlergias.NINGUNA);
+				}
+			}
+		});
+		
+		// Botones
+		JButton cancelaBot = new JButton("CANCELAR");
+		JButton aceptarBot = new JButton("ACEPTAR");
+		
+		JPanel panelBotonesCanAcep = new JPanel();
+			panelBotonesCanAcep.setLayout(new BoxLayout(panelBotonesCanAcep, BoxLayout.X_AXIS));		
+			panelBotonesCanAcep.add(cancelaBot);
+			panelBotonesCanAcep.add(aceptarBot);
+			
+		JPanel panelCalendario = new JPanel();
+			panelCalendario.setAlignmentX(SwingConstants.CENTER);
+			panelCalendario.add(meterFechaNac);
+			
+			
 		//Agregar al panel
+		
+		panelColumna2.add(labelNombreUsuario);
+		panelColumna2.add(fieldNombreUsuario);
+		panelColumna2.add(labelContraseña);
+		panelColumna2.add(fieldContraseña);
+		panelColumna2.add(labelrepetirContraseña);
+		panelColumna2.add(fieldContraseña2);
 		panelColumna2.add(labelCorreo);
 		panelColumna2.add(fieldCorreo);
-		
-		panelColumna2.add(labelSexo);
-		panelColumna2.add(fieldSexo);
-		
-		panelColumna2.add(labelPeso);
-		panelColumna2.add(fieldPeso);
-		
+		panelColumna2.add(labelNombre);
+		panelColumna2.add(fieldNombre);
+		panelColumna2.add(labelApellido1);
+		panelColumna2.add(fieldApellido1);
+		panelColumna2.add(labelApellido2);
+		panelColumna2.add(fieldApellido2);
 		panelColumna2.add(labelAltura);
-		panelColumna2.add(fieldAltura);
+		panelColumna2.add(meterAltura);
+		panelColumna2.add(labelPeso);
+		panelColumna2.add(meterPeso);
+		panelColumna2.add(genero);
+		panelColumna2.add(generoB);
 		
-		panelColumna2.add(labelEnfer);
-		panelColumna2.add(comboEnfer);
+		panelColumna2.add(labelFechaNac);
+		panelColumna2.add(panelCalendario);
 		
-		panelColumna2.add(labelAleg);
-		panelColumna2.add(comboAleg);
+	
+		panelDerecha.add(panelEnfermedad);
+		panelDerecha.add(panelAlergia);
 		
-		JPanel panelDerecha = new JPanel(new BorderLayout());
 		
-		panelDerecha.add(panelColumna2, BorderLayout.NORTH);
+		JScrollPane scroll2 = new JScrollPane(panelDerecha);
 		
-		add(panelDerecha, BorderLayout.CENTER);
+		JScrollPane scroll = new JScrollPane(panelColumna2);
+		panelColumna.add(scroll, BorderLayout.NORTH);
+		panelDerecha2.add(scroll2, BorderLayout.NORTH);
+		
+		add(panelColumna, BorderLayout.CENTER);
+		add(panelColumna1, BorderLayout.WEST);
+		add(panelDerecha, BorderLayout.EAST);
+		
+		add(panelBotonesCanAcep, BorderLayout.SOUTH);
+		
 		
 		aceptarBot.addActionListener(new ActionListener() {
 			
@@ -254,4 +479,15 @@ public class VentanaEditarPerfil extends JFrame {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Perfil");
 	}
+	public static void anadirBordeLabel(String titulo, JLabel label) {
+		LineBorder borde = new LineBorder(Color.BLACK, 5); //Crea un estilo de borde continuo, anchura 5
+		TitledBorder bordeConTitulo = new TitledBorder(borde, titulo); //Añade el estilo de borde con un titulo
+		
+		bordeConTitulo.setTitleJustification(TitledBorder.ABOVE_TOP);
+		bordeConTitulo.setTitleFont(new Font("Calibri", Font.BOLD, 30));
+		label.setBorder(bordeConTitulo);
+	}
+//	public TipoEnfermedades obtenerNuevoPaso() {
+//        return JOptionPane.showInputDialog(this, "Ingrese el nuevo paso:", "Nuevo Paso", JOptionPane.PLAIN_MESSAGE);
+//    }
 }
