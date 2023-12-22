@@ -8,10 +8,14 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,11 +37,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.ToolTipManager;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
+import domain.TipoEntrenamiento;
 import domain.Usuario;
 import io.DBManager;
 import io.RegistroLogger;
@@ -66,8 +73,9 @@ public class VentanaHistorial extends JFrame {
 			getUsuarios(map, u);
 		
 	
-			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha" ));
+			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha", "Calorias", "Descripcion", "Tiempo", "Series", "Repeticiones" ));
 			table = new JTable();
+			//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			table.setModel(new ModeloDatos(header, map));
 		
 			table.setDefaultRenderer(Object.class, new TableCellRenderer() {
@@ -75,6 +83,8 @@ public class VentanaHistorial extends JFrame {
 				@Override
 				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 						int row, int column) {
+					//table.getColumn(column).setWidth(50);
+					table.getColumnModel().getColumn(column).setPreferredWidth(300);
 					JLabel label = new JLabel();
 					label.setOpaque(true);
 					label.setText(value.toString());
@@ -93,11 +103,30 @@ public class VentanaHistorial extends JFrame {
 						}
 					label.setHorizontalAlignment(JLabel.CENTER);
 					table.setRowHeight(30);
+					table.repaint();
 					return label;
 				}
+				
+				
 			});
 			
-
+			ToolTipManager.sharedInstance().setInitialDelay(0);
+			table.addMouseMotionListener(new MouseMotionAdapter() {
+				
+				@Override
+				public void mouseMoved(MouseEvent e) {
+					int fila = table.rowAtPoint(e.getPoint());
+					int columna = table.columnAtPoint(e.getPoint());
+					if (columna == 4) {
+						table.setToolTipText(table.getValueAt(fila, columna).toString());
+					}else {
+						table.setToolTipText(null);
+					}
+					
+					
+				}
+				
+			});
 	        
 	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
 	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(700, 700, Image.SCALE_SMOOTH)));
@@ -127,11 +156,11 @@ public class VentanaHistorial extends JFrame {
 	        panelBotones.add(botonVolver);
 	        
 	        panelIzquierda = new JPanel(new BorderLayout());
-	        panelIzquierda.add(new JScrollPane(table), BorderLayout.CENTER);
+	        panelIzquierda.add(new JScrollPane(table));
 	        panelIzquierda.add(panelBotones, BorderLayout.SOUTH);
 	   
-	        this.add(panelIzquierda, BorderLayout.WEST);
-	        this.add(panelDerecha);
+	        this.add(panelIzquierda, BorderLayout.CENTER);
+	        this.add(panelDerecha, BorderLayout.EAST);
 	        
 	        botonGuardar.addActionListener(new ActionListener() {
 				
@@ -169,10 +198,10 @@ public class VentanaHistorial extends JFrame {
 					
 				
 			});
-	        
+	        pack(); 
+	        setResizable(false);
 	        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	        setTitle("Historial");
-	        pack(); 
 	        setLocationRelativeTo(null); 
 	        setVisible(true);
 	}
@@ -228,6 +257,16 @@ public class VentanaHistorial extends JFrame {
 			                return entry.getKey();   
 			            }else if (columnIndex == 1) {
 			            	return entry.getValue().getDificultad().toString();
+			            }else if (columnIndex == 3) {
+			            	return entry.getValue().getCalorias();
+			            }else if (columnIndex == 4) {
+			            	return entry.getValue().getDescripcion();
+			            }else if (columnIndex == 5) {
+			            	return entry.getValue().getTiempo();
+			            }else if (columnIndex == 6) {
+			            	return entry.getValue().getSeries();
+			            }else if (columnIndex == 7) {
+			            	return entry.getValue().getRepeticiones();
 			            }
 			        }
 			        i++;
@@ -239,20 +278,39 @@ public class VentanaHistorial extends JFrame {
 	
 	public void getUsuarios(Map<LocalDateTime, Entrenamiento> map, Usuario u) throws SQLException {
 	    Connection conn = DBManager.obtenerConexion();
-		Statement s = conn.createStatement();
+		Entrenamiento e = null;
+		LocalDateTime f = null;
 		try {
-			ResultSet rs = s.executeQuery("SELECT nombreEntrenamiento, fecha, dificultad FROM usuario_entrenamientos WHERE nombreUsuario =" + "'" + u.getNombreUsuario() + "'");
+			PreparedStatement s = conn.prepareStatement("SELECT nombreEntrenamiento, fecha, dificultad FROM usuario_entrenamientos WHERE nombreUsuario = ?");
+			s.setString(1, u.getNombreUsuario());
+			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				String nombreEntrenamiento = rs.getString("nombreEntrenamiento");
-				LocalDateTime f = LocalDateTime.parse(rs.getString("fecha"));
+				f = LocalDateTime.parse(rs.getString("fecha"));
 				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad").toUpperCase());
-				Entrenamiento e = new Entrenamiento(nombreEntrenamiento, null, dificultad, 0, "", 0, 0, 0);
-				map.put(f, e);								
+				PreparedStatement s2 = conn.prepareStatement("SELECT * FROM entrenamientos WHERE nombre = ? AND dificultad = ?");
+				s2.setString(1, nombreEntrenamiento);
+				s2.setString(2, dificultad.toString().toUpperCase());
+				ResultSet rs2 = s2.executeQuery();
+				while (rs2.next()) {
+					TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento.valueOf(rs2.getString("tipoEntrenamiento").toUpperCase());
+					int tiempo = rs2.getInt("tiempo");
+					String descripcion = rs2.getString("descripcion");
+					int calorias = rs2.getInt("calorias");
+					int series = rs2.getInt("series");
+					int repeticiones = rs2.getInt("repeticiones");
+					e = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);
+					map.put(f, e);	
+				}
+				
+			rs2.close();					
 			}
+			
 			rs.close();
+			
 		} finally {
 			
-			s.close();
+			
 			conn.close();
 		}
 						
@@ -287,7 +345,7 @@ public class VentanaHistorial extends JFrame {
 	}
 	
 	public static JTextArea recursividad(JTextArea area) {
-		if (area.getText().length() > 33) {
+		if (area.getText().length() > 150) {
 			return area;
 		}
 		
@@ -309,7 +367,10 @@ public class VentanaHistorial extends JFrame {
 			PrintWriter pw = new PrintWriter(new File(seleccion + ".csv"));
 			for (Entry<LocalDateTime, Entrenamiento> entry : map.entrySet()) {
 				String s = entry.getKey().toString().substring(0, 16).replace("T", " / ");
-				pw.write(entry.getValue().getNombre() + ";" + entry.getValue().getDificultad() + ";" + s + "\n");
+				pw.write(String.format("%s ; %s ; %s ; %s ; %s ; %s ; %s ; %s \n ", entry.getValue().getNombre(),
+						entry.getValue().getDificultad(), s, entry.getValue().getCalorias(), entry.getValue().getDescripcion(),
+						entry.getValue().getTiempo(), entry.getValue().getSeries(), entry.getValue().getRepeticiones()));
+				//pw.write(entry.getValue().getNombre() + ";" + entry.getValue().getDificultad() + ";" + s + "\n");
 			}
 			pw.close();
 		} catch (FileNotFoundException e) {
