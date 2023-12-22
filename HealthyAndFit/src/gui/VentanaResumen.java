@@ -15,15 +15,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,12 +40,9 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.time.Day;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.time.TimeSeriesDataItem;
 import org.jfree.data.xy.XYDataset;
 
 import domain.Dieta;
@@ -110,7 +104,6 @@ public class VentanaResumen extends JFrame{
 		add(panelIzquierda, BorderLayout.WEST);
 		
 		//Grafica entrenamiento
-//		TimeSeriesCollection datasetEntrenamiento = crearDatasetEjemplo("Calorías quemadas");
 		TimeSeriesCollection datasetEntrenamiento = crearDatasetEntrenamiento(persona);
 	
 		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
@@ -177,7 +170,6 @@ public class VentanaResumen extends JFrame{
 
 			
 		//Grafica dieta
-		//TimeSeriesCollection datasetDieta = crearDatasetEjemplo("Calorías consumidas");
 		TimeSeriesCollection datasetDieta = crearDatasetDietas(this.persona);
 		JFreeChart graficaDieta = crearGrafica("Calorías consumidas", "Dia", "Calorias", datasetDieta);
 		ChartPanel panelGraficaDieta = new ChartPanel(graficaDieta);
@@ -290,24 +282,8 @@ public class VentanaResumen extends JFrame{
        
 		return chart;
 	}
-	//Dataset Ejemplo
-	public TimeSeriesCollection crearDatasetEjemplo(String titulo) {
-        TimeSeries s1 = new TimeSeries(titulo);
-        
-        for (int i = 1; i < LocalDateTime.now().getMonth().length(true)+1; i++) { //Incluye años bisiestos
-        	s1.add(new Day(i, LocalDateTime.now().getMonthValue(), LocalDateTime.now().getYear()), 100+i*10);		
-        	
-		}
 
-        TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(s1);
-        
-        RegistroLogger.anadirLogeo(Level.INFO, "Dataset de ejemplo creado correctamente");
-        
-        return dataset;
-
-	}
-	
+	//Crear dataset
 	public TimeSeriesCollection crearDatasetEntrenamiento(Usuario usuario){
 		TimeSeries ts = new TimeSeries("Calorias quemadas");
         TimeSeriesCollection dataset = new TimeSeriesCollection();
