@@ -51,6 +51,7 @@ import com.toedter.calendar.JCalendar;
 
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
+import domain.TipoPermiso;
 import domain.TipoSexo;
 import domain.Usuario;
 import io.DBManager;
@@ -106,6 +107,8 @@ public class VentanaEditarPerfil extends JFrame {
 		public JLabel labelEnfer;
 		public JComboBox<TipoEnfermedades> comboEnfer;
 		
+		private JLabel labelRango;
+		private JComboBox<TipoPermiso> comboRango;
 		
 		ImageIcon imagenResized;
 
@@ -126,11 +129,14 @@ public class VentanaEditarPerfil extends JFrame {
 		private JPanel panelDerecha;
 
 		private Container panelDerecha2;
+
+		private JPanel panelIzquierda;
 		
-	public VentanaEditarPerfil(Usuario u, Usuario usuarioModificar, VentanaPerfil vPerfil, VentanaPanel vPanel) {
+	public VentanaEditarPerfil(Usuario u, Usuario usuarioModificar, VentanaPerfil vPerfil, VentanaPanel vPanel, boolean mostrarRango) {
 		
 		JPanel panelAbajo = new JPanel(new BorderLayout());
 		add(panelAbajo, BorderLayout.SOUTH);
+		
 		
 		//Panel Columna 
 		panelColumna = new JPanel(new BorderLayout());
@@ -141,6 +147,7 @@ public class VentanaEditarPerfil extends JFrame {
 		panelDerecha = new JPanel();
 		panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
 		panelDerecha2 = new JPanel(new BorderLayout());
+		panelIzquierda = new JPanel(new BorderLayout());
 		
 		//Para imagen
 		Image foto = usuarioModificar.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
@@ -218,6 +225,17 @@ public class VentanaEditarPerfil extends JFrame {
         SpinnerNumberModel model2 = new SpinnerNumberModel(usuarioModificar.getPeso(), 1, 300, 1);
         meterPeso.setModel(model2);
 		
+ 
+        labelRango = new JLabel("Rango");
+        comboRango = new JComboBox<TipoPermiso>(TipoPermiso.values());
+        
+       
+        
+        panelColumna1.add(labelRango);
+        panelColumna1.add(comboRango);
+        
+        JScrollPane pane = new JScrollPane(panelColumna1);
+        
 		labelAleg = new JLabel("Alergias");
 		comboAleg = new JComboBox<>(TipoAlergias.values());
 		
@@ -363,6 +381,9 @@ public class VentanaEditarPerfil extends JFrame {
 			panelCalendario.setAlignmentX(SwingConstants.CENTER);
 			panelCalendario.add(meterFechaNac);
 			
+		if (mostrarRango) {
+			noMostrarRango(comboRango, labelRango);
+		}
 			
 		//Agregar al panel
 		
@@ -400,9 +421,10 @@ public class VentanaEditarPerfil extends JFrame {
 		JScrollPane scroll = new JScrollPane(panelColumna2);
 		panelColumna.add(scroll, BorderLayout.NORTH);
 		panelDerecha2.add(scroll2, BorderLayout.NORTH);
+		panelIzquierda.add(pane, BorderLayout.NORTH);
 		
 		add(panelColumna, BorderLayout.CENTER);
-		add(panelColumna1, BorderLayout.WEST);
+		add(panelIzquierda, BorderLayout.WEST);
 		add(panelDerecha, BorderLayout.EAST);
 		
 		add(panelBotonesCanAcep, BorderLayout.SOUTH);
@@ -617,4 +639,8 @@ public class VentanaEditarPerfil extends JFrame {
 		label.setBorder(bordeConTitulo);
 	}
 
+	public static void noMostrarRango(JComboBox<TipoPermiso> combo, JLabel label) {
+		combo.setVisible(false);
+		label.setVisible(false);
+	}
 }
