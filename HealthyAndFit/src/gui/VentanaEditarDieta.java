@@ -32,6 +32,7 @@ import domain.Dieta;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.Usuario;
+import gui.VentanaHistorial.ModeloDatos;
 import io.DBManager;
 
 
@@ -50,15 +51,15 @@ public class VentanaEditarDieta extends JFrame {
 		public JComboBox<TipoDificultad> comboDif;
 		public JLabel labelKcal;
 		public JSpinner spinnerKcal;
-		public DefaultTableModel modeloTabla;
-		public JTable tablaIngredientes;
 		public List<String> listaIngredientes;
 		public List<String> listaPasos;
 
 		
 	public JPanel pDer;
-		public DefaultTableModel pasosTableModel;
-		public JTable tablaPasos;
+		private JLabel labelIngredientes;
+		private JList<String> JlistaPasos;
+		private JLabel labelPasos;
+		private JList<String> JlistaIngredientes;
 		public JScrollPane panelDcha;
 		private JLabel labelAlerg;
 		private JComboBox<TipoAlergias> comboAleg;
@@ -79,25 +80,22 @@ public class VentanaEditarDieta extends JFrame {
 		labelDiff = new JLabel("DIFICULTAD");
 		comboDif = new JComboBox<>(TipoDificultad.values());
 		labelKcal = new JLabel("KCAL");
-
+		
+		labelIngredientes = new JLabel("INGREDIENTES");
+		
 		listaIngredientes = new ArrayList<>(d.getIngredientes());
 		listaPasos = new ArrayList<>(d.getPasos());
 		
-		// Crear el modelo de la tabla
-        modeloTabla = new DefaultTableModel();
-        modeloTabla.addColumn("INGREDIENTES");
-        
-        for (String ingrediente : d.getIngredientes()) {
-        	 modeloTabla.addRow(new Object[]{ingrediente});
-       }
-               
-        // Crear la JTable con el modelo
-       tablaIngredientes = new JTable(modeloTabla);
-        
-       
-       // Configurar la JTable para permitir la edición directa
-       tablaIngredientes.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JTextField()));
-       
+		JlistaIngredientes = new JList<String>();
+		DefaultListModel<String> modeloIngredientes = new DefaultListModel<>();
+		JlistaIngredientes.setModel(modeloIngredientes);
+		if (!d.getIngredientes().isEmpty()) {
+			for (String ingrediente : d.getIngredientes()) {
+				modeloIngredientes.addElement(ingrediente);
+			}
+		}
+		
+		
        JButton botonAñadirIngrediente = new JButton("AÑADIR ING");
        JButton botonElimiarIngrediente = new JButton("ELIMINAR ING");
        
@@ -108,7 +106,7 @@ public class VentanaEditarDieta extends JFrame {
 		spinnerTiempo = new JSpinner(modeloSpin);
 		spinnerKcal = new JSpinner(new SpinnerNumberModel(d.getTiempo(), 0, 9999, 1));
 	
-		JScrollPane paneIng = new JScrollPane(tablaIngredientes);
+		JScrollPane paneIng = new JScrollPane(JlistaIngredientes);
 		JPanel btnAñaEli = new JPanel();
 		btnAñaEli.setLayout(new BoxLayout(btnAñaEli, BoxLayout.X_AXIS));
 		
@@ -121,6 +119,7 @@ public class VentanaEditarDieta extends JFrame {
 		pIzq.add(comboDif);
 		pIzq.add(labelKcal);
 		pIzq.add(spinnerKcal);
+		pIzq.add(labelIngredientes);
 		pIzq.add(paneIng);
 		
 		btnAñaEli.add(botonAñadirIngrediente);
@@ -132,8 +131,17 @@ public class VentanaEditarDieta extends JFrame {
 		pDer.setLayout(new BoxLayout(pDer, BoxLayout.Y_AXIS));
 
 		//Componentes para el panel de la derecha
-		pasosTableModel = new DefaultTableModel();
-		pasosTableModel.addColumn("LISTA DE PASOS");
+		JlistaPasos = new JList<String>();
+		DefaultListModel<String> modeloPasos = new DefaultListModel<>();
+		JlistaPasos.setModel(modeloPasos);
+		if (!d.getPasos().isEmpty()) {
+			for (String s : d.getPasos()) {
+				modeloPasos.addElement(s);
+			}
+		}
+		
+		labelPasos = new JLabel("PASOS");
+		
 		labelAlerg = new JLabel("ALERGIAS");
 		labelAlerg.setHorizontalAlignment(JLabel.CENTER);
 		
@@ -142,6 +150,7 @@ public class VentanaEditarDieta extends JFrame {
 		JList<TipoAlergias> listaAlergia = new JList<>();
 		DefaultListModel<TipoAlergias> modeloAlergia = new DefaultListModel<>();
 		listaAlergia.setModel(modeloAlergia);
+	
 		
 		JButton anadirAlergia = new JButton("AÑADIR ALERGIA");
 		JButton eliminarAlergia = new JButton("ELIMINAR ALERGIA");
@@ -201,21 +210,15 @@ public class VentanaEditarDieta extends JFrame {
 		});
 		
 		
-		for (String paso : d.getPasos()) {
-        	pasosTableModel.addRow(new Object[]{paso});
-        }
-		// Crear la JTable con el modelo
-	    tablaPasos= new JTable(pasosTableModel);
-
-	    //Personalizado de la tabla
-	    tablaPasos.setShowGrid(false);
+		
 	    
-        JScrollPane panelDcha = new JScrollPane(tablaPasos);
+        JScrollPane panelDcha = new JScrollPane(JlistaPasos);
         JPanel btnAñaEliPasos = new JPanel();
 		
         JButton botonAñadirPaso= new JButton("AÑADIR PASO");
         JButton botonElimiarPaso= new JButton("ELIMINAR PASO");
         
+        pDer.add(labelPasos);
 		pDer.add(panelDcha);
 		btnAñaEliPasos.add(botonAñadirPaso);
 		btnAñaEliPasos.add(botonElimiarPaso);
@@ -260,25 +263,9 @@ public class VentanaEditarDieta extends JFrame {
 				d.setPasos(new ArrayList<String>(listaPasos));
 				
 				
-				//Para Ingrediente
-				// Obtener el número de filas en la tabla
-		        int rowCountIng = modeloTabla.getRowCount();
-		        listaIngredientes.clear();
-		        // Actualizar la lista de pasos en la Dieta con los nuevos valores de la tabla
-		        for (int i = 0; i < rowCountIng; i++) {
-		            String nuevoIng= (String) modeloTabla.getValueAt(i, 0);
-		            listaIngredientes.add(nuevoIng);
-		        }
 				
-				//Para Pasos
-				// Obtener el número de filas en la tabla
-		        int rowCountPaso = pasosTableModel.getRowCount();
-		        listaPasos.clear();
-		        // Actualizar la lista de pasos en la Dieta con los nuevos valores de la tabla
-		        for (int i = 0; i < rowCountPaso; i++) {
-		            String nuevoPaso = (String) pasosTableModel.getValueAt(i, 0);
-		            listaPasos.add(nuevoPaso);
-		        }
+				
+				
 		        
 		        //ANADIR A LA BD
 		        Connection conn = DBManager.obtenerConexion();
@@ -326,11 +313,10 @@ public class VentanaEditarDieta extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				String nuevoIngrediente = obtenerNuevoIngrediente();
 
-		        // Añade la nueva fila al modelo de la tabla
+		       
 				if (nuevoIngrediente != null && !nuevoIngrediente.isEmpty()) {
-		            // Añade la nueva fila al modelo de la tabla
-		            modeloTabla.addRow(new Object[]{nuevoIngrediente});
-		            listaIngredientes.add(nuevoIngrediente);
+					modeloIngredientes.addElement(nuevoIngrediente);
+					listaIngredientes.add(nuevoIngrediente);
 		        }
 			}
 		});
@@ -339,8 +325,9 @@ public class VentanaEditarDieta extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				eliminarFilaIng();
-				
+				String ingrediente = JlistaIngredientes.getSelectedValue();
+				modeloIngredientes.removeElement(ingrediente);
+				listaIngredientes.remove(ingrediente);
 			}
 		});
         
@@ -349,11 +336,10 @@ public class VentanaEditarDieta extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String nuevoPaso= obtenerNuevoPaso();
-		        // Añade la nueva fila al modelo de la tabla
 				if (nuevoPaso != null && !nuevoPaso.isEmpty()) {
-		            // Añade la nueva fila al modelo de la tabla
-					pasosTableModel.addRow(new Object[]{nuevoPaso});
-		            listaPasos.add(nuevoPaso);
+		           modeloPasos.addElement(nuevoPaso);
+		           listaPasos.add(nuevoPaso);
+		           
 		        }
 			}
 		});
@@ -362,7 +348,9 @@ public class VentanaEditarDieta extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				eliminarFilaPaso();
+				String paso = JlistaPasos.getSelectedValue();
+				modeloPasos.removeElement(paso);
+				listaPasos.remove(paso);
 				
 			}
 		});
@@ -387,47 +375,47 @@ public class VentanaEditarDieta extends JFrame {
         return JOptionPane.showInputDialog(this, "Ingrese el nuevo paso:", "Nuevo Paso", JOptionPane.PLAIN_MESSAGE);
     }
 	
-	public void eliminarFilaIng() {
-		int filaSeleccionada = tablaIngredientes.getSelectedRow();
-		if (filaSeleccionada != -1) {
-			int confirmacion = JOptionPane.showConfirmDialog(this, 
-					"¿Seguro que quieres eliminar esta fila?", "Confirmar Eliminación", 
-					JOptionPane.YES_NO_OPTION);
-			if (confirmacion == JOptionPane.YES_OPTION) {
-                // Obtiene el nombre del ingrediente a eliminar
-                String nombreIngrediente = (String) modeloTabla.getValueAt(filaSeleccionada, 0);
-                
-                // Elimina la fila del modelo de la tabla
-                modeloTabla.removeRow(filaSeleccionada);
-                
-                // Elimina el ingrediente de la lista asociada a la dieta
-                listaIngredientes.remove(nombreIngrediente);
-            }
-		 } else {
-	            JOptionPane.showMessageDialog(this, "Selecciona una fila para eliminar.", "Error", 
-	            		JOptionPane.ERROR_MESSAGE);
-	        }
-		}
+//	public void eliminarFilaIng() {
+//		int filaSeleccionada = tablaIngredientes.getSelectedRow();
+//		if (filaSeleccionada != -1) {
+//			int confirmacion = JOptionPane.showConfirmDialog(this, 
+//					"¿Seguro que quieres eliminar esta fila?", "Confirmar Eliminación", 
+//					JOptionPane.YES_NO_OPTION);
+//			if (confirmacion == JOptionPane.YES_OPTION) {
+//                // Obtiene el nombre del ingrediente a eliminar
+//                String nombreIngrediente = (String) modeloTabla.getValueAt(filaSeleccionada, 0);
+//                
+//                // Elimina la fila del modelo de la tabla
+//                modeloTabla.removeRow(filaSeleccionada);
+//                
+//                // Elimina el ingrediente de la lista asociada a la dieta
+//                listaIngredientes.remove(nombreIngrediente);
+//            }
+//		 } else {
+//	            JOptionPane.showMessageDialog(this, "Selecciona una fila para eliminar.", "Error", 
+//	            		JOptionPane.ERROR_MESSAGE);
+//	        }
+//		}
 	
-	public void eliminarFilaPaso() {
-		int filaSeleccionada = tablaPasos.getSelectedRow();
-		if (filaSeleccionada != -1) {
-			int confirmacion = JOptionPane.showConfirmDialog(this, 
-					"¿Seguro que quieres eliminar esta fila?", "Confirmar Eliminación", 
-					JOptionPane.YES_NO_OPTION);
-			if (confirmacion == JOptionPane.YES_OPTION) {
-                // Obtiene el paso a eliminar
-                String paso= (String) pasosTableModel.getValueAt(filaSeleccionada, 0);
-                
-                // Elimina la fila del modelo de la tabla
-                pasosTableModel.removeRow(filaSeleccionada);
-                
-                // Elimina el ingrediente de la lista asociada a la dieta
-                listaPasos.remove(paso);
-            }
-		 } else {
-	            JOptionPane.showMessageDialog(this, "Selecciona una fila para eliminar.", "Error", 
-	            		JOptionPane.ERROR_MESSAGE);
-	        }
-		}
+//	public void eliminarFilaPaso() {
+//		int filaSeleccionada = tablaPasos.getSelectedRow();
+//		if (filaSeleccionada != -1) {
+//			int confirmacion = JOptionPane.showConfirmDialog(this, 
+//					"¿Seguro que quieres eliminar esta fila?", "Confirmar Eliminación", 
+//					JOptionPane.YES_NO_OPTION);
+//			if (confirmacion == JOptionPane.YES_OPTION) {
+//                // Obtiene el paso a eliminar
+//                String paso= (String) pasosTableModel.getValueAt(filaSeleccionada, 0);
+//                
+//                // Elimina la fila del modelo de la tabla
+//                pasosTableModel.removeRow(filaSeleccionada);
+//                
+//                // Elimina el ingrediente de la lista asociada a la dieta
+//                listaPasos.remove(paso);
+//            }
+//		 } else {
+//	            JOptionPane.showMessageDialog(this, "Selecciona una fila para eliminar.", "Error", 
+//	            		JOptionPane.ERROR_MESSAGE);
+//	        }
+//		}
 }
