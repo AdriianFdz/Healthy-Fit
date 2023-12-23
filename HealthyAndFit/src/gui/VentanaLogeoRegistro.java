@@ -2,7 +2,10 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -91,6 +94,8 @@ public class VentanaLogeoRegistro extends JFrame {
 
 	public JLabel peso;
 
+	public JLabel foto;
+	
 	public JLabel genero;
 	public JPanel generoB;
 	public ButtonGroup meterGenero;
@@ -115,6 +120,8 @@ public class VentanaLogeoRegistro extends JFrame {
 		logeoIzquierda.setLayout(new BoxLayout(logeoIzquierda, BoxLayout.Y_AXIS));
 
 		preguntaYaTienesCuenta = new JLabel("¿Ya tienes cuenta?");
+		Font fuente = preguntaYaTienesCuenta.getFont();
+		preguntaYaTienesCuenta.setFont(new Font(fuente.getFontName(), Font.PLAIN, 25));
 		logeoIzquierda.add(preguntaYaTienesCuenta);
 		
 		JSeparator separador = new JSeparator();
@@ -133,16 +140,25 @@ public class VentanaLogeoRegistro extends JFrame {
 
 		iniciarSesion = new JButton("INICIAR SESION");
 		logeoIzquierda.add(iniciarSesion);
-
+		
+		
 		inicioRapido = new JButton("INICIO RAPIDO");
 		logeoIzquierda.add(inicioRapido);
-
+		
+		foto = new JLabel();
+		ImageIcon imagen = new ImageIcon("resources\\images\\logo.png");
+        Image imagen2 = imagen.getImage().getScaledInstance(330, 280, Image.SCALE_SMOOTH);
+		foto.setIcon(new ImageIcon(imagen2));
+		foto.setHorizontalAlignment(JLabel.CENTER);
+		logeoIzquierda.add(foto);
+		
 		logeo.add(logeoIzquierda);
 
 		// REGISTRO
 
 		registro = new JPanel(new BorderLayout());
 		preguntaTodaviaSinCuenta = new JLabel("¿Todavía no tienes cuenta?");
+		preguntaTodaviaSinCuenta.setFont(new Font(fuente.getFontName(), Font.PLAIN, 25));
 		registro.add(preguntaTodaviaSinCuenta, BorderLayout.NORTH);
 
 		meterDatos = new JPanel();
