@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
@@ -89,19 +90,14 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		//Componentes para el panel de la derecha
 		labelDesc = new JLabel("DESCRIPCION");
 		
-		//Cargar la descripcion del entrenamiento en una tabla
-		descTableModel = new DefaultTableModel();
-		descTableModel.addColumn("DESCRIPCION DEL ENTRENAMIENTO");
-		descTableModel.addRow(new Object[] {ent.getDescripcion()});
-		
-		// Crear la JTable con el modelo
-	    tableDesc= new JTable(descTableModel);
-
-	    //Personalizado de la tabla
-	    tableDesc.setShowGrid(false);
+		JTextArea area = new JTextArea(ent.getDescripcion());
+		area.setLineWrap(true);
+        area.setWrapStyleWord(true);
+	
 	    
-        JScrollPane panelDcha = new JScrollPane(tableDesc);
+        JScrollPane panelDcha = new JScrollPane(area);
        
+        panelDerecha.add(labelDesc);
         panelDerecha.add(panelDcha);
         
         //Añadimos al panel de los datos los dos paneles
