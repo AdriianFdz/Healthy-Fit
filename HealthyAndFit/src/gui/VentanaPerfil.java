@@ -186,7 +186,7 @@ public class VentanaPerfil extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, p, VentanaPerfil.this, null));
+				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, p, VentanaPerfil.this, null, true));
 				dispose();
 			}
 		});

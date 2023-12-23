@@ -291,7 +291,7 @@ public class VentanaPanel extends JFrame {
 						e1.printStackTrace();
 					}
 					dispose();
-					SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, usuarioAModificar, null, VentanaPanel.this));
+					SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, usuarioAModificar, null, VentanaPanel.this, false));
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
 				}
@@ -352,7 +352,7 @@ public class VentanaPanel extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Usuario nuevoUsuario = new Usuario();
-				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, nuevoUsuario, null, VentanaPanel.this));
+				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, nuevoUsuario, null, VentanaPanel.this, false));
 				dispose();
 			}
 		});
