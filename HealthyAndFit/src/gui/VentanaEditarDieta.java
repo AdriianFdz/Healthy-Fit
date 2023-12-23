@@ -53,6 +53,7 @@ public class VentanaEditarDieta extends JFrame {
 		public JSpinner spinnerKcal;
 		public List<String> listaIngredientes;
 		public List<String> listaPasos;
+		private List<TipoAlergias> listaAlergias;
 
 		
 	public JPanel pDer;
@@ -85,6 +86,7 @@ public class VentanaEditarDieta extends JFrame {
 		
 		listaIngredientes = new ArrayList<>(d.getIngredientes());
 		listaPasos = new ArrayList<>(d.getPasos());
+		listaAlergias = new ArrayList<TipoAlergias>(d.getAlergias());
 		
 		JlistaIngredientes = new JList<String>();
 		DefaultListModel<String> modeloIngredientes = new DefaultListModel<>();
@@ -185,8 +187,10 @@ public class VentanaEditarDieta extends JFrame {
 				if (result == JOptionPane.OK_OPTION) {
 					if (!modeloAlergia.contains(comboAleg.getSelectedItem())) {
 						modeloAlergia.addElement((TipoAlergias) comboAleg.getSelectedItem());
+						listaAlergias.add((TipoAlergias) comboAleg.getSelectedItem());
 						if (modeloAlergia.contains(TipoAlergias.NINGUNA)) {
 							modeloAlergia.removeElement(TipoAlergias.NINGUNA);
+							listaAlergias.remove(TipoAlergias.NINGUNA);
 						}
 					} else {
 						JOptionPane.showConfirmDialog(null, "Alergia ya añadida", "Error", JOptionPane.PLAIN_MESSAGE);	
@@ -203,8 +207,10 @@ public class VentanaEditarDieta extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				TipoAlergias alergia = listaAlergia.getSelectedValue();
 				modeloAlergia.removeElement(alergia);
+				listaAlergias.remove(alergia);
 				if (modeloAlergia.isEmpty()) {
 					modeloAlergia.addElement(TipoAlergias.NINGUNA);
+					listaAlergias.add(TipoAlergias.NINGUNA);
 				}
 			}
 		});
@@ -252,46 +258,89 @@ public class VentanaEditarDieta extends JFrame {
 				TipoDificultad nuevoTipo = (TipoDificultad) comboDif.getSelectedItem();
 				Integer nuevoKCAL = (Integer) spinnerKcal.getValue();
 				
-				Dieta dietaAntigua = new Dieta(d);
+				String nombreAntiguo = d.getNombre();
 				
-				// Actualizar los atributos de Dieta
-				d.setNombre(nuevoNombre);
-				d.setTiempo(nuevoTiempo);
-				d.setDificultad(nuevoTipo);
-				d.setKcal(nuevoKCAL);
-				d.setIngredientes(new ArrayList<String>(listaIngredientes));
-				d.setPasos(new ArrayList<String>(listaPasos));
-				
-				
-				
-				
-				
-		        
 		        //ANADIR A LA BD
 		        Connection conn = DBManager.obtenerConexion();
 		        try {
-			        if (!DBManager.existeDieta(conn, dietaAntigua)) {
-			        		DBManager.anadirDieta(conn, d);
-			        		conn.close();
-					} else {
-	//					PreparedStatement nombreStmt = conn.prepareStatement("UPDATE dietas set nombre = ? where nombre = ?");
-	//					nombreStmt.setString(1, d.getNombre());
-	//					PreparedStatement tiempoStmt = conn.prepareStatement("UPDATE dietas set tiempo = ? where nombre = ?");
-	//					PreparedStatement difiicultadStmt = conn.prepareStatement("UPDATE dietas set dificultad = ? where nombre = ?");
-	//					PreparedStatement kcalStmt = conn.prepareStatement("UPDATE dietas set kcal = ? where nombre = ?");
-	//				 
-						DBManager.eliminarDieta(conn, dietaAntigua);
-						PreparedStatement pstmt = conn.prepareStatement("UPDATE usuario_dieta set nombreDieta = ? WHERE nombreDieta = ?");
-						pstmt.setString(1, nuevoNombre);
-						pstmt.setString(2, dietaAntigua.getNombre());
+		        	d.setNombre(nuevoNombre);
+			        if (DBManager.existeDieta(conn, d) && !d.getNombre().equals(nombreAntiguo)) {
+			        	JOptionPane.showMessageDialog(null, "El nombre de la dieta ya existe");
+						d.setNombre(nombreAntiguo);
+			        
+			        } else {
+						d.setTiempo(nuevoTiempo);
+						d.setDificultad(nuevoTipo);
+						d.setKcal(nuevoKCAL);				
+						d.setIngredientes(new ArrayList<String>(listaIngredientes));
+						d.setPasos(new ArrayList<String>(listaPasos));
+						d.setAlergias(new ArrayList<TipoAlergias>(listaAlergias));
+			        	
 						
-						System.out.println(d.getNombre());
-						System.out.println(dietaAntigua.getNombre());
-						pstmt.executeUpdate();
-						
+						if (nombreAntiguo == "") {
+							DBManager.anadirDieta(conn, d);
+						} else {							
+							PreparedStatement nombreStmt = conn.prepareStatement("UPDATE dietas set nombre = ?, tiempo = ?, dificultad = ?, kcal = ? where nombre = ?");
+							nombreStmt.setString(1, d.getNombre());
+							nombreStmt.setInt(2, d.getTiempo());
+							nombreStmt.setString(3, d.getDificultad().toString());
+							nombreStmt.setInt(4, d.getKcal());
+							nombreStmt.setString(5, nombreAntiguo);
+							nombreStmt.executeUpdate();
+							nombreStmt.close();
+							
+							
+							// MODIFICAR PASOS
+							PreparedStatement eliminarPasosStmt = conn.prepareStatement("DELETE FROM pasos_dietas WHERE nombreDieta = ?");
+							eliminarPasosStmt.setString(1, d.getNombre());
+							eliminarPasosStmt.executeUpdate();
+							eliminarPasosStmt.close();
+							
+							PreparedStatement anadirPasosStmt = conn.prepareStatement("INSERT INTO pasos_dietas VALUES(null, ?, ?)");
+							anadirPasosStmt.setString(2, d.getNombre());
+							for (String paso : d.getPasos()) {
+								anadirPasosStmt.setString(1, paso);
+								anadirPasosStmt.executeUpdate();
+							}
+							anadirPasosStmt.close();
 
+							//MODIFICAR ALERGIAS
+							PreparedStatement eliminarAlergiasStmt = conn.prepareStatement("DELETE FROM dieta_alergias WHERE nombreDieta = ?");
+							eliminarAlergiasStmt.setString(1, d.getNombre());
+							eliminarAlergiasStmt.executeUpdate();
+							eliminarAlergiasStmt.close();
+							
+							PreparedStatement anadirAlergiasStmt = conn.prepareStatement("INSERT INTO dieta_alergias VALUES(null, ?, (SELECT id from alergias WHERE nombreAlergia = ?))");
+							anadirAlergiasStmt.setString(1, d.getNombre());
+							for (TipoAlergias alergia : d.getAlergias()) {
+								anadirAlergiasStmt.setString(2, alergia.name());
+								anadirAlergiasStmt.executeUpdate();
+							}
+							anadirAlergiasStmt.close();
+							
+							//MODIFICAR INGREDIENTES
+							PreparedStatement eliminarIngredientesStmt = conn.prepareStatement("DELETE FROM ingredientes_dietas WHERE nombreDieta = ?");
+							eliminarIngredientesStmt.setString(1, d.getNombre());
+							eliminarIngredientesStmt.executeUpdate();
+							eliminarIngredientesStmt.close();
+							
+							PreparedStatement anadirIngredientesStmt = conn.prepareStatement("INSERT INTO ingredientes_dietas VALUES (null, ?, ?)");
+							anadirIngredientesStmt.setString(2, d.getNombre());
+							for (String ingrediente : d.getIngredientes()) {
+								anadirIngredientesStmt.setString(1, ingrediente);
+								anadirIngredientesStmt.executeUpdate();
+							}
+							anadirIngredientesStmt.close();
 						
-						DBManager.anadirDieta(conn, d);
+							//MODIFICAR USUARIO_DIETA
+							PreparedStatement modifUsuarioDieta = conn.prepareStatement("UPDATE usuario_dieta SET nombreDieta = ? WHERE nombreDieta = ?");
+							modifUsuarioDieta.setString(1, d.getNombre());
+							modifUsuarioDieta.setString(2, nombreAntiguo);
+							modifUsuarioDieta.executeUpdate();
+							modifUsuarioDieta.close();
+						}
+						
+						
 					
 					}
 			        conn.close();

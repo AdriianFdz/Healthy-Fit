@@ -402,12 +402,12 @@ public class DBManager {
 				}
 				d.setIngredientes(new ArrayList<String>(ingredientes));
 
-				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT nombreAlergia FROM alergias WHERE id = (SELECT alergia FROM dieta_alergias WHERE nombreDieta = ?)");
 				stmtAlergias.setString(1, nombre);
 				ResultSet rsAlergias = stmtAlergias.executeQuery();
 				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
 				while (rsAlergias.next()) {
-					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("alergia")));
+					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("nombreAlergia")));
 				}
 				d.setAlergias(new ArrayList<TipoAlergias>(alergias));
 				
@@ -461,12 +461,12 @@ public class DBManager {
 				}
 				d.setIngredientes(new ArrayList<String>(ingredientes));
 				
-				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT nombreAlergia FROM alergias WHERE id = (SELECT alergia FROM dieta_alergias WHERE nombreDieta = ?)");
 				stmtAlergias.setString(1, nombre);
 				ResultSet rsAlergias = stmtAlergias.executeQuery();
 				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
 				while (rsAlergias.next()) {
-					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("alergia")));
+					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("nombreAlergia")));
 				}
 				d.setAlergias(new ArrayList<TipoAlergias>(alergias));
 				

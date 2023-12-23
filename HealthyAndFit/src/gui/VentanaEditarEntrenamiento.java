@@ -174,30 +174,34 @@ public class VentanaEditarEntrenamiento extends JFrame{
 					ent.setSeries(seriesNuevas);
 					ent.setRepeticiones(repeticionesNuevas);
 					
-					try {
-						
-						PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ? WHERE nombre = ?");
-						pstmt.setString(1, nuevoNombre);
-						pstmt.setString(2, tipoEntrenamiento.name());
-						pstmt.setString(3, nuevaDif.name());
-						pstmt.setInt(4, nuevoTiempo);
-						pstmt.setString(5, nuevaDescripcion);
-						pstmt.setInt(6, nuevoKCAL);
-						pstmt.setInt(7, seriesNuevas);
-						pstmt.setInt(8, repeticionesNuevas);
-						pstmt.setString(9, antiguoNombre);
-						pstmt.executeUpdate();
-						pstmt.close();
-						
-						PreparedStatement stmtUsuarioEntrenamientos = conn.prepareStatement("UPDATE usuario_entrenamientos SET nombreEntrenamiento = ? WHERE nombreEntrenamiento = ?");
-						stmtUsuarioEntrenamientos.setString(1, nuevoNombre);
-						stmtUsuarioEntrenamientos.setString(2, antiguoNombre);
-						stmtUsuarioEntrenamientos.executeUpdate();
-						stmtUsuarioEntrenamientos.close();
-						
-						conn.close();
-					} catch (SQLException e1) {
-						e1.printStackTrace();
+					if (antiguoNombre == "") {
+						DBManager.anadirEntrenamiento(conn, ent);
+					} else {						
+						try {
+							
+							PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ? WHERE nombre = ?");
+							pstmt.setString(1, nuevoNombre);
+							pstmt.setString(2, tipoEntrenamiento.name());
+							pstmt.setString(3, nuevaDif.name());
+							pstmt.setInt(4, nuevoTiempo);
+							pstmt.setString(5, nuevaDescripcion);
+							pstmt.setInt(6, nuevoKCAL);
+							pstmt.setInt(7, seriesNuevas);
+							pstmt.setInt(8, repeticionesNuevas);
+							pstmt.setString(9, antiguoNombre);
+							pstmt.executeUpdate();
+							pstmt.close();
+							
+							PreparedStatement stmtUsuarioEntrenamientos = conn.prepareStatement("UPDATE usuario_entrenamientos SET nombreEntrenamiento = ? WHERE nombreEntrenamiento = ?");
+							stmtUsuarioEntrenamientos.setString(1, nuevoNombre);
+							stmtUsuarioEntrenamientos.setString(2, antiguoNombre);
+							stmtUsuarioEntrenamientos.executeUpdate();
+							stmtUsuarioEntrenamientos.close();
+							
+							conn.close();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
 					}
 					// Mostrar un mensaje de éxito
 					JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");

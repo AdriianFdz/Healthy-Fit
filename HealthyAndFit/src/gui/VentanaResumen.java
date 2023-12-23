@@ -499,12 +499,12 @@ public class VentanaResumen extends JFrame{
 				}
 				stmtIngredientes.close();
 				
-				PreparedStatement stmtAlergias= conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				PreparedStatement stmtAlergias= conn.prepareStatement("SELECT nombreAlergia FROM alergias WHERE id IN (SELECT alergia FROM dieta_alergias WHERE nombreDieta = ?)");
 				stmtAlergias.setString(1, nombre);
 				ResultSet rsAlergias = stmtAlergias.executeQuery();
 				List<TipoAlergias> alergiasDieta = new ArrayList<TipoAlergias>();
 				while (rsAlergias.next()) {
-					alergiasDieta.add(TipoAlergias.valueOf(rsAlergias.getString("alergia")));
+					alergiasDieta.add(TipoAlergias.valueOf(rsAlergias.getString("nombreAlergia")));
 				}
 				stmtAlergias.close();
 				Dieta dieta = new Dieta(nombre, tiempo, dificultad, kcal, pasosDieta, ingredientesDieta, alergiasDieta);
