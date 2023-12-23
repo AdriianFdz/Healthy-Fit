@@ -12,10 +12,12 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,6 +29,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import domain.Dieta;
+import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.Usuario;
 import io.DBManager;
@@ -47,7 +50,6 @@ public class VentanaEditarDieta extends JFrame {
 		public JComboBox<TipoDificultad> comboDif;
 		public JLabel labelKcal;
 		public JSpinner spinnerKcal;
-		public JLabel labelIng;
 		public DefaultTableModel modeloTabla;
 		public JTable tablaIngredientes;
 		public List<String> listaIngredientes;
@@ -55,10 +57,11 @@ public class VentanaEditarDieta extends JFrame {
 
 		
 	public JPanel pDer;
-		public JLabel labelPasos;
 		public DefaultTableModel pasosTableModel;
 		public JTable tablaPasos;
 		public JScrollPane panelDcha;
+		private JLabel labelAlerg;
+		private JComboBox<TipoAlergias> comboAleg;
 	
 	public VentanaEditarDieta(Dieta d, Usuario p) {
 	
@@ -68,15 +71,15 @@ public class VentanaEditarDieta extends JFrame {
 		//Panel izqueirda y componenetes del panel
 		pIzq = new JPanel(new GridLayout(12,1));
 		pIzq.setLayout(new BoxLayout(pIzq, BoxLayout.Y_AXIS));
-
+	
+		
 		labelNombre = new JLabel("NOMBRE");
 		fieldNombre = new JTextField(20);
 		labelTiempo = new JLabel("TIEMPO");
 		labelDiff = new JLabel("DIFICULTAD");
 		comboDif = new JComboBox<>(TipoDificultad.values());
 		labelKcal = new JLabel("KCAL");
-		labelIng = new JLabel("INGREDIENTES");
-	
+
 		listaIngredientes = new ArrayList<>(d.getIngredientes());
 		listaPasos = new ArrayList<>(d.getPasos());
 		
@@ -118,7 +121,6 @@ public class VentanaEditarDieta extends JFrame {
 		pIzq.add(comboDif);
 		pIzq.add(labelKcal);
 		pIzq.add(spinnerKcal);
-		pIzq.add(labelIng);
 		pIzq.add(paneIng);
 		
 		btnAñaEli.add(botonAñadirIngrediente);
@@ -130,10 +132,75 @@ public class VentanaEditarDieta extends JFrame {
 		pDer.setLayout(new BoxLayout(pDer, BoxLayout.Y_AXIS));
 
 		//Componentes para el panel de la derecha
-		labelPasos = new JLabel("PASOS");
 		pasosTableModel = new DefaultTableModel();
 		pasosTableModel.addColumn("LISTA DE PASOS");
-        
+		labelAlerg = new JLabel("ALERGIAS");
+		labelAlerg.setHorizontalAlignment(JLabel.CENTER);
+		
+		comboAleg = new JComboBox<>(TipoAlergias.values());
+		
+		JList<TipoAlergias> listaAlergia = new JList<>();
+		DefaultListModel<TipoAlergias> modeloAlergia = new DefaultListModel<>();
+		listaAlergia.setModel(modeloAlergia);
+		
+		JButton anadirAlergia = new JButton("AÑADIR ALERGIA");
+		JButton eliminarAlergia = new JButton("ELIMINAR ALERGIA");
+		JPanel panelAlergia = new JPanel(new BorderLayout());
+		JPanel panelAlergiaBotones = new JPanel();
+		
+		panelAlergia.add(labelAlerg, BorderLayout.NORTH);
+		panelAlergia.add(listaAlergia,BorderLayout.CENTER);
+		panelAlergiaBotones.add(anadirAlergia);
+		panelAlergiaBotones.add(eliminarAlergia);
+		panelAlergia.add(panelAlergiaBotones, BorderLayout.SOUTH);
+		
+		if (!d.getAlergias().isEmpty()) {
+			for (TipoAlergias alergia : d.getAlergias()) {
+				modeloAlergia.addElement(alergia);
+			}
+		}else {
+			modeloAlergia.addElement(TipoAlergias.NINGUNA);
+		}
+		
+		anadirAlergia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int result = JOptionPane.showConfirmDialog(
+		                null,
+		                comboAleg,
+		                "Selecciona una alergia",
+		                JOptionPane.OK_CANCEL_OPTION,
+		                JOptionPane.QUESTION_MESSAGE);
+				
+				if (result == JOptionPane.OK_OPTION) {
+					if (!modeloAlergia.contains(comboAleg.getSelectedItem())) {
+						modeloAlergia.addElement((TipoAlergias) comboAleg.getSelectedItem());
+						if (modeloAlergia.contains(TipoAlergias.NINGUNA)) {
+							modeloAlergia.removeElement(TipoAlergias.NINGUNA);
+						}
+					} else {
+						JOptionPane.showConfirmDialog(null, "Alergia ya añadida", "Error", JOptionPane.PLAIN_MESSAGE);	
+					}
+					
+				}
+				
+			}
+		});
+		
+		eliminarAlergia.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TipoAlergias alergia = listaAlergia.getSelectedValue();
+				modeloAlergia.removeElement(alergia);
+				if (modeloAlergia.isEmpty()) {
+					modeloAlergia.addElement(TipoAlergias.NINGUNA);
+				}
+			}
+		});
+		
+		
 		for (String paso : d.getPasos()) {
         	pasosTableModel.addRow(new Object[]{paso});
         }
@@ -149,12 +216,11 @@ public class VentanaEditarDieta extends JFrame {
         JButton botonAñadirPaso= new JButton("AÑADIR PASO");
         JButton botonElimiarPaso= new JButton("ELIMINAR PASO");
         
-        pDer.add(labelPasos);
 		pDer.add(panelDcha);
 		btnAñaEliPasos.add(botonAñadirPaso);
 		btnAñaEliPasos.add(botonElimiarPaso);
 		pDer.add(btnAñaEliPasos);
-		
+		pDer.add(panelAlergia);
 		
 		
 		datos.add(pIzq);
