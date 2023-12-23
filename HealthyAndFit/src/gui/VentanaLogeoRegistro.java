@@ -332,6 +332,7 @@ public class VentanaLogeoRegistro extends JFrame {
 							DBManager.anadirUsuario(conn, usuarioRegistrado);
 							conn.close();
 						} catch (SQLException e1) {
+							e1.printStackTrace();
 							RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 							JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 						}
@@ -551,6 +552,7 @@ public class VentanaLogeoRegistro extends JFrame {
 
 			RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
 		} catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}

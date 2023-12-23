@@ -107,6 +107,7 @@ public class VentanaEntrenamiento extends JFrame{
 			stmt.close();
 			rs.close();
 		} catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}

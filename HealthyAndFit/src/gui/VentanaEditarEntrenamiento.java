@@ -5,6 +5,9 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -16,17 +19,16 @@ import javax.swing.JPanel;
 
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
-import javax.swing.table.DefaultTableModel;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
+import io.DBManager;
 
 
 public class VentanaEditarEntrenamiento extends JFrame{
@@ -58,7 +60,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		
 	
 	public VentanaEditarEntrenamiento(Entrenamiento ent, Usuario p) {
-
+		
 		JPanel datos = new JPanel(new GridLayout(1, 2));
 
 		// Panel Izquierdo
@@ -85,7 +87,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		comboEntrenamiento.setSelectedItem(ent.getTipoEntrenamiento());
 		
 		spinnerSeries = new JSpinner(new SpinnerNumberModel(ent.getSeries(), 0, 999, 1));
-		spinnerRepeticiones = new JSpinner(new SpinnerNumberModel(ent.getSeries(), 0, 999, 1));
+		spinnerRepeticiones = new JSpinner(new SpinnerNumberModel(ent.getRepeticiones(), 0, 999, 1));
 		
 		//Añadimos los elemetos al panel Izquierdo
 		panelIzquierdo.add(labelNombre);
@@ -146,22 +148,63 @@ public class VentanaEditarEntrenamiento extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Obtener los nuevos valores de la dieta
+				String antiguoNombre = ent.getNombre();
+				
 				String nuevoNombre = fieldNombre.getText();
 				Integer nuevoTiempo = (Integer) spinnerTiempo.getValue();
 				TipoDificultad nuevaDif = (TipoDificultad) comboDif.getSelectedItem();
 				Integer nuevoKCAL = (Integer) spinnerKcal.getValue();
+				TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento.valueOf(comboEntrenamiento.getSelectedItem().toString());
+				int seriesNuevas = (int) spinnerSeries.getValue();
+				int repeticionesNuevas = (int) spinnerRepeticiones.getValue();
+				String nuevaDescripcion = area.getText();
 				
-				// Actualizar los atributos del Entrenamiento
+				Connection conn = DBManager.obtenerConexion();
 				ent.setNombre(nuevoNombre);
-				ent.setTiempo(nuevoTiempo);
-				ent.setDificultad(nuevaDif);
-				ent.setCalorias(nuevoKCAL);
+				if (DBManager.existeEntrenamiento(conn, ent) && !ent.getNombre().equals(antiguoNombre)) {
+					JOptionPane.showMessageDialog(null, "El nombre del entrenamiento ya existe");
+					ent.setNombre(antiguoNombre);
+
+				} else {		
+					// Actualizar los atributos del Entrenamiento
+					ent.setTiempo(nuevoTiempo);
+					ent.setDificultad(nuevaDif);
+					ent.setCalorias(nuevoKCAL);
+					ent.setTipoEntrenamiento(tipoEntrenamiento);
+					ent.setSeries(seriesNuevas);
+					ent.setRepeticiones(repeticionesNuevas);
+					
+					try {
+						
+						PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ? WHERE nombre = ?");
+						pstmt.setString(1, nuevoNombre);
+						pstmt.setString(2, tipoEntrenamiento.name());
+						pstmt.setString(3, nuevaDif.name());
+						pstmt.setInt(4, nuevoTiempo);
+						pstmt.setString(5, nuevaDescripcion);
+						pstmt.setInt(6, nuevoKCAL);
+						pstmt.setInt(7, seriesNuevas);
+						pstmt.setInt(8, repeticionesNuevas);
+						pstmt.setString(9, antiguoNombre);
+						pstmt.executeUpdate();
+						pstmt.close();
+						
+						PreparedStatement stmtUsuarioEntrenamientos = conn.prepareStatement("UPDATE usuario_entrenamientos SET nombreEntrenamiento = ? WHERE nombreEntrenamiento = ?");
+						stmtUsuarioEntrenamientos.setString(1, nuevoNombre);
+						stmtUsuarioEntrenamientos.setString(2, antiguoNombre);
+						stmtUsuarioEntrenamientos.executeUpdate();
+						stmtUsuarioEntrenamientos.close();
+						
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					// Mostrar un mensaje de éxito
+					JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
+					dispose();
+					SwingUtilities.invokeLater(() -> new VentanaPanel(p));
+				}
 				
-				
-				// Mostrar un mensaje de éxito
-		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");
-		        dispose();
-		        SwingUtilities.invokeLater(() -> new VentanaPanel(p));
 			}
 		});
 		panelBotones.add(botonCancelar, BorderLayout.WEST);

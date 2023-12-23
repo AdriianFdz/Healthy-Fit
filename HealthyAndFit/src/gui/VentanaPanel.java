@@ -287,7 +287,6 @@ public class VentanaPanel extends JFrame {
 					try {
 						conn.close();
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 					dispose();
@@ -303,22 +302,19 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int entrenamientoSeleccionado = tablaE.getSelectedRow();
-				Entrenamiento[] E = { null };
 				if (entrenamientoSeleccionado >= 0) {
-					String nombreE = (String) modeloE.getValueAt(entrenamientoSeleccionado, 0);
-
-					for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
-						if (entrenamiento.getNombre().equals(nombreE)) {
-							E[0] = entrenamiento;
-							break;
-						}
+					Connection conn = DBManager.obtenerConexion();
+					Entrenamiento entrenamiento = DBManager.obtenerEntrenamientos(conn, (String) modeloE.getValueAt(entrenamientoSeleccionado, 0));
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
 					}
-					if (E != null) {
-						SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(E[0],p));
-						dispose();
-					}
+					
+					SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(entrenamiento, p));
+					dispose();
+		
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un entrenamiento");
 				}
@@ -336,6 +332,12 @@ public class VentanaPanel extends JFrame {
 
 					Connection conn = DBManager.obtenerConexion();
 					Dieta dietaSeleccionada = DBManager.obtenerDietas(conn, nombreD);
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					
 					dispose();
 					SwingUtilities.invokeLater(() -> new VentanaEditarDieta(dietaSeleccionada, p));
 				} else {
@@ -648,10 +650,26 @@ public class VentanaPanel extends JFrame {
 			Object[] filaD = { dieta.getNombre(), dieta.getTiempo(), dieta.getDificultad(), dieta.getIngredientes() };
 			modeloD.addRow(filaD);
 		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void rellenarEntrenamientos() {
-		for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
+		Connection conn = DBManager.obtenerConexion();
+		List<Entrenamiento> entrenamientos = DBManager.obtenerEntrenamientos(conn);
+		
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+		
+		for (Entrenamiento entrenamiento : entrenamientos) {
 			Object[] filaE = { entrenamiento.getNombre(), entrenamiento.getTiempo(), entrenamiento.getDificultad(),
 					entrenamiento.getCalorias() };
 			modeloE.addRow(filaE);

@@ -1,11 +1,9 @@
 package io;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.rmi.ConnectIOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -38,6 +36,7 @@ import domain.Usuario;
 
 public class DBManager {
 	private static Connection conn;
+	
 
 	public static Connection obtenerConexion() {
 		try (FileReader reader = new FileReader("conf/db.properties")){
@@ -48,13 +47,14 @@ public class DBManager {
 			conn = DriverManager.getConnection(conexion);
 			
 		} catch (IOException e1) {
+			e1.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo leer el archivo db.properties");
 			JOptionPane.showConfirmDialog(null, "Error al leer el archivo db.properties", "Error", JOptionPane.PLAIN_MESSAGE);
 		} catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
-
 		return conn;
 	}
 	
@@ -186,7 +186,6 @@ public class DBManager {
 	        return baos.toByteArray();
 	    }
 
-	
 	public static void anadirDieta(Connection connection, Dieta dieta)  {
 		try {
 			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Dietas VALUES (?, ?, ?, ?)");
@@ -314,6 +313,7 @@ public class DBManager {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return true;
@@ -336,6 +336,23 @@ public class DBManager {
 		return true;
 	}
 
+	public static boolean existeEntrenamiento(Connection connection, Entrenamiento entrenamiento) {
+		PreparedStatement pstmt;
+		try {
+			pstmt = connection.prepareStatement("SELECT * FROM entrenamientos WHERE nombre = ?");
+			pstmt.setString(1, entrenamiento.getNombre());
+			ResultSet rs = pstmt.executeQuery();
+			if (!rs.next()) {
+				rs.close();
+				pstmt.close();
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 	public static void eliminarDieta(Connection connection, Dieta dieta) {
 		try {
 			PreparedStatement stmtDieta = connection.prepareStatement("DELETE FROM dietas WHERE nombre = ?");
@@ -460,6 +477,7 @@ public class DBManager {
 				
 			}
 		}	catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return d;
@@ -593,6 +611,7 @@ public class DBManager {
 				resultado.add(usuario);
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return resultado;
@@ -724,10 +743,64 @@ public class DBManager {
 				
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		
 		}
 		return null;
+	}
+
+	public static List<Entrenamiento> obtenerEntrenamientos(Connection connection) {
+		
+		List<Entrenamiento> resultado = new ArrayList<Entrenamiento>();
+		
+		try {
+			Statement stmt = connection.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM entrenamientos");
+			while (rs.next()) {
+				String nombre = rs.getString("nombre");
+				TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento.valueOf(rs.getString("tipoEntrenamiento"));
+				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad"));
+				int tiempo = rs.getInt("tiempo");
+				String descripcion = rs.getString("descripcion");
+				int calorias = rs.getInt("calorias");
+				int series = rs.getInt("series");
+				int repeticiones = rs.getInt("repeticiones");
+				
+				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);
+				resultado.add(entrenamiento);	
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
+	}
+
+	public static Entrenamiento obtenerEntrenamientos(Connection connection, String nombreCondicion) {
+				
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entrenamientos WHERE nombre = ?");
+			stmt.setString(1, nombreCondicion);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				String nombre = rs.getString("nombre");
+				TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento.valueOf(rs.getString("tipoEntrenamiento"));
+				TipoDificultad dificultad = TipoDificultad.valueOf(rs.getString("dificultad"));
+				int tiempo = rs.getInt("tiempo");
+				String descripcion = rs.getString("descripcion");
+				int calorias = rs.getInt("calorias");
+				int series = rs.getInt("series");
+				int repeticiones = rs.getInt("repeticiones");
+				
+				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);
+				return entrenamiento;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;	
 	}
 }
 	
