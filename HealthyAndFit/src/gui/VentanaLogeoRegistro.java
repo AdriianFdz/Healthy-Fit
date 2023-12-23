@@ -323,9 +323,8 @@ public class VentanaLogeoRegistro extends JFrame {
 						ImageIcon foto = new ImageIcon("resources\\images\\foto.png");
 						TipoPermiso permiso = TipoPermiso.USUARIO;
 						List<Entrenamiento> registroEntrenamiento = new ArrayList<Entrenamiento>();
-						List<Dieta> registroDietas = new ArrayList<Dieta>();
 						
-						Usuario usuarioRegistrado = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, registroEntrenamiento, registroDietas);
+						Usuario usuarioRegistrado = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, registroEntrenamiento);
 											
 						//BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
 						try {
@@ -448,7 +447,7 @@ public class VentanaLogeoRegistro extends JFrame {
 
 					List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
 					while (rsAlergias.next()) {
-						alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")]);
+						alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")-1]);
 					}
 
 					PreparedStatement pstmtEnfermedades = conn.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
@@ -457,7 +456,7 @@ public class VentanaLogeoRegistro extends JFrame {
 
 					List<TipoEnfermedades> enfermedades = new ArrayList<TipoEnfermedades>();
 					while (rsEnfermedades.next()) {
-						enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")]);
+						enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")-1]);
 					}
 
 					PreparedStatement pstmtProximaComida = conn.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
@@ -507,93 +506,40 @@ public class VentanaLogeoRegistro extends JFrame {
 						}
 					}
 
-						// OBTENER REGISTRO ENTRENAMIENTOS del usuario
-						PreparedStatement pstmtRegEntrenamientos = conn.prepareStatement(
-								"SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
-						pstmtRegEntrenamientos.setString(1, nombreUsuario);
-						ResultSet rsUsuarioEntrenamientos = pstmtRegEntrenamientos.executeQuery();
+					// OBTENER REGISTRO ENTRENAMIENTOS del usuario
+					PreparedStatement pstmtRegEntrenamientos = conn.prepareStatement(
+							"SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
+					pstmtRegEntrenamientos.setString(1, nombreUsuario);
+					ResultSet rsUsuarioEntrenamientos = pstmtRegEntrenamientos.executeQuery();
 
-						List<Entrenamiento> listaEntrenamientos = new ArrayList<Entrenamiento>();
-						while (rsUsuarioEntrenamientos.next()) {
-							String nombreEntrenamiento = rsUsuarioEntrenamientos.getString("nombre");
-							TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento
-									.valueOf(rsUsuarioEntrenamientos.getString("tipoEntrenamiento"));
-							TipoDificultad dificultad = TipoDificultad
-									.valueOf(rsUsuarioEntrenamientos.getString("dificultad"));
-							int tiempo = rsUsuarioEntrenamientos.getInt("tiempo");
-							String descripcion = rsUsuarioEntrenamientos.getString("descripcion");
-							int calorias = rsUsuarioEntrenamientos.getInt("calorias");
-							int series = rsUsuarioEntrenamientos.getInt("series");
-							int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
+					List<Entrenamiento> listaEntrenamientos = new ArrayList<Entrenamiento>();
+					while (rsUsuarioEntrenamientos.next()) {
+						String nombreEntrenamiento = rsUsuarioEntrenamientos.getString("nombre");
+						TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento
+								.valueOf(rsUsuarioEntrenamientos.getString("tipoEntrenamiento"));
+						TipoDificultad dificultad = TipoDificultad
+								.valueOf(rsUsuarioEntrenamientos.getString("dificultad"));
+						int tiempo = rsUsuarioEntrenamientos.getInt("tiempo");
+						String descripcion = rsUsuarioEntrenamientos.getString("descripcion");
+						int calorias = rsUsuarioEntrenamientos.getInt("calorias");
+						int series = rsUsuarioEntrenamientos.getInt("series");
+						int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
 
-							Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento,
-									dificultad, tiempo, descripcion, calorias, series, repeticiones);
-							listaEntrenamientos.add(entrenamiento);
+						Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento,
+								dificultad, tiempo, descripcion, calorias, series, repeticiones);
+						listaEntrenamientos.add(entrenamiento);
 
-							pstmtRegEntrenamientos.close();
-						}
-						// OBTENER REGISTRO DIETAS del usuario
+						pstmtRegEntrenamientos.close();
+					}
 
-						PreparedStatement pstmtRegDietas = conn.prepareStatement(
-								"SELECT * FROM DIETAS WHERE nombre = (SELECT nombreDieta FROM usuario_dieta WHERE nombreUsuario = ?)");
-						pstmtRegDietas.setString(1, nombreUsuario);
-						ResultSet rsRegDietas = pstmtRegDietas.executeQuery();
-
-						List<Dieta> listaDietas = new ArrayList<Dieta>();
-						while (rsRegDietas.next()) {
-							String nombreDietaReg = rsRegDietas.getString("nombre");
-							int tiempoDietaReg = rsRegDietas.getInt("tiempo");
-							TipoDificultad dificultadDietaReg = TipoDificultad
-									.valueOf(rsRegDietas.getString("dificultad"));
-							int kcal = rsRegDietas.getInt("kcal");
-
-							PreparedStatement pstmtPasosDieta = conn
-									.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
-							pstmtPasosDieta.setString(1, nombreDietaReg);
-							ResultSet rsPasosDietaReg = pstmtPasosDieta.executeQuery();
-							List<String> pasosDieta = new ArrayList<String>();
-							while (rsPasosDietaReg.next()) {
-								String paso = rsPasosDietaReg.getString("denominacion");
-								pasosDieta.add(paso);
-							}
-							pstmtPasosDieta.close();
-
-							PreparedStatement pstmtIngredientesDieta = conn
-									.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
-							pstmtIngredientesDieta.setString(1, nombreDietaReg);
-							ResultSet rsIngredientesDieta = pstmtIngredientesDieta.executeQuery();
-							List<String> ingredientesDieta = new ArrayList<String>();
-							while (rsIngredientesDieta.next()) {
-								String ingrediente = rsIngredientesDieta.getString("nombreIngrediente");
-								ingredientesDieta.add(ingrediente);
-							}
-							pstmtIngredientesDieta.close();
-
-							PreparedStatement pstmtAlergiaDieta = conn
-									.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
-							pstmtAlergiaDieta.setString(1, nombreDietaReg);
-							ResultSet rsAlergiasDieta = pstmtAlergiaDieta.executeQuery();
-							List<TipoAlergias> alergiasDieta = new ArrayList<TipoAlergias>();
-							while (rsAlergiasDieta.next()) {
-								TipoAlergias alergia = TipoAlergias.valueOf(rsAlergiasDieta.getString("alergia"));
-								alergiasDieta.add(alergia);
-							}
-							pstmtAlergiaDieta.close();
-
-							Dieta d = new Dieta(nombreDietaReg, tiempoDietaReg, dificultadDietaReg, kcal, pasosDieta,
-									ingredientesDieta, alergiasDieta);
-							listaDietas.add(d);
-							pstmtRegDietas.close();
-						}
-
-						Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
-								sexo, altura, peso, alergias, correoElectronico, enfermedades,
-								caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
-								caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso,
-								listaEntrenamientos, listaDietas);
-						conn.close();
-						RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
-						return usuario;
+					Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
+							sexo, altura, peso, alergias, correoElectronico, enfermedades,
+							caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
+							caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso,
+							listaEntrenamientos);
+					conn.close();
+					RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
+					return usuario;
 				}
 
 				// Usuario usuarioCorrecto = new Usuario(nombre, nombreUsuario, apellido1,

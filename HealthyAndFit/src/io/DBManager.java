@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.LineNumberInputStream;
+import java.rmi.ConnectIOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -30,7 +31,9 @@ import domain.Entrenamiento;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.TipoEnfermedades;
+import domain.TipoEntrenamiento;
 import domain.TipoPermiso;
+import domain.TipoSexo;
 import domain.Usuario;
 
 public class DBManager {
@@ -56,9 +59,8 @@ public class DBManager {
 	}
 	
 	public static void anadirEnfermedad(Connection connection, TipoEnfermedades enfermedad) {
-		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Enfermedades VALUES (null, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Enfermedades VALUES (null, ?)");
 			 stmt.setString(1, enfermedad.toString());
 			 stmt.executeUpdate();
 			 
@@ -74,9 +76,8 @@ public class DBManager {
 	}
 
 	public static void anadirAlergia(Connection connection, TipoAlergias alergia) {
-		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Alergias VALUES (null, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alergias VALUES (null, ?)");
 			 stmt.setString(1, alergia.toString());
 			 stmt.executeUpdate();
 			 
@@ -90,12 +91,10 @@ public class DBManager {
 		
 
 	}
-
 	
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
-		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, usuario.getNombre());
 			stmt.setString(3, usuario.getApellido1());
@@ -120,10 +119,10 @@ public class DBManager {
 			stmt.executeUpdate();
 			stmt.close();
 			 
-			PreparedStatement stmtAnadirEnfermedades = conn.prepareStatement("INSERT INTO Usuario_Enfermedades VALUES (?, ?)");
+			PreparedStatement stmtAnadirEnfermedades = connection.prepareStatement("INSERT INTO Usuario_Enfermedades VALUES (?, ?)");
 			for (TipoEnfermedades enfermedad : usuario.getEnfermedades()) {
 				stmtAnadirEnfermedades.setString(1, usuario.getNombreUsuario());
-				PreparedStatement stmConsultarID = conn.prepareStatement("SELECT id FROM enfermedades WHERE nombreEnfermedad = ?");
+				PreparedStatement stmConsultarID = connection.prepareStatement("SELECT id FROM enfermedades WHERE nombreEnfermedad = ?");
 				stmConsultarID.setString(1, enfermedad.toString());
 				ResultSet idSet = stmConsultarID.executeQuery();
 				
@@ -133,10 +132,10 @@ public class DBManager {
 				stmtAnadirEnfermedades.executeUpdate();
 				stmConsultarID.close();
 			}
-			PreparedStatement stmtAnadirAlergias = conn.prepareStatement("INSERT INTO Usuario_Alergias VALUES (?, ?)");
+			PreparedStatement stmtAnadirAlergias = connection.prepareStatement("INSERT INTO Usuario_Alergias VALUES (?, ?)");
 			for (TipoAlergias alergia: usuario.getAlergias()) {
 				stmtAnadirAlergias.setString(1, usuario.getNombreUsuario());
-				PreparedStatement stmConsultarID = conn.prepareStatement("SELECT id FROM alergias WHERE nombrealergia = ?");
+				PreparedStatement stmConsultarID = connection.prepareStatement("SELECT id FROM alergias WHERE nombrealergia = ?");
 				stmConsultarID.setString(1, alergia.toString());
 				ResultSet idSet = stmConsultarID.executeQuery();
 				 
@@ -165,7 +164,6 @@ public class DBManager {
 			pstmt.executeUpdate();
 			pstmt.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -190,9 +188,8 @@ public class DBManager {
 
 	
 	public static void anadirDieta(Connection connection, Dieta dieta)  {
-		Connection conn = connection;	
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Dietas VALUES (?, ?, ?, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Dietas VALUES (?, ?, ?, ?)");
 			stmt.setString(1, dieta.getNombre());
 			stmt.setInt(2, dieta.getTiempo());
 			stmt.setString(3, dieta.getDificultad().toString());
@@ -201,7 +198,7 @@ public class DBManager {
 			stmt.executeUpdate();
 			stmt.close();
 			
-			PreparedStatement stmtAnadirPasos = conn.prepareStatement("INSERT INTO pasos_dietas VALUES (null, ?, ?)");
+			PreparedStatement stmtAnadirPasos = connection.prepareStatement("INSERT INTO pasos_dietas VALUES (null, ?, ?)");
 			for (String s : dieta.getPasos()) {
 				stmtAnadirPasos.setString(1, s);
 				stmtAnadirPasos.setString(2, dieta.getNombre());
@@ -210,7 +207,7 @@ public class DBManager {
 			}
 			stmtAnadirPasos.close();
 			
-			PreparedStatement stmtAnadirIngredientes = conn.prepareStatement("INSERT INTO ingredientes_dietas VALUES (null, ?, ?)");
+			PreparedStatement stmtAnadirIngredientes = connection.prepareStatement("INSERT INTO ingredientes_dietas VALUES (null, ?, ?)");
 			for (String s : dieta.getIngredientes()) {
 				stmtAnadirIngredientes.setString(1, s);
 				stmtAnadirIngredientes.setString(2, dieta.getNombre());
@@ -218,14 +215,13 @@ public class DBManager {
 			}
 			stmtAnadirIngredientes.close();
 
-			PreparedStatement stmtAnadirAlergias = conn.prepareStatement("INSERT INTO dieta_alergias VALUES (null, ?, ?)");
+			PreparedStatement stmtAnadirAlergias = connection.prepareStatement("INSERT INTO dieta_alergias VALUES (null, ?, ?)");
 			for (TipoAlergias alergia : dieta.getAlergias()) {
 				stmtAnadirAlergias.setString(1, dieta.getNombre());
 				stmtAnadirAlergias.setString(2, alergia.toString());
 				stmtAnadirAlergias.executeUpdate();
 			}
 			stmtAnadirAlergias.close();
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
@@ -235,9 +231,8 @@ public class DBManager {
 	}
 	
 	public static void anadirEntrenamiento(Connection connection, Entrenamiento entrenamiento) {
-		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?)");
 			stmt.setString(1, entrenamiento.getNombre());
 			stmt.setString(2, entrenamiento.getTipoEntrenamiento().toString());
 			stmt.setString(3, entrenamiento.getDificultad().toString());
@@ -249,7 +244,6 @@ public class DBManager {
 			
 			stmt.executeUpdate();
 			stmt.close();
-			
 		}catch (SQLException e) {
 			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
@@ -259,9 +253,8 @@ public class DBManager {
 	}
 	
 	public static void anadirUsuarioEntrenamientos(Connection connection, Usuario usuario, Entrenamiento entrenamiento) {
-		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO usuario_entrenamientos VALUES (?, ?, ?, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuario_entrenamientos VALUES (?, ?, ?, ?)");
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, entrenamiento.getNombre());
 			stmt.setString(3, entrenamiento.getDificultad().toString());
@@ -269,7 +262,6 @@ public class DBManager {
 			
 			stmt.executeUpdate();
 			stmt.close();
-			
 		}catch (SQLException e) {
 			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
@@ -279,16 +271,14 @@ public class DBManager {
 	}
 	
 	public static void anadirUsuarioDieta(Connection connection, Usuario usuario, Dieta dieta, LocalDate fecha){
-		Connection conn = connection;
 		try {
-			PreparedStatement stmt = conn.prepareStatement("INSERT INTO usuario_dieta VALUES (?, ?, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuario_dieta VALUES (?, ?, ?)");
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, fecha.toString());
 			stmt.setString(3, dieta.getNombre());
 			
 			stmt.executeUpdate();
 			stmt.close();
-			
 		}catch (SQLException e) {
 			//NO ANADIR NINGUN ERROR
 		}
@@ -322,9 +312,10 @@ public class DBManager {
 				pstmt.close();
 				return false;
 			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return true;
 	}
 
@@ -340,8 +331,8 @@ public class DBManager {
 				return false;
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return true;
 	}
 
@@ -356,17 +347,17 @@ public class DBManager {
 				stmtDieta.executeUpdate();
 				stmtPasosDieta.executeUpdate();
 				stmtIngredientesDieta.executeUpdate();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	public static List<Dieta> obtenerDietas (Connection connection){
-		Connection conn = DBManager.obtenerConexion();
 		List<Dieta> resultado = new ArrayList<Dieta>();
 		
 		try {
-			Statement stmt = conn.createStatement();
+			Statement stmt = connection.createStatement();
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM dietas");
 			while (rs.next()) {
@@ -376,7 +367,7 @@ public class DBManager {
 				TipoDificultad difiicultad = TipoDificultad.valueOf(rs.getString("dificultad"));
 				int kcal = rs.getInt("kcal");
 				
-				PreparedStatement stmtPasos = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+				PreparedStatement stmtPasos = connection.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
 				stmtPasos.setString(1, nombre);
 				ResultSet rsPasos = stmtPasos.executeQuery();
 				List<String> pasos = new ArrayList<String>();
@@ -385,7 +376,7 @@ public class DBManager {
 				}
 				d.setPasos(new ArrayList<String>(pasos));
 				
-				PreparedStatement stmtIngredientes = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+				PreparedStatement stmtIngredientes = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
 				stmtIngredientes.setString(1, nombre);
 				ResultSet rsIngredientes = stmtIngredientes.executeQuery();
 				List<String> ingredientes = new ArrayList<String>();
@@ -394,7 +385,7 @@ public class DBManager {
 				}
 				d.setIngredientes(new ArrayList<String>(ingredientes));
 
-				PreparedStatement stmtAlergias = conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
 				stmtAlergias.setString(1, nombre);
 				ResultSet rsAlergias = stmtAlergias.executeQuery();
 				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
@@ -411,7 +402,7 @@ public class DBManager {
 				
 				resultado.add(d);
 				}
-			}	catch (SQLException e) {
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		
@@ -420,11 +411,10 @@ public class DBManager {
 	}
 	
 	public static Dieta obtenerDietas (Connection connection, String nombreCondicion){
-		Connection conn = DBManager.obtenerConexion();
 		
 		Dieta d = new Dieta();
 		try {
-			PreparedStatement stmt = conn.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
 			stmt.setString(1, nombreCondicion);
 			
 			ResultSet rs = stmt.executeQuery();
@@ -436,7 +426,7 @@ public class DBManager {
 				TipoDificultad difiicultad = TipoDificultad.valueOf(rs.getString("dificultad"));
 				int kcal = rs.getInt("kcal");
 				
-				PreparedStatement stmtPasos = conn.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+				PreparedStatement stmtPasos = connection.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
 				stmtPasos.setString(1, nombre);
 				ResultSet rsPasos = stmtPasos.executeQuery();
 				List<String> pasos = new ArrayList<String>();
@@ -445,7 +435,7 @@ public class DBManager {
 				}
 				d.setPasos(new ArrayList<String>(pasos));
 				
-				PreparedStatement stmtIngredientes = conn.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+				PreparedStatement stmtIngredientes = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
 				stmtIngredientes.setString(1, nombre);
 				ResultSet rsIngredientes = stmtIngredientes.executeQuery();
 				List<String> ingredientes = new ArrayList<String>();
@@ -454,7 +444,7 @@ public class DBManager {
 				}
 				d.setIngredientes(new ArrayList<String>(ingredientes));
 				
-				PreparedStatement stmtAlergias = conn.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
 				stmtAlergias.setString(1, nombre);
 				ResultSet rsAlergias = stmtAlergias.executeQuery();
 				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
@@ -470,12 +460,274 @@ public class DBManager {
 				
 			}
 		}	catch (SQLException e) {
-			e.printStackTrace();
-		}
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return d;
 		
 		
 	}
 	
+	public static List<Usuario> obtenerUsuarios(Connection connection) {
+		
+		List<Usuario> resultado = new ArrayList<Usuario>();
+		try {
+			Statement stmt = connection.createStatement();
+			
+			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
+			
+			while (rs.next()) {
+				String nombreUsuario = rs.getString("nombreUsuario");
+				String nombre = rs.getString("nombre");
+				String apellido1 = rs.getString("apellido1");
+				String apellido2 = rs.getString("apellido2");
+				LocalDate fechaNacimiento = LocalDate.parse(rs.getString("fechaNacimiento"));
+				TipoSexo sexo = TipoSexo.valueOf(rs.getString("sexo"));
+				double altura = rs.getDouble("altura");
+				int peso = rs.getInt("peso");
+				String correoElectronico = rs.getString("correoElectronico");
+				int caloriasGastadas = rs.getInt("caloriasGastadas");
+				int rachaEntrenamiento = rs.getInt("rachaEntrenamiento");
+				String objetivo = rs.getString("objetivo");
+				int tiempoEntrenado = rs.getInt("tiempoEntrenado");
+				LocalDate ultimaVezEntreno = LocalDate.parse(rs.getString("ultimaVezEntreno"));
+				int caloriasConsumidas = rs.getInt("caloriasConsumidas");
+				int vasosDeAgua = rs.getInt("vasosDeAgua");
+				String contrasena = rs.getString("contrasena");
+				ImageIcon foto = new ImageIcon(rs.getBytes("foto"));
+				TipoPermiso permiso = TipoPermiso.valueOf(rs.getString("permiso"));
+
+				PreparedStatement pstmtAlergias = connection.prepareStatement("SELECT * FROM usuario_alergias WHERE nombreUsuario = ?");
+				pstmtAlergias.setString(1, nombreUsuario);
+				ResultSet rsAlergias = pstmtAlergias.executeQuery();
+
+				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
+				while (rsAlergias.next()) {
+					alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")-1]);
+				}
+
+				PreparedStatement pstmtEnfermedades = connection.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
+				pstmtEnfermedades.setString(1, nombreUsuario);
+				ResultSet rsEnfermedades = pstmtEnfermedades.executeQuery();
+
+				List<TipoEnfermedades> enfermedades = new ArrayList<TipoEnfermedades>();
+				while (rsEnfermedades.next()) {
+					enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")-1]);
+				}
+
+				PreparedStatement pstmtProximaComida = connection.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
+				pstmtProximaComida.setString(1, nombreUsuario);
+				ResultSet rsProximaComida = pstmtProximaComida.executeQuery();
+				Map<LocalDate, Dieta> proximaComida = new HashMap<LocalDate, Dieta>();
+				while (rsProximaComida.next()) {
+					LocalDate fecha = LocalDate.parse(rsProximaComida.getString("fecha"));
+					String nombreDieta = rsProximaComida.getString("nombreDieta");
+
+					PreparedStatement pstmtObtenerDieta = connection.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+					pstmtObtenerDieta.setString(1, nombreDieta);
+					ResultSet rsObtenerDieta = pstmtObtenerDieta.executeQuery();
+					while (rsObtenerDieta.next()) {
+						int tiempo = rsObtenerDieta.getInt("tiempo");
+						TipoDificultad dificultad = TipoDificultad.valueOf(rsObtenerDieta.getString("dificultad"));
+						int kcal = rsObtenerDieta.getInt("kcal");
+
+						PreparedStatement pstmtObtenerPasosDieta = connection.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+						pstmtObtenerPasosDieta.setString(1, nombreDieta);
+						ResultSet rsObtenerPasosDieta = pstmtObtenerPasosDieta.executeQuery();
+						List<String> pasos = new ArrayList<String>();
+						while (rsObtenerPasosDieta.next()) {
+							pasos.add(rsObtenerPasosDieta.getString("denominacion"));
+						}
+
+						PreparedStatement pstmtObtenerIngredientesDieta = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+						pstmtObtenerIngredientesDieta.setString(1, nombreDieta);
+						ResultSet rsObtenerIngredientesDieta = pstmtObtenerIngredientesDieta.executeQuery();
+						List<String> ingredientes = new ArrayList<String>();
+						while (rsObtenerIngredientesDieta.next()) {
+							ingredientes.add(rsObtenerIngredientesDieta.getString("nombreIngrediente"));
+						}
+
+						PreparedStatement pstmtObtenerAlergiasDieta = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+						pstmtObtenerAlergiasDieta.setString(1, nombreDieta);
+						ResultSet rsObtenerAlergiasDieta = pstmtObtenerAlergiasDieta.executeQuery();
+						List<TipoAlergias> alergiasDieta = new ArrayList<TipoAlergias>();
+						while (rsObtenerAlergiasDieta.next()) {
+							alergiasDieta.add(TipoAlergias.valueOf(rsObtenerAlergiasDieta.getString("alergia")));
+						}
+
+						Dieta dieta = new Dieta(nombreDieta, tiempo, dificultad, kcal, pasos, ingredientes,
+								alergiasDieta);
+						proximaComida.putIfAbsent(fecha, dieta);
+					}
+				}
+
+				// OBTENER REGISTRO ENTRENAMIENTOS del usuario
+				PreparedStatement pstmtRegEntrenamientos = connection.prepareStatement(
+						"SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
+				pstmtRegEntrenamientos.setString(1, nombreUsuario);
+				ResultSet rsUsuarioEntrenamientos = pstmtRegEntrenamientos.executeQuery();
+
+				List<Entrenamiento> listaEntrenamientos = new ArrayList<Entrenamiento>();
+				while (rsUsuarioEntrenamientos.next()) {
+					String nombreEntrenamiento = rsUsuarioEntrenamientos.getString("nombre");
+					TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento
+							.valueOf(rsUsuarioEntrenamientos.getString("tipoEntrenamiento"));
+					TipoDificultad dificultad = TipoDificultad
+							.valueOf(rsUsuarioEntrenamientos.getString("dificultad"));
+					int tiempo = rsUsuarioEntrenamientos.getInt("tiempo");
+					String descripcion = rsUsuarioEntrenamientos.getString("descripcion");
+					int calorias = rsUsuarioEntrenamientos.getInt("calorias");
+					int series = rsUsuarioEntrenamientos.getInt("series");
+					int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
+
+					Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento,
+							dificultad, tiempo, descripcion, calorias, series, repeticiones);
+					listaEntrenamientos.add(entrenamiento);
+
+					pstmtRegEntrenamientos.close();
+				}
+				Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
+						sexo, altura, peso, new ArrayList<TipoAlergias>(alergias), correoElectronico, new ArrayList<TipoEnfermedades>(enfermedades),
+						caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
+						caloriasConsumidas, new HashMap<LocalDate, Dieta>(proximaComida), vasosDeAgua, contrasena, foto, permiso,
+						new ArrayList<Entrenamiento>(listaEntrenamientos));
+				resultado.add(usuario);
+			}
+		} catch (SQLException e) {
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
+		return resultado;
+	}
+	
+	public static Usuario obtenerUsuarios(Connection connection, String nombreCondicion) {
+		try {
+			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuarios WHERE nombreUsuario = ?");
+			stmt.setString(1, nombreCondicion);
+			ResultSet rs = stmt.executeQuery();
+			
+			while (rs.next()) {
+				String nombreUsuario = rs.getString("nombreUsuario");
+				String nombre = rs.getString("nombre");
+				String apellido1 = rs.getString("apellido1");
+				String apellido2 = rs.getString("apellido2");
+				LocalDate fechaNacimiento = LocalDate.parse(rs.getString("fechaNacimiento"));
+				TipoSexo sexo = TipoSexo.valueOf(rs.getString("sexo"));
+				double altura = rs.getDouble("altura");
+				int peso = rs.getInt("peso");
+				String correoElectronico = rs.getString("correoElectronico");
+				int caloriasGastadas = rs.getInt("caloriasGastadas");
+				int rachaEntrenamiento = rs.getInt("rachaEntrenamiento");
+				String objetivo = rs.getString("objetivo");
+				int tiempoEntrenado = rs.getInt("tiempoEntrenado");
+				LocalDate ultimaVezEntreno = LocalDate.parse(rs.getString("ultimaVezEntreno"));
+				int caloriasConsumidas = rs.getInt("caloriasConsumidas");
+				int vasosDeAgua = rs.getInt("vasosDeAgua");
+				String contrasena = rs.getString("contrasena");
+				ImageIcon foto = new ImageIcon(rs.getBytes("foto"));
+				TipoPermiso permiso = TipoPermiso.valueOf(rs.getString("permiso"));
+
+				PreparedStatement pstmtAlergias = connection.prepareStatement("SELECT * FROM usuario_alergias WHERE nombreUsuario = ?");
+				pstmtAlergias.setString(1, nombreUsuario);
+				ResultSet rsAlergias = pstmtAlergias.executeQuery();
+
+				List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
+				while (rsAlergias.next()) {
+					alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")-1]);
+				}
+
+				PreparedStatement pstmtEnfermedades = connection.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
+				pstmtEnfermedades.setString(1, nombreUsuario);
+				ResultSet rsEnfermedades = pstmtEnfermedades.executeQuery();
+
+				List<TipoEnfermedades> enfermedades = new ArrayList<TipoEnfermedades>();
+				while (rsEnfermedades.next()) {
+					enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")-1]);
+				}
+
+				PreparedStatement pstmtProximaComida = connection.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
+				pstmtProximaComida.setString(1, nombreUsuario);
+				ResultSet rsProximaComida = pstmtProximaComida.executeQuery();
+				Map<LocalDate, Dieta> proximaComida = new HashMap<LocalDate, Dieta>();
+				while (rsProximaComida.next()) {
+					LocalDate fecha = LocalDate.parse(rsProximaComida.getString("fecha"));
+					String nombreDieta = rsProximaComida.getString("nombreDieta");
+
+					PreparedStatement pstmtObtenerDieta = connection.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+					pstmtObtenerDieta.setString(1, nombreDieta);
+					ResultSet rsObtenerDieta = pstmtObtenerDieta.executeQuery();
+					while (rsObtenerDieta.next()) {
+						int tiempo = rsObtenerDieta.getInt("tiempo");
+						TipoDificultad dificultad = TipoDificultad.valueOf(rsObtenerDieta.getString("dificultad"));
+						int kcal = rsObtenerDieta.getInt("kcal");
+
+						PreparedStatement pstmtObtenerPasosDieta = connection.prepareStatement("SELECT * FROM pasos_dietas WHERE nombreDieta = ?");
+						pstmtObtenerPasosDieta.setString(1, nombreDieta);
+						ResultSet rsObtenerPasosDieta = pstmtObtenerPasosDieta.executeQuery();
+						List<String> pasos = new ArrayList<String>();
+						while (rsObtenerPasosDieta.next()) {
+							pasos.add(rsObtenerPasosDieta.getString("denominacion"));
+						}
+
+						PreparedStatement pstmtObtenerIngredientesDieta = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
+						pstmtObtenerIngredientesDieta.setString(1, nombreDieta);
+						ResultSet rsObtenerIngredientesDieta = pstmtObtenerIngredientesDieta.executeQuery();
+						List<String> ingredientes = new ArrayList<String>();
+						while (rsObtenerIngredientesDieta.next()) {
+							ingredientes.add(rsObtenerIngredientesDieta.getString("nombreIngrediente"));
+						}
+
+						PreparedStatement pstmtObtenerAlergiasDieta = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
+						pstmtObtenerAlergiasDieta.setString(1, nombreDieta);
+						ResultSet rsObtenerAlergiasDieta = pstmtObtenerAlergiasDieta.executeQuery();
+						List<TipoAlergias> alergiasDieta = new ArrayList<TipoAlergias>();
+						while (rsObtenerAlergiasDieta.next()) {
+							alergiasDieta.add(TipoAlergias.valueOf(rsObtenerAlergiasDieta.getString("alergia")));
+						}
+
+						Dieta dieta = new Dieta(nombreDieta, tiempo, dificultad, kcal, pasos, ingredientes,
+								alergiasDieta);
+						proximaComida.putIfAbsent(fecha, dieta);
+					}
+				}
+
+				// OBTENER REGISTRO ENTRENAMIENTOS del usuario
+				PreparedStatement pstmtRegEntrenamientos = connection.prepareStatement(
+						"SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
+				pstmtRegEntrenamientos.setString(1, nombreUsuario);
+				ResultSet rsUsuarioEntrenamientos = pstmtRegEntrenamientos.executeQuery();
+
+				List<Entrenamiento> listaEntrenamientos = new ArrayList<Entrenamiento>();
+				while (rsUsuarioEntrenamientos.next()) {
+					String nombreEntrenamiento = rsUsuarioEntrenamientos.getString("nombre");
+					TipoEntrenamiento tipoEntrenamiento = TipoEntrenamiento
+							.valueOf(rsUsuarioEntrenamientos.getString("tipoEntrenamiento"));
+					TipoDificultad dificultad = TipoDificultad
+							.valueOf(rsUsuarioEntrenamientos.getString("dificultad"));
+					int tiempo = rsUsuarioEntrenamientos.getInt("tiempo");
+					String descripcion = rsUsuarioEntrenamientos.getString("descripcion");
+					int calorias = rsUsuarioEntrenamientos.getInt("calorias");
+					int series = rsUsuarioEntrenamientos.getInt("series");
+					int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
+
+					Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento,
+							dificultad, tiempo, descripcion, calorias, series, repeticiones);
+					listaEntrenamientos.add(entrenamiento);
+
+					pstmtRegEntrenamientos.close();
+				}
+
+				Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
+						sexo, altura, peso, new ArrayList<TipoAlergias>(alergias), correoElectronico, new ArrayList<TipoEnfermedades>(enfermedades),
+						caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
+						caloriasConsumidas, new HashMap<LocalDate, Dieta>(proximaComida), vasosDeAgua, contrasena, foto, permiso,
+						new ArrayList<Entrenamiento>(listaEntrenamientos));
+				return usuario;
+				
+			}
+		} catch (SQLException e) {
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		
+		}
+		return null;
+	}
 }
 	

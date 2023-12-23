@@ -36,7 +36,6 @@ public class Usuario {
 	private ImageIcon foto;
 	private TipoPermiso permiso;
 	private List<Entrenamiento> registroEntrenamiento;
-	private List<Dieta> registroDietas;
 	
 	//Constructor con argumentos
 	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, LocalDate fechaNacimiento,
@@ -44,7 +43,7 @@ public class Usuario {
 			List<TipoEnfermedades> enfermedades, int caloriasGastadas,
 			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
 			int caloriasConsumidas, Map<LocalDate, Dieta> proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso,
-			List<Entrenamiento> registroEntrenamiento, List<Dieta> dietas) {
+			List<Entrenamiento> registroEntrenamiento) {
 		super();
 		this.nombre = nombre;
 		this.nombreUsuario = nombreUsuario;
@@ -79,10 +78,6 @@ public class Usuario {
 		for (Entrenamiento e : registroEntrenamiento) {
 			this.registroEntrenamiento.add(e);
 		}
-		this.registroDietas = new ArrayList<Dieta>();
-		for (Dieta d : registroDietas) {
-			this.registroDietas.add(d);
-		}
 
 	}
 	
@@ -95,8 +90,8 @@ public class Usuario {
 		this.apellido2 = "";
 		this.fechaNacimiento = LocalDate.now();
 		this.sexo = TipoSexo.OTRO;
-		this.altura = 0.0;
-		this.peso = 0;
+		this.altura = 0.5;
+		this.peso = 1;
 		this.alergias = new ArrayList<TipoAlergias>();
 		this.correoElectronico = "";
 		this.enfermedades = new ArrayList<TipoEnfermedades>();
@@ -113,7 +108,6 @@ public class Usuario {
 		this.foto = new ImageIcon("resources\\images\\foto.png");
 		this.permiso = TipoPermiso.USUARIO;
 		this.registroEntrenamiento = new ArrayList<Entrenamiento>();
-		this.registroDietas = new ArrayList<Dieta>();
 
 	}
 	
@@ -173,6 +167,7 @@ public class Usuario {
 	public void setAltura(double altura) {
 		if (altura > 0) {
 			this.altura = altura;
+			this.imc = peso / (altura * altura);
 		}
 		
 	}
@@ -184,6 +179,7 @@ public class Usuario {
 	public void setPeso(int peso) {
 		if (peso > 0) {
 			this.peso = peso;
+			this.imc = peso / (altura * altura);
 		}
 	
 	}
@@ -330,13 +326,7 @@ public class Usuario {
 		this.registroEntrenamiento = registroEntrenamiento;
 	}
 
-	public List<Dieta> getRegistroDietas() {
-		return registroDietas;
-	}
 
-	public void setRegistroDietas(List<Dieta> registroDietas) {
-		this.registroDietas = registroDietas;
-	}
 
 
 	//Metodo toString
@@ -351,7 +341,7 @@ public class Usuario {
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
 				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contrasena=" + contrasena
 				+ ", foto=" + foto + ", permiso=" + permiso + ", registroEntrenamiento=" + registroEntrenamiento
-				+ ", registroDietas=" + registroDietas + "]";
+				+ "]";
 	}
 
 	

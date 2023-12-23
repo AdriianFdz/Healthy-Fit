@@ -15,14 +15,22 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.logging.Level;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,6 +49,7 @@ import javax.swing.JTextField;
 import javax.swing.ListModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ChangeEvent;
@@ -52,6 +61,7 @@ import com.toedter.calendar.JCalendar;
 
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
+import domain.TipoSexo;
 import domain.Usuario;
 import io.DBManager;
 import io.RegistroLogger;
@@ -74,9 +84,6 @@ public class VentanaEditarPerfil extends JFrame {
 			private JPasswordField fieldContraseña2;
 			private JLabel labelrepetirContraseña;
 			
-			private JSpinner spinnerGenero;
-			private JLabel labelGenero;
-			
 			public JTextField fieldNombre;
 			public JLabel labelNombre; 
 			
@@ -86,7 +93,6 @@ public class VentanaEditarPerfil extends JFrame {
 			public JTextField fieldApellido2;
 			public JLabel labelApellido2;
 			
-			public JTextField fieldFechaNac;
 			public JLabel labelFechaNac;
 		
 		
@@ -131,7 +137,7 @@ public class VentanaEditarPerfil extends JFrame {
 
 		private Container panelDerecha2;
 		
-	public VentanaEditarPerfil(Usuario u, VentanaPerfil vPerfil) {
+	public VentanaEditarPerfil(Usuario u, Usuario usuarioModificar, VentanaPerfil vPerfil, VentanaPanel vPanel) {
 		
 		JPanel panelAbajo = new JPanel(new BorderLayout());
 		add(panelAbajo, BorderLayout.SOUTH);
@@ -147,40 +153,40 @@ public class VentanaEditarPerfil extends JFrame {
 		panelDerecha2 = new JPanel(new BorderLayout());
 		
 		//Para imagen
-		Image foto = u.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+		Image foto = usuarioModificar.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
 		//fotoUsuario.setPreferredSize(new Dimension(300, 200));
 		fotoUsuario.setToolTipText("Haz click para elegir otra foto");
-		anadirBordeLabel("Fotografia", fotoUsuario);
+		anadirBordeLabel("Fotografía", fotoUsuario);
 		panelColumna1.add(fotoUsuario);
 		
 		//Elementos del panel
-		fieldNombreUsuario = new JTextField(u.getNombreUsuario());
+		fieldNombreUsuario = new JTextField(usuarioModificar.getNombreUsuario());
 		labelNombreUsuario = new JLabel("Nombre Usuario:");
 		
-		fieldCorreo = new JTextField(u.getCorreoElectronico());
+		fieldCorreo = new JTextField(usuarioModificar.getCorreoElectronico());
 		labelCorreo = new JLabel("Correo");
 		
-		fieldContraseña = new JPasswordField(u.getContrasena());
+		fieldContraseña = new JPasswordField(usuarioModificar.getContrasena());
 		labelContraseña = new JLabel("Contraseña:");
 		
-		fieldContraseña2 = new JPasswordField(u.getContrasena());
+		fieldContraseña2 = new JPasswordField(usuarioModificar.getContrasena());
 		labelrepetirContraseña = new JLabel("Repetir Contraseña");
 		
-		fieldNombre = new JTextField(u.getNombre());
+		fieldNombre = new JTextField(usuarioModificar.getNombre());
 		labelNombre = new JLabel("Nombre:");
 		
-		fieldApellido1 = new JTextField(u.getApellido1());
+		fieldApellido1 = new JTextField(usuarioModificar.getApellido1());
 		labelApellido1 = new JLabel("Primer Apellido:");
 		
-		fieldApellido2 = new JTextField(u.getApellido2());
+		fieldApellido2 = new JTextField(usuarioModificar.getApellido2());
 		labelApellido2 = new JLabel("Segundo Apellido:");
 		
-		fieldFechaNac = new JTextField(u.getFechaNacimiento().toString());
 		labelFechaNac = new JLabel(" Fecha nacimiento:");
 		
 		
 		meterFechaNac = new JCalendar();
+		meterFechaNac.setDate(Date.from(usuarioModificar.getFechaNacimiento().atStartOfDay(ZoneId.of("Europe/Madrid")).toInstant()));
 		
 		genero = new JLabel("Genero");
 		generoB = new JPanel();
@@ -197,29 +203,29 @@ public class VentanaEditarPerfil extends JFrame {
 		generoB.add(H);
 		generoB.add(O);
 		
+		switch (usuarioModificar.getSexo()) {
+		case HOMBRE:
+			meterGenero.setSelected(H.getModel(), true);
+			break;
+		case MUJER:
+			meterGenero.setSelected(M.getModel(), true);
+			break;
+		default:
+			meterGenero.setSelected(O.getModel(), true);
+			break;
+		}
 		
 		
 		labelAltura = new JLabel("Altura (m)");
 		JSpinner meterAltura = new JSpinner();
 		meterAltura.setAlignmentX(SwingConstants.CENTER);
-        SpinnerNumberModel model1 = new SpinnerNumberModel(0.500, 0.000, 3.000, 0.1);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(usuarioModificar.getAltura(), 0.5, 3.0, 0.05);
         meterAltura.setModel(model1);
-		
-        model1.addChangeListener(new ChangeListener() {
-			
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if ((double) model1.getValue() < 0.500) {
-					model1.setValue(0.500);
-				}
-				
-			}
-		});
         
 		labelPeso = new JLabel("Peso (kg)");
 		JSpinner meterPeso = new JSpinner();
 		meterPeso.setAlignmentX(SwingConstants.CENTER);
-        SpinnerNumberModel model2 = new SpinnerNumberModel(1, 1, 300, 1);
+        SpinnerNumberModel model2 = new SpinnerNumberModel(usuarioModificar.getPeso(), 1, 300, 1);
         meterPeso.setModel(model2);
 		
 		labelAleg = new JLabel("Alergias");
@@ -231,8 +237,8 @@ public class VentanaEditarPerfil extends JFrame {
 		JList<TipoEnfermedades> listaEnfermedades = new JList<>();
 		DefaultListModel<TipoEnfermedades> modeloEnfermedades = new DefaultListModel<>();
 		listaEnfermedades.setModel(modeloEnfermedades);
-		if (!u.getEnfermedades().isEmpty()) {
-			for (TipoEnfermedades enfermedad : u.getEnfermedades()) {
+		if (!usuarioModificar.getEnfermedades().isEmpty()) {
+			for (TipoEnfermedades enfermedad : usuarioModificar.getEnfermedades()) {
 				modeloEnfermedades.addElement(enfermedad);
 			}
 			
@@ -308,8 +314,8 @@ public class VentanaEditarPerfil extends JFrame {
 		panelAlergiaBotones.add(eliminarAlergia);
 		panelAlergia.add(panelAlergiaBotones, BorderLayout.SOUTH);
 		
-		if (!u.getAlergias().isEmpty()) {
-			for (TipoAlergias alergia : u.getAlergias()) {
+		if (!usuarioModificar.getAlergias().isEmpty()) {
+			for (TipoAlergias alergia : usuarioModificar.getAlergias()) {
 				modeloAlergia.addElement(alergia);
 			}
 		}else {
@@ -355,12 +361,12 @@ public class VentanaEditarPerfil extends JFrame {
 		});
 		
 		// Botones
-		JButton cancelaBot = new JButton("CANCELAR");
+		JButton cancelarBot = new JButton("CANCELAR");
 		JButton aceptarBot = new JButton("ACEPTAR");
 		
 		JPanel panelBotonesCanAcep = new JPanel();
 			panelBotonesCanAcep.setLayout(new BoxLayout(panelBotonesCanAcep, BoxLayout.X_AXIS));		
-			panelBotonesCanAcep.add(cancelaBot);
+			panelBotonesCanAcep.add(cancelarBot);
 			panelBotonesCanAcep.add(aceptarBot);
 			
 		JPanel panelCalendario = new JPanel();
@@ -416,33 +422,165 @@ public class VentanaEditarPerfil extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//cambiar datos
-				
-				if (imagenResized != null) {					
-					u.setFoto(imagenResized);
-					vPerfil.cambiarFoto(u.getFoto());
+				if (!fieldContraseña.getText().equals(fieldContraseña2.getText())) {
+					JOptionPane.showConfirmDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.PLAIN_MESSAGE);
+				} else if (fieldNombreUsuario.getText().equals("")
+						&& fieldNombre.getText().equals("")
+						&& fieldApellido1.getText().equals("")
+						&& fieldApellido2.getText().equals("")
+						&& fieldContraseña.getText().equals("")
+						&& fieldCorreo.getText().equals("")){
+					
+					JOptionPane.showConfirmDialog(null, "Hay campos sin rellenar", "Error", JOptionPane.PLAIN_MESSAGE);
+					
+				} else {
+					//cambiar datos
+					String nombreAntiguo = usuarioModificar.getNombreUsuario();
+					
 					Connection conn = DBManager.obtenerConexion();
-					DBManager.actualizarFoto(conn, u, imagenResized);
+					if (imagenResized != null) {					
+						usuarioModificar.setFoto(imagenResized);
+						if (vPerfil != null) {
+							vPerfil.cambiarFoto(usuarioModificar.getFoto());							
+						}
+						DBManager.actualizarFoto(conn, usuarioModificar, imagenResized);
+					}	
 					try {
+						
+						usuarioModificar.setNombreUsuario(fieldNombreUsuario.getText());
+						if (DBManager.existeUsuario(conn, usuarioModificar)) {
+							usuarioModificar.setNombreUsuario(nombreAntiguo);
+						}						
+						
+						usuarioModificar.setContrasena(fieldContraseña.getText());
+						usuarioModificar.setCorreoElectronico(fieldCorreo.getText());
+						usuarioModificar.setNombre(fieldNombre.getText());
+						usuarioModificar.setApellido1(fieldApellido1.getText());
+						usuarioModificar.setApellido2(fieldApellido2.getText());
+						usuarioModificar.setAltura((double) meterAltura.getValue());
+						usuarioModificar.setPeso((int) meterPeso.getValue());
+						usuarioModificar.setFechaNacimiento(meterFechaNac.getDate().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate());
+						
+						Enumeration<AbstractButton> generos = meterGenero.getElements();
+						while (generos.hasMoreElements()) {
+							AbstractButton boton = generos.nextElement();
+							if (boton.isSelected()) {
+								usuarioModificar.setSexo(TipoSexo.valueOf(boton.getText().toUpperCase()));
+							}
+						}
+						
+						List<TipoEnfermedades> listaEnfermedades = new ArrayList<TipoEnfermedades>();
+						for (int i = 0; i < modeloEnfermedades.getSize(); i++) {
+							listaEnfermedades.add(modeloEnfermedades.get(i));
+						}
+						usuarioModificar.setEnfermedades(new ArrayList<TipoEnfermedades>(listaEnfermedades));
+						
+						List<TipoAlergias> listaAlergias = new ArrayList<TipoAlergias>();
+						for (int i = 0; i < modeloAlergia.getSize(); i++) {
+							listaAlergias.add(modeloAlergia.get(i));
+						}
+						usuarioModificar.setAlergias(new ArrayList<TipoAlergias>(listaAlergias));
+						
+						
+						// El usuario que estamos modificando es uno nuevo
+						if (nombreAntiguo.equals("")) {
+							DBManager.anadirUsuario(conn, usuarioModificar);
+						} else {
+							//USUARIOS
+							PreparedStatement pstmt = conn.prepareStatement("UPDATE usuarios SET nombreUsuario = ?, nombre = ?, apellido1 = ?, apellido2 = ?, fechaNacimiento = ?, sexo = ?, altura = ?, peso = ?, correoElectronico = ?, imc = ?, contrasena = ? WHERE nombreUsuario = ?");
+							pstmt.setString(1, usuarioModificar.getNombreUsuario());
+							pstmt.setString(2, usuarioModificar.getNombre());
+							pstmt.setString(3, usuarioModificar.getApellido1());
+							pstmt.setString(4, usuarioModificar.getApellido2());
+							pstmt.setString(5, usuarioModificar.getFechaNacimiento().toString());
+							pstmt.setString(6, usuarioModificar.getSexo().name());
+							pstmt.setDouble(7, usuarioModificar.getAltura());
+							pstmt.setInt(8, usuarioModificar.getPeso());
+							pstmt.setString(9, usuarioModificar.getCorreoElectronico());
+							pstmt.setDouble(10, usuarioModificar.getImc());
+							pstmt.setString(11, usuarioModificar.getContrasena());
+							pstmt.setString(12, nombreAntiguo);
+							pstmt.executeUpdate();
+							pstmt.close();
+							
+							//DIETA
+							PreparedStatement stmtUsuarioDieta = conn.prepareStatement("UPDATE usuario_dieta set nombreUsuario = ? WHERE nombreUsuario = ?");
+							stmtUsuarioDieta.setString(1, usuarioModificar.getNombreUsuario());
+							stmtUsuarioDieta.setString(2, nombreAntiguo);
+							stmtUsuarioDieta.executeUpdate();
+							stmtUsuarioDieta.close();
+							
+							//ALERGIAS
+							PreparedStatement stmtUsuarioAlergias = conn.prepareStatement("DELETE FROM usuario_alergias WHERE nombreUsuario = ?");
+							stmtUsuarioAlergias.setString(1, nombreAntiguo);
+							stmtUsuarioAlergias.executeUpdate();
+							stmtUsuarioAlergias.close();
+							
+							PreparedStatement stmtAnadirAlergias = conn.prepareStatement("INSERT INTO Usuario_alergias values (?, (SELECT id FROM alergias WHERE nombreAlergia = ?))");
+							for (TipoAlergias alergia : usuarioModificar.getAlergias()) {
+								stmtAnadirAlergias.setString(1, usuarioModificar.getNombreUsuario());
+								stmtAnadirAlergias.setString(2, alergia.name());
+								stmtAnadirAlergias.executeUpdate();
+							}
+							stmtAnadirAlergias.close();
+							
+							//ENFERMEDADES
+							PreparedStatement stmtUsuarioEnfermedades = conn.prepareStatement("DELETE FROM usuario_enfermedades WHERE nombreUsuario = ?");
+							stmtUsuarioEnfermedades.setString(1, nombreAntiguo);
+							stmtUsuarioEnfermedades.executeUpdate();
+							stmtUsuarioEnfermedades.close();
+							
+							PreparedStatement stmtAnadirEnfermedades = conn.prepareStatement("INSERT INTO Usuario_enfermedades values (?, (SELECT id FROM enfermedades WHERE nombreEnfermedad = ?))");
+							for (TipoEnfermedades enfermedad : usuarioModificar.getEnfermedades()) {
+								stmtAnadirEnfermedades.setString(1, usuarioModificar.getNombreUsuario());
+								stmtAnadirEnfermedades.setString(2, enfermedad.name());
+								stmtAnadirEnfermedades.executeUpdate();
+							}
+							stmtAnadirEnfermedades.close();
+							
+							//ENTRENAMIENTOS
+							
+							PreparedStatement stmtUsuarioEntrenamientos = conn.prepareStatement("UPDATE usuario_entrenamientos set nombreUsuario = ? WHERE nombreUsuario = ?");
+							stmtUsuarioEntrenamientos.setString(1, usuarioModificar.getNombreUsuario());
+							stmtUsuarioEntrenamientos.setString(2, nombreAntiguo);
+							stmtUsuarioEntrenamientos.executeUpdate();
+							stmtUsuarioEntrenamientos.close();
+						}
 						conn.close();
+
+						
+						if (vPerfil != null) {
+							SwingUtilities.invokeLater(() -> new VentanaPerfil(usuarioModificar));
+						} else {
+							SwingUtilities.invokeLater(() -> new VentanaPanel(u));
+						}
+						dispose();
+						
 					} catch (SQLException e1) {
+						e1.printStackTrace();
 						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al conectar con la base de datos");
 						JOptionPane.showConfirmDialog(null, "ERROR al conectar con la BD", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}
+
 				
 			}
 		});
 		
-		cancelaBot.addActionListener(new ActionListener() {
+		cancelarBot.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres salir sin guardar?",
-						"", JOptionPane.YES_NO_OPTION);
+						"Aviso", JOptionPane.YES_NO_OPTION);
 				if(respuesta == JOptionPane.YES_OPTION) {
-				dispose();
+					dispose();
+					if (vPerfil != null) {
+						SwingUtilities.invokeLater(() -> new VentanaPerfil(usuarioModificar));
+					} else {
+						SwingUtilities.invokeLater(() -> new VentanaPanel(u));
+					}
 				}
 			}
 		});
@@ -483,11 +621,9 @@ public class VentanaEditarPerfil extends JFrame {
 		LineBorder borde = new LineBorder(Color.BLACK, 5); //Crea un estilo de borde continuo, anchura 5
 		TitledBorder bordeConTitulo = new TitledBorder(borde, titulo); //Añade el estilo de borde con un titulo
 		
-		bordeConTitulo.setTitleJustification(TitledBorder.ABOVE_TOP);
+		bordeConTitulo.setTitleJustification(TitledBorder.CENTER);
 		bordeConTitulo.setTitleFont(new Font("Calibri", Font.BOLD, 30));
 		label.setBorder(bordeConTitulo);
 	}
-//	public TipoEnfermedades obtenerNuevoPaso() {
-//        return JOptionPane.showInputDialog(this, "Ingrese el nuevo paso:", "Nuevo Paso", JOptionPane.PLAIN_MESSAGE);
-//    }
+
 }

@@ -12,7 +12,9 @@ import java.awt.event.MouseMotionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -276,23 +278,20 @@ public class VentanaPanel extends JFrame {
 		modificarU.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+			public void actionPerformed(ActionEvent e) {				
 				int usuarioSeleccionado = tablaU.getSelectedRow();
-				Usuario[] U = { null };
 				if (usuarioSeleccionado >= 0) {
+					Connection conn = DBManager.obtenerConexion();
 					String nombreU = (String) modeloU.getValueAt(usuarioSeleccionado, 0);
-
-					for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-						if (usuario.getNombreUsuario().equals(nombreU)) {
-							U[0] = usuario;
-							break;
-						}
+					Usuario usuarioAModificar = DBManager.obtenerUsuarios(conn, nombreU);
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
-					if (U != null) {
-						SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(p,U[0]));
-						dispose();
-					}
+					dispose();
+					SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, usuarioAModificar, null, VentanaPanel.this));
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
 				}
@@ -353,7 +352,8 @@ public class VentanaPanel extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Usuario nuevoUsuario = new Usuario();
-				SwingUtilities.invokeLater(() -> new VentanaEditarUsuario(p, new Usuario()));
+				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, nuevoUsuario, null, VentanaPanel.this));
+				dispose();
 			}
 		});
 
@@ -363,7 +363,7 @@ public class VentanaPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Dieta nuevaDieta = new Dieta();
 				SwingUtilities.invokeLater(() -> new VentanaEditarDieta(nuevaDieta,p));
-				
+				dispose();
 				
 				vaciarDietas();
 				rellenarDietas();
@@ -625,10 +625,19 @@ public class VentanaPanel extends JFrame {
 
 	// RELLENAR USUARIOS, DIETAS Y ENTRENAMIENTOS DE LA BD
 	public void rellenarUsuarios() {
-		for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
+		Connection conn = DBManager.obtenerConexion();
+		List<Usuario> usuarios = DBManager.obtenerUsuarios(conn);
+		
+		for (Usuario usuario : usuarios) {
 			Object[] filaU = { usuario.getNombreUsuario(), usuario.getNombre(), usuario.getApellido1(),
 					usuario.getApellido2(), usuario.getCorreoElectronico(), usuario.getPermiso() };
 			modeloU.addRow(filaU);
+		}
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
