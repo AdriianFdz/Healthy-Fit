@@ -228,7 +228,7 @@ public class VentanaEditarPerfil extends JFrame {
  
         labelRango = new JLabel("Rango");
         comboRango = new JComboBox<TipoPermiso>(TipoPermiso.values());
-        
+        comboRango.setSelectedItem(usuarioModificar.getPermiso());
        
         
         panelColumna1.add(labelRango);
@@ -471,6 +471,7 @@ public class VentanaEditarPerfil extends JFrame {
 							usuarioModificar.setAltura((double) meterAltura.getValue());
 							usuarioModificar.setPeso((int) meterPeso.getValue());
 							usuarioModificar.setFechaNacimiento(meterFechaNac.getDate().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate());
+							usuarioModificar.setPermiso((TipoPermiso) comboRango.getSelectedItem());
 							
 							Enumeration<AbstractButton> generos = meterGenero.getElements();
 							while (generos.hasMoreElements()) {
@@ -498,7 +499,7 @@ public class VentanaEditarPerfil extends JFrame {
 								DBManager.anadirUsuario(conn, usuarioModificar);
 							} else {
 								//USUARIOS
-								PreparedStatement pstmt = conn.prepareStatement("UPDATE usuarios SET nombreUsuario = ?, nombre = ?, apellido1 = ?, apellido2 = ?, fechaNacimiento = ?, sexo = ?, altura = ?, peso = ?, correoElectronico = ?, imc = ?, contrasena = ? WHERE nombreUsuario = ?");
+								PreparedStatement pstmt = conn.prepareStatement("UPDATE usuarios SET nombreUsuario = ?, nombre = ?, apellido1 = ?, apellido2 = ?, fechaNacimiento = ?, sexo = ?, altura = ?, peso = ?, correoElectronico = ?, imc = ?, contrasena = ?, permiso = ? WHERE nombreUsuario = ?");
 								pstmt.setString(1, usuarioModificar.getNombreUsuario());
 								pstmt.setString(2, usuarioModificar.getNombre());
 								pstmt.setString(3, usuarioModificar.getApellido1());
@@ -510,7 +511,8 @@ public class VentanaEditarPerfil extends JFrame {
 								pstmt.setString(9, usuarioModificar.getCorreoElectronico());
 								pstmt.setDouble(10, usuarioModificar.getImc());
 								pstmt.setString(11, usuarioModificar.getContrasena());
-								pstmt.setString(12, nombreAntiguo);
+								pstmt.setString(12, usuarioModificar.getPermiso().toString());
+								pstmt.setString(13, nombreAntiguo);
 								pstmt.executeUpdate();
 								pstmt.close();
 								
