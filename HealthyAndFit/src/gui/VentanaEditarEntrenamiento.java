@@ -25,6 +25,7 @@ import javax.swing.table.DefaultTableModel;
 
 import domain.Entrenamiento;
 import domain.TipoDificultad;
+import domain.TipoEntrenamiento;
 import domain.Usuario;
 
 
@@ -42,13 +43,17 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		public JSpinner spinnerTiempo;
 		public JLabel labelDificultad;
 		public JComboBox<TipoDificultad> comboDif;
+		private JLabel labelTipoEntrenamiento;
+		private JComboBox<TipoEntrenamiento> comboEntrenamiento;
+		private JLabel labelSeries;
+		private JSpinner spinnerSeries;
+		private JLabel labelRepeticiones;
+		private JSpinner spinnerRepeticiones;
 		public JLabel labelKcal;
 		public JSpinner spinnerKcal;
 		
 	public JPanel panelDerecha;
 		public JLabel labelDesc;
-		public DefaultTableModel descTableModel;
-		public JTable tableDesc;
 		public JScrollPane paneDesc;
 		
 	
@@ -57,7 +62,8 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		JPanel datos = new JPanel(new GridLayout(1, 2));
 
 		// Panel Izquierdo
-		panelIzquierdo = new JPanel(new GridLayout(8, 1));
+		panelIzquierdo = new JPanel();
+		panelIzquierdo.setLayout(new BoxLayout(panelIzquierdo, BoxLayout.Y_AXIS));
 
 		// Componentes para el panel izquierdo
 		labelNombre = new JLabel("NOMBRE");
@@ -66,13 +72,21 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		labelDificultad = new JLabel("DIFICULTAD");
 		comboDif = new JComboBox<>(TipoDificultad.values());
 		labelKcal = new JLabel("KCAL");
-
+		labelTipoEntrenamiento = new JLabel("TIPO DE ENTRENAMIENTO");
+		comboEntrenamiento = new JComboBox<>(TipoEntrenamiento.values());
+		labelSeries = new JLabel("SERIES");
+		labelRepeticiones = new JLabel("REPETICIONES");
+		
 		// Inicializamos con datos
 		fieldNombre.setText(ent.getNombre());
 		spinnerTiempo = new JSpinner(new SpinnerNumberModel(ent.getTiempo(), 0, 999, 1));
 		comboDif.setSelectedItem(ent.getDificultad());
 		spinnerKcal = new JSpinner(new SpinnerNumberModel(ent.getCalorias(), 0, 9999, 1));
-
+		comboEntrenamiento.setSelectedItem(ent.getTipoEntrenamiento());
+		
+		spinnerSeries = new JSpinner(new SpinnerNumberModel(ent.getSeries(), 0, 999, 1));
+		spinnerRepeticiones = new JSpinner(new SpinnerNumberModel(ent.getSeries(), 0, 999, 1));
+		
 		//Añadimos los elemetos al panel Izquierdo
 		panelIzquierdo.add(labelNombre);
 		panelIzquierdo.add(fieldNombre);
@@ -82,6 +96,12 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		panelIzquierdo.add(comboDif);
 		panelIzquierdo.add(labelKcal);
 		panelIzquierdo.add(spinnerKcal);
+		panelIzquierdo.add(labelTipoEntrenamiento);
+		panelIzquierdo.add(comboEntrenamiento);
+		panelIzquierdo.add(labelSeries);
+		panelIzquierdo.add(spinnerSeries);
+		panelIzquierdo.add(labelRepeticiones);
+		panelIzquierdo.add(spinnerRepeticiones);
 		
 		//Creamos la parte derecha para el scroll panel
 		panelDerecha = new JPanel();
@@ -108,8 +128,8 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Botones
-		JButton botonCancelar = new JButton("Cancelar");
-		JButton botonConfirmar = new JButton("Confirmar");
+		JButton botonCancelar = new JButton("CANCELAR");
+		JButton botonConfirmar = new JButton("CONFIRMAR");
 
 		// Listeners
 		botonCancelar.addActionListener(new ActionListener() {
@@ -137,8 +157,6 @@ public class VentanaEditarEntrenamiento extends JFrame{
 				ent.setDificultad(nuevaDif);
 				ent.setCalorias(nuevoKCAL);
 				
-				// Obtener el número de filas en la tabla
-		        int rowCount = descTableModel.getRowCount();
 				
 				// Mostrar un mensaje de éxito
 		        JOptionPane.showMessageDialog(null, "Cambios guardados correctamente");

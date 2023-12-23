@@ -125,11 +125,11 @@ public class VentanaEditarUsuario extends JFrame {
 		JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Botones
-        JButton botonCancelar = new JButton("Cancelar");
-        JButton botonConfirmar = new JButton("Confirmar");	
+        JButton botonCancelar = new JButton("CANCELAR");
+        JButton botonConfirmar = new JButton("CONFIRMAR");	
 		
-        panelBotones.add(botonConfirmar);
         panelBotones.add(botonCancelar);
+        panelBotones.add(botonConfirmar);
         
         //Listeners
         botonCancelar.addActionListener(new ActionListener() {
