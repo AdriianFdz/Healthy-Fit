@@ -11,6 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -111,7 +114,7 @@ public class VentanaLogeoRegistro extends JFrame {
 	public JButton registrarse;
 
 	public VentanaLogeoRegistro() {
-
+		
 		paneles = new JTabbedPane(); // El panel para seleccionar la ventana de logeo o registro
 
 		logeo = new JPanel();
@@ -192,7 +195,7 @@ public class VentanaLogeoRegistro extends JFrame {
 		altura = new JLabel("Altura (m)");
 		JSpinner meterAltura = new JSpinner();
 		meterAltura.setAlignmentX(SwingConstants.CENTER);
-        SpinnerNumberModel model1 = new SpinnerNumberModel(0.500, 0.000, 3.000, 0.1);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(0.500, 0.000, 3.000, 0.01);
         meterAltura.setModel(model1);
 		
         model1.addChangeListener(new ChangeListener() {
@@ -388,6 +391,80 @@ public class VentanaLogeoRegistro extends JFrame {
 			}
 		});
 	
+		
+		
+		meterContraseñaLogeo.addKeyListener(new KeyAdapter() {
+			
+			
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					iniciarSesion.doClick();
+				}
+				
+			}
+		
+	
+		});
+		
+		meterNombreLogeo.addKeyListener(new KeyAdapter() {
+			
+			
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					meterContraseñaLogeo.requestFocus();
+				}
+				
+			}
+		
+	
+		});
+		
+		meterNombreLogeo.addKeyListener(new KeyAdapter() {
+			
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+		
+				if (e.getKeyCode() == KeyEvent.VK_DOWN)
+					meterContraseñaLogeo.requestFocus();
+				
+				if (e.getKeyCode() == KeyEvent.VK_UP)
+					meterContraseñaLogeo.requestFocus();
+			
+			
+				
+		
+			}
+		});
+		
+		meterContraseñaLogeo.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DOWN)
+					meterNombreLogeo.requestFocus();
+				
+				if (e.getKeyCode() == KeyEvent.VK_UP)
+					meterNombreLogeo.requestFocus();
+				
+			}
+		});
 		
 		paneles.add(logeo, "Logeo");
 		paneles.add(registro, "Registro");

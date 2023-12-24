@@ -216,7 +216,7 @@ public class VentanaEditarPerfil extends JFrame {
 		labelAltura = new JLabel("Altura (m)");
 		JSpinner meterAltura = new JSpinner();
 		meterAltura.setAlignmentX(SwingConstants.CENTER);
-        SpinnerNumberModel model1 = new SpinnerNumberModel(usuarioModificar.getAltura(), 0.5, 3.0, 0.05);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(usuarioModificar.getAltura(), 0.50, 3.00, 0.01);
         meterAltura.setModel(model1);
         
 		labelPeso = new JLabel("Peso (kg)");

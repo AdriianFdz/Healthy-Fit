@@ -345,7 +345,7 @@ public class VentanaHistorial extends JFrame {
 	}
 	
 	public static JTextArea recursividad(JTextArea area) {
-		if (area.getText().length() > 150) {
+		if (area.getText().length() > 85) {
 			return area;
 		}
 		
