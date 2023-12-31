@@ -31,7 +31,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import db.BaseDeDatos;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;

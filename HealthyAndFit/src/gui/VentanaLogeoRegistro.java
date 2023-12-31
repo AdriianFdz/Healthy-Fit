@@ -2,21 +2,14 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,7 +26,6 @@ import java.util.logging.Level;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.table.DefaultTableModel;
 
 
 import com.toedter.calendar.JCalendar;
@@ -260,7 +252,6 @@ public class VentanaLogeoRegistro extends JFrame {
 		panelCalendario.setAlignmentX(SwingConstants.CENTER);
 		panelCalendario.add(meterFechaNac);
 		meterDatos.add(panelCalendario);
-		//meterDatos.add(meterFechaNac);
 
 		registroScroll = new JScrollPane(meterDatos);
 		registro.add(registroScroll, BorderLayout.CENTER);
@@ -441,19 +432,7 @@ public class VentanaLogeoRegistro extends JFrame {
 			}
 		});
 		
-		meterContraseñaLogeo.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
+		meterContraseñaLogeo.addKeyListener(new KeyAdapter() {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -477,18 +456,6 @@ public class VentanaLogeoRegistro extends JFrame {
 		this.setTitle("Healthy & Fit");
 		this.setLocationRelativeTo(null);
 	}
-
-//	  public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
-//		  
-//		  for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-//			if (usuarioSinComprobar.getNombreUsuario().equals(usuario.getNombreUsuario()) && usuarioSinComprobar.getContrasena().equals(usuario.getContrasena())) {
-//				  RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
-//				return usuario;
-//			}
-//		  }
-//		  RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
-//	      return null;
-//	   }
 
 	public static Usuario usuarioContraseñaCorrectos(Usuario usuarioSinComprobar) {
 
@@ -636,11 +603,6 @@ public class VentanaLogeoRegistro extends JFrame {
 					return usuario;
 				}
 
-				// Usuario usuarioCorrecto = new Usuario(nombre, nombreUsuario, apellido1,
-				// apellido2, fechaNacimiento, sexo, altura, peso, null, correoElectronico,
-				// null, null, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado,
-				// ultimaVezEntreno, caloriasConsumidas, null, vasosDeAgua, contrasena, foto,
-				// null, null, null, null, null)
 			}
 
 			RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");

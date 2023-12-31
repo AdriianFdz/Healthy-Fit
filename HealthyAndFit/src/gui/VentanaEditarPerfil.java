@@ -58,10 +58,7 @@ import io.DBManager;
 import io.RegistroLogger;
 
 public class VentanaEditarPerfil extends JFrame {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	public JPanel panelColumna1;
@@ -456,113 +453,109 @@ public class VentanaEditarPerfil extends JFrame {
 							usuarioModificar.setNombreUsuario(nombreAntiguo);
 							JOptionPane.showConfirmDialog(null, "El usuario ya existe", "Error", JOptionPane.PLAIN_MESSAGE);
 						} else {
-							if (nombreAntiguo == "") {
+							if (imagenResized != null) {					
+								usuarioModificar.setFoto(imagenResized);
+								if (vPerfil != null) {
+									vPerfil.cambiarFoto(usuarioModificar.getFoto());							
+								}
+								DBManager.actualizarFoto(conn, usuarioModificar, imagenResized);
+							}	
+							usuarioModificar.setContrasena(fieldContraseña.getText());
+							usuarioModificar.setCorreoElectronico(fieldCorreo.getText());
+							usuarioModificar.setNombre(fieldNombre.getText());
+							usuarioModificar.setApellido1(fieldApellido1.getText());
+							usuarioModificar.setApellido2(fieldApellido2.getText());
+							usuarioModificar.setAltura((double) meterAltura.getValue());
+							usuarioModificar.setPeso((int) meterPeso.getValue());
+							usuarioModificar.setFechaNacimiento(meterFechaNac.getDate().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate());
+							usuarioModificar.setPermiso((TipoPermiso) comboRango.getSelectedItem());
+							
+							Enumeration<AbstractButton> generos = meterGenero.getElements();
+							while (generos.hasMoreElements()) {
+								AbstractButton boton = generos.nextElement();
+								if (boton.isSelected()) {
+									usuarioModificar.setSexo(TipoSexo.valueOf(boton.getText().toUpperCase()));
+								}
+							}
+							
+							List<TipoEnfermedades> listaEnfermedades = new ArrayList<TipoEnfermedades>();
+							for (int i = 0; i < modeloEnfermedades.getSize(); i++) {
+								listaEnfermedades.add(modeloEnfermedades.get(i));
+							}
+							usuarioModificar.setEnfermedades(new ArrayList<TipoEnfermedades>(listaEnfermedades));
+							
+							List<TipoAlergias> listaAlergias = new ArrayList<TipoAlergias>();
+							for (int i = 0; i < modeloAlergia.getSize(); i++) {
+								listaAlergias.add(modeloAlergia.get(i));
+							}
+							usuarioModificar.setAlergias(new ArrayList<TipoAlergias>(listaAlergias));
+							
+							
+							// El usuario que estamos modificando es uno nuevo
+							if (nombreAntiguo.equals("")) {
 								DBManager.anadirUsuario(conn, usuarioModificar);
 							} else {
+								//USUARIOS
+								PreparedStatement pstmt = conn.prepareStatement("UPDATE usuarios SET nombreUsuario = ?, nombre = ?, apellido1 = ?, apellido2 = ?, fechaNacimiento = ?, sexo = ?, altura = ?, peso = ?, correoElectronico = ?, imc = ?, contrasena = ?, permiso = ? WHERE nombreUsuario = ?");
+								pstmt.setString(1, usuarioModificar.getNombreUsuario());
+								pstmt.setString(2, usuarioModificar.getNombre());
+								pstmt.setString(3, usuarioModificar.getApellido1());
+								pstmt.setString(4, usuarioModificar.getApellido2());
+								pstmt.setString(5, usuarioModificar.getFechaNacimiento().toString());
+								pstmt.setString(6, usuarioModificar.getSexo().name());
+								pstmt.setDouble(7, usuarioModificar.getAltura());
+								pstmt.setInt(8, usuarioModificar.getPeso());
+								pstmt.setString(9, usuarioModificar.getCorreoElectronico());
+								pstmt.setDouble(10, usuarioModificar.getImc());
+								pstmt.setString(11, usuarioModificar.getContrasena());
+								pstmt.setString(12, usuarioModificar.getPermiso().toString());
+								pstmt.setString(13, nombreAntiguo);
+								pstmt.executeUpdate();
+								pstmt.close();
 								
-								if (imagenResized != null) {					
-									usuarioModificar.setFoto(imagenResized);
-									if (vPerfil != null) {
-										vPerfil.cambiarFoto(usuarioModificar.getFoto());							
-									}
-									DBManager.actualizarFoto(conn, usuarioModificar, imagenResized);
-								}	
-								usuarioModificar.setContrasena(fieldContraseña.getText());
-								usuarioModificar.setCorreoElectronico(fieldCorreo.getText());
-								usuarioModificar.setNombre(fieldNombre.getText());
-								usuarioModificar.setApellido1(fieldApellido1.getText());
-								usuarioModificar.setApellido2(fieldApellido2.getText());
-								usuarioModificar.setAltura((double) meterAltura.getValue());
-								usuarioModificar.setPeso((int) meterPeso.getValue());
-								usuarioModificar.setFechaNacimiento(meterFechaNac.getDate().toInstant().atZone(ZoneId.of("Europe/Madrid")).toLocalDate());
-								usuarioModificar.setPermiso((TipoPermiso) comboRango.getSelectedItem());
+								//DIETA
+								PreparedStatement stmtUsuarioDieta = conn.prepareStatement("UPDATE usuario_dieta set nombreUsuario = ? WHERE nombreUsuario = ?");
+								stmtUsuarioDieta.setString(1, usuarioModificar.getNombreUsuario());
+								stmtUsuarioDieta.setString(2, nombreAntiguo);
+								stmtUsuarioDieta.executeUpdate();
+								stmtUsuarioDieta.close();
 								
-								Enumeration<AbstractButton> generos = meterGenero.getElements();
-								while (generos.hasMoreElements()) {
-									AbstractButton boton = generos.nextElement();
-									if (boton.isSelected()) {
-										usuarioModificar.setSexo(TipoSexo.valueOf(boton.getText().toUpperCase()));
-									}
+								//ALERGIAS
+								PreparedStatement stmtUsuarioAlergias = conn.prepareStatement("DELETE FROM usuario_alergias WHERE nombreUsuario = ?");
+								stmtUsuarioAlergias.setString(1, nombreAntiguo);
+								stmtUsuarioAlergias.executeUpdate();
+								stmtUsuarioAlergias.close();
+								
+								PreparedStatement stmtAnadirAlergias = conn.prepareStatement("INSERT INTO Usuario_alergias values (?, (SELECT id FROM alergias WHERE nombreAlergia = ?))");
+								for (TipoAlergias alergia : usuarioModificar.getAlergias()) {
+									stmtAnadirAlergias.setString(1, usuarioModificar.getNombreUsuario());
+									stmtAnadirAlergias.setString(2, alergia.name());
+									stmtAnadirAlergias.executeUpdate();
 								}
+								stmtAnadirAlergias.close();
 								
-								List<TipoEnfermedades> listaEnfermedades = new ArrayList<TipoEnfermedades>();
-								for (int i = 0; i < modeloEnfermedades.getSize(); i++) {
-									listaEnfermedades.add(modeloEnfermedades.get(i));
+								//ENFERMEDADES
+								PreparedStatement stmtUsuarioEnfermedades = conn.prepareStatement("DELETE FROM usuario_enfermedades WHERE nombreUsuario = ?");
+								stmtUsuarioEnfermedades.setString(1, nombreAntiguo);
+								stmtUsuarioEnfermedades.executeUpdate();
+								stmtUsuarioEnfermedades.close();
+								
+								PreparedStatement stmtAnadirEnfermedades = conn.prepareStatement("INSERT INTO Usuario_enfermedades values (?, (SELECT id FROM enfermedades WHERE nombreEnfermedad = ?))");
+								for (TipoEnfermedades enfermedad : usuarioModificar.getEnfermedades()) {
+									stmtAnadirEnfermedades.setString(1, usuarioModificar.getNombreUsuario());
+									stmtAnadirEnfermedades.setString(2, enfermedad.name());
+									stmtAnadirEnfermedades.executeUpdate();
 								}
-								usuarioModificar.setEnfermedades(new ArrayList<TipoEnfermedades>(listaEnfermedades));
+								stmtAnadirEnfermedades.close();
 								
-								List<TipoAlergias> listaAlergias = new ArrayList<TipoAlergias>();
-								for (int i = 0; i < modeloAlergia.getSize(); i++) {
-									listaAlergias.add(modeloAlergia.get(i));
-								}
-								usuarioModificar.setAlergias(new ArrayList<TipoAlergias>(listaAlergias));
+								//ENTRENAMIENTOS
 								
-								
-								// El usuario que estamos modificando es uno nuevo
-								if (nombreAntiguo.equals("")) {
-									DBManager.anadirUsuario(conn, usuarioModificar);
-								} else {
-									//USUARIOS
-									PreparedStatement pstmt = conn.prepareStatement("UPDATE usuarios SET nombreUsuario = ?, nombre = ?, apellido1 = ?, apellido2 = ?, fechaNacimiento = ?, sexo = ?, altura = ?, peso = ?, correoElectronico = ?, imc = ?, contrasena = ?, permiso = ? WHERE nombreUsuario = ?");
-									pstmt.setString(1, usuarioModificar.getNombreUsuario());
-									pstmt.setString(2, usuarioModificar.getNombre());
-									pstmt.setString(3, usuarioModificar.getApellido1());
-									pstmt.setString(4, usuarioModificar.getApellido2());
-									pstmt.setString(5, usuarioModificar.getFechaNacimiento().toString());
-									pstmt.setString(6, usuarioModificar.getSexo().name());
-									pstmt.setDouble(7, usuarioModificar.getAltura());
-									pstmt.setInt(8, usuarioModificar.getPeso());
-									pstmt.setString(9, usuarioModificar.getCorreoElectronico());
-									pstmt.setDouble(10, usuarioModificar.getImc());
-									pstmt.setString(11, usuarioModificar.getContrasena());
-									pstmt.setString(12, usuarioModificar.getPermiso().toString());
-									pstmt.setString(13, nombreAntiguo);
-									pstmt.executeUpdate();
-									pstmt.close();
-									
-									//DIETA
-									PreparedStatement stmtUsuarioDieta = conn.prepareStatement("UPDATE usuario_dieta set nombreUsuario = ? WHERE nombreUsuario = ?");
-									stmtUsuarioDieta.setString(1, usuarioModificar.getNombreUsuario());
-									stmtUsuarioDieta.setString(2, nombreAntiguo);
-									stmtUsuarioDieta.executeUpdate();
-									stmtUsuarioDieta.close();
-									
-									//ALERGIAS
-									PreparedStatement stmtUsuarioAlergias = conn.prepareStatement("DELETE FROM usuario_alergias WHERE nombreUsuario = ?");
-									stmtUsuarioAlergias.setString(1, nombreAntiguo);
-									stmtUsuarioAlergias.executeUpdate();
-									stmtUsuarioAlergias.close();
-									
-									PreparedStatement stmtAnadirAlergias = conn.prepareStatement("INSERT INTO Usuario_alergias values (?, (SELECT id FROM alergias WHERE nombreAlergia = ?))");
-									for (TipoAlergias alergia : usuarioModificar.getAlergias()) {
-										stmtAnadirAlergias.setString(1, usuarioModificar.getNombreUsuario());
-										stmtAnadirAlergias.setString(2, alergia.name());
-										stmtAnadirAlergias.executeUpdate();
-									}
-									stmtAnadirAlergias.close();
-									
-									//ENFERMEDADES
-									PreparedStatement stmtUsuarioEnfermedades = conn.prepareStatement("DELETE FROM usuario_enfermedades WHERE nombreUsuario = ?");
-									stmtUsuarioEnfermedades.setString(1, nombreAntiguo);
-									stmtUsuarioEnfermedades.executeUpdate();
-									stmtUsuarioEnfermedades.close();
-									
-									PreparedStatement stmtAnadirEnfermedades = conn.prepareStatement("INSERT INTO Usuario_enfermedades values (?, (SELECT id FROM enfermedades WHERE nombreEnfermedad = ?))");
-									for (TipoEnfermedades enfermedad : usuarioModificar.getEnfermedades()) {
-										stmtAnadirEnfermedades.setString(1, usuarioModificar.getNombreUsuario());
-										stmtAnadirEnfermedades.setString(2, enfermedad.name());
-										stmtAnadirEnfermedades.executeUpdate();
-									}
-									stmtAnadirEnfermedades.close();
-									
-									//ENTRENAMIENTOS
-									
-									PreparedStatement stmtUsuarioEntrenamientos = conn.prepareStatement("UPDATE usuario_entrenamientos set nombreUsuario = ? WHERE nombreUsuario = ?");
-									stmtUsuarioEntrenamientos.setString(1, usuarioModificar.getNombreUsuario());
-									stmtUsuarioEntrenamientos.setString(2, nombreAntiguo);
-									stmtUsuarioEntrenamientos.executeUpdate();
-									stmtUsuarioEntrenamientos.close();
-								}
+								PreparedStatement stmtUsuarioEntrenamientos = conn.prepareStatement("UPDATE usuario_entrenamientos set nombreUsuario = ? WHERE nombreUsuario = ?");
+								stmtUsuarioEntrenamientos.setString(1, usuarioModificar.getNombreUsuario());
+								stmtUsuarioEntrenamientos.setString(2, nombreAntiguo);
+								stmtUsuarioEntrenamientos.executeUpdate();
+								stmtUsuarioEntrenamientos.close();
+				
 							}
 							
 							conn.close();

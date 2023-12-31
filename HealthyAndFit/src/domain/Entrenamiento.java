@@ -30,7 +30,7 @@ public class Entrenamiento {
 	public Entrenamiento() {
 		super();
 		
-		this.nombre = "Nombre por defecto";
+		this.nombre = "";
 		this.tipoEntrenamiento = TipoEntrenamiento.INFERIOR;
 		this.dificultad = TipoDificultad.FACIL;
 		this.tiempo = 0;

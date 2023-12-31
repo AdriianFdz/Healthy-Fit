@@ -177,8 +177,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 					if (antiguoNombre == "") {
 						DBManager.anadirEntrenamiento(conn, ent);
 					} else {						
-						try {
-							
+						try {	
 							PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ? WHERE nombre = ?");
 							pstmt.setString(1, nuevoNombre);
 							pstmt.setString(2, tipoEntrenamiento.name());

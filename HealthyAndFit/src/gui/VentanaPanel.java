@@ -8,12 +8,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -208,7 +205,7 @@ public class VentanaPanel extends JFrame {
 		// AnADIT TOOLTIP A LAS CELDAS DE LAS COLUMNAS PARA QUE SE VEA TODO EL TEXTO DE
 		// CADA CELDA
 		ToolTipManager.sharedInstance().setInitialDelay(0);
-		tablaU.addMouseMotionListener(new MouseMotionListener() {
+		tablaU.addMouseMotionListener(new MouseMotionAdapter() {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -219,15 +216,9 @@ public class VentanaPanel extends JFrame {
 				tablaU.setToolTipText(modeloU.getValueAt(fila, columna).toString());
 
 			}
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
 		});
 
-		tablaD.addMouseMotionListener(new MouseMotionListener() {
+		tablaD.addMouseMotionListener(new MouseMotionAdapter() {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -238,15 +229,9 @@ public class VentanaPanel extends JFrame {
 				tablaD.setToolTipText(modeloD.getValueAt(fila, columna).toString());
 
 			}
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
 		});
 
-		tablaE.addMouseMotionListener(new MouseMotionListener() {
+		tablaE.addMouseMotionListener(new MouseMotionAdapter() {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -255,12 +240,6 @@ public class VentanaPanel extends JFrame {
 				int fila = tablaE.rowAtPoint(e.getPoint());
 				int columna = tablaE.columnAtPoint(e.getPoint());
 				tablaE.setToolTipText(modeloE.getValueAt(fila, columna).toString());
-
-			}
-
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -365,10 +344,7 @@ public class VentanaPanel extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Dieta nuevaDieta = new Dieta();
 				SwingUtilities.invokeLater(() -> new VentanaEditarDieta(nuevaDieta,p));
-				dispose();
-				
-				vaciarDietas();
-				rellenarDietas();
+				dispose();	
 
 			}
 		});
@@ -377,10 +353,10 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				BaseDeDatos.getListaEntrenamientos().add(new Entrenamiento());
-				vaciarEntrenamientos();
-				rellenarEntrenamientos();
+				
+				Entrenamiento nuevoEntrenamiento = new Entrenamiento();
+				SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(nuevoEntrenamiento, p));
+				dispose();		
 
 			}
 		});
@@ -391,24 +367,21 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int usuarioSeleccionado = tablaU.getSelectedRow();
-				Usuario[] U = { null };
 				if (usuarioSeleccionado >= 0) {
 					String nombreU = (String) modeloU.getValueAt(usuarioSeleccionado, 0);
-
-					for (Usuario usuario : BaseDeDatos.getListaUsuarios()) {
-						if (usuario.getNombreUsuario().equals(nombreU)) {
-							U[0] = usuario;
-							break;
-						}
+					Connection conn = DBManager.obtenerConexion();
+					Usuario usuarioBorrar = DBManager.obtenerUsuarios(conn, nombreU);
+					int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar este usuario?",
+							"", JOptionPane.YES_NO_OPTION);
+					if (respuesta == JOptionPane.YES_OPTION) {
+						DBManager.eliminarUsuario(conn, usuarioBorrar);
+						rellenarUsuarios();
 					}
-					if (U != null) {
-						int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar este usuario?",
-								"", JOptionPane.YES_NO_OPTION);
-						if (respuesta == JOptionPane.YES_OPTION) {
-							eliminarUsuario(U[0]);
-						}
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
@@ -421,25 +394,22 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int dietaSeleccionada = tablaD.getSelectedRow();
-				Dieta[] D = { null };
 				if (dietaSeleccionada >= 0) {
 					String nombreD = (String) modeloD.getValueAt(dietaSeleccionada, 0);
-
-					for (Dieta dieta : BaseDeDatos.getListaDietas()) {
-						if (dieta.getNombre().equals(nombreD)) {
-							D[0] = dieta;
-							break;
-						}
+					Connection conn = DBManager.obtenerConexion();
+					Dieta dietaEliminar = DBManager.obtenerDietas(conn, nombreD);
+					int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar esta dieta?",
+							"", JOptionPane.YES_NO_OPTION);
+					if (respuesta == JOptionPane.YES_OPTION) {
+						DBManager.eliminarDieta(conn, dietaEliminar);
+						rellenarDietas();
 					}
-					if (D != null) {
-						int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar esta dieta?", "",
-								JOptionPane.YES_NO_OPTION);
-						if (respuesta == JOptionPane.YES_OPTION) {
-							eliminarDieta(D[0]);
-						}
-					}
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}					
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar una dieta");
 				}
@@ -451,25 +421,23 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int entrenamientoSeleccionado = tablaE.getSelectedRow();
-				Entrenamiento[] E = { null };
 				if (entrenamientoSeleccionado >= 0) {
 					String nombreE = (String) modeloE.getValueAt(entrenamientoSeleccionado, 0);
-
-					for (Entrenamiento entrenamiento : BaseDeDatos.getListaEntrenamientos()) {
-						if (entrenamiento.getNombre().equals(nombreE)) {
-							E[0] = entrenamiento;
-							break;
-						}
+					Connection conn = DBManager.obtenerConexion();
+					Entrenamiento entrenamientoEliminar = DBManager.obtenerEntrenamientos(conn, nombreE);
+					int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres borrar este entrenamiento?",
+							"", JOptionPane.YES_NO_OPTION);
+					if (respuesta == JOptionPane.YES_OPTION) {
+						DBManager.eliminarEntrenamientos(conn, entrenamientoEliminar);
+						rellenarEntrenamientos();
 					}
-					if (E != null) {
-						int respuesta = JOptionPane.showConfirmDialog(null,
-								"Seguro que quieres borrar este entrenamiento?", "", JOptionPane.YES_NO_OPTION);
-						if (respuesta == JOptionPane.YES_OPTION) {
-							eliminarEntrenamiento(E[0]);
-						}
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
 					}
+					
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un entrenamiento");
 				}
@@ -627,6 +595,7 @@ public class VentanaPanel extends JFrame {
 
 	// RELLENAR USUARIOS, DIETAS Y ENTRENAMIENTOS DE LA BD
 	public void rellenarUsuarios() {
+		modeloU.setRowCount(0);
 		Connection conn = DBManager.obtenerConexion();
 		List<Usuario> usuarios = DBManager.obtenerUsuarios(conn);
 		
@@ -644,6 +613,7 @@ public class VentanaPanel extends JFrame {
 	}
 
 	public void rellenarDietas() {
+		modeloD.setRowCount(0);
 		Connection conn = DBManager.obtenerConexion();
 		
 		for (Dieta dieta : DBManager.obtenerDietas(conn)) {
@@ -659,6 +629,7 @@ public class VentanaPanel extends JFrame {
 	}
 
 	public void rellenarEntrenamientos() {
+		modeloE.setRowCount(0);
 		Connection conn = DBManager.obtenerConexion();
 		List<Entrenamiento> entrenamientos = DBManager.obtenerEntrenamientos(conn);
 		

@@ -370,6 +370,28 @@ public class DBManager {
 		}
 	}
 	
+	public static void eliminarUsuario(Connection connection, Usuario usuario) {
+		try {
+			PreparedStatement stmtUsuario = connection.prepareStatement("DELETE FROM usuarios WHERE nombreUsuario = ?");
+			stmtUsuario.setString(1, usuario.getNombreUsuario());
+			stmtUsuario.executeUpdate();
+			stmtUsuario.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void eliminarEntrenamientos (Connection connection, Entrenamiento entrenamiento) {
+		try {
+			PreparedStatement stmtEntrenamiento = connection.prepareStatement("DELETE FROM entrenamientos WHERE nombre = ?");
+			stmtEntrenamiento.setString(1, entrenamiento.getNombre());
+			stmtEntrenamiento.executeUpdate();
+			stmtEntrenamiento.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static List<Dieta> obtenerDietas (Connection connection){
 		List<Dieta> resultado = new ArrayList<Dieta>();
 		
