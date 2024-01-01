@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,11 +31,14 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.xml.stream.util.EventReaderDelegate;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -47,15 +51,18 @@ import org.jfree.data.xy.XYDataset;
 
 import db.DBManager;
 import domain.Dieta;
+import domain.Entrenamiento;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.Usuario;
+import io.ExportarDatos;
 import io.RegistroLogger;
 
 public class VentanaResumen extends JFrame{
 
 	//Propiedades de la ventana
 	 JButton botonEntrenar;
+	 JButton botonQueEntrenar;
 	 JButton fotoPerfil;
 	 JButton botonDieta;
 	 JPanel panelImagenVasos = new JPanel();
@@ -95,8 +102,12 @@ public class VentanaResumen extends JFrame{
 		
 		JPanel panelEntrenamiento = new JPanel(new BorderLayout());
 			panelEntrenamiento.add(panelTextosEntrenamiento, BorderLayout.NORTH);
-			botonEntrenar = new JButton("Quiero entrenar");
-			panelEntrenamiento.add(botonEntrenar, BorderLayout.SOUTH);
+			JPanel panelBotones = new JPanel();
+				botonEntrenar = new JButton("Quiero entrenar");
+				panelBotones.add(botonEntrenar, BorderLayout.SOUTH);
+				botonQueEntrenar = new JButton("Que entrenar");
+				panelBotones.add(botonQueEntrenar);
+			panelEntrenamiento.add(panelBotones, BorderLayout.SOUTH);
 			anadirBordePanel("ENTRENAMIENTO", panelEntrenamiento);
 			
 		JPanel panelIzquierda = new JPanel(new BorderLayout());
@@ -256,6 +267,29 @@ public class VentanaResumen extends JFrame{
 			}
 		});
 		
+		botonQueEntrenar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SpinnerNumberModel modeloSpinner = new SpinnerNumberModel(1, 1, 7, 1);
+				JSpinner spinner = new JSpinner(modeloSpinner);
+				int opcion = JOptionPane.showOptionDialog(null, spinner, "Elige cuantos dias pretendes entrenar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, 1);
+				if (opcion == JOptionPane.OK_OPTION) {					
+					Connection conn = DBManager.obtenerConexion();
+					List<Entrenamiento> listaEntrenamientos = DBManager.obtenerEntrenamientos(conn);
+					try {
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
+					List<Map<String, Entrenamiento>> resultado = calcularCombinaciones((int)modeloSpinner.getValue(), listaEntrenamientos, new HashMap<>(), new ArrayList<Map<String, Entrenamiento>>());
+					ExportarDatos.exportarCombinaciones(resultado);
+					JOptionPane.showMessageDialog(null, "Archivo exportado con éxito");
+				}
+				
+			}
+		});
+		
 		
 		pack();
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -263,6 +297,40 @@ public class VentanaResumen extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Resumen");
 	}
+	
+    private static List<Map<String, Entrenamiento>> calcularCombinaciones(int dias, List<Entrenamiento> entrenamientos, Map<String, Entrenamiento> resultadoInterior, List<Map<String, Entrenamiento>> resultado) {
+        String nombreDia = obtenerNombreDia(dias);
+
+        for (Entrenamiento entrenamiento : entrenamientos) {
+            resultadoInterior.put(nombreDia, entrenamiento);
+
+            if (dias == 1) {
+                resultado.add(new HashMap<>(resultadoInterior));
+            } else {
+                calcularCombinaciones(dias-1, entrenamientos, new HashMap<>(resultadoInterior), resultado);
+            }
+        }
+        return resultado;
+    }
+	
+	private static String obtenerNombreDia(int dias) {
+        switch (dias) {
+            case 1:
+                return "Lunes";
+            case 2:
+                return "Martes";
+            case 3:
+                return "Miercoles";
+            case 4:
+                return "Jueves";
+            case 5:
+                return "Viernes";
+            case 6:
+                return "Sabado";
+            default:
+                return "Domingo";
+        }
+    }
 	
 	public static void anadirBordePanel(String titulo, JPanel panel) {
 		LineBorder borde = new LineBorder(Color.BLACK, 5); //Crea un estilo de borde continuo, anchura 5
