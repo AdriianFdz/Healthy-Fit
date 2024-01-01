@@ -284,7 +284,7 @@ public class VentanaResumen extends JFrame{
 						e1.printStackTrace();
 					}
 					List<Map<String, Entrenamiento>> resultado = calcularCombinaciones((int)modeloSpinner.getValue(), listaEntrenamientos, new HashMap<>(), new ArrayList<Map<String, Entrenamiento>>());
-					ExportarDatos.exportarCombinaciones(resultado);
+					ExportarDatos.exportarCombinaciones(resultado, "Guardar combinaciones en...");
 					JOptionPane.showMessageDialog(null, "Archivo exportado con éxito");
 				}
 				
