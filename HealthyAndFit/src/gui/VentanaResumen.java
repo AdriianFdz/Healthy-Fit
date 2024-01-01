@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -102,9 +103,9 @@ public class VentanaResumen extends JFrame{
 		
 		JPanel panelEntrenamiento = new JPanel(new BorderLayout());
 			panelEntrenamiento.add(panelTextosEntrenamiento, BorderLayout.NORTH);
-			JPanel panelBotones = new JPanel();
-				botonEntrenar = new JButton("Quiero entrenar");
-				panelBotones.add(botonEntrenar, BorderLayout.SOUTH);
+			JPanel panelBotones = new JPanel(new GridLayout(1,2));
+				botonEntrenar = new JButton("Quiero entrenar");  
+				panelBotones.add(botonEntrenar);
 				botonQueEntrenar = new JButton("Que entrenar");
 				panelBotones.add(botonQueEntrenar);
 			panelEntrenamiento.add(panelBotones, BorderLayout.SOUTH);
