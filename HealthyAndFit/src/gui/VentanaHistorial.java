@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -40,13 +39,13 @@ import javax.swing.JTextArea;
 import javax.swing.ToolTipManager;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
 
 import db.DBManager;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
+import io.ExportarDatos;
 import io.RegistroLogger;
 
 public class VentanaHistorial extends JFrame {
@@ -166,9 +165,9 @@ public class VentanaHistorial extends JFrame {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					guardarHistorial(map);
-					
-					
+					ExportarDatos.guardarHistorial(map, "Guardar archivo en...");
+					JOptionPane.showMessageDialog(null, "Historial guardado correctamente");
+
 				}
 			});
 	        
@@ -353,35 +352,6 @@ public class VentanaHistorial extends JFrame {
 		return recursividad(area);
 	}
 	
-	public static void guardarHistorial(Map<LocalDateTime, Entrenamiento> map) {
-		JFileChooser fileChooser = new JFileChooser();
-		
-		fileChooser.setDialogTitle("Guardar Historial");
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-        int dialog = fileChooser.showSaveDialog(null);
-        
-        if (dialog == JFileChooser.APPROVE_OPTION) {
-            File seleccion = fileChooser.getSelectedFile();
-		try {
-			PrintWriter pw = new PrintWriter(new File(seleccion + ".csv"));
-			for (Entry<LocalDateTime, Entrenamiento> entry : map.entrySet()) {
-				String s = entry.getKey().toString().substring(0, 16).replace("T", " / ");
-				pw.write(String.format("%s ; %s ; %s ; %s ; %s ; %s ; %s ; %s \n ", entry.getValue().getNombre(),
-						entry.getValue().getDificultad(), s, entry.getValue().getCalorias(), entry.getValue().getDescripcion(),
-						entry.getValue().getTiempo(), entry.getValue().getSeries(), entry.getValue().getRepeticiones()));
-				//pw.write(entry.getValue().getNombre() + ";" + entry.getValue().getDificultad() + ";" + s + "\n");
-			}
-			pw.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo csv");
-			JOptionPane.showConfirmDialog(null, "Error al crear el archivo csv", "Error", JOptionPane.PLAIN_MESSAGE);
-		} finally {
-			JOptionPane.showConfirmDialog(null, "Historial guardado correctamente", "Exito", JOptionPane.PLAIN_MESSAGE);
-		}
-		}
-	}
 }
 
 
