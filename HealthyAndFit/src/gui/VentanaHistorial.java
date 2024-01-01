@@ -13,16 +13,21 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.Vector;
 
@@ -64,6 +69,8 @@ public class VentanaHistorial extends JFrame {
 	
 	private Map<LocalDateTime, Entrenamiento> map;
 	
+	private List<URL> imageUrls;
+	
 	private static final long serialVersionUID = 1L;
 		
 	public VentanaHistorial(Usuario u) throws SQLException {
@@ -71,12 +78,24 @@ public class VentanaHistorial extends JFrame {
 	
 			getUsuarios(map, u);
 		
+			
+			imageUrls = new ArrayList<>();
+		        
+		    try {
+				imageUrls.add(new URL("resources\\images\\imagen1.jpg"));
+				imageUrls.add(new URL("resources\\images\\imagen2.jpg"));
+			} catch (MalformedURLException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+		   
 	
 			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha", "Calorias", "Descripcion", "Tiempo", "Series", "Repeticiones" ));
 			table = new JTable();
 			//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			table.setModel(new ModeloDatos(header, map));
-		
+
+			
 			table.setDefaultRenderer(Object.class, new TableCellRenderer() {
 				
 				@Override
@@ -88,18 +107,19 @@ public class VentanaHistorial extends JFrame {
 					label.setOpaque(true);
 					label.setText(value.toString());
 					label.setFont(new Font("Tahoma", Font.PLAIN, 15));
+					
 						if (column == 2) {
 							label.setText(value.toString().substring(0, 16).replace("T", " / "));
 							
 						}
+					     
+					     
 						if (isSelected) {
+							
 							label.setBackground(Color.CYAN);
-							if (value.equals("Pierna")) {
-								foto.setIcon(new ImageIcon("resources\\images\\pierna.jpg"));
-							}else if (value.equals("Abdominales")){
-								foto.setIcon(new ImageIcon("resources\\images\\abdominales.jpg"));
-							}
+	 
 						}
+						
 					label.setHorizontalAlignment(JLabel.CENTER);
 					table.setRowHeight(30);
 					table.repaint();
