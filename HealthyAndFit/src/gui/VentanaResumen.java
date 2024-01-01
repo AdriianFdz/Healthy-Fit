@@ -45,11 +45,11 @@ import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
 
+import db.DBManager;
 import domain.Dieta;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.Usuario;
-import io.DBManager;
 import io.RegistroLogger;
 
 public class VentanaResumen extends JFrame{

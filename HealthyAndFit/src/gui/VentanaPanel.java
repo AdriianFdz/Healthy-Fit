@@ -25,11 +25,10 @@ import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import db.BaseDeDatos;
+import db.DBManager;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.Usuario;
-import io.DBManager;
 
 public class VentanaPanel extends JFrame {
 
@@ -659,25 +658,6 @@ public class VentanaPanel extends JFrame {
 
 	public void vaciarEntrenamientos() {
 		modeloE.setRowCount(0);
-	}
-
-	// ELIMINAR USUARIOS,DIETAS Y ENTRENAMIENTOS
-	public void eliminarUsuario(Usuario u) {
-		BaseDeDatos.getListaUsuarios().remove(u);
-		vaciarUsuarios();
-		rellenarUsuarios();
-	}
-
-	public void eliminarDieta(Dieta d) {
-		BaseDeDatos.getListaDietas().remove(d);
-		vaciarDietas();
-		rellenarDietas();
-	}
-
-	public void eliminarEntrenamiento(Entrenamiento e) {
-		BaseDeDatos.getListaEntrenamientos().remove(e);
-		vaciarEntrenamientos();
-		rellenarEntrenamientos();
 	}
 
 }

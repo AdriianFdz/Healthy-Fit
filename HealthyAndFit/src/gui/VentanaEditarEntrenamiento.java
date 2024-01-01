@@ -24,11 +24,11 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
+import db.DBManager;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
-import io.DBManager;
 
 
 public class VentanaEditarEntrenamiento extends JFrame{

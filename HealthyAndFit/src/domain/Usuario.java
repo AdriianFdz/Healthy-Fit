@@ -8,9 +8,6 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import org.jfree.data.general.Dataset;
-import org.jfree.data.time.TimeSeriesCollection;
-
 public class Usuario {
 	private String nombre;
 	private String nombreUsuario;

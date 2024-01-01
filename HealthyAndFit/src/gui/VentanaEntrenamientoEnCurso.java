@@ -22,11 +22,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-
+import db.DBManager;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.Usuario;
-import io.DBManager;
 
 
 public class VentanaEntrenamientoEnCurso extends JFrame{

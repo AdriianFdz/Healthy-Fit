@@ -42,11 +42,11 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+import db.DBManager;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
-import io.DBManager;
 import io.RegistroLogger;
 
 public class VentanaHistorial extends JFrame {

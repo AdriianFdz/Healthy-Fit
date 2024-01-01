@@ -49,12 +49,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.toedter.calendar.JCalendar;
 
+import db.DBManager;
 import domain.TipoAlergias;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
 import domain.TipoSexo;
 import domain.Usuario;
-import io.DBManager;
 import io.RegistroLogger;
 
 public class VentanaEditarPerfil extends JFrame {

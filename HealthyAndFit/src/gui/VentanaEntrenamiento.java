@@ -31,11 +31,11 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import db.DBManager;
 import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
-import io.DBManager;
 import io.RegistroLogger;
 
 public class VentanaEntrenamiento extends JFrame{

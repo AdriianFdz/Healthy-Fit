@@ -1,4 +1,4 @@
-package io;
+package db;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -33,6 +33,7 @@ import domain.TipoEntrenamiento;
 import domain.TipoPermiso;
 import domain.TipoSexo;
 import domain.Usuario;
+import io.RegistroLogger;
 
 public class DBManager {
 	private static Connection conn;

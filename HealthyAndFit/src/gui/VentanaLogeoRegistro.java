@@ -30,6 +30,7 @@ import javax.swing.event.ChangeListener;
 
 import com.toedter.calendar.JCalendar;
 
+import db.DBManager;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.TipoAlergias;
@@ -39,7 +40,6 @@ import domain.TipoEntrenamiento;
 import domain.TipoPermiso;
 import domain.TipoSexo;
 import domain.Usuario;
-import io.DBManager;
 import io.RegistroLogger;
 
 public class VentanaLogeoRegistro extends JFrame {

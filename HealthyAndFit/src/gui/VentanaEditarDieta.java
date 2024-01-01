@@ -25,11 +25,11 @@ import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
 
+import db.DBManager;
 import domain.Dieta;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.Usuario;
-import io.DBManager;
 
 
 public class VentanaEditarDieta extends JFrame {
