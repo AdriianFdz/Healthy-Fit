@@ -10,9 +10,11 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -111,9 +113,13 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelBotones = new JPanel();
 	        panelBotones.setLayout(new FlowLayout());
 	        
-	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
-	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(700, 700, Image.SCALE_SMOOTH)));
-
+	        //Icon icon = new ImageIcon("resources/images/ejercicio.gif");
+	        //URL url = this.getClass().getResource("resources\\images\\ejercicio.gif");
+	        Icon background = new ImageIcon("resources/images/preparacion.jpg");
+	        foto = new JLabel(background);
+	        //foto.setBounds(66,43,46,14);
+	        //foto = new JLabel();
+	        //foto.setIcon(icon);
 	    
 	        panelDerecha = new JPanel(new GridLayout());
 	        panelDerecha.setOpaque(false);
@@ -170,13 +176,17 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            milisegundos = 0;
 	                            timer.start();
 	                            labelTiempo.setForeground(Color.RED);
-	                            labelEstado.setText("  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  ");
-	                            VentanaResumen.animacionTexto(labelEstado); 
+	                            labelEstado.setText("  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  ");
+	                            VentanaResumen.animacionTexto(labelEstado);
+	                            Icon background5 = new ImageIcon("resources/images/descanso.png");
+	        	            	foto.setIcon(background5);
 	                            
 	                          
 	                        } else {
 	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
 	                            descanso = false;
+	                            Icon background6 = new ImageIcon("resources/images/ejercicio.gif");
+	        	            	foto.setIcon(background6);
 	                            if (seriesRestantes > 0) {
 	                                minutos = 0;
 	                                if (en.getDificultad() == TipoDificultad.FACIL) {
@@ -223,7 +233,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        
 	        botonStart.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-
+	            	Icon background2 = new ImageIcon("resources/images/ejercicio.gif");
+	            	foto.setIcon(background2);
 	                timer.start();
 
 	            }
@@ -233,10 +244,14 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        
 	        botonReset.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
+	             
+	            	labelSeries.setText(en.getSeries() + " SERIES");
+	                
+	            	Icon background3 = new ImageIcon("resources/images/preparacion.jpg");
+	            	foto.setIcon(background3);
 	            	
-
 	                timer.stop();
-
+	                
 	                if (!descanso) {
 	                	if (en.getDificultad() == TipoDificultad.FACIL) {
 		                	segundos = (byte) (en.getTiempo() + 20);
@@ -266,6 +281,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	       
 	        botonStop.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
+	            	Icon background4 = new ImageIcon("resources/images/pause.jpg");
+	            	foto.setIcon(background4);
 	                timer.stop();
 	            }
 	        });
