@@ -358,7 +358,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        setTitle("Entrenamiento en curso");
 	        setVisible(true);
 	        setResizable(false);
-	        //pack(); 
+	        pack(); 
 	        setLocationRelativeTo(null); 
 	    }
 	    
