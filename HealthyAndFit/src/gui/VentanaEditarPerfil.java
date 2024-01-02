@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
@@ -306,8 +307,6 @@ public class VentanaEditarPerfil extends JFrame {
 		listaAlergia.setModel(modeloAlergia);
 		
 
-		
-		 //return JOptionPane.showInputDialog(this, "Ingrese el nuevo paso:", "Nuevo Paso", JOptionPane.PLAIN_MESSAGE);
 		JButton anadirAlergia = new JButton("Añadir");
 		JButton eliminarAlergia = new JButton("Eliminar");
 		JPanel panelAlergia = new JPanel(new BorderLayout());
@@ -431,14 +430,14 @@ public class VentanaEditarPerfil extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (!fieldContraseña.getText().equals(fieldContraseña2.getText())) {
+				if (!(Arrays.equals(fieldContraseña.getPassword(), fieldContraseña2.getPassword()))) {
 					JOptionPane.showConfirmDialog(null, "Las contraseñas no coinciden", "Error", JOptionPane.PLAIN_MESSAGE);
 				} else if (fieldNombreUsuario.getText().equals("")
-						&& fieldNombre.getText().equals("")
-						&& fieldApellido1.getText().equals("")
-						&& fieldApellido2.getText().equals("")
-						&& fieldContraseña.getText().equals("")
-						&& fieldCorreo.getText().equals("")){
+						|| fieldNombre.getText().equals("")
+						|| fieldApellido1.getText().equals("")
+						|| fieldApellido2.getText().equals("")
+						|| fieldContraseña.getPassword().length == 0
+						|| fieldCorreo.getText().equals("")){
 					
 					JOptionPane.showConfirmDialog(null, "Hay campos sin rellenar", "Error", JOptionPane.PLAIN_MESSAGE);
 					
@@ -460,7 +459,7 @@ public class VentanaEditarPerfil extends JFrame {
 								}
 								DBManager.actualizarFoto(conn, usuarioModificar, imagenResized);
 							}	
-							usuarioModificar.setContrasena(fieldContraseña.getText());
+							usuarioModificar.setContrasena(String.valueOf(fieldContraseña.getPassword())); 
 							usuarioModificar.setCorreoElectronico(fieldCorreo.getText());
 							usuarioModificar.setNombre(fieldNombre.getText());
 							usuarioModificar.setApellido1(fieldApellido1.getText());
@@ -585,7 +584,6 @@ public class VentanaEditarPerfil extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				int respuesta = JOptionPane.showConfirmDialog(null, "Seguro que quieres salir sin guardar?",
 						"Aviso", JOptionPane.YES_NO_OPTION);
 				if(respuesta == JOptionPane.YES_OPTION) {

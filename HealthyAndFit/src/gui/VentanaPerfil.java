@@ -38,7 +38,6 @@ public class VentanaPerfil extends JFrame{
 	private JPanel panelColum1;
 	private JLabel labelNombre;
 	private JLabel labelApellido1;
-	private JLabel labelApellido2;
 	private JLabel labelTipoU;
 	private JLabel labelFechaNac;
 
@@ -154,7 +153,7 @@ public class VentanaPerfil extends JFrame{
 		panelDatos.add(labelPeso);
 		panelDatos.add(labelAltura);
 		panelDatos.add(labelIMC);
-		//panelDatos.add(labelEnfermedades);
+	
 		JPanel panelEnfermedades = new JPanel();
 			panelEnfermedades.setLayout(new BoxLayout(panelEnfermedades, BoxLayout.Y_AXIS));
 			panelEnfermedades.add(labelEnfermedades);

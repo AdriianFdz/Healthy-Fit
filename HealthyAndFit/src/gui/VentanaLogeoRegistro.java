@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -258,14 +259,12 @@ public class VentanaLogeoRegistro extends JFrame {
 
 		iniciarSesion.addActionListener(new ActionListener() {
 
-			@SuppressWarnings("deprecation")
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Usuario usuarioSinComprobar = new Usuario();
 				usuarioSinComprobar.setNombreUsuario(meterNombreLogeo.getText());
-				// Corregir funcion deprecated. Cambiar en Usuario la contraseña a []char.
-				// Eso evita no guardar en memoria la contraseña
-				usuarioSinComprobar.setContrasena(meterContraseñaLogeo.getText());
+				usuarioSinComprobar.setContrasena(String.valueOf(meterContraseñaLogeo.getPassword()));
 
 				Usuario usuarioComprobado = usuarioContraseñaCorrectos(usuarioSinComprobar);
 				if (usuarioComprobado != null) {
@@ -292,14 +291,13 @@ public class VentanaLogeoRegistro extends JFrame {
 						&& meterFechaNac.getDate() != null
 						&& meterGenero.getButtonCount() != 0
 						&& !meterCorreoRegistro.getText().isBlank()
-						&& !meterContraseñaRegistro.getText().isBlank()
-						&& !meterContraseñaRepetidaRegistro.getText().isBlank()		
+						&& !(meterContraseñaRegistro.getPassword().length == 0)
+						&& !(meterContraseñaRepetidaRegistro.getPassword().length == 0)		
 						) {
 								
 								
 					
-					
-					if (meterContraseñaRegistro.getText().equals(meterContraseñaRepetidaRegistro.getText())) {
+					if (Arrays.equals(meterContraseñaRegistro.getPassword(), meterContraseñaRepetidaRegistro.getPassword())) {
 						// crear usuario en base de datos
 						
 						String nombre = meterNombre.getText();
@@ -329,14 +327,13 @@ public class VentanaLogeoRegistro extends JFrame {
 						int caloriasConsumidas = 0;
 						Map<LocalDate, Dieta> proximaComida = new HashMap<LocalDate, Dieta>();
 						int vasosDeAgua = 0;
-						String contrasena = meterContraseñaRegistro.getText();
+						String contrasena = String.valueOf(meterContraseñaRegistro.getPassword());
 						ImageIcon foto = new ImageIcon("resources\\images\\foto.png");
 						TipoPermiso permiso = TipoPermiso.USUARIO;
 						List<Entrenamiento> registroEntrenamiento = new ArrayList<Entrenamiento>();
 						
 						Usuario usuarioRegistrado = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, registroEntrenamiento);
 											
-						//BaseDeDatos.getListaUsuarios().add(usuarioRegistrado);
 						try {
 							Connection conn = DBManager.obtenerConexion();
 							DBManager.anadirUsuario(conn, usuarioRegistrado);
@@ -368,7 +365,6 @@ public class VentanaLogeoRegistro extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 				Usuario usuarioSinComprobar = new Usuario();
 				usuarioSinComprobar.setNombreUsuario("juan_perez");
 

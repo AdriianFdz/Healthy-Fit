@@ -10,7 +10,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.URL;
 import java.sql.Connection;
 import java.text.DecimalFormat;
 
@@ -113,13 +112,10 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelBotones = new JPanel();
 	        panelBotones.setLayout(new FlowLayout());
 	        
-	        //Icon icon = new ImageIcon("resources/images/ejercicio.gif");
-	        //URL url = this.getClass().getResource("resources\\images\\ejercicio.gif");
+	        
 	        Icon background = new ImageIcon("resources/images/preparacion.jpg");
 	        foto = new JLabel(background);
-	        //foto.setBounds(66,43,46,14);
-	        //foto = new JLabel();
-	        //foto.setIcon(icon);
+	 
 	    
 	        panelDerecha = new JPanel(new GridLayout());
 	        panelDerecha.setOpaque(false);
@@ -136,7 +132,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        botonStop = new JButton("Stop");
 	        
 	        
-	        //Implementacion de un posible cronometro usando la Timer (provisional y aun sin acabar)
+	   
 	        timeFormatter = new DecimalFormat("00");
 	        
 	        timer = new Timer(10, new ActionListener() {

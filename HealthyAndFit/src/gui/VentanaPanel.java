@@ -12,6 +12,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ import db.DBManager;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.Usuario;
+import io.RegistroLogger;
 
 public class VentanaPanel extends JFrame {
 
@@ -51,14 +53,11 @@ public class VentanaPanel extends JFrame {
 		labelU.setFont(new Font("Consolas", Font.BOLD, 20));
 
 		modeloU = new DefaultTableModel() {
-			/**
-			 * 
-			 */
+	
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		};
@@ -98,14 +97,11 @@ public class VentanaPanel extends JFrame {
 		labelD.setFont(new Font("Consolas", Font.BOLD, 20));
 
 		modeloD = new DefaultTableModel() {
-			/**
-			 * 
-			 */
+		
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		};
@@ -142,14 +138,11 @@ public class VentanaPanel extends JFrame {
 		labelE.setFont(new Font("Consolas", Font.BOLD, 20));
 		
 		modeloE = new DefaultTableModel() {
-			/**
-			 * 
-			 */
+
 			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		};
@@ -208,7 +201,6 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 				int fila = tablaU.rowAtPoint(e.getPoint());
 				int columna = tablaU.columnAtPoint(e.getPoint());
@@ -221,7 +213,6 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 				int fila = tablaD.rowAtPoint(e.getPoint());
 				int columna = tablaD.columnAtPoint(e.getPoint());
@@ -234,7 +225,6 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
 
 				int fila = tablaE.rowAtPoint(e.getPoint());
 				int columna = tablaE.columnAtPoint(e.getPoint());
@@ -247,7 +237,7 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				
 				SwingUtilities.invokeLater(() -> new VentanaPerfil(p));
 				dispose();
 			}
@@ -266,6 +256,8 @@ public class VentanaPanel extends JFrame {
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					dispose();
 					SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, usuarioAModificar, null, VentanaPanel.this, false));
@@ -288,6 +280,8 @@ public class VentanaPanel extends JFrame {
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					
 					SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(entrenamiento, p));
@@ -314,6 +308,8 @@ public class VentanaPanel extends JFrame {
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					
 					dispose();
@@ -381,6 +377,8 @@ public class VentanaPanel extends JFrame {
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un usuario");
@@ -408,6 +406,8 @@ public class VentanaPanel extends JFrame {
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}					
 				} else {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar una dieta");
@@ -435,6 +435,8 @@ public class VentanaPanel extends JFrame {
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					
 				} else {
@@ -461,7 +463,6 @@ public class VentanaPanel extends JFrame {
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
-			// TODO Auto-generated method stub
 			this.setOpaque(true);
 			this.setFont(new Font("fuente", Font.PLAIN, 12));
 			this.setText(value.toString());
@@ -486,15 +487,12 @@ public class VentanaPanel extends JFrame {
 
 	public class RendererDietas extends JLabel implements TableCellRenderer {
 
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
-			// TODO Auto-generated method stub
 			this.setOpaque(true);
 			this.setFont(new Font("fuente", Font.PLAIN, 12));
 			this.setText(value.toString());
@@ -541,15 +539,12 @@ public class VentanaPanel extends JFrame {
 
 	public class RendererEntrenamientos extends JLabel implements TableCellRenderer {
 
-		/**
-		 * 
-		 */
+
 		private static final long serialVersionUID = 1L;
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
-			// TODO Auto-generated method stub
 			this.setOpaque(true);
 			this.setFont(new Font("fuente", Font.PLAIN, 12));
 			this.setText(value.toString());
@@ -606,8 +601,9 @@ public class VentanaPanel extends JFrame {
 		try {
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
@@ -622,8 +618,9 @@ public class VentanaPanel extends JFrame {
 		try {
 			conn.close();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
@@ -636,6 +633,8 @@ public class VentanaPanel extends JFrame {
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	
 		

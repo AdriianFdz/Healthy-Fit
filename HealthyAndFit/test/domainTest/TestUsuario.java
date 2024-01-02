@@ -10,9 +10,6 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-import org.jfree.data.time.Day;
-import org.jfree.data.time.TimeSeries;
-import org.jfree.data.time.TimeSeriesCollection;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +19,6 @@ import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.TipoEnfermedades;
 import domain.TipoPermiso;
-import domain.TipoPreferencia;
 import domain.TipoSexo;
 import domain.Usuario;
 

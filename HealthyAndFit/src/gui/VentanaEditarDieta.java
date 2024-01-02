@@ -420,47 +420,4 @@ public class VentanaEditarDieta extends JFrame {
         return JOptionPane.showInputDialog(this, "Ingrese el nuevo paso:", "Nuevo Paso", JOptionPane.PLAIN_MESSAGE);
     }
 	
-//	public void eliminarFilaIng() {
-//		int filaSeleccionada = tablaIngredientes.getSelectedRow();
-//		if (filaSeleccionada != -1) {
-//			int confirmacion = JOptionPane.showConfirmDialog(this, 
-//					"¿Seguro que quieres eliminar esta fila?", "Confirmar Eliminación", 
-//					JOptionPane.YES_NO_OPTION);
-//			if (confirmacion == JOptionPane.YES_OPTION) {
-//                // Obtiene el nombre del ingrediente a eliminar
-//                String nombreIngrediente = (String) modeloTabla.getValueAt(filaSeleccionada, 0);
-//                
-//                // Elimina la fila del modelo de la tabla
-//                modeloTabla.removeRow(filaSeleccionada);
-//                
-//                // Elimina el ingrediente de la lista asociada a la dieta
-//                listaIngredientes.remove(nombreIngrediente);
-//            }
-//		 } else {
-//	            JOptionPane.showMessageDialog(this, "Selecciona una fila para eliminar.", "Error", 
-//	            		JOptionPane.ERROR_MESSAGE);
-//	        }
-//		}
-	
-//	public void eliminarFilaPaso() {
-//		int filaSeleccionada = tablaPasos.getSelectedRow();
-//		if (filaSeleccionada != -1) {
-//			int confirmacion = JOptionPane.showConfirmDialog(this, 
-//					"¿Seguro que quieres eliminar esta fila?", "Confirmar Eliminación", 
-//					JOptionPane.YES_NO_OPTION);
-//			if (confirmacion == JOptionPane.YES_OPTION) {
-//                // Obtiene el paso a eliminar
-//                String paso= (String) pasosTableModel.getValueAt(filaSeleccionada, 0);
-//                
-//                // Elimina la fila del modelo de la tabla
-//                pasosTableModel.removeRow(filaSeleccionada);
-//                
-//                // Elimina el ingrediente de la lista asociada a la dieta
-//                listaPasos.remove(paso);
-//            }
-//		 } else {
-//	            JOptionPane.showMessageDialog(this, "Selecciona una fila para eliminar.", "Error", 
-//	            		JOptionPane.ERROR_MESSAGE);
-//	        }
-//		}
 }

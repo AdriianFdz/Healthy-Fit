@@ -10,30 +10,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -69,7 +60,6 @@ public class VentanaHistorial extends JFrame {
 	
 	private Map<LocalDateTime, Entrenamiento> map;
 	
-	private List<URL> imageUrls;
 	
 	private static final long serialVersionUID = 1L;
 		
@@ -77,22 +67,10 @@ public class VentanaHistorial extends JFrame {
 	map = new HashMap<LocalDateTime, Entrenamiento>();
 	
 			getUsuarios(map, u);
-		
-			
-			imageUrls = new ArrayList<>();
-		        
-		    try {
-				imageUrls.add(new URL("resources\\images\\imagen1.jpg"));
-				imageUrls.add(new URL("resources\\images\\imagen2.jpg"));
-			} catch (MalformedURLException e2) {
-				// TODO Auto-generated catch block
-				e2.printStackTrace();
-			}
 		   
 	
 			Vector<String> header = new Vector<String>(Arrays.asList("Entrenamiento", "Dificultad", "Fecha", "Calorias", "Descripcion", "Tiempo", "Series", "Repeticiones" ));
 			table = new JTable();
-			//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 			table.setModel(new ModeloDatos(header, map));
 
 			
@@ -101,7 +79,6 @@ public class VentanaHistorial extends JFrame {
 				@Override
 				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 						int row, int column) {
-					//table.getColumn(column).setWidth(50);
 					table.getColumnModel().getColumn(column).setPreferredWidth(300);
 					JLabel label = new JLabel();
 					label.setOpaque(true);

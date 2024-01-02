@@ -1,16 +1,6 @@
 package ioTest;
 
-
-
-import static org.junit.Assert.assertEquals;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
-import org.junit.Test;
-
-import io.DBManager;
 
 public class TestLecturaAjustesDB {
 	@Before
