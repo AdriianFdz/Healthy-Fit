@@ -50,6 +50,8 @@ public class ExportarDatos {
 				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+        		RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo csv");
+        		JOptionPane.showConfirmDialog(null, "Error al crear el archivo csv", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 			
 		}

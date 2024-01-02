@@ -46,65 +46,62 @@ import io.RegistroLogger;
 public class VentanaLogeoRegistro extends JFrame {
 	private static final long serialVersionUID = 1L;
 
-	public JTabbedPane paneles;
+	private JTabbedPane paneles;
 
-	public JPanel logeo;
-	public JPanel logeoIzquierda;
-	public JLabel preguntaYaTienesCuenta;
-	public JLabel nombreLogeo;
-	public JTextField meterNombreLogeo;
-	public JLabel contraseñaLogeo;
-	public JPasswordField meterContraseñaLogeo;
-	public JButton iniciarSesion;
-	public JButton inicioRapido;
-	public JPanel logeoDerecha;
+	private JPanel logeo;
+	private JPanel logeoIzquierda;
+	private JLabel preguntaYaTienesCuenta;
+	private JLabel nombreLogeo;
+	private JTextField meterNombreLogeo;
+	private JLabel contraseñaLogeo;
+	private JPasswordField meterContraseñaLogeo;
+	private JButton iniciarSesion;
+	private JButton inicioRapido;
 
 	// INFORMACIÓN PRIMARIA PARA REGISTRARSE
 
-	public JPanel registro;
-	public JScrollPane registroScroll;
-	public JPanel meterDatos;
-	public JLabel preguntaTodaviaSinCuenta;
+	private JPanel registro;
+	private JScrollPane registroScroll;
+	private JPanel meterDatos;
+	private JLabel preguntaTodaviaSinCuenta;
 
-	public JLabel nombreRegistro;
-	public JTextField meterNombreRegistro;
+	private JLabel nombreRegistro;
+	private JTextField meterNombreRegistro;
 
-	public JLabel correoRegistro;
-	public JTextField meterCorreoRegistro;
+	private JLabel correoRegistro;
+	private JTextField meterCorreoRegistro;
 
-	public JLabel contraseñaRegistro;
-	public JPasswordField meterContraseñaRegistro;
+	private JLabel contraseñaRegistro;
+	private JPasswordField meterContraseñaRegistro;
 
-	public JLabel contraseñaRepetidaRegistro;
-	public JPasswordField meterContraseñaRepetidaRegistro;
+	private JLabel contraseñaRepetidaRegistro;
+	private JPasswordField meterContraseñaRepetidaRegistro;
 
 	private JTextField meterNombre;
 	
-	public JLabel apellido1;
-	public JTextField meterApellido1;
+	private JLabel apellido1;
+	private JTextField meterApellido1;
 
-	public JLabel apellido2;
-	public JTextField meterApellido2;
+	private JLabel apellido2;
+	private JTextField meterApellido2;
 
-	public JLabel altura;
+	private JLabel altura;
 
-	public JLabel peso;
+	private JLabel peso;
 
-	public JLabel foto;
+	private JLabel foto;
 	
-	public JLabel genero;
-	public JPanel generoB;
-	public ButtonGroup meterGenero;
-	public JRadioButton M;
-	public JRadioButton H;
-	public JRadioButton O;
+	private JLabel genero;
+	private JPanel generoB;
+	private ButtonGroup meterGenero;
+	private JRadioButton M;
+	private JRadioButton H;
+	private JRadioButton O;
 
-	public JLabel fechaNac;
-	public JCalendar meterFechaNac;
+	private JLabel fechaNac;
+	private JCalendar meterFechaNac;
 
-
-
-	public JButton registrarse;
+	private JButton registrarse;
 
 	public VentanaLogeoRegistro() {
 		

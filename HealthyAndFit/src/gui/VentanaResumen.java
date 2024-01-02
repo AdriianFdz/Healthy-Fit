@@ -60,12 +60,12 @@ import io.RegistroLogger;
 public class VentanaResumen extends JFrame{
 
 	//Propiedades de la ventana
-	 JButton botonEntrenar;
-	 JButton botonQueEntrenar;
-	 JButton fotoPerfil;
-	 JButton botonDieta;
-	 JPanel panelImagenVasos = new JPanel();
-	 Usuario persona;
+	private JButton botonEntrenar;
+	private JButton botonQueEntrenar;
+	private JButton fotoPerfil;
+	private JButton botonDieta;
+	JPanel panelImagenVasos = new JPanel();
+	Usuario persona;
 	 // Hacer mapa con dia y dieta
 	
 	private static final long serialVersionUID = 1L;

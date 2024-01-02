@@ -62,8 +62,8 @@ public class VentanaEditarPerfil extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	public JPanel panelColumna1;
-		public JPanel panelColumna;
+	private JPanel panelColumna1;
+		private JPanel panelColumna;
 			private JTextField fieldNombreUsuario;
 			private JLabel labelNombreUsuario;
 			
@@ -73,37 +73,32 @@ public class VentanaEditarPerfil extends JFrame {
 			private JPasswordField fieldContraseña2;
 			private JLabel labelrepetirContraseña;
 			
-			public JTextField fieldNombre;
-			public JLabel labelNombre; 
+			private JTextField fieldNombre;
+			private JLabel labelNombre; 
 			
-			public JTextField fieldApellido1;
-			public JLabel labelApellido1;
+			private JTextField fieldApellido1;
+			private JLabel labelApellido1;
 			
-			public JTextField fieldApellido2;
-			public JLabel labelApellido2;
+			private JTextField fieldApellido2;
+			private JLabel labelApellido2;
 			
-			public JLabel labelFechaNac;
+			private JLabel labelFechaNac;
 		
 		
-	public JPanel panelColumna2;
+	private JPanel panelColumna2;		
 		
-		public JTextField fieldSexo;
-		public JLabel labelSexo;
+		private JLabel labelAltura;
 		
-		public JTextField fieldAltura;
-		public JLabel labelAltura;
+		private JTextField fieldCorreo;
+		private JLabel labelCorreo;
 		
-		public JTextField fieldCorreo;
-		public JLabel labelCorreo;
+		private JLabel labelPeso;
 		
-		public JTextField fieldPeso;
-		public JLabel labelPeso;
+		private JLabel labelAleg;
+		private JComboBox<TipoAlergias> comboAleg;
 		
-		public JLabel labelAleg;
-		public JComboBox<TipoAlergias> comboAleg;
-		
-		public JLabel labelEnfer;
-		public JComboBox<TipoEnfermedades> comboEnfer;
+		private JLabel labelEnfer;
+		private JComboBox<TipoEnfermedades> comboEnfer;
 		
 		private JLabel labelRango;
 		private JComboBox<TipoPermiso> comboRango;

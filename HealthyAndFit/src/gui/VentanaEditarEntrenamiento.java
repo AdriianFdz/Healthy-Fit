@@ -38,25 +38,24 @@ public class VentanaEditarEntrenamiento extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public JPanel panelIzquierdo;
-		public JLabel labelNombre;
-		public JTextField fieldNombre;
-		public JLabel labelTiempo;
-		public JSpinner spinnerTiempo;
-		public JLabel labelDificultad;
-		public JComboBox<TipoDificultad> comboDif;
+	private JPanel panelIzquierdo;
+		private JLabel labelNombre;
+		private JTextField fieldNombre;
+		private JLabel labelTiempo;
+		private JSpinner spinnerTiempo;
+		private JLabel labelDificultad;
+		private JComboBox<TipoDificultad> comboDif;
 		private JLabel labelTipoEntrenamiento;
 		private JComboBox<TipoEntrenamiento> comboEntrenamiento;
 		private JLabel labelSeries;
 		private JSpinner spinnerSeries;
 		private JLabel labelRepeticiones;
 		private JSpinner spinnerRepeticiones;
-		public JLabel labelKcal;
-		public JSpinner spinnerKcal;
+		private JLabel labelKcal;
+		private JSpinner spinnerKcal;
 		
-	public JPanel panelDerecha;
-		public JLabel labelDesc;
-		public JScrollPane paneDesc;
+	private JPanel panelDerecha;
+		private JLabel labelDesc;
 		
 	
 	public VentanaEditarEntrenamiento(Entrenamiento ent, Usuario p) {

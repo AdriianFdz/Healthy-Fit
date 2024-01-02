@@ -22,16 +22,16 @@ public class VentanaDieta extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	//Definir propiedades necesarias para la ventana
-		public JPanel panelGeneral;
-		public JPanel panelSecundario;
-		public JLabel labelNombre;
-		public JLabel labelMinutos;
-		public JLabel labelDificultad;
-		public JLabel labelKcal;
-		public JLabel labelIngredientes;
-		public JTextArea areaIngredientes;
-		public JLabel labelPasos;
-		public JTextArea areaPasos;
+		private JPanel panelGeneral;
+		private JPanel panelSecundario;
+		private JLabel labelNombre;
+		private JLabel labelMinutos;
+		private JLabel labelDificultad;
+		private JLabel labelKcal;
+		private JLabel labelIngredientes;
+		private JTextArea areaIngredientes;
+		private JLabel labelPasos;
+		private JTextArea areaPasos;
 		
 	
 	
@@ -128,8 +128,8 @@ public class VentanaDieta extends JFrame {
 		this.setResizable(false);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.setTitle("Dieta");
-		
-	}
+		 
+	} 
 	
 	
 }

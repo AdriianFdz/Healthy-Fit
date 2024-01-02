@@ -39,9 +39,9 @@ public class VentanaPanel extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DefaultTableModel modeloU;
-	public DefaultTableModel modeloD;
-	public DefaultTableModel modeloE;
+	private DefaultTableModel modeloU;
+	private DefaultTableModel modeloD;
+	private DefaultTableModel modeloE;
 
 	public VentanaPanel(Usuario p) {
 

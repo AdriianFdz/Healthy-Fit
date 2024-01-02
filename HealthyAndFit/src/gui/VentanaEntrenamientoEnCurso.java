@@ -34,38 +34,38 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	 private static final long serialVersionUID = 1L;
 	 
 	 //Definir propiedades necesarias para la ventana
-	    public JPanel panelPrincipal;
-	    public JPanel panelSecundario;
-	    public JPanel panelAbajo;
-	    public JPanel panelBotones;
-	    public JPanel panelDerecha;
+	    private JPanel panelPrincipal;
+	    private JPanel panelSecundario;
+	    private JPanel panelAbajo;
+	    private JPanel panelBotones;
+	    private JPanel panelDerecha;
 	    
-	    public JLabel labelEstado;
-	    public JLabel labelTiempo;
-	    public JLabel labelNombre;
-	    public JLabel labelDificultad;
-	    public JLabel labelKcal;
-	    public JLabel labelRepeticiones;
-	    public JLabel labelSeries;
-	    public JLabel foto;
+	    private JLabel labelEstado;
+	    private JLabel labelTiempo;
+	    private JLabel labelNombre;
+	    private JLabel labelDificultad;
+	    private JLabel labelKcal;
+	    private JLabel labelRepeticiones;
+	    private JLabel labelSeries;
+	    private JLabel foto;
 	    
-	    public JButton botonStart;
-	    public JButton botonReset;
-	    public JButton botonStop;
-	    public JButton botonVolver;
+	    private JButton botonStart;
+	    private JButton botonReset;
+	    private JButton botonStop;
+	    private JButton botonVolver;
 	    
-	    public int seriesRestantes;
-	    public int repeticionesRestantes;
+	    private int seriesRestantes;
+	    private int repeticionesRestantes;
 	    
-	    public byte milisegundos;
-	    public byte segundos;
-	    public short minutos;
+	    private byte milisegundos;
+	    private byte segundos;
+	    private short minutos;
 
-	    public boolean descanso;
+	    private boolean descanso;
 	    
-	    public DecimalFormat timeFormatter;
+	    private DecimalFormat timeFormatter;
 	  
-	    public Timer timer;
+	    private Timer timer;
 
 	    public VentanaEntrenamientoEnCurso(Entrenamiento en, Usuario persona, VentanaResumen vResumen) {
 	    

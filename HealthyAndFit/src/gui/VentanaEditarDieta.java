@@ -37,27 +37,26 @@ public class VentanaEditarDieta extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public JPanel pIzq;
-		public JLabel labelNombre;
-		public JTextField fieldNombre;
-		public JLabel labelTiempo;
-		public SpinnerNumberModel modeloSpin;
-		public JSpinner spinnerTiempo;
-		public JLabel labelDiff;
-		public JComboBox<TipoDificultad> comboDif;
-		public JLabel labelKcal;
-		public JSpinner spinnerKcal;
-		public List<String> listaIngredientes;
-		public List<String> listaPasos;
+	private JPanel pIzq;
+		private JLabel labelNombre;
+		private JTextField fieldNombre;
+		private JLabel labelTiempo;
+		private JSpinner spinnerTiempo;
+		private JLabel labelDiff;
+		private JComboBox<TipoDificultad> comboDif;
+		private JLabel labelKcal;
+		private JSpinner spinnerKcal;
+		private List<String> listaIngredientes;
+		private List<String> listaPasos;
 		private List<TipoAlergias> listaAlergias;
 
 		
-	public JPanel pDer;
+	private JPanel pDer;
 		private JLabel labelIngredientes;
 		private JList<String> JlistaPasos;
 		private JLabel labelPasos;
 		private JList<String> JlistaIngredientes;
-		public JScrollPane panelDcha;
+		private JScrollPane panelDcha;
 		private JLabel labelAlerg;
 		private JComboBox<TipoAlergias> comboAleg;
 	
@@ -214,7 +213,7 @@ public class VentanaEditarDieta extends JFrame {
 		
 		
 	    
-        JScrollPane panelDcha = new JScrollPane(JlistaPasos);
+        panelDcha = new JScrollPane(JlistaPasos);
         JPanel btnAñaEliPasos = new JPanel();
 		
         JButton botonAñadirPaso= new JButton("AÑADIR PASO");
