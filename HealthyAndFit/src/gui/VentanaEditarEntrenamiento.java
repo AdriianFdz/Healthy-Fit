@@ -172,6 +172,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 					ent.setTipoEntrenamiento(tipoEntrenamiento);
 					ent.setSeries(seriesNuevas);
 					ent.setRepeticiones(repeticionesNuevas);
+					ent.setDescripcion(nuevaDescripcion);
 					
 					if (antiguoNombre == "") {
 						DBManager.anadirEntrenamiento(conn, ent);

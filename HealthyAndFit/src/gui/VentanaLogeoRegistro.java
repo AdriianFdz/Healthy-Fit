@@ -288,8 +288,8 @@ public class VentanaLogeoRegistro extends JFrame {
 						&& meterFechaNac.getDate() != null
 						&& meterGenero.getButtonCount() != 0
 						&& !meterCorreoRegistro.getText().isBlank()
-						&& !(meterContraseñaRegistro.getPassword().length == 0)
-						&& !(meterContraseñaRepetidaRegistro.getPassword().length == 0)		
+						&& meterContraseñaRegistro.getPassword().length != 0
+						&& meterContraseñaRepetidaRegistro.getPassword().length != 0		
 						) {
 								
 								
@@ -562,7 +562,7 @@ public class VentanaLogeoRegistro extends JFrame {
 
 					// OBTENER REGISTRO ENTRENAMIENTOS del usuario
 					PreparedStatement pstmtRegEntrenamientos = conn.prepareStatement(
-							"SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
+							"SELECT entrenamientos.* FROM entrenamientos, usuario_entrenamientos WHERE usuario_entrenamientos.nombreUsuario = ? AND entrenamientos.nombre = usuario_entrenamientos.nombreEntrenamiento");
 					pstmtRegEntrenamientos.setString(1, nombreUsuario);
 					ResultSet rsUsuarioEntrenamientos = pstmtRegEntrenamientos.executeQuery();
 
@@ -583,9 +583,8 @@ public class VentanaLogeoRegistro extends JFrame {
 								dificultad, tiempo, descripcion, calorias, series, repeticiones);
 						listaEntrenamientos.add(entrenamiento);
 
-						pstmtRegEntrenamientos.close();
 					}
-
+					pstmtRegEntrenamientos.close();
 					Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
 							sexo, altura, peso, alergias, correoElectronico, enfermedades,
 							caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,

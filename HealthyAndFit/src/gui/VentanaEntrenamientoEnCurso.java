@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -149,6 +150,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
 	                        	if (opcion == JOptionPane.YES_OPTION) {
 	                            	persona.getRegistroEntrenamiento().add(en);
+	                            	persona.setUltimaVezEntreno(LocalDate.now());
 	                            	Connection conn = DBManager.obtenerConexion();
 	                            	DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
 	                            	SwingUtilities.invokeLater(() -> new VentanaResumen(persona));

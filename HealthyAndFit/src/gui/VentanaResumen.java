@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -69,12 +70,23 @@ public class VentanaResumen extends JFrame{
 	 // Hacer mapa con dia y dieta
 	
 	private static final long serialVersionUID = 1L;
-	public VentanaResumen(Usuario persona) {		
-		this.persona = persona;
-		this.persona.setProximaComida(asignarDietaADia(this.persona.getProximaComida()));
+	public VentanaResumen(Usuario usuario) {		
+		persona = usuario;
+		persona.setProximaComida(asignarDietaADia(persona.getProximaComida()));
 		
-		
-		
+		int caloriasGast = 0;
+		int tiempoEnt = 0;
+		for (Entrenamiento entrenamiento : persona.getRegistroEntrenamiento()) {
+			caloriasGast += entrenamiento.getCalorias();
+			tiempoEnt += entrenamiento.getTiempo();
+		}
+		persona.setCaloriasGastadas(caloriasGast);			
+		persona.setTiempoEntrenado(tiempoEnt);
+		int caloriasConsum = 0;
+		for (Entry<LocalDate, Dieta> entry : persona.getProximaComida().entrySet()) {
+			caloriasConsum += entry.getValue().getKcal();
+		}
+		persona.setCaloriasConsumidas(caloriasConsum);
 		
 		//ENTRENAMIENTO
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getCaloriasGastadas());
