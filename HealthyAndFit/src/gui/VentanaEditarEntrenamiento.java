@@ -3,15 +3,24 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,6 +38,7 @@ import domain.Entrenamiento;
 import domain.TipoDificultad;
 import domain.TipoEntrenamiento;
 import domain.Usuario;
+import io.RegistroLogger;
 
 
 public class VentanaEditarEntrenamiento extends JFrame{
@@ -58,6 +68,11 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		private JLabel labelDesc;
 		
 	
+		//
+		ImageIcon imagenResized;
+		//
+		
+		
 	public VentanaEditarEntrenamiento(Entrenamiento ent, Usuario p) {
 		
 		JPanel datos = new JPanel(new GridLayout(1, 2));
@@ -104,6 +119,14 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		panelIzquierdo.add(labelRepeticiones);
 		panelIzquierdo.add(spinnerRepeticiones);
 		
+		//
+		Image foto = ent.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+		JLabel fotoEnt = new JLabel(new ImageIcon(foto));
+		//fotoUsuario.setPreferredSize(new Dimension(300, 200));
+		fotoEnt.setToolTipText("Haz click para elegir otra foto");
+		panelIzquierdo.add(fotoEnt);
+		//
+		
 		//Creamos la parte derecha para el scroll panel
 		panelDerecha = new JPanel();
 		panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
@@ -133,6 +156,31 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		JButton botonConfirmar = new JButton("CONFIRMAR");
 
 		// Listeners
+		//
+		fotoEnt.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.setDialogTitle("Selecciona una foto para subirla");
+				int resp = fileChooser.showOpenDialog(VentanaEditarEntrenamiento.this);
+				File file = fileChooser.getSelectedFile();
+				
+				if (resp==JFileChooser.APPROVE_OPTION && file!=null) {					
+					try {
+						Image imagen = ImageIO.read(file).getScaledInstance(200, 200, Image.SCALE_SMOOTH);;
+						imagenResized = new ImageIcon(imagen);
+						fotoEnt.setIcon(imagenResized);
+						repaint();
+					} catch (IOException e1) {
+						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al convertir fichero a imagen al subir una foto");
+						JOptionPane.showConfirmDialog(null, "ERROR al convertir fichero a imagen", "Error", JOptionPane.PLAIN_MESSAGE);
+					}
+				}				
+			}
+		});
+		
 		botonCancelar.addActionListener(new ActionListener() {
 
 			@Override
@@ -164,7 +212,14 @@ public class VentanaEditarEntrenamiento extends JFrame{
 					JOptionPane.showMessageDialog(null, "El nombre del entrenamiento ya existe");
 					ent.setNombre(antiguoNombre);
 
-				} else {		
+				} else {	
+					
+					//
+					if (imagenResized != null) {					
+						ent.setFoto(imagenResized);
+						DBManager.actualizarFotoEntrena(conn, ent, imagenResized);
+					}
+					
 					// Actualizar los atributos del Entrenamiento
 					ent.setTiempo(nuevoTiempo);
 					ent.setDificultad(nuevaDif);
@@ -178,7 +233,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 						DBManager.anadirEntrenamiento(conn, ent);
 					} else {						
 						try {	
-							PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ? WHERE nombre = ?");
+							PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ?, foto = ? WHERE nombre = ?");
 							pstmt.setString(1, nuevoNombre);
 							pstmt.setString(2, tipoEntrenamiento.name());
 							pstmt.setString(3, nuevaDif.name());
@@ -188,6 +243,8 @@ public class VentanaEditarEntrenamiento extends JFrame{
 							pstmt.setInt(7, seriesNuevas);
 							pstmt.setInt(8, repeticionesNuevas);
 							pstmt.setString(9, antiguoNombre);
+							pstmt.setBytes(10, DBManager.convertirFotoABytes(imagenResized));
+							
 							pstmt.executeUpdate();
 							pstmt.close();
 							
@@ -210,6 +267,9 @@ public class VentanaEditarEntrenamiento extends JFrame{
 				
 			}
 		});
+		
+		
+
 		panelBotones.add(botonCancelar, BorderLayout.WEST);
 		panelBotones.add(botonConfirmar, BorderLayout.EAST);
 		

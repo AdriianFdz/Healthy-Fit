@@ -168,7 +168,7 @@ public class DBManager {
 		
 
 	}	
-	public static void actualizarFotoEntena(Connection connection, Entrenamiento entrenamiento, ImageIcon foto) {
+	public static void actualizarFotoEntrena(Connection connection, Entrenamiento entrenamiento, ImageIcon foto) {
 		try {
 			PreparedStatement pstmt = connection.prepareStatement("UPDATE entrenamientos SET foto = ? WHERE nombre = ?");
 			pstmt.setBytes(1, convertirFotoABytes(foto));

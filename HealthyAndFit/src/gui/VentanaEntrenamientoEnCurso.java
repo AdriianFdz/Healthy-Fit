@@ -231,7 +231,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        
 	        botonStart.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-	            	Icon background2 = new ImageIcon("resources/images/run.gif");
+	            	Icon background2 = en.getFoto();
 	            	foto.setIcon(background2);
 	                timer.start();
 
