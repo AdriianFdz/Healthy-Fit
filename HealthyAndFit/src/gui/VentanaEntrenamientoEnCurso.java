@@ -183,7 +183,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                        } else {
 	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
 	                            descanso = false;
-	                            Icon background6 = new ImageIcon("resources/images/run.gif");
+	                            Icon background6 = en.getFoto();
 	        	            	foto.setIcon(background6);
 	                            if (seriesRestantes > 0) {
 	                                minutos = 0;

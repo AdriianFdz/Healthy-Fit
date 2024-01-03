@@ -63,6 +63,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		private JSpinner spinnerRepeticiones;
 		private JLabel labelKcal;
 		private JSpinner spinnerKcal;
+		private JLabel fotoEnt;
 		
 	private JPanel panelDerecha;
 		private JLabel labelDesc;
@@ -103,7 +104,13 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		spinnerSeries = new JSpinner(new SpinnerNumberModel(ent.getSeries(), 0, 999, 1));
 		spinnerRepeticiones = new JSpinner(new SpinnerNumberModel(ent.getRepeticiones(), 0, 999, 1));
 		
+		Image foto = ent.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+		fotoEnt = new JLabel(new ImageIcon(foto));
+		fotoEnt.setToolTipText("Haz click para elegir otra foto");
+		VentanaEditarPerfil.anadirBordeLabel("Fotografia", fotoEnt);
+		
 		//Añadimos los elemetos al panel Izquierdo
+		panelIzquierdo.add(fotoEnt);
 		panelIzquierdo.add(labelNombre);
 		panelIzquierdo.add(fieldNombre);
 		panelIzquierdo.add(labelTiempo);
@@ -118,15 +125,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		panelIzquierdo.add(spinnerSeries);
 		panelIzquierdo.add(labelRepeticiones);
 		panelIzquierdo.add(spinnerRepeticiones);
-		
-		//
-		Image foto = ent.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-		JLabel fotoEnt = new JLabel(new ImageIcon(foto));
-		//fotoUsuario.setPreferredSize(new Dimension(300, 200));
-		fotoEnt.setToolTipText("Haz click para elegir otra foto");
-		panelIzquierdo.add(fotoEnt);
-		//
-		
+
 		//Creamos la parte derecha para el scroll panel
 		panelDerecha = new JPanel();
 		panelDerecha.setLayout(new BoxLayout(panelDerecha, BoxLayout.Y_AXIS));
@@ -278,7 +277,6 @@ public class VentanaEditarEntrenamiento extends JFrame{
 			
 		pack();
 		this.setVisible(true);
-		this.setSize(600, 500);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Editar Entrenamiento");
 
