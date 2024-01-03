@@ -65,8 +65,8 @@ public class VentanaResumen extends JFrame{
 	private JButton botonQueEntrenar;
 	private JButton fotoPerfil;
 	private JButton botonDieta;
-	JPanel panelImagenVasos = new JPanel();
-	Usuario persona;
+	private JPanel panelImagenVasos = new JPanel();
+	private Usuario persona;
 	 // Hacer mapa con dia y dieta
 	
 	private static final long serialVersionUID = 1L;
@@ -90,7 +90,7 @@ public class VentanaResumen extends JFrame{
 		
 		//ENTRENAMIENTO
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getCaloriasGastadas());
-		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: "+persona.getTiempoEntrenado());
+		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: "+persona.getTiempoEntrenado() + " minutos");
 		JLabel ultimaVez = new JLabel("Última vez: "+persona.getUltimaVezEntreno());
 		ultimaVez.setBorder(new EmptyBorder(0, 0, 10, 0)); //Añadir margen inferior al JLabel
 
@@ -157,6 +157,7 @@ public class VentanaResumen extends JFrame{
 				botonesVasos.add(btnEliminarVaso);
 				botonesVasos.add(btnAnadirVaso);
 			panelVasosAgua.add(botonesVasos);
+			
 		//Cambios de estilo y tamaño de letra
 		caloriasConsumidas.setFont(new Font("Consolas", Font.PLAIN ,25));
 		proximaComida.setFont(new Font("Consolas", Font.PLAIN, 25));

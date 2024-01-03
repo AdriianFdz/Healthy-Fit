@@ -9,8 +9,8 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 
 public class Usuario {
-	private String nombre;
-	private String nombreUsuario;
+	private String nombre; 
+	private String nombreUsuario; 
 	private String apellido1;
 	private String apellido2;
 	private LocalDate fechaNacimiento;
@@ -96,7 +96,7 @@ public class Usuario {
 		this.proximaComida = new HashMap<LocalDate, Dieta>();
 		this.vasosDeAgua = 0;
 		this.contrasena = "";
-		this.foto = new ImageIcon("resources\\images\\foto.png");
+		this.foto = new ImageIcon("resources\\images\\foto.png"); 
 		this.permiso = TipoPermiso.USUARIO;
 		this.registroEntrenamiento = new ArrayList<Entrenamiento>();
 

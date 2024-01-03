@@ -55,7 +55,7 @@ public class VentanaEntrenamiento extends JFrame{
 	private JLabel labelDescripcion;
 	private JLabel descripcionEntrenamientoSeleccionado;
 	
-	JPanel panelEntrenamientoSeleccionado = new JPanel();
+	private JPanel panelEntrenamientoSeleccionado = new JPanel();
 
 	
 	
