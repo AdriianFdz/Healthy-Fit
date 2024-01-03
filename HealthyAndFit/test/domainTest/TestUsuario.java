@@ -28,7 +28,7 @@ public class TestUsuario {
 	 
 	@Before
 	public void setUp() {
-		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), 12300, 3, "Ninguno", 300, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>());
+		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), 12300, 300, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>());
 		usuarioSinArgs = new Usuario();
 				
 	} 
@@ -149,26 +149,6 @@ public class TestUsuario {
 		assertEquals(100, usuario.getCaloriasGastadas());
 		usuario.setCaloriasGastadas(-1);
 		assertEquals(100, usuario.getCaloriasGastadas());
-	}
-	@Test
-	public void testGetRachaEntrenamiento(){
-		assertEquals(3, usuario.getRachaEntrenamiento());
-	}
-	@Test
-	public void testSetRachaEntrenamiento() {
-		usuario.setRachaEntrenamiento(0);
-		assertEquals(0, usuario.getRachaEntrenamiento());
-		usuario.setRachaEntrenamiento(-1);
-		assertEquals(0, usuario.getRachaEntrenamiento());
-	}
-	@Test
-	public void testGetObjetivo(){
-		assertEquals("Ninguno", usuario.getObjetivo());
-	}
-	@Test
-	public void testSetObjetivo() {
-		usuario.setObjetivo("Entrenar");
-		assertEquals("Entrenar", usuario.getObjetivo());
 	}
 	@Test
 	public void testGetTiempoEntrenado(){

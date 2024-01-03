@@ -2,6 +2,8 @@ package domainTest;
 
 import static org.junit.Assert.assertEquals;
 
+import javax.swing.ImageIcon;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +17,7 @@ public class TestEntrenamiento {
 	
 	@Before
 	public void setUp() {
-		entrenamiento = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominales", 200, 3, 20);
+		entrenamiento = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominales", 200, 3, 20, new ImageIcon());
 		entrenamientoSinArgs = new Entrenamiento();
 	}
 	
