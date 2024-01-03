@@ -163,7 +163,7 @@ public class VentanaHistorial extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					ExportarDatos.guardarHistorial(map, "Guardar archivo en...");
-					JOptionPane.showMessageDialog(null, "Historial guardado correctamente");
+					
 
 				}
 			});

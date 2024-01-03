@@ -70,6 +70,7 @@ public class ExportarDatos {
         					entry.getValue().getTiempo(), entry.getValue().getSeries(), entry.getValue().getRepeticiones()));
         		}
         		pw.close();
+        		JOptionPane.showMessageDialog(null, "Historial guardado correctamente");
         	} catch (FileNotFoundException e) {
         		e.printStackTrace();
         		RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo csv");

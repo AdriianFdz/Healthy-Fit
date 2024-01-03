@@ -145,7 +145,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            // Solo muestra el JOptionPane al final del ejercicio
 	                        	timer.stop();
 	                            labelTiempo.setVisible(false);
-	                            labelEstado.setText("Entrenamiento finalizado");
+	                            labelEstado.setText("ENTRENAMIENTO FINALIZADO   ENTRENAMIENTO FINALIZADO   ENTRENAMIENTO FINALIZADO");
 	                            int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
 	                        	if (opcion == JOptionPane.YES_OPTION) {
 	                            	persona.getRegistroEntrenamiento().add(en);
@@ -181,7 +181,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                        } else {
 	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
 	                            descanso = false;
-	                            Icon background6 = new ImageIcon("resources/images/ejercicio.gif");
+	                            Icon background6 = new ImageIcon("resources/images/run.gif");
 	        	            	foto.setIcon(background6);
 	                            if (seriesRestantes > 0) {
 	                                minutos = 0;
