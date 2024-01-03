@@ -452,7 +452,7 @@ public class VentanaEditarPerfil extends JFrame {
 								if (vPerfil != null) {
 									vPerfil.cambiarFoto(usuarioModificar.getFoto());							
 								}
-								DBManager.actualizarFoto(conn, usuarioModificar, imagenResized);
+								DBManager.actualizarFotoUsuario(conn, usuarioModificar, imagenResized);
 							}	
 							usuarioModificar.setContrasena(String.valueOf(fieldContraseña.getPassword())); 
 							usuarioModificar.setCorreoElectronico(fieldCorreo.getText());

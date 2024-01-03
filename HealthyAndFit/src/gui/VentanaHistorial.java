@@ -295,7 +295,9 @@ public class VentanaHistorial extends JFrame {
 					int calorias = rs2.getInt("calorias");
 					int series = rs2.getInt("series");
 					int repeticiones = rs2.getInt("repeticiones");
-					e = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);
+					ImageIcon fotoEnt = new ImageIcon(rs2.getBytes("foto"));
+
+					e = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);
 					map.put(f, e);	
 				}
 				

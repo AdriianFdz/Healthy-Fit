@@ -1,6 +1,7 @@
 
 package domain;
 
+import javax.swing.ImageIcon;
 
 public class Entrenamiento {
 	private String nombre;
@@ -11,9 +12,10 @@ public class Entrenamiento {
 	private int calorias;
 	private int series;
 	private int repeticiones;
+	private ImageIcon foto; 
 	
 	//Constructor con argumentos
-	public Entrenamiento(String nombre, TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion, int calorias, int series, int repeticiones) {
+	public Entrenamiento(String nombre, TipoEntrenamiento tipoEntrenamiento, TipoDificultad dificultad, int tiempo, String descripcion, int calorias, int series, int repeticiones, ImageIcon foto) {
 		super();
 		this.nombre = nombre;
 		this.tipoEntrenamiento = tipoEntrenamiento;
@@ -23,6 +25,7 @@ public class Entrenamiento {
 		this.calorias = calorias;
 		this.series = series;
 		this.repeticiones = repeticiones;
+		this.foto = foto;
 		
 	}
 	
@@ -38,6 +41,7 @@ public class Entrenamiento {
 		this.calorias = 0;
 		this.series = 0;
 		this.repeticiones = 0;
+		this.foto = new ImageIcon("resources\\images\\foto.png");
 	}
 
 	//getters y setters
@@ -116,6 +120,14 @@ public class Entrenamiento {
 			this.repeticiones = repeticiones;
 		}
 	
+	}
+
+	public ImageIcon getFoto() {
+		return foto;
+	}
+
+	public void setFoto(ImageIcon foto) {
+		this.foto = foto;
 	}
 
 	@Override

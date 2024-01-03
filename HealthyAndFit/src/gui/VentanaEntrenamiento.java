@@ -98,8 +98,9 @@ public class VentanaEntrenamiento extends JFrame{
 				int calorias = rs.getInt("calorias");
 				int series = rs.getInt("series");
 				int repeticiones = rs.getInt("repeticiones");
-				
-				Entrenamiento e = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);	
+				ImageIcon fotoEnt = new ImageIcon(rs.getBytes("foto"));
+
+				Entrenamiento e = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);	
 				modeloListaEntrenamiento.addElement(e);
 			}
 			conn.close();

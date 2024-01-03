@@ -317,8 +317,6 @@ public class VentanaLogeoRegistro extends JFrame {
 						List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
 						List<TipoEnfermedades> enfermedades = new ArrayList<TipoEnfermedades>();
 						int caloriasGastadas = 0;
-						int rachaEntrenamiento = 0;
-						String objetivo = "Ninguno";
 						int tiempoEntrenado = 0;
 						LocalDate ultimaVezEntreno = LocalDate.now(); 
 						int caloriasConsumidas = 0;
@@ -329,7 +327,7 @@ public class VentanaLogeoRegistro extends JFrame {
 						TipoPermiso permiso = TipoPermiso.USUARIO;
 						List<Entrenamiento> registroEntrenamiento = new ArrayList<Entrenamiento>();
 						
-						Usuario usuarioRegistrado = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, registroEntrenamiento);
+						Usuario usuarioRegistrado = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento, sexo, altura, peso, alergias, correoElectronico, enfermedades, caloriasGastadas, tiempoEntrenado, ultimaVezEntreno, caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso, registroEntrenamiento);
 											
 						try {
 							Connection conn = DBManager.obtenerConexion();
@@ -485,8 +483,6 @@ public class VentanaLogeoRegistro extends JFrame {
 					int peso = rs.getInt("peso");
 					String correoElectronico = rs.getString("correoElectronico");
 					int caloriasGastadas = rs.getInt("caloriasGastadas");
-					int rachaEntrenamiento = rs.getInt("rachaEntrenamiento");
-					String objetivo = rs.getString("objetivo");
 					int tiempoEntrenado = rs.getInt("tiempoEntrenado");
 					LocalDate ultimaVezEntreno = LocalDate.parse(rs.getString("ultimaVezEntreno"));
 					int caloriasConsumidas = rs.getInt("caloriasConsumidas");
@@ -578,16 +574,17 @@ public class VentanaLogeoRegistro extends JFrame {
 						int calorias = rsUsuarioEntrenamientos.getInt("calorias");
 						int series = rsUsuarioEntrenamientos.getInt("series");
 						int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
+						ImageIcon fotoEnt = new ImageIcon(rsUsuarioEntrenamientos.getBytes("foto"));
 
 						Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento,
-								dificultad, tiempo, descripcion, calorias, series, repeticiones);
+								dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);
 						listaEntrenamientos.add(entrenamiento);
 
 					}
 					pstmtRegEntrenamientos.close();
 					Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
 							sexo, altura, peso, alergias, correoElectronico, enfermedades,
-							caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
+							caloriasGastadas, tiempoEntrenado, ultimaVezEntreno,
 							caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso,
 							listaEntrenamientos);
 					conn.close();

@@ -95,7 +95,7 @@ public class DBManager {
 	
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
 		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, usuario.getNombre());
 			stmt.setString(3, usuario.getApellido1());
@@ -107,15 +107,13 @@ public class DBManager {
 			stmt.setString(9, usuario.getCorreoElectronico());
 			stmt.setDouble(10, usuario.getImc());
 			stmt.setInt(11, usuario.getCaloriasGastadas());
-			stmt.setInt(12, usuario.getRachaEntrenamiento());
-			stmt.setString(13, usuario.getObjetivo());
-			stmt.setInt(14, usuario.getTiempoEntrenado());
-			stmt.setString(15, usuario.getUltimaVezEntreno().toString());
-			stmt.setInt(16, usuario.getCaloriasConsumidas());
-			stmt.setInt(17, usuario.getVasosDeAgua());
-			stmt.setString(18, usuario.getContrasena());
-			stmt.setBytes(19, convertirFotoABytes(usuario.getFoto()));
-			stmt.setString(20, usuario.getPermiso().toString());
+			stmt.setInt(12, usuario.getTiempoEntrenado());
+			stmt.setString(13, usuario.getUltimaVezEntreno().toString());
+			stmt.setInt(14, usuario.getCaloriasConsumidas());
+			stmt.setInt(15, usuario.getVasosDeAgua());
+			stmt.setString(16, usuario.getContrasena());
+			stmt.setBytes(17, convertirFotoABytes(usuario.getFoto()));
+			stmt.setString(18, usuario.getPermiso().toString());
 			 
 			stmt.executeUpdate();
 			stmt.close();
@@ -157,7 +155,7 @@ public class DBManager {
 		}
 	}
 
-	public static void actualizarFoto(Connection connection, Usuario usuario, ImageIcon foto) {
+	public static void actualizarFotoUsuario(Connection connection, Usuario usuario, ImageIcon foto) {
 		try {
 			PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET foto = ? WHERE nombreUsuario = ?");
 			pstmt.setBytes(1, convertirFotoABytes(foto));
@@ -169,6 +167,19 @@ public class DBManager {
 		}
 		
 
+	}	
+	public static void actualizarFotoEntena(Connection connection, Entrenamiento entrenamiento, ImageIcon foto) {
+		try {
+			PreparedStatement pstmt = connection.prepareStatement("UPDATE entrenamientos SET foto = ? WHERE nombre = ?");
+			pstmt.setBytes(1, convertirFotoABytes(foto));
+			pstmt.setString(2, entrenamiento.getNombre());
+			pstmt.executeUpdate();
+			pstmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}	
 	
 	public static byte[] convertirFotoABytes(ImageIcon foto) {
@@ -232,7 +243,7 @@ public class DBManager {
 	
 	public static void anadirEntrenamiento(Connection connection, Entrenamiento entrenamiento) {
 		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?)");
+			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?, ?)");
 			stmt.setString(1, entrenamiento.getNombre());
 			stmt.setString(2, entrenamiento.getTipoEntrenamiento().toString());
 			stmt.setString(3, entrenamiento.getDificultad().toString());
@@ -241,6 +252,7 @@ public class DBManager {
 			stmt.setInt(6, entrenamiento.getCalorias());
 			stmt.setInt(7, entrenamiento.getSeries());
 			stmt.setInt(8, entrenamiento.getRepeticiones());
+			stmt.setBytes(9, convertirFotoABytes(entrenamiento.getFoto()));
 			
 			stmt.executeUpdate();
 			stmt.close();
@@ -527,8 +539,6 @@ public class DBManager {
 				int peso = rs.getInt("peso");
 				String correoElectronico = rs.getString("correoElectronico");
 				int caloriasGastadas = rs.getInt("caloriasGastadas");
-				int rachaEntrenamiento = rs.getInt("rachaEntrenamiento");
-				String objetivo = rs.getString("objetivo");
 				int tiempoEntrenado = rs.getInt("tiempoEntrenado");
 				LocalDate ultimaVezEntreno = LocalDate.parse(rs.getString("ultimaVezEntreno"));
 				int caloriasConsumidas = rs.getInt("caloriasConsumidas");
@@ -619,16 +629,17 @@ public class DBManager {
 					int calorias = rsUsuarioEntrenamientos.getInt("calorias");
 					int series = rsUsuarioEntrenamientos.getInt("series");
 					int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
-
+					ImageIcon fotoEntrena = new ImageIcon(rsUsuarioEntrenamientos.getBytes("foto"));
+					
 					Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento,
-							dificultad, tiempo, descripcion, calorias, series, repeticiones);
+							dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEntrena);
 					listaEntrenamientos.add(entrenamiento);
 
 					pstmtRegEntrenamientos.close();
 				}
 				Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
 						sexo, altura, peso, new ArrayList<TipoAlergias>(alergias), correoElectronico, new ArrayList<TipoEnfermedades>(enfermedades),
-						caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
+						caloriasGastadas, tiempoEntrenado, ultimaVezEntreno,
 						caloriasConsumidas, new HashMap<LocalDate, Dieta>(proximaComida), vasosDeAgua, contrasena, foto, permiso,
 						new ArrayList<Entrenamiento>(listaEntrenamientos));
 				resultado.add(usuario);
@@ -657,8 +668,6 @@ public class DBManager {
 				int peso = rs.getInt("peso");
 				String correoElectronico = rs.getString("correoElectronico");
 				int caloriasGastadas = rs.getInt("caloriasGastadas");
-				int rachaEntrenamiento = rs.getInt("rachaEntrenamiento");
-				String objetivo = rs.getString("objetivo");
 				int tiempoEntrenado = rs.getInt("tiempoEntrenado");
 				LocalDate ultimaVezEntreno = LocalDate.parse(rs.getString("ultimaVezEntreno"));
 				int caloriasConsumidas = rs.getInt("caloriasConsumidas");
@@ -749,9 +758,10 @@ public class DBManager {
 					int calorias = rsUsuarioEntrenamientos.getInt("calorias");
 					int series = rsUsuarioEntrenamientos.getInt("series");
 					int repeticiones = rsUsuarioEntrenamientos.getInt("repeticiones");
-
+					ImageIcon fotoEnt = new ImageIcon(rsUsuarioEntrenamientos.getBytes("foto"));
+					
 					Entrenamiento entrenamiento = new Entrenamiento(nombreEntrenamiento, tipoEntrenamiento,
-							dificultad, tiempo, descripcion, calorias, series, repeticiones);
+							dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);
 					listaEntrenamientos.add(entrenamiento);
 
 					pstmtRegEntrenamientos.close();
@@ -759,7 +769,7 @@ public class DBManager {
 
 				Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
 						sexo, altura, peso, new ArrayList<TipoAlergias>(alergias), correoElectronico, new ArrayList<TipoEnfermedades>(enfermedades),
-						caloriasGastadas, rachaEntrenamiento, objetivo, tiempoEntrenado, ultimaVezEntreno,
+						caloriasGastadas, tiempoEntrenado, ultimaVezEntreno,
 						caloriasConsumidas, new HashMap<LocalDate, Dieta>(proximaComida), vasosDeAgua, contrasena, foto, permiso,
 						new ArrayList<Entrenamiento>(listaEntrenamientos));
 				return usuario;
@@ -789,8 +799,9 @@ public class DBManager {
 				int calorias = rs.getInt("calorias");
 				int series = rs.getInt("series");
 				int repeticiones = rs.getInt("repeticiones");
-				
-				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);
+				ImageIcon fotoEnt = new ImageIcon(rs.getBytes("foto"));
+
+				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);
 				resultado.add(entrenamiento);	
 			}
 		} catch (SQLException e) {
@@ -815,8 +826,9 @@ public class DBManager {
 				int calorias = rs.getInt("calorias");
 				int series = rs.getInt("series");
 				int repeticiones = rs.getInt("repeticiones");
-				
-				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones);
+				ImageIcon fotoEnt = new ImageIcon(rs.getBytes("foto"));
+
+				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);
 				return entrenamiento;
 			}
 		} catch (SQLException e) {

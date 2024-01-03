@@ -90,25 +90,19 @@ public class VentanaResumen extends JFrame{
 		
 		//ENTRENAMIENTO
 		JLabel caloriasGastadas = new JLabel("Calorías gastadas: "+persona.getCaloriasGastadas());
-		JLabel racha = new JLabel("Racha: "+persona.getRachaEntrenamiento());
 		JLabel tiempoEntrenado= new JLabel("Tiempo entrenado: "+persona.getTiempoEntrenado());
-		JLabel objetivo = new JLabel("Objetivo: "+persona.getObjetivo());
 		JLabel ultimaVez = new JLabel("Última vez: "+persona.getUltimaVezEntreno());
 		ultimaVez.setBorder(new EmptyBorder(0, 0, 10, 0)); //Añadir margen inferior al JLabel
 
 		//Cambios de estilo y tamaño de letra
 		caloriasGastadas.setFont(new Font("Consolas", Font.PLAIN ,25));
-		racha.setFont(new Font("Consolas", Font.PLAIN, 25));
 		tiempoEntrenado.setFont(new Font("Consolas", Font.PLAIN, 25));
-		objetivo.setFont(new Font("Consolas", Font.PLAIN, 25));
 		ultimaVez.setFont(new Font("Consolas", Font.PLAIN, 25));
 		
 		
 		JPanel panelTextosEntrenamiento = new JPanel(new GridLayout(3, 3, 50, 30));
 			panelTextosEntrenamiento.add(caloriasGastadas);
-			panelTextosEntrenamiento.add(racha);
 			panelTextosEntrenamiento.add(tiempoEntrenado);
-			panelTextosEntrenamiento.add(objetivo);
 			panelTextosEntrenamiento.add(ultimaVez);
 		
 		JPanel panelEntrenamiento = new JPanel(new BorderLayout());

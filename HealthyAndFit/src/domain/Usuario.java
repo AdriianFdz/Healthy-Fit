@@ -22,8 +22,6 @@ public class Usuario {
 	private List<TipoEnfermedades> enfermedades;
 	private double imc;
 	private int caloriasGastadas;
-	private int rachaEntrenamiento;
-	private String objetivo;
 	private int tiempoEntrenado;
 	private LocalDate ultimaVezEntreno;
 	private int caloriasConsumidas;
@@ -38,7 +36,7 @@ public class Usuario {
 	public Usuario(String nombre, String nombreUsuario, String apellido1, String apellido2, LocalDate fechaNacimiento,
 			TipoSexo sexo, double altura, int peso, List<TipoAlergias> alergias, String correoElectronico,
 			List<TipoEnfermedades> enfermedades, int caloriasGastadas,
-			int rachaEntrenamiento, String objetivo, int tiempoEntrenado, LocalDate ultimaVezEntreno,
+			int tiempoEntrenado, LocalDate ultimaVezEntreno,
 			int caloriasConsumidas, Map<LocalDate, Dieta> proximaComida, int vasosDeAgua, String contraseña, ImageIcon foto, TipoPermiso permiso,
 			List<Entrenamiento> registroEntrenamiento) {
 		super();
@@ -61,8 +59,6 @@ public class Usuario {
 		}
 		this.imc = peso / (altura * altura);
 		this.caloriasGastadas = caloriasGastadas;
-		this.rachaEntrenamiento = rachaEntrenamiento;
-		this.objetivo = objetivo;
 		this.tiempoEntrenado = tiempoEntrenado;
 		this.ultimaVezEntreno = ultimaVezEntreno;
 		this.caloriasConsumidas = caloriasConsumidas;
@@ -94,8 +90,6 @@ public class Usuario {
 		this.enfermedades = new ArrayList<TipoEnfermedades>();
 		this.imc = 0.0;
 		this.caloriasGastadas = 0;
-		this.rachaEntrenamiento = 0;
-		this.objetivo = "";
 		this.tiempoEntrenado = 0;
 		this.ultimaVezEntreno = LocalDate.now();
 		this.caloriasConsumidas = 0;
@@ -220,25 +214,6 @@ public class Usuario {
 		
 	}
 
-	public int getRachaEntrenamiento() {
-		return rachaEntrenamiento;
-	}
-
-	public void setRachaEntrenamiento(int rachaEntrenamiento) {
-		if (rachaEntrenamiento >= 0) {
-			this.rachaEntrenamiento = rachaEntrenamiento;
-		}
-		
-	}
-
-	public String getObjetivo() {
-		return objetivo;
-	}
-
-	public void setObjetivo(String objetivo) {
-		this.objetivo = objetivo;
-	}
-
 	public int getTiempoEntrenado() {
 		return tiempoEntrenado;
 	}
@@ -334,7 +309,7 @@ public class Usuario {
 				+ altura + ", peso=" + peso + ", alergias=" + alergias + ", correoElectronico=" + correoElectronico
 				+ ", enfermedades=" + enfermedades + ", imc=" + imc
 				+ ", caloriasGastadas=" + caloriasGastadas + ", rachaEntrenamiento="
-				+ rachaEntrenamiento + ", objetivo=" + objetivo + ", tiempoEntrenado=" + tiempoEntrenado
+				+ ", tiempoEntrenado=" + tiempoEntrenado
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
 				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contrasena=" + contrasena
 				+ ", foto=" + foto + ", permiso=" + permiso + ", registroEntrenamiento=" + registroEntrenamiento
