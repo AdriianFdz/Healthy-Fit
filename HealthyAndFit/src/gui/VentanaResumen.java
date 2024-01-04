@@ -287,6 +287,8 @@ public class VentanaResumen extends JFrame{
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
+						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					List<Map<String, Entrenamiento>> resultado = calcularCombinaciones((int)modeloSpinner.getValue(), listaEntrenamientos, new HashMap<>(), new ArrayList<Map<String, Entrenamiento>>());
 					ExportarDatos.exportarCombinaciones(resultado, "Guardar combinaciones en...");

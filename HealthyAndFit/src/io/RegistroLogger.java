@@ -15,6 +15,7 @@ public class RegistroLogger {
 		try (FileInputStream fis = new FileInputStream("conf/registro.properties")){
 			LogManager.getLogManager().readConfiguration(fis);
 		}catch (IOException e1) {
+			e1.printStackTrace();
 			logger.log(Level.SEVERE, "Lectura del fichero inicsesion.properties fallida.");
 			JOptionPane.showConfirmDialog(null, "Error en la lectura del fichero", "Error", JOptionPane.PLAIN_MESSAGE);
 		}

@@ -611,6 +611,7 @@ public class VentanaEditarPerfil extends JFrame {
 						fotoUsuario.setIcon(imagenResized);
 						repaint();
 					} catch (IOException e1) {
+						e1.printStackTrace();
 						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al convertir fichero a imagen al subir una foto");
 						JOptionPane.showConfirmDialog(null, "ERROR al convertir fichero a imagen", "Error", JOptionPane.PLAIN_MESSAGE);
 					}

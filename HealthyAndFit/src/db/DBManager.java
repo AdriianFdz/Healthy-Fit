@@ -164,6 +164,8 @@ public class DBManager {
 			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 
@@ -177,6 +179,8 @@ public class DBManager {
 			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 		
@@ -193,6 +197,8 @@ public class DBManager {
 	            ImageIO.write(bi, "png", baos);
 	        } catch (IOException e) {
 	            e.printStackTrace();
+	            RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 	        }
 
 	        return baos.toByteArray();
@@ -344,8 +350,9 @@ public class DBManager {
 				return false;
 			}
 		} catch (SQLException e) {
+			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);	}
 		return true;
 	}
 
@@ -362,6 +369,8 @@ public class DBManager {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return true;
 	}
@@ -380,6 +389,8 @@ public class DBManager {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 	
@@ -391,6 +402,8 @@ public class DBManager {
 			stmtUsuario.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
@@ -402,6 +415,8 @@ public class DBManager {
 			stmtEntrenamiento.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 	
@@ -456,6 +471,8 @@ public class DBManager {
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 		
 		return resultado;
@@ -805,8 +822,9 @@ public class DBManager {
 				resultado.add(entrenamiento);	
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return resultado;
 	}
@@ -832,8 +850,9 @@ public class DBManager {
 				return entrenamiento;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return null;	
 	}

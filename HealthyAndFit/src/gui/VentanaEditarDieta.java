@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -30,6 +31,7 @@ import domain.Dieta;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.Usuario;
+import io.RegistroLogger;
 
 
 public class VentanaEditarDieta extends JFrame {
@@ -341,6 +343,8 @@ public class VentanaEditarDieta extends JFrame {
 			        conn.close();
 		        } catch (SQLException e1) {
 		        	e1.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		        }					
 		        
 		        
