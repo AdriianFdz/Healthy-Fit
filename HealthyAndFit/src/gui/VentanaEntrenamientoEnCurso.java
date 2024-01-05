@@ -94,7 +94,6 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 		    repeticionesRestantes = en.getRepeticiones();
 		    
 		    labelEstado = new JLabel(" ");
-		    //labelEstado.setHorizontalAlignment(JLabel.CENTER);
 		    labelEstado.setBackground(Color.GRAY);
 		    labelNombre = new JLabel(" "+ en.getNombre());
 		    labelDificultad = new JLabel("   Dificultad: " + en.getDificultad().toString());
@@ -114,8 +113,9 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelBotones.setLayout(new FlowLayout());
 	        
 	        
-	        Icon background = new ImageIcon("resources/images/preparacion.jpg");
-	        foto = new JLabel(background);
+	        ImageIcon background = new ImageIcon("resources/images/preparacion.jpg");
+            Image preparacion = background.getImage().getScaledInstance(1500, background.getIconHeight(), Image.SCALE_SMOOTH);
+	        foto = new JLabel(new ImageIcon(preparacion));
 	 
 	    
 	        panelDerecha = new JPanel(new GridLayout());
@@ -146,7 +146,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            // Solo muestra el JOptionPane al final del ejercicio
 	                        	timer.stop();
 	                            labelTiempo.setVisible(false);
-	                            labelEstado.setText("ENTRENAMIENTO FINALIZADO   ENTRENAMIENTO FINALIZADO   ENTRENAMIENTO FINALIZADO");
+	                            labelEstado.setText("  ENTRENAMIENTO FINALIZADO      ENTRENAMIENTO FINALIZADO      ENTRENAMIENTO FINALIZADO     ");
 	                            int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
 	                        	if (opcion == JOptionPane.YES_OPTION) {
 	                            	persona.getRegistroEntrenamiento().add(en);
@@ -155,8 +155,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                            	DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
 	                            	SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
 	                            	dispose();
-	                            }
-	                            if (opcion == JOptionPane.NO_OPTION) {
+	                            } else {
 	                            	SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
 	                				dispose();
 	                            }
@@ -183,8 +182,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                        } else {
 	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
 	                            descanso = false;
-	                            Icon background6 = en.getFoto();
-	        	            	foto.setIcon(background6);
+	                            Image background6 = en.getFoto().getImage().getScaledInstance(1500, en.getFoto().getIconHeight(), Image.SCALE_SMOOTH);
+	        	            	foto.setIcon(new ImageIcon(background6));
 	                            if (seriesRestantes > 0) {
 	                                minutos = 0;
 	                                if (en.getDificultad() == TipoDificultad.FACIL) {
@@ -216,7 +215,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	                
 	                
 	                labelTiempo.setText(timeFormatter.format(minutos) + ":"
-	                        + timeFormatter.format(segundos) + "."
+	                        + timeFormatter.format(segundos) + ":"
 	                        + timeFormatter.format(milisegundos));
 	                
 	                labelSeries.setText(seriesRestantes + " SERIES");
@@ -225,14 +224,14 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        });
 
 	        labelTiempo.setText(timeFormatter.format(minutos) + ":"
-	                + timeFormatter.format(segundos) + "."
+	                + timeFormatter.format(segundos) + ":"
 	                + timeFormatter.format(milisegundos));
 	        
 	        
 	        botonStart.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-	            	Icon background2 = en.getFoto();
-	            	foto.setIcon(background2);
+                    Image background2 = en.getFoto().getImage().getScaledInstance(1500, en.getFoto().getIconHeight(), Image.SCALE_SMOOTH);
+	            	foto.setIcon(new ImageIcon(background2));
 	                timer.start();
 
 	            }
@@ -245,8 +244,9 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	             
 	            	labelSeries.setText(en.getSeries() + " SERIES");
 	                
-	            	Icon background3 = new ImageIcon("resources/images/preparacion.jpg");
-	            	foto.setIcon(background3);
+	            	ImageIcon background3 = new ImageIcon("resources/images/preparacion.jpg");
+	                Image background3IMG = background3.getImage().getScaledInstance(1500, background.getIconHeight(), Image.SCALE_SMOOTH);
+	                foto.setIcon(new ImageIcon(background3IMG));
 	            	
 	                timer.stop();
 	                
@@ -355,12 +355,11 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        this.add(panelDerecha);
 	        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	        //Ajustes de la ventana
-	        setSize(1920,1080);
+			setExtendedState(JFrame.MAXIMIZED_BOTH);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("Entrenamiento en curso");
 	        setVisible(true);
 	        setResizable(false);
-	        pack(); 
 	        setLocationRelativeTo(null); 
 	    }
 	    

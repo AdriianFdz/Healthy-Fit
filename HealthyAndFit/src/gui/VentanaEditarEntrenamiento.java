@@ -68,10 +68,8 @@ public class VentanaEditarEntrenamiento extends JFrame{
 	private JPanel panelDerecha;
 		private JLabel labelDesc;
 		
-	
-		//
-		ImageIcon imagenResized;
-		//
+	ImageIcon imagenResized;
+	Image imagenSinEscalar;
 		
 		
 	public VentanaEditarEntrenamiento(Entrenamiento ent, Usuario p) {
@@ -155,7 +153,6 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		JButton botonConfirmar = new JButton("CONFIRMAR");
 
 		// Listeners
-		//
 		fotoEnt.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -168,8 +165,8 @@ public class VentanaEditarEntrenamiento extends JFrame{
 				
 				if (resp==JFileChooser.APPROVE_OPTION && file!=null) {					
 					try {
-						Image imagen = ImageIO.read(file).getScaledInstance(200, 200, Image.SCALE_SMOOTH);;
-						imagenResized = new ImageIcon(imagen);
+						imagenSinEscalar = ImageIO.read(file);
+						imagenResized = new ImageIcon(imagenSinEscalar.getScaledInstance(200, 200, Image.SCALE_SMOOTH));
 						fotoEnt.setIcon(imagenResized);
 						repaint();
 					} catch (IOException e1) {
@@ -214,10 +211,9 @@ public class VentanaEditarEntrenamiento extends JFrame{
 
 				} else {	
 					
-					//
 					if (imagenResized != null) {					
-						ent.setFoto(imagenResized);
-						DBManager.actualizarFotoEntrena(conn, ent, imagenResized);
+						ent.setFoto(new ImageIcon(imagenSinEscalar));
+						DBManager.actualizarFotoEntrena(conn, ent, new ImageIcon(imagenSinEscalar));
 					}
 					
 					// Actualizar los atributos del Entrenamiento

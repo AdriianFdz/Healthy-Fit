@@ -124,8 +124,8 @@ public class VentanaHistorial extends JFrame {
 				
 			});
 	        
-	        ImageIcon background = new ImageIcon("resources\\images\\calendario2.jpg");
-	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(700, 700, Image.SCALE_SMOOTH)));
+	        ImageIcon background = new ImageIcon("resources\\images\\historial.jpeg");
+	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(400, 600, Image.SCALE_SMOOTH)));
 
 	    
 	        panelDerecha = new JPanel(new GridLayout());

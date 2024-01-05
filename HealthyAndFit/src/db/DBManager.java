@@ -290,15 +290,24 @@ public class DBManager {
 	
 	public static void anadirUsuarioDieta(Connection connection, Usuario usuario, Dieta dieta, LocalDate fecha){
 		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuario_dieta VALUES (?, ?, ?)");
-			stmt.setString(1, usuario.getNombreUsuario());
-			stmt.setString(2, fecha.toString());
-			stmt.setString(3, dieta.getNombre());
-			
-			stmt.executeUpdate();
-			stmt.close();
+			PreparedStatement stmtComprobacion = connection.prepareStatement("SELECT * FROM usuario_dieta WHERE fecha = ? AND nombreUsuario = ?");
+			stmtComprobacion.setString(1, LocalDate.now().toString());
+			stmtComprobacion.setString(2, usuario.getNombreUsuario());
+			ResultSet rs = stmtComprobacion.executeQuery();
+			// Si no se ha añadido la fecha, se añade
+			if (!rs.next()) {				
+				PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuario_dieta VALUES (?, ?, ?)");
+				stmt.setString(1, usuario.getNombreUsuario());
+				stmt.setString(2, fecha.toString());
+				stmt.setString(3, dieta.getNombre());
+				
+				stmt.executeUpdate();
+				stmt.close();
+			}
 		}catch (SQLException e) {
-			//NO ANADIR NINGUN ERROR
+			e.printStackTrace();
+			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 	
@@ -379,13 +388,21 @@ public class DBManager {
 		try {
 			PreparedStatement stmtDieta = connection.prepareStatement("DELETE FROM dietas WHERE nombre = ?");
 				stmtDieta.setString(1, dieta.getNombre());
+				stmtDieta.executeUpdate();
+				stmtDieta.close();
 			PreparedStatement stmtPasosDieta = connection.prepareStatement("DELETE FROM pasos_dietas WHERE nombreDieta = ?");
 				stmtPasosDieta.setString(1, dieta.getNombre());
+				stmtPasosDieta.executeUpdate();
+				stmtPasosDieta.close();
 			PreparedStatement stmtIngredientesDieta = connection.prepareStatement("DELETE FROM ingredientes_dietas WHERE nombreDieta = ?");
 				stmtIngredientesDieta.setString(1, dieta.getNombre());
-				stmtDieta.executeUpdate();
-				stmtPasosDieta.executeUpdate();
 				stmtIngredientesDieta.executeUpdate();
+				stmtIngredientesDieta.close();
+			PreparedStatement stmtUsuarioDieta = connection.prepareStatement("DELETE FROM usuario_dieta WHERE nombreDieta = ?");
+				stmtUsuarioDieta.setString(1, dieta.getNombre());	
+				stmtUsuarioDieta.executeUpdate();
+				stmtUsuarioDieta.close();
+				
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -397,9 +414,30 @@ public class DBManager {
 	public static void eliminarUsuario(Connection connection, Usuario usuario) {
 		try {
 			PreparedStatement stmtUsuario = connection.prepareStatement("DELETE FROM usuarios WHERE nombreUsuario = ?");
-			stmtUsuario.setString(1, usuario.getNombreUsuario());
-			stmtUsuario.executeUpdate();
-			stmtUsuario.close();
+				stmtUsuario.setString(1, usuario.getNombreUsuario());
+				stmtUsuario.executeUpdate();
+				stmtUsuario.close();
+
+			PreparedStatement stmtUsuarioDieta = connection.prepareStatement("DELETE FROM usuario_dieta WHERE nombreUsuario = ?");
+				stmtUsuarioDieta.setString(1, usuario.getNombreUsuario());
+				stmtUsuarioDieta.executeUpdate();
+				stmtUsuarioDieta.close();
+
+			PreparedStatement stmtUsuarioAlergias = connection.prepareStatement("DELETE FROM usuario_alergias WHERE nombreUsuario = ?");
+				stmtUsuarioAlergias.setString(1, usuario.getNombreUsuario());
+				stmtUsuarioAlergias.executeUpdate();
+				stmtUsuarioAlergias.close();
+
+			PreparedStatement stmtUsuarioEnfermedades = connection.prepareStatement("DELETE FROM usuario_enfermedades WHERE nombreUsuario = ?");
+				stmtUsuarioEnfermedades.setString(1, usuario.getNombreUsuario());
+				stmtUsuarioEnfermedades.executeUpdate();
+				stmtUsuarioEnfermedades.close();
+
+			PreparedStatement stmtUsuarioEntrenamientos = connection.prepareStatement("DELETE FROM usuario_entrenamientos WHERE nombreUsuario = ?");
+				stmtUsuarioEntrenamientos.setString(1, usuario.getNombreUsuario());
+				stmtUsuarioEntrenamientos.executeUpdate();
+				stmtUsuarioEntrenamientos.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
