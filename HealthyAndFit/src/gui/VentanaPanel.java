@@ -32,6 +32,7 @@ import db.DBManager;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.Usuario;
+import io.ExportarDatos;
 import io.RegistroLogger;
 
 public class VentanaPanel extends JFrame {
@@ -360,6 +361,7 @@ public class VentanaPanel extends JFrame {
 						SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, nuevoUsuario, null, VentanaPanel.this, false));
 					} else {
 						//AÑADIR LLAMADA A FICHERO
+						ExportarDatos.importarFicheroUsuario();
 					}
 					
 					dispose();
@@ -394,6 +396,7 @@ public class VentanaPanel extends JFrame {
 						SwingUtilities.invokeLater(() -> new VentanaEditarDieta(nuevaDieta,p));
 					} else {
 						//AÑADIR LLAMADA A FICHERO
+						ExportarDatos.importarFicheroDieta();
 					}
 					
 					dispose();
@@ -427,6 +430,7 @@ public class VentanaPanel extends JFrame {
 						SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(nuevoEntrenamiento, p));
 					} else {
 						//AÑADIR LLAMADA A FICHERO
+						ExportarDatos.importarFicheroEntrenamiento();
 					}
 					
 					dispose();
@@ -521,6 +525,33 @@ public class VentanaPanel extends JFrame {
 					JOptionPane.showMessageDialog(null, "Tienes que seleccionar un entrenamiento");
 				}
 
+			}
+		});
+		
+		guardarU.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ExportarDatos.exportarFicheroUsuario();
+				
+			}
+		});
+		
+		guardarD.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ExportarDatos.exportarFicheroDieta();
+				
+			}
+		});
+		
+		guardarE.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ExportarDatos.exportarFicheroEntrenamiento();
+				
 			}
 		});
 
