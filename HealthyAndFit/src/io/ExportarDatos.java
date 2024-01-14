@@ -3,6 +3,7 @@ package io;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +16,9 @@ import java.util.logging.Level;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import db.DBManager;
 import domain.Entrenamiento;
+import domain.Usuario;
 
 public class ExportarDatos {
 	private static File obtenerRutaFichero (String titulo, String extension) {
@@ -84,4 +87,18 @@ public class ExportarDatos {
 			}
         }
 	}
+	
+	public static void guardarFicheroUsuario() {
+		List<Usuario> listaUsuarios = DBManager.obtenerUsuarios(DBManager.obtenerConexion());
+		try {
+			FileOutputStream fos = new FileOutputStream("");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	
 }
