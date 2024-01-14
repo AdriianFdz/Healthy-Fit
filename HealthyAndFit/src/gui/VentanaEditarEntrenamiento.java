@@ -229,7 +229,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 						DBManager.anadirEntrenamiento(conn, ent);
 					} else {						
 						try {	
-							PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ?, foto = ? WHERE nombre = ?");
+							PreparedStatement pstmt = conn.prepareStatement("UPDATE entrenamientos set nombre = ?, tipoEntrenamiento = ?, dificultad = ?, tiempo = ?, descripcion = ?, calorias = ?, series = ?, repeticiones = ? WHERE nombre = ?");
 							pstmt.setString(1, nuevoNombre);
 							pstmt.setString(2, tipoEntrenamiento.name());
 							pstmt.setString(3, nuevaDif.name());
@@ -239,7 +239,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 							pstmt.setInt(7, seriesNuevas);
 							pstmt.setInt(8, repeticionesNuevas);
 							pstmt.setString(9, antiguoNombre);
-							pstmt.setBytes(10, DBManager.convertirFotoABytes(imagenResized));
+							//pstmt.setBytes(10, DBManager.convertirFotoABytes(imagenResized));
 							
 							pstmt.executeUpdate();
 							pstmt.close();
