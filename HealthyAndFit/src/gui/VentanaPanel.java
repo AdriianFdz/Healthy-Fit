@@ -359,12 +359,12 @@ public class VentanaPanel extends JFrame {
 					if (manualBT.isSelected()) {
 						Usuario nuevoUsuario = new Usuario();
 						SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, nuevoUsuario, null, VentanaPanel.this, false));
+						dispose();
 					} else {
-						//AÑADIR LLAMADA A FICHERO
 						ExportarDatos.importarFicheroUsuario();
+						rellenarUsuarios();
 					}
 					
-					dispose();
 				}
 				
 			}
@@ -394,12 +394,12 @@ public class VentanaPanel extends JFrame {
 					if (manualBT.isSelected()) {
 						Dieta nuevaDieta = new Dieta();
 						SwingUtilities.invokeLater(() -> new VentanaEditarDieta(nuevaDieta,p));
+						dispose();
 					} else {
-						//AÑADIR LLAMADA A FICHERO
 						ExportarDatos.importarFicheroDieta();
+						rellenarDietas();
 					}
 					
-					dispose();
 				}
 			}
 		});
@@ -428,12 +428,12 @@ public class VentanaPanel extends JFrame {
 					if (manualBT.isSelected()) {
 						Entrenamiento nuevoEntrenamiento = new Entrenamiento();
 						SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(nuevoEntrenamiento, p));
+						dispose();
 					} else {
-						//AÑADIR LLAMADA A FICHERO
 						ExportarDatos.importarFicheroEntrenamiento();
+						rellenarEntrenamientos();
 					}
 					
-					dispose();
 				}
 			}
 		});
