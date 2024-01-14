@@ -95,6 +95,17 @@ public class TestDieta {
 	}
 	
 	@Test
+	public void testGetAlergias() {
+		assertEquals(Arrays.asList(TipoAlergias.GLUTEN), dieta.getAlergias());
+	}
+
+	@Test
+	public void testSetAlergias() {
+		dieta.setAlergias(Arrays.asList(TipoAlergias.APIO, TipoAlergias.CACAHUETES));
+		assertEquals(Arrays.asList(TipoAlergias.APIO, TipoAlergias.CACAHUETES), dieta.getAlergias());
+	}
+	
+	@Test
 	public void testToString() {
 		assertEquals("Dieta [nombre=Pollo, tiempo=20, dificultad=FACIL, kcal=400, pasos=[1.Freir huevo...], ingredientes=[1.Tomate...], alergias=[GLUTEN]]", dieta.toString());
 		

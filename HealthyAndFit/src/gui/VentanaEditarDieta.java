@@ -307,7 +307,7 @@ public class VentanaEditarDieta extends JFrame {
 							eliminarAlergiasStmt.executeUpdate();
 							eliminarAlergiasStmt.close();
 							
-							PreparedStatement anadirAlergiasStmt = conn.prepareStatement("INSERT INTO dieta_alergias VALUES(null, ?, (SELECT id from alergias WHERE nombreAlergia = ?))");
+							PreparedStatement anadirAlergiasStmt = conn.prepareStatement("INSERT INTO dieta_alergias VALUES(null, ?, (SELECT nombreAlergia from alergias WHERE nombreAlergia = ?))");
 							anadirAlergiasStmt.setString(1, d.getNombre());
 							for (TipoAlergias alergia : d.getAlergias()) {
 								anadirAlergiasStmt.setString(2, alergia.name());

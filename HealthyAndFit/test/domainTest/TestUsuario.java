@@ -18,6 +18,7 @@ import domain.Entrenamiento;
 import domain.TipoAlergias;
 import domain.TipoDificultad;
 import domain.TipoEnfermedades;
+import domain.TipoEntrenamiento;
 import domain.TipoPermiso;
 import domain.TipoSexo;
 import domain.Usuario;
@@ -25,10 +26,12 @@ import domain.Usuario;
 public class TestUsuario {
 	Usuario usuario;
 	Usuario usuarioSinArgs;
-	 
+	Entrenamiento e;
+	
 	@Before
 	public void setUp() {
-		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), 12300, 3, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>());
+		e = new Entrenamiento("test", TipoEntrenamiento.INFERIOR, TipoDificultad.DIFICIL, 3, "test descripcion", 10, 5, 3, new ImageIcon("resources/images/foto.png"));
+		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), 12300, 300, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>(Arrays.asList(e)));
 		usuarioSinArgs = new Usuario();
 				
 	} 
@@ -232,12 +235,12 @@ public class TestUsuario {
 	}
 	@Test
 	public void testSetPermiso() {
-		usuario.setPermiso(TipoPermiso.COLABORADOR);
-		assertEquals(TipoPermiso.COLABORADOR, usuario.getPermiso());	
+		usuario.setPermiso(TipoPermiso.USUARIO);
+		assertEquals(TipoPermiso.USUARIO, usuario.getPermiso());	
 	}
 	@Test
 	public void testGetRegistroEntrenamiento() {
-		assertEquals(new ArrayList<Entrenamiento>(), usuario.getRegistroEntrenamiento());
+		assertEquals(Arrays.asList(e), usuario.getRegistroEntrenamiento());
 	}
 	
 	@Test
@@ -249,7 +252,7 @@ public class TestUsuario {
 	
 	@Test
 	public void testToString() {
-		assertEquals("Usuario [nombre=Juan, nombreUsuario=juan_perez, apellido1=Perez, apellido2=Carbon, fechaNacimiento=2004-06-10, sexo=HOMBRE, altura=1.75, peso=75, alergias=[HUEVOS], correoElectronico=juan@gmail.com, enfermedades=[CARDIOVASCULARES], imc=24.489795918367346, preferenciaAlimenticia=NINGUNA, caloriasGastadas=12300, rachaEntrenamiento=3, objetivo=Ninguno, tiempoEntrenado=300, ultimaVezEntreno=2023-12-09, caloriasConsumidas=13000, proximaComida={}, vasosDeAgua=3, contrasena=juan, foto=resources\\images\\foto.png, permiso=ADMINISTRADOR, registroEntrenamiento=[], registroDietas=[]]", usuario.toString());	
+		assertEquals("Usuario [nombre=Juan, nombreUsuario=juan_perez, apellido1=Perez, apellido2=Carbon, fechaNacimiento=2004-06-10, sexo=HOMBRE, altura=1.75, peso=75, alergias=[HUEVOS], correoElectronico=juan@gmail.com, enfermedades=[CARDIOVASCULARES], imc=24.489795918367346, caloriasGastadas=12300, rachaEntrenamiento=, tiempoEntrenado=300, ultimaVezEntreno=2024-01-14, caloriasConsumidas=13000, proximaComida={}, vasosDeAgua=3, contrasena=juan, foto=resources\\images\\foto.png, permiso=ADMINISTRADOR, registroEntrenamiento=[Entrenamiento [nombre=test, tipoEntrenamiento=INFERIOR, dificultad=DIFICIL, tiempo=3, descripcion=test descripcion, calorias=10, series=5, repeticiones=3]]]", usuario.toString());	
 	} 
 	
 	

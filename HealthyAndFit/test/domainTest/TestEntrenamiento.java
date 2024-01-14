@@ -17,7 +17,7 @@ public class TestEntrenamiento {
 	
 	@Before
 	public void setUp() {
-		entrenamiento = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominales", 200, 3, 20, new ImageIcon());
+		entrenamiento = new Entrenamiento("Abdominales", TipoEntrenamiento.SUPERIOR, TipoDificultad.MEDIO, 60, "Entrenamiento que mejorará los abdominales", 200, 3, 20, new ImageIcon("resources/images/foto.png"));
 		entrenamientoSinArgs = new Entrenamiento();
 	}
 	
@@ -99,6 +99,17 @@ public class TestEntrenamiento {
 		entrenamiento.setRepeticiones(-1);
 		assertEquals(10, entrenamiento.getRepeticiones());
 	}
+	@Test
+	public void testGetFoto() {
+		assertEquals(new ImageIcon("resources/images/foto.png").getImage(), entrenamiento.getFoto().getImage());
+	}
+	
+	@Test
+	public void testSetFoto() {
+		entrenamiento.setFoto(new ImageIcon("resources/images/preparacion.jpg"));
+		assertEquals(new ImageIcon("resources/images/preparacion.jpg").getImage(), entrenamiento.getFoto().getImage());
+	}
+	
 	@Test
 	public void testToString(){
 		assertEquals("Entrenamiento [nombre=Abdominales, tipoEntrenamiento=SUPERIOR, dificultad=MEDIO, tiempo=60, descripcion=Entrenamiento que mejorará los abdominales, calorias=200, series=3, repeticiones=20]", entrenamiento.toString());

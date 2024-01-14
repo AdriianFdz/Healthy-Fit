@@ -11,6 +11,5 @@ public class Principal {
 		
 		RegistroLogger.cargarLogger();
 		SwingUtilities.invokeLater(()-> new VentanaLogeoRegistro());
-		
 	}
 }
