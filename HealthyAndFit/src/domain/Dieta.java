@@ -46,32 +46,6 @@ public class Dieta{
 		this.ingredientes = new ArrayList<String>();
 		this.alergias = new ArrayList<TipoAlergias>();
 	}
-
-	public Dieta(Dieta d) {
-		this.nombre = d.getNombre();
-		this.tiempo = d.getTiempo();
-		this.dificultad = d.getDificultad();
-		this.kcal = d.getKcal();
-		List<String> pasos = new ArrayList<String>();
-		for (String paso : d.getPasos()) {
-			pasos.add(paso);
-		}
-		this.pasos = new ArrayList<String>(pasos);
-		
-		List<String> ingredientes = new ArrayList<String>();
-		for (String ingrediente : d.getIngredientes()) {
-			ingredientes.add(ingrediente);
-		}
-		this.ingredientes = new ArrayList<String>(ingredientes);
-		
-		List<TipoAlergias> alergias = new ArrayList<TipoAlergias>();
-		for (TipoAlergias alergia : d.getAlergias()) {
-			alergias.add(alergia);
-		}
-		this.alergias = new ArrayList<TipoAlergias>(alergias);
-		
-		
-	}
 	//getters y setters
 	public String getNombre() {
 		return nombre;
