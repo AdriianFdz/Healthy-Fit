@@ -100,25 +100,29 @@ public class ExportarDatos {
 		Connection conn = DBManager.obtenerConexion();
 		List<Usuario> listaUsuarios = DBManager.obtenerUsuarios(conn);
 		File file = obtenerRutaFichero("Guardar archivo en...", ".dat");
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
-			
-			oos.writeObject(listaUsuarios);
-			
-			conn.close();
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
-    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de usuarios");
-			JOptionPane.showConfirmDialog(null, "Error al guardar los datos de usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+		
+		if (file != null) {
+			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
+				
+				oos.writeObject(listaUsuarios);
+				
+				conn.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+	    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
+			} catch (IOException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de usuarios");
+				JOptionPane.showConfirmDialog(null, "Error al guardar los datos de usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+			}
 		}
+			
 		
 
 	}
@@ -127,157 +131,181 @@ public class ExportarDatos {
 		Connection conn = DBManager.obtenerConexion();
 		List<Dieta> listaDietas = DBManager.obtenerDietas(conn);
 		File file = obtenerRutaFichero("Guardar archivo en...", ".dat");
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
-			
-			oos.writeObject(listaDietas);
-			
-			conn.close();
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
-    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de dietas");
-			JOptionPane.showConfirmDialog(null, "Error al guardar los datos de dietas", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+		
+		if (file != null) {
+			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
+				
+				oos.writeObject(listaDietas);
+				
+				conn.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+	    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
+			} catch (IOException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de dietas");
+				JOptionPane.showConfirmDialog(null, "Error al guardar los datos de dietas", "Error", JOptionPane.PLAIN_MESSAGE);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+			}
 		}
+		
+		
 	}
 	
 	public static void exportarFicheroEntrenamiento() {
 		Connection conn = DBManager.obtenerConexion();
 		List<Entrenamiento> listaEntrenamientos = DBManager.obtenerEntrenamientos(conn);
 		File file = obtenerRutaFichero("Guardar archivo en...", ".dat");
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
-			
-			oos.writeObject(listaEntrenamientos);	
-			
-			conn.close();
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
-    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
-			JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+		
+		if (file != null) {
+			try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))){
+				
+				oos.writeObject(listaEntrenamientos);	
+				
+				conn.close();
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+	    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
+			} catch (IOException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+				JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
+			} catch (SQLException e) {
+				e.printStackTrace();
+				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+			}
 		}
+			
 	}
 	
 	public static void importarFicheroUsuario() {
 		Connection conn = DBManager.obtenerConexion();
 		File file = obtenerRutaFichero("Obtener archivo en...", ".dat");
-		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(file))){
-			
-		@SuppressWarnings("unchecked")
-		List<Usuario> listaUsuarios= (List<Usuario>) oos.readObject();
-			
-		for (Usuario usuario : listaUsuarios) {
-			if (!DBManager.existeUsuario(conn, usuario)) {
-				DBManager.anadirUsuario(conn, usuario);
-			}
-		}
 		
-		conn.close();
-		
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
-    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
-			JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (ClassNotFoundException e) {
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
-			JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+		if (file != null) {
+			try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(file))){
+				
+				@SuppressWarnings("unchecked")
+				List<Usuario> listaUsuarios= (List<Usuario>) oos.readObject();
+					
+				for (Usuario usuario : listaUsuarios) {
+					if (!DBManager.existeUsuario(conn, usuario)) {
+						DBManager.anadirUsuario(conn, usuario);
+					}
+				}
+				
+				conn.close();
+				
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+		    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
+				} catch (IOException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+					JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
+				} catch (ClassNotFoundException e) {
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
+					JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+				}
 		}
+			
 		
 	}
 	
 	public static void importarFicheroDieta() {
 		Connection conn = DBManager.obtenerConexion();
 		File file = obtenerRutaFichero("Obtener archivo en...", ".dat");
-		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(file))){
+		
+		if (file != null) {
 			
-		@SuppressWarnings("unchecked")
-		List<Dieta> listaDietas= (List<Dieta>) oos.readObject();
-			
-		for (Dieta dieta : listaDietas) {
-			if (!DBManager.existeDieta(conn, dieta)) {
-				DBManager.anadirDieta(conn, dieta);
-			}
+			try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(file))){
+				
+				@SuppressWarnings("unchecked")
+				List<Dieta> listaDietas= (List<Dieta>) oos.readObject();
+					
+				for (Dieta dieta : listaDietas) {
+					if (!DBManager.existeDieta(conn, dieta)) {
+						DBManager.anadirDieta(conn, dieta);
+					}
+				}
+				
+				conn.close();
+				
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+		    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
+				} catch (IOException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+					JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
+				} catch (ClassNotFoundException e) {
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
+					JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+				}
 		}
 		
-		conn.close();
 		
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
-    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
-			JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (ClassNotFoundException e) {
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
-			JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
-		}
 		
 	}
 	
 	public static void importarFicheroEntrenamiento() {
 		Connection conn = DBManager.obtenerConexion();
 		File file = obtenerRutaFichero("Obtener archivo en...", ".dat");
-		try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(file))){
-			
-		@SuppressWarnings("unchecked")
-		List<Entrenamiento> listaEntrenamientos= (List<Entrenamiento>) oos.readObject();
-			
-		for (Entrenamiento entrenamiento : listaEntrenamientos) {
-			if (!DBManager.existeEntrenamiento(conn, entrenamiento)) {
-				DBManager.anadirEntrenamiento(conn, entrenamiento);
-			}
+		
+		if (file != null) {
+			try (ObjectInputStream oos = new ObjectInputStream(new FileInputStream(file))){
+				
+				@SuppressWarnings("unchecked")
+				List<Entrenamiento> listaEntrenamientos= (List<Entrenamiento>) oos.readObject();
+					
+				for (Entrenamiento entrenamiento : listaEntrenamientos) {
+					if (!DBManager.existeEntrenamiento(conn, entrenamiento)) {
+						DBManager.anadirEntrenamiento(conn, entrenamiento);
+					}
+				}
+				
+				conn.close();
+				
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+		    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
+				} catch (IOException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+					JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
+				} catch (ClassNotFoundException e) {
+					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
+					JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+				}
 		}
 		
-		conn.close();
-		
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
-    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (IOException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
-			JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
-		} catch (ClassNotFoundException e) {
-			RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
-			JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
-		}
+			
 		
 	}
 	

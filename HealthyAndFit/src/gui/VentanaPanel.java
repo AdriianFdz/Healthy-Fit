@@ -1,8 +1,9 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -48,11 +50,13 @@ public class VentanaPanel extends JFrame {
 
 	public VentanaPanel(Usuario p) {
 
-		JPanel tablas = new JPanel(new GridLayout(3, 1));
+		JPanel tablas = new JPanel();
+		tablas.setLayout(new BoxLayout(tablas, BoxLayout.Y_AXIS));
 
 		// PANEL USUARIOS
-		JPanel usuarios = new JPanel(new GridLayout(1, 3));
-		JLabel labelU = new JLabel("  USUARIOS:");
+		JPanel usuarios = new JPanel();
+		usuarios.setLayout(new BoxLayout(usuarios, BoxLayout.X_AXIS));
+		JLabel labelU = new JLabel(" USUARIOS:       ");
 		labelU.setFont(new Font("Consolas", Font.BOLD, 20));
 
 		modeloU = new DefaultTableModel() {
@@ -73,16 +77,12 @@ public class VentanaPanel extends JFrame {
 		modeloU.addColumn("Tipo");
 
 		JTable tablaU = new JTable(modeloU);
-		tablaU.getColumnModel().getColumn(0).setCellRenderer(new RendererUsuarios());
-		tablaU.getColumnModel().getColumn(1).setCellRenderer(new RendererUsuarios());
-		tablaU.getColumnModel().getColumn(2).setCellRenderer(new RendererUsuarios());
-		tablaU.getColumnModel().getColumn(3).setCellRenderer(new RendererUsuarios());
-		tablaU.getColumnModel().getColumn(4).setCellRenderer(new RendererUsuarios());
-		tablaU.getColumnModel().getColumn(5).setCellRenderer(new RendererUsuarios());
+		tablaU.setDefaultRenderer(Object.class, new RendererUsuarios());
 
 		JScrollPane scrollU = new JScrollPane(tablaU);
 
-		JPanel panelBotonesU = new JPanel();
+		JPanel panelBotonesU = new JPanel(new GridLayout(4,1));
+		JPanel panelBotonesU2 = new JPanel();
 		JButton anadirU = new JButton("AÑADIR");
 		JButton modificarU = new JButton("MODIFICAR");
 		JButton eliminarU = new JButton("ELIMINAR");
@@ -93,15 +93,19 @@ public class VentanaPanel extends JFrame {
 		panelBotonesU.add(eliminarU);
 		panelBotonesU.add(guardarU);
 		
+		panelBotonesU2.add(panelBotonesU);
+		
 		usuarios.add(labelU);
 		usuarios.add(scrollU);
-		usuarios.add(panelBotonesU);
+		usuarios.add(panelBotonesU2);
 
 		// PANEL DIETAS
-		JPanel dietas = new JPanel(new GridLayout(1, 3));
-		JLabel labelD = new JLabel("  DIETAS:");
+		JPanel dietas = new JPanel();
+		dietas.setLayout(new BoxLayout(dietas, BoxLayout.X_AXIS));
+		JLabel labelD = new JLabel(" DIETAS:         ");
+		labelD.setHorizontalAlignment(JLabel.CENTER);
 		labelD.setFont(new Font("Consolas", Font.BOLD, 20));
-
+		
 		modeloD = new DefaultTableModel() {
 		
 			private static final long serialVersionUID = 1L;
@@ -111,21 +115,19 @@ public class VentanaPanel extends JFrame {
 				return false;
 			}
 		};
-
+		
 		modeloD.addColumn("Nombre");
 		modeloD.addColumn("Tiempo");
 		modeloD.addColumn("Dificultad");
 		modeloD.addColumn("Ingredientes");
 
 		JTable tablaD = new JTable(modeloD);
-		tablaD.getColumnModel().getColumn(0).setCellRenderer(new RendererDietas());
-		tablaD.getColumnModel().getColumn(1).setCellRenderer(new RendererDietas());
-		tablaD.getColumnModel().getColumn(2).setCellRenderer(new RendererDietas());
-		tablaD.getColumnModel().getColumn(3).setCellRenderer(new RendererDietas());
+		tablaD.setDefaultRenderer(Object.class, new RendererDietas());
+
 
 		JScrollPane scrollD = new JScrollPane(tablaD);
-
-		JPanel panelBotonesD = new JPanel();
+		JPanel panelBotonesD2 = new JPanel();
+		JPanel panelBotonesD = new JPanel(new GridLayout(4,1));
 		JButton anadirD = new JButton("AÑADIR");
 		JButton modificarD = new JButton("MODIFICAR");
 		JButton eliminarD = new JButton("ELIMINAR");
@@ -136,14 +138,17 @@ public class VentanaPanel extends JFrame {
 		panelBotonesD.add(eliminarD);
 		panelBotonesD.add(guardarD);
 
+		panelBotonesD2.add(panelBotonesD);
+		
 		dietas.add(labelD);
 		dietas.add(scrollD);
-		dietas.add(panelBotonesD);
+		dietas.add(panelBotonesD2);
 
 		// PANEL ENTRENAMIENTOS
 
-		JPanel entrenamientos = new JPanel(new GridLayout(2, 3));
-		JLabel labelE = new JLabel("  ENTRENAMIENTOS:");
+		JPanel entrenamientos = new JPanel();
+		entrenamientos.setLayout(new BoxLayout(entrenamientos, BoxLayout.X_AXIS));
+		JLabel labelE = new JLabel(" ENTRENAMIENTOS: ");
 		labelE.setFont(new Font("Consolas", Font.BOLD, 20));
 		
 		modeloE = new DefaultTableModel() {
@@ -161,14 +166,12 @@ public class VentanaPanel extends JFrame {
 		modeloE.addColumn("Kcal");
 
 		JTable tablaE = new JTable(modeloE);
-		tablaE.getColumnModel().getColumn(0).setCellRenderer(new RendererEntrenamientos());
-		tablaE.getColumnModel().getColumn(1).setCellRenderer(new RendererEntrenamientos());
-		tablaE.getColumnModel().getColumn(2).setCellRenderer(new RendererEntrenamientos());
-		tablaE.getColumnModel().getColumn(3).setCellRenderer(new RendererEntrenamientos());
-
+		tablaE.setDefaultRenderer(Object.class, new RendererEntrenamientos());
+		
 		JScrollPane scrollE = new JScrollPane(tablaE);
 
-		JPanel panelBotonesE = new JPanel();
+		JPanel panelBotonesE = new JPanel(new GridLayout(4,1));
+		JPanel panelBotonesE2 = new JPanel();
 		JButton anadirE = new JButton("AÑADIR");
 		JButton modificarE = new JButton("MODIFICAR");
 		JButton eliminarE = new JButton("ELIMINAR");
@@ -178,28 +181,27 @@ public class VentanaPanel extends JFrame {
 		panelBotonesE.add(modificarE);
 		panelBotonesE.add(eliminarE);
 		panelBotonesE.add(guardarE);
+		
+		panelBotonesE2.add(panelBotonesE);
 
-		// AÑADIR BOTON VOLVER
-		JPanel panelVolver = new JPanel(new GridLayout(3, 3));
-		panelVolver.add(new JLabel(""));
-		panelVolver.add(new JLabel(""));
-		panelVolver.add(new JLabel(""));
-		panelVolver.add(new JLabel(""));
-		panelVolver.add(new JLabel(""));
-		panelVolver.add(new JLabel(""));
-		JButton volver = new JButton("Volver");
-		panelVolver.add(volver);
+		
 
 		entrenamientos.add(labelE);
 		entrenamientos.add(scrollE);
-		entrenamientos.add(panelBotonesE);
-		entrenamientos.add(panelVolver);
-		entrenamientos.add(new JLabel(""));
+		entrenamientos.add(panelBotonesE2);
 
+
+		// AÑADIR BOTON VOLVER
+		JPanel panelVolver = new JPanel();
+		panelVolver.setLayout(new FlowLayout(FlowLayout.LEADING));
+		JButton volver = new JButton("VOLVER");
+		panelVolver.add(volver);
+		
 		// METO TODAS LAS TABLAS EN EL PANEL
 		tablas.add(usuarios);
 		tablas.add(dietas);
 		tablas.add(entrenamientos);
+		tablas.add(panelVolver);
 		this.add(tablas);
 
 		// METODOS PARA RELLENAR DE LA BASE DE DATOS LAS TABLAS
@@ -555,6 +557,7 @@ public class VentanaPanel extends JFrame {
 			}
 		});
 
+		this.setResizable(false);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle("Panel");
