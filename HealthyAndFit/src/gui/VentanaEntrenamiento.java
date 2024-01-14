@@ -244,7 +244,7 @@ public class VentanaEntrenamiento extends JFrame{
 			
 				labelDescripcion.setVisible(true);
 				
-				descripcionEntrenamientoSeleccionado.setText(value.getDescripcion());
+				descripcionEntrenamientoSeleccionado.setText("<html><div style='width:400px;'>" + value.getDescripcion() + "</div></html>");
 				VentanaResumen.anadirBordePanel(entrenamientoSeleccionado.getNombre(), panelEntrenamientoSeleccionado);
 				
 				botonIniciar.setVisible(true);
