@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -83,10 +84,13 @@ public class VentanaPanel extends JFrame {
 		JButton anadirU = new JButton("AÑADIR");
 		JButton modificarU = new JButton("MODIFICAR");
 		JButton eliminarU = new JButton("ELIMINAR");
+		JButton guardarU = new JButton("GUARDAR");
+		
 		panelBotonesU.add(anadirU);
 		panelBotonesU.add(modificarU);
 		panelBotonesU.add(eliminarU);
-
+		panelBotonesU.add(guardarU);
+		
 		usuarios.add(labelU);
 		usuarios.add(scrollU);
 		usuarios.add(panelBotonesU);
@@ -123,9 +127,12 @@ public class VentanaPanel extends JFrame {
 		JButton anadirD = new JButton("AÑADIR");
 		JButton modificarD = new JButton("MODIFICAR");
 		JButton eliminarD = new JButton("ELIMINAR");
+		JButton guardarD = new JButton("GUARDAR");
+		
 		panelBotonesD.add(anadirD);
 		panelBotonesD.add(modificarD);
 		panelBotonesD.add(eliminarD);
+		panelBotonesD.add(guardarD);
 
 		dietas.add(labelD);
 		dietas.add(scrollD);
@@ -163,9 +170,12 @@ public class VentanaPanel extends JFrame {
 		JButton anadirE = new JButton("AÑADIR");
 		JButton modificarE = new JButton("MODIFICAR");
 		JButton eliminarE = new JButton("ELIMINAR");
+		JButton guardarE = new JButton("GUARDAR");
+		
 		panelBotonesE.add(anadirE);
 		panelBotonesE.add(modificarE);
 		panelBotonesE.add(eliminarE);
+		panelBotonesE.add(guardarE);
 
 		// AÑADIR BOTON VOLVER
 		JPanel panelVolver = new JPanel(new GridLayout(3, 3));

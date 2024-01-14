@@ -90,7 +90,7 @@ public class VentanaHistorial extends JFrame {
 							
 						}
 					     
-					     
+					    // if (isSelected && column == table.getSelectedColumn() && row == table.getSelectedRow()) 
 						if (isSelected) {
 							
 							label.setBackground(Color.CYAN);
