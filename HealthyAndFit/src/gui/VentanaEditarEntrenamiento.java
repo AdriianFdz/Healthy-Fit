@@ -239,7 +239,6 @@ public class VentanaEditarEntrenamiento extends JFrame{
 							pstmt.setInt(7, seriesNuevas);
 							pstmt.setInt(8, repeticionesNuevas);
 							pstmt.setString(9, antiguoNombre);
-							//pstmt.setBytes(10, DBManager.convertirFotoABytes(imagenResized));
 							
 							pstmt.executeUpdate();
 							pstmt.close();

@@ -14,11 +14,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -327,9 +329,33 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Usuario nuevoUsuario = new Usuario();
-				SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, nuevoUsuario, null, VentanaPanel.this, false));
-				dispose();
+				
+				JPanel botonesAnadir = new JPanel();
+				ButtonGroup btGroup = new ButtonGroup();
+				
+					JRadioButton manualBT = new JRadioButton("Manualmente");
+					JRadioButton ficheroBT = new JRadioButton("Fichero");
+					btGroup.add(manualBT);
+					btGroup.add(ficheroBT);
+					btGroup.setSelected(manualBT.getModel(), true);
+					
+				botonesAnadir.add(manualBT);
+				botonesAnadir.add(ficheroBT);
+				
+				
+				int opcion = JOptionPane.showOptionDialog(null, botonesAnadir, "Selecciona una opcion", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+				
+				if (opcion == JOptionPane.YES_OPTION) {
+					if (manualBT.isSelected()) {
+						Usuario nuevoUsuario = new Usuario();
+						SwingUtilities.invokeLater(() -> new VentanaEditarPerfil(p, nuevoUsuario, null, VentanaPanel.this, false));
+					} else {
+						//AÑADIR LLAMADA A FICHERO
+					}
+					
+					dispose();
+				}
+				
 			}
 		});
 
@@ -337,10 +363,32 @@ public class VentanaPanel extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Dieta nuevaDieta = new Dieta();
-				SwingUtilities.invokeLater(() -> new VentanaEditarDieta(nuevaDieta,p));
-				dispose();	
-
+				
+				JPanel botonesAnadir = new JPanel();
+				ButtonGroup btGroup = new ButtonGroup();
+				
+					JRadioButton manualBT = new JRadioButton("Manualmente");
+					JRadioButton ficheroBT = new JRadioButton("Fichero");
+					btGroup.add(manualBT);
+					btGroup.add(ficheroBT);
+					btGroup.setSelected(manualBT.getModel(), true);
+					
+				botonesAnadir.add(manualBT);
+				botonesAnadir.add(ficheroBT);
+				
+				
+				int opcion = JOptionPane.showOptionDialog(null, botonesAnadir, "Selecciona una opcion", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+				
+				if (opcion == JOptionPane.YES_OPTION) {
+					if (manualBT.isSelected()) {
+						Dieta nuevaDieta = new Dieta();
+						SwingUtilities.invokeLater(() -> new VentanaEditarDieta(nuevaDieta,p));
+					} else {
+						//AÑADIR LLAMADA A FICHERO
+					}
+					
+					dispose();
+				}
 			}
 		});
 
@@ -349,10 +397,31 @@ public class VentanaPanel extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				Entrenamiento nuevoEntrenamiento = new Entrenamiento();
-				SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(nuevoEntrenamiento, p));
-				dispose();		
-
+				JPanel botonesAnadir = new JPanel();
+				ButtonGroup btGroup = new ButtonGroup();
+				
+					JRadioButton manualBT = new JRadioButton("Manualmente");
+					JRadioButton ficheroBT = new JRadioButton("Fichero");
+					btGroup.add(manualBT);
+					btGroup.add(ficheroBT);
+					btGroup.setSelected(manualBT.getModel(), true);
+					
+				botonesAnadir.add(manualBT);
+				botonesAnadir.add(ficheroBT);
+				
+				
+				int opcion = JOptionPane.showOptionDialog(null, botonesAnadir, "Selecciona una opcion", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+				
+				if (opcion == JOptionPane.YES_OPTION) {
+					if (manualBT.isSelected()) {
+						Entrenamiento nuevoEntrenamiento = new Entrenamiento();
+						SwingUtilities.invokeLater(() -> new VentanaEditarEntrenamiento(nuevoEntrenamiento, p));
+					} else {
+						//AÑADIR LLAMADA A FICHERO
+					}
+					
+					dispose();
+				}
 			}
 		});
 
