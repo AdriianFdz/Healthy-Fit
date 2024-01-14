@@ -619,10 +619,11 @@ public class VentanaEditarPerfil extends JFrame {
 			}
 		});
 		
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setResizable(false);
 		this.pack();
 		this.setVisible(true);
-		setLocationRelativeTo(null);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 		this.setTitle("Perfil");
 	}
 	public static void anadirBordeLabel(String titulo, JLabel label) {

@@ -272,10 +272,10 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		
 		this.add(datos, BorderLayout.NORTH);
 		this.add(panelBotones, BorderLayout.SOUTH);
-			
-		pack();
+		this.setResizable(false);
+		this.pack();
 		this.setVisible(true);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setTitle("Editar Entrenamiento");
 
 	}
