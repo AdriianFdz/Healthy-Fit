@@ -1,5 +1,6 @@
 package domain;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +9,12 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
-public class Usuario {
+public class Usuario implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private String nombre; 
 	private String nombreUsuario; 
 	private String apellido1;
