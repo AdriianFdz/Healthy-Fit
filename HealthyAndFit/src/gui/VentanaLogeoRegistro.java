@@ -56,7 +56,6 @@ public class VentanaLogeoRegistro extends JFrame {
 	private JLabel contraseñaLogeo;
 	private JPasswordField meterContraseñaLogeo;
 	private JButton iniciarSesion;
-	private JButton inicioRapido;
 
 	// INFORMACIÓN PRIMARIA PARA REGISTRARSE
 
@@ -134,10 +133,7 @@ public class VentanaLogeoRegistro extends JFrame {
 		iniciarSesion = new JButton("INICIAR SESION");
 		logeoIzquierda.add(iniciarSesion);
 		
-		
-		inicioRapido = new JButton("INICIO RAPIDO");
-		logeoIzquierda.add(inicioRapido);
-		
+				
 		foto = new JLabel();
 		ImageIcon imagen = new ImageIcon("resources\\images\\logo.png");
         Image imagen2 = imagen.getImage().getScaledInstance(330, 280, Image.SCALE_SMOOTH);
@@ -354,25 +350,6 @@ public class VentanaLogeoRegistro extends JFrame {
 				}
 			}
 		});
-		// INICIO RAPIDO PARA NO METER TODO EL RATO USUARIO Y CONTRASEÑA, BORRAR AL
-		// ACABAR PROYECTO
-		inicioRapido.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Usuario usuarioSinComprobar = new Usuario();
-				usuarioSinComprobar.setNombreUsuario("juan_perez");
-
-				usuarioSinComprobar.setContrasena("juan");
-
-				Usuario usuarioComprobado = usuarioContraseñaCorrectos(usuarioSinComprobar);
-				if (usuarioComprobado != null) {
-					SwingUtilities.invokeLater(() -> new VentanaResumen(usuarioComprobado));
-					dispose();
-				}
-			}
-		});
-	
 		
 		
 		meterContraseñaLogeo.addKeyListener(new KeyAdapter() {

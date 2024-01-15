@@ -11,7 +11,6 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 
 import javax.swing.Icon;
@@ -22,11 +21,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import db.DBManager;
 import domain.Entrenamiento;
-import domain.TipoDificultad;
 import domain.Usuario;
 
 
@@ -51,22 +48,18 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    private JLabel foto;
 	    
 	    private JButton botonStart;
-	    private JButton botonReset;
-	    private JButton botonStop;
 	    private JButton botonVolver;
 	    
 	    private int seriesRestantes;
 	    private int repeticionesRestantes;
 	    
-	    private byte milisegundos;
-	    private byte segundos;
-	    private short minutos;
+	    private int segundos;
 
 	    private boolean descanso;
+		
 	    
-	    private DecimalFormat timeFormatter;
-	  
-	    private Timer timer;
+	    private Boolean detener = false;
+
 
 	    public VentanaEntrenamientoEnCurso(Entrenamiento en, Usuario persona, VentanaResumen vResumen) {
 	    
@@ -77,17 +70,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
             Image iconoFuego = tmpFuego.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
 		    
             //Inicializar las propiedades previamente definidas
-            milisegundos = 0;
-            minutos = 0;
-            
-            if (en.getDificultad() == TipoDificultad.FACIL) {
-            	segundos = (byte) (en.getTiempo() + 20);
-            }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-            	segundos = (byte) (en.getTiempo() + 10);
-            }else {
-            	segundos = (byte) en.getTiempo();
-            }
-        	
+        	segundos = en.getTiempo();
 		    descanso = false;
 		    
 		    seriesRestantes = en.getSeries();
@@ -129,169 +112,89 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 
 	        botonVolver = new JButton("VOLVER");
 	        botonStart = new JButton("Start");
-	        botonReset = new JButton("Reset");
-	        botonStop = new JButton("Stop");
 	        
 	        
-	   
-	        timeFormatter = new DecimalFormat("00");
+	        labelTiempo.setText(String.valueOf(en.getTiempo()));
+	        Thread hilo = new Thread(new Runnable() {
+				
+	        	@Override
+				public void run() {
+					while (!detener) {
+						while (segundos > 0) {
+							segundos--;
+							SwingUtilities.invokeLater(() -> labelTiempo.setText(String.valueOf(segundos)));
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						
+						if (seriesRestantes == 0) {
+							detener = true;
+							SwingUtilities.invokeLater(() -> labelTiempo.setVisible(false));
+							SwingUtilities.invokeLater(() -> labelEstado.setText("	ENTRENAMIENTO FINALIZADO	ENTRENAMIENTO FINALIZADO	ENTRENAMIENTO FINALIZADO	"));
+							int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
+							if (opcion == JOptionPane.YES_OPTION) {
+								persona.getRegistroEntrenamiento().add(en);
+								persona.setUltimaVezEntreno(LocalDate.now());
+								Connection conn = DBManager.obtenerConexion();
+								DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
+							}
+							SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
+							dispose();					
+						} else {
+							if (!descanso) {
+								//Si no está en el tiempo de descanso, inicia el tiempo de descanso
+								seriesRestantes--;
+								SwingUtilities.invokeLater(() -> labelSeries.setText(seriesRestantes + " SERIES"));
+								if (seriesRestantes==0) {
+									continue;
+								}
+								
+								descanso = true;
+								segundos = 30;  // 30 segundos de descanso entre series
+								SwingUtilities.invokeLater(() -> labelTiempo.setForeground(Color.RED));
+								SwingUtilities.invokeLater(() -> labelEstado.setText("  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  "));
+								SwingUtilities.invokeLater(() -> VentanaResumen.animacionTexto(labelEstado));
+								Icon background5 = new ImageIcon("resources/images/descanso.png");
+								SwingUtilities.invokeLater(() -> foto.setIcon(background5));
+							} else {
+								// Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
+								descanso = false;
+								Image background6 = en.getFoto().getImage().getScaledInstance(1500, en.getFoto().getIconHeight(), Image.SCALE_SMOOTH);
+								SwingUtilities.invokeLater(() -> foto.setIcon(new ImageIcon(background6)));
+								if (seriesRestantes > 0) {
+									segundos = en.getTiempo();
+									SwingUtilities.invokeLater(() -> labelTiempo.setForeground(Color.BLACK));
+									SwingUtilities.invokeLater(() -> labelEstado.setText(""));
+								}
+							}
+						}
+						
+					}
+	        		
+					
+					
+				}
+			});
 	        
-	        timer = new Timer(10, new ActionListener() {
-	            @Override 
-	            public void actionPerformed(ActionEvent e) {
-	                if (milisegundos > 0) {
-	                    milisegundos--;
-	                } else {
-	                	  if (seriesRestantes == 0) {
-	                            // Solo muestra el JOptionPane al final del ejercicio
-	                        	timer.stop();
-	                            labelTiempo.setVisible(false);
-	                            labelEstado.setText("  ENTRENAMIENTO FINALIZADO      ENTRENAMIENTO FINALIZADO      ENTRENAMIENTO FINALIZADO     ");
-	                            int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
-	                        	if (opcion == JOptionPane.YES_OPTION) {
-	                            	persona.getRegistroEntrenamiento().add(en);
-	                            	persona.setUltimaVezEntreno(LocalDate.now());
-	                            	Connection conn = DBManager.obtenerConexion();
-	                            	DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
-	                            	SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
-	                            	dispose();
-	                            } else {
-	                            	SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
-	                				dispose();
-	                            }
-	                        }
-	                	  
-	                    if (segundos == 0 && minutos == 0) {
-	                        timer.stop();
-	                        
-	                      
-	                        if (!descanso) {
-	                            // Si no está en el tiempo de descanso, inicia el tiempo de descanso
-	                            descanso = true;
-	                            seriesRestantes--;
-	                            segundos = 30;  // 30 segundos de descanso entre series
-	                            milisegundos = 0;
-	                            timer.start();
-	                            labelTiempo.setForeground(Color.RED);
-	                            labelEstado.setText("  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  ");
-	                            VentanaResumen.animacionTexto(labelEstado);
-	                            Icon background5 = new ImageIcon("resources/images/descanso.png");
-	        	            	foto.setIcon(background5);
-	                            
-	                          
-	                        } else {
-	                            // Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
-	                            descanso = false;
-	                            Image background6 = en.getFoto().getImage().getScaledInstance(1500, en.getFoto().getIconHeight(), Image.SCALE_SMOOTH);
-	        	            	foto.setIcon(new ImageIcon(background6));
-	                            if (seriesRestantes > 0) {
-	                                minutos = 0;
-	                                if (en.getDificultad() == TipoDificultad.FACIL) {
-	                                	segundos = (byte) (en.getTiempo() + 20);
-	                                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-	                                	segundos = (byte) (en.getTiempo() + 10);
-	                                }else {
-	                                	segundos = (byte) en.getTiempo();
-	                                }
-	                                milisegundos = 0;
-	                                timer.start();
-	                                labelTiempo.setForeground(Color.BLACK);
-	                                labelEstado.setText("");
-	                            }
-	                    }
-
-	                    } else if (segundos > 0) {
-	                        segundos--;
-	                        milisegundos = 60;
-	                        
-	                        
-	                    } else if (minutos > 0) {
-	                        minutos--;
-	                        segundos = 59;
-	                        milisegundos = 60;
-	                    }
-	                }
-	             
-	                
-	                
-	                labelTiempo.setText(timeFormatter.format(minutos) + ":"
-	                        + timeFormatter.format(segundos) + ":"
-	                        + timeFormatter.format(milisegundos));
-	                
-	                labelSeries.setText(seriesRestantes + " SERIES");
-	                labelRepeticiones.setText(repeticionesRestantes + " REPETICIONES");
-	            }
-	        });
-
-	        labelTiempo.setText(timeFormatter.format(minutos) + ":"
-	                + timeFormatter.format(segundos) + ":"
-	                + timeFormatter.format(milisegundos));
-	        
-	        
+				
 	        botonStart.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	            	if (descanso) {
                         Icon background6 = new ImageIcon("resources/images/descanso.png");
-                         foto.setIcon(background6);
-                         timer.start();
+                        foto.setIcon(background6);
                     } else {
                         Image background2 = en.getFoto().getImage().getScaledInstance(1500, en.getFoto().getIconHeight(), Image.SCALE_SMOOTH);
                         foto.setIcon(new ImageIcon(background2));
-                        timer.start();
                     }
+	            	hilo.start();
+	            	botonStart.setVisible(false);
 
 	            }
 	        });
-	        
-
-	        
-	        botonReset.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	             
-	            	labelSeries.setText(en.getSeries() + " SERIES");
-	                
-	            	ImageIcon background3 = new ImageIcon("resources/images/preparacion.jpg");
-	                Image background3IMG = background3.getImage().getScaledInstance(1500, background.getIconHeight(), Image.SCALE_SMOOTH);
-	                foto.setIcon(new ImageIcon(background3IMG));
-	            	
-	                timer.stop();
-	                
-	                if (!descanso) {
-	                	if (en.getDificultad() == TipoDificultad.FACIL) {
-		                	segundos = (byte) (en.getTiempo() + 20);
-		                }else if(en.getDificultad() == TipoDificultad.MEDIO) {
-		                	segundos = (byte) (en.getTiempo() + 10);
-		                }else {
-		                	segundos = (byte) en.getTiempo();
-		                }
-	                }else {
-	                	segundos = 30;
-	                }
-	                
-	                
-	                
-	                
-	                milisegundos = 0;
-	                
-
-	                labelTiempo.setText(timeFormatter.format(minutos) + ":"
-	                        + timeFormatter.format(segundos) + "."
-	                        + timeFormatter.format(milisegundos));
-	            }
-	        });
-
-	    
-
-	       
-	        botonStop.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	            	Icon background4 = new ImageIcon("resources/images/pause.jpg");
-	            	foto.setIcon(background4);
-	                timer.stop();
-	            }
-	        });
-
-	       
+       
 
 	       botonVolver.addActionListener(new ActionListener() {
 			
@@ -323,22 +226,15 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 			labelSeries.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 20));
 		
 			botonStart.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
-			botonReset.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
-			botonStop.setFont(new Font(fuenteFont.getFontName(), fuenteFont.getStyle(), 30));
 			
 			botonStart.setBackground(Color.GREEN);
-			botonStop.setBackground(Color.RED);
 			
 			botonStart.setPreferredSize(new Dimension(120,60));
-			botonReset.setPreferredSize(new Dimension(120,60));
-			botonStop.setPreferredSize(new Dimension(120,60));
 			botonVolver.setPreferredSize(new Dimension(120,60));
 			
 			
 			//Añadir componentes a los paneles
 			panelBotones.add(botonStart);
-		    panelBotones.add(botonReset);
-		    panelBotones.add(botonStop);
 		    
 	        panelSecundario.add(labelDificultad);
 	        panelSecundario.add(labelSeries);
@@ -364,8 +260,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("Entrenamiento en curso");
 	        setVisible(true);
-	        setResizable(false);
-	        setLocationRelativeTo(null); 
+	        //setResizable(false);
 	    }
 	    
 }
