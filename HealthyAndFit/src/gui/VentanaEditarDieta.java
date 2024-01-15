@@ -95,7 +95,7 @@ public class VentanaEditarDieta extends JFrame {
 		}
 		
 		
-       JButton botonAñadirIngrediente = new JButton("AÑADIR ING");
+       JButton botonAnadirIngrediente = new JButton("ANADIR ING");
        JButton botonElimiarIngrediente = new JButton("ELIMINAR ING");
        
 		//Inicializamos los otros elementos con los datos del usuario
@@ -106,8 +106,8 @@ public class VentanaEditarDieta extends JFrame {
 		spinnerKcal = new JSpinner(new SpinnerNumberModel(d.getTiempo(), 0, 9999, 1));
 	
 		JScrollPane paneIng = new JScrollPane(JlistaIngredientes);
-		JPanel btnAñaEli = new JPanel();
-		btnAñaEli.setLayout(new BoxLayout(btnAñaEli, BoxLayout.X_AXIS));
+		JPanel btnAnaEli = new JPanel();
+		btnAnaEli.setLayout(new BoxLayout(btnAnaEli, BoxLayout.X_AXIS));
 		
 		//Agregamos componentes al paneIzq
 		pIzq.add(labelNombre);
@@ -121,9 +121,9 @@ public class VentanaEditarDieta extends JFrame {
 		pIzq.add(labelIngredientes);
 		pIzq.add(paneIng);
 		
-		btnAñaEli.add(botonAñadirIngrediente);
-		btnAñaEli.add(botonElimiarIngrediente);
-		pIzq.add(btnAñaEli);
+		btnAnaEli.add(botonAnadirIngrediente);
+		btnAnaEli.add(botonElimiarIngrediente);
+		pIzq.add(btnAnaEli);
 		
 		//Panel derecha
 		pDer = new JPanel();
@@ -149,15 +149,15 @@ public class VentanaEditarDieta extends JFrame {
 		JList<TipoAlergias> listaAlergia = new JList<>();
 		DefaultListModel<TipoAlergias> modeloAlergia = new DefaultListModel<>();
 		listaAlergia.setModel(modeloAlergia);
-	
+		JScrollPane scrollJListaAlergias = new JScrollPane(listaAlergia);
 		
-		JButton anadirAlergia = new JButton("AÑADIR ALERGIA");
+		JButton anadirAlergia = new JButton("ANADIR ALERGIA");
 		JButton eliminarAlergia = new JButton("ELIMINAR ALERGIA");
 		JPanel panelAlergia = new JPanel(new BorderLayout());
 		JPanel panelAlergiaBotones = new JPanel();
 		
 		panelAlergia.add(labelAlerg, BorderLayout.NORTH);
-		panelAlergia.add(listaAlergia,BorderLayout.CENTER);
+		panelAlergia.add(scrollJListaAlergias,BorderLayout.CENTER);
 		panelAlergiaBotones.add(anadirAlergia);
 		panelAlergiaBotones.add(eliminarAlergia);
 		panelAlergia.add(panelAlergiaBotones, BorderLayout.SOUTH);
@@ -190,7 +190,7 @@ public class VentanaEditarDieta extends JFrame {
 							listaAlergias.remove(TipoAlergias.NINGUNA);
 						}
 					} else {
-						JOptionPane.showConfirmDialog(null, "Alergia ya añadida", "Error", JOptionPane.PLAIN_MESSAGE);	
+						JOptionPane.showConfirmDialog(null, "Alergia ya anadida", "Error", JOptionPane.PLAIN_MESSAGE);	
 					}
 					
 				}
@@ -216,23 +216,23 @@ public class VentanaEditarDieta extends JFrame {
 		
 	    
         panelDcha = new JScrollPane(JlistaPasos);
-        JPanel btnAñaEliPasos = new JPanel();
+        JPanel btnAnaEliPasos = new JPanel();
 		
-        JButton botonAñadirPaso= new JButton("AÑADIR PASO");
+        JButton botonAnadirPaso= new JButton("ANADIR PASO");
         JButton botonElimiarPaso= new JButton("ELIMINAR PASO");
         
         pDer.add(labelPasos);
 		pDer.add(panelDcha);
-		btnAñaEliPasos.add(botonAñadirPaso);
-		btnAñaEliPasos.add(botonElimiarPaso);
-		pDer.add(btnAñaEliPasos);
+		btnAnaEliPasos.add(botonAnadirPaso);
+		btnAnaEliPasos.add(botonElimiarPaso);
+		pDer.add(btnAnaEliPasos);
 		pDer.add(panelAlergia);
 		
 		
 		datos.add(pIzq);
 		datos.add(pDer);
 		
-		//Crear botones y añadir al panelBotones
+		//Crear botones y anadir al panelBotones
 		JButton botonCancelar = new JButton("CANCELAR");
 		JButton botonConfirmar= new JButton("CONFIRMAR");
 		
@@ -355,7 +355,7 @@ public class VentanaEditarDieta extends JFrame {
 			}
 		});
 		
-        botonAñadirIngrediente.addActionListener(new ActionListener() {
+        botonAnadirIngrediente.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -379,7 +379,7 @@ public class VentanaEditarDieta extends JFrame {
 			}
 		});
         
-        botonAñadirPaso.addActionListener(new ActionListener() {
+        botonAnadirPaso.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
