@@ -271,7 +271,7 @@ public class VentanaLogeoRegistro extends JFrame {
 				} else {
 					JOptionPane.showMessageDialog(iniciarSesion, "La contraseña o el usuario no son validos", "Error",
 							JOptionPane.ERROR_MESSAGE);
-					RegistroLogger.anadirLogeo(Level.WARNING, "Contraseña incorrecta");
+					RegistroLogger.getLogger().log(Level.WARNING, "Contraseña incorrecta");
 				}
 			}
 		});
@@ -335,7 +335,7 @@ public class VentanaLogeoRegistro extends JFrame {
 							conn.close();
 						} catch (SQLException e1) {
 							e1.printStackTrace();
-							RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+							RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 							JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 						}
 						
@@ -344,13 +344,13 @@ public class VentanaLogeoRegistro extends JFrame {
 					} else {
 						JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden",
 								"Las contraseñas deben coincidir", JOptionPane.ERROR_MESSAGE);
-						RegistroLogger.anadirLogeo(Level.WARNING, "Contraseñas no coinciden");
+						RegistroLogger.getLogger().log(Level.WARNING, "Contraseñas no coinciden");
 
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Los datos introducidos no son correctos", "Error de datos",
 							JOptionPane.ERROR_MESSAGE);
-					RegistroLogger.anadirLogeo(Level.WARNING, "Datos incorrectos");
+					RegistroLogger.getLogger().log(Level.WARNING, "Datos incorrectos");
 				}
 			}
 		});
@@ -588,16 +588,16 @@ public class VentanaLogeoRegistro extends JFrame {
 							caloriasConsumidas, proximaComida, vasosDeAgua, contrasena, foto, permiso,
 							listaEntrenamientos);
 					conn.close();
-					RegistroLogger.anadirLogeo(Level.WARNING, "Inicio de sesion correcto");
+					RegistroLogger.getLogger().log(Level.WARNING, "Inicio de sesion correcto");
 					return usuario;
 				}
 
 			}
 
-			RegistroLogger.anadirLogeo(Level.WARNING, "Usuario inexistente");
+			RegistroLogger.getLogger().log(Level.WARNING, "Usuario inexistente");
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 

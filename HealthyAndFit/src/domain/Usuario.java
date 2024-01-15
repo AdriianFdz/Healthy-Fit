@@ -318,7 +318,7 @@ public class Usuario implements Serializable{
 				+ ", tiempoEntrenado=" + tiempoEntrenado
 				+ ", ultimaVezEntreno=" + ultimaVezEntreno + ", caloriasConsumidas=" + caloriasConsumidas
 				+ ", proximaComida=" + proximaComida + ", vasosDeAgua=" + vasosDeAgua + ", contrasena=" + contrasena
-				+ ", foto=" + foto + ", permiso=" + permiso + ", registroEntrenamiento=" + registroEntrenamiento
+				+ ", permiso=" + permiso + ", registroEntrenamiento=" + registroEntrenamiento
 				+ "]";
 	}
 

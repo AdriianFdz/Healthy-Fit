@@ -230,9 +230,15 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        
 	        botonStart.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-                    Image background2 = en.getFoto().getImage().getScaledInstance(1500, en.getFoto().getIconHeight(), Image.SCALE_SMOOTH);
-	            	foto.setIcon(new ImageIcon(background2));
-	                timer.start();
+	            	if (descanso) {
+                        Icon background6 = new ImageIcon("resources/images/descanso.png");
+                         foto.setIcon(background6);
+                         timer.start();
+                    } else {
+                        Image background2 = en.getFoto().getImage().getScaledInstance(1500, en.getFoto().getIconHeight(), Image.SCALE_SMOOTH);
+                        foto.setIcon(new ImageIcon(background2));
+                        timer.start();
+                    }
 
 	            }
 	        });
@@ -355,7 +361,6 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        this.add(panelDerecha);
 	        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	        //Ajustes de la ventana
-			setExtendedState(JFrame.MAXIMIZED_BOTH);
 	        setDefaultCloseOperation(EXIT_ON_CLOSE);
 	        setTitle("Entrenamiento en curso");
 	        setVisible(true);
@@ -363,5 +368,4 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        setLocationRelativeTo(null); 
 	    }
 	    
-
 }

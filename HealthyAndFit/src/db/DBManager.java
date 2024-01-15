@@ -50,11 +50,11 @@ public class DBManager {
 		
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo leer el archivo db.properties");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo leer el archivo db.properties");
 			JOptionPane.showConfirmDialog(null, "Error al leer el archivo db.properties", "Error", JOptionPane.PLAIN_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return conn;
@@ -71,26 +71,23 @@ public class DBManager {
 			
 		} catch (IOException e1) {
 			e1.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo leer el archivo db.properties");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo leer el archivo db.properties");
 			JOptionPane.showConfirmDialog(null, "Error al leer el archivo db.properties", "Error", JOptionPane.PLAIN_MESSAGE);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return conn;
 	}
 	
 	public static void anadirEnfermedad(Connection connection, TipoEnfermedades enfermedad) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Enfermedades VALUES (null, ?)");
+		try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO Enfermedades VALUES (null, ?)")){
 			 stmt.setString(1, enfermedad.toString());
 			 stmt.executeUpdate();
-			 
-			 stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 			
@@ -99,15 +96,12 @@ public class DBManager {
 	}
 
 	public static void anadirAlergia(Connection connection, TipoAlergias alergia) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alergias VALUES (null, ?)");
+		try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO Alergias VALUES (null, ?)")){
 			 stmt.setString(1, alergia.toString());
 			 stmt.executeUpdate();
-			 
-			 stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 			
@@ -116,8 +110,7 @@ public class DBManager {
 	}
 	
 	public static void anadirUsuario(Connection connection, Usuario usuario) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO Usuarios VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")){
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, usuario.getNombre());
 			stmt.setString(3, usuario.getApellido1());
@@ -138,7 +131,6 @@ public class DBManager {
 			stmt.setString(18, usuario.getPermiso().toString());
 			 
 			stmt.executeUpdate();
-			stmt.close();
 			 
 			PreparedStatement stmtAnadirEnfermedades = connection.prepareStatement("INSERT INTO Usuario_Enfermedades VALUES (?, ?)");
 			for (TipoEnfermedades enfermedad : usuario.getEnfermedades()) {
@@ -151,8 +143,12 @@ public class DBManager {
 				stmtAnadirEnfermedades.setInt(2, id);
 				
 				stmtAnadirEnfermedades.executeUpdate();
+				
+				idSet.close();
 				stmConsultarID.close();
 			}
+			stmtAnadirEnfermedades.close();
+
 			PreparedStatement stmtAnadirAlergias = connection.prepareStatement("INSERT INTO Usuario_Alergias VALUES (?, ?)");
 			for (TipoAlergias alergia: usuario.getAlergias()) {
 				stmtAnadirAlergias.setString(1, usuario.getNombreUsuario());
@@ -164,44 +160,39 @@ public class DBManager {
 				stmtAnadirAlergias.setInt(2, id);
 				 
 				stmtAnadirAlergias.executeUpdate();
-				 
+				
+				idSet.close();
 				stmConsultarID.close();
 			}
-	
-			stmtAnadirEnfermedades.close();
-			stmtAnadirAlergias.close();
+			stmtAnadirAlergias.close();	
 			} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
 	public static void actualizarFotoUsuario(Connection connection, Usuario usuario, ImageIcon foto) {
-		try {
-			PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET foto = ? WHERE nombreUsuario = ?");
+		try (PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET foto = ? WHERE nombreUsuario = ?")){
 			pstmt.setBytes(1, convertirFotoABytes(foto));
 			pstmt.setString(2, usuario.getNombreUsuario());
 			pstmt.executeUpdate();
-			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 
 	}	
 	public static void actualizarFotoEntrena(Connection connection, Entrenamiento entrenamiento, ImageIcon foto) {
-		try {
-			PreparedStatement pstmt = connection.prepareStatement("UPDATE entrenamientos SET foto = ? WHERE nombre = ?");
+		try (PreparedStatement pstmt = connection.prepareStatement("UPDATE entrenamientos SET foto = ? WHERE nombre = ?")){
 			pstmt.setBytes(1, convertirFotoABytes(foto));
 			pstmt.setString(2, entrenamiento.getNombre());
 			pstmt.executeUpdate();
-			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
@@ -219,7 +210,7 @@ public class DBManager {
 	            ImageIO.write(bi, "png", baos);
 	        } catch (IOException e) {
 	            e.printStackTrace();
-	            RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+	            RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 	        }
 
@@ -263,15 +254,14 @@ public class DBManager {
 			stmtAnadirAlergias.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		} 
 			
 	}
 	
 	public static void anadirEntrenamiento(Connection connection, Entrenamiento entrenamiento) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?, ?)");
+		try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO Entrenamientos VALUES (?, ?, ?, ? ,?, ?, ?, ?, ?)")){
 			stmt.setString(1, entrenamiento.getNombre());
 			stmt.setString(2, entrenamiento.getTipoEntrenamiento().toString());
 			stmt.setString(3, entrenamiento.getDificultad().toString());
@@ -283,36 +273,32 @@ public class DBManager {
 			stmt.setBytes(9, convertirFotoABytes(entrenamiento.getFoto()));
 			
 			stmt.executeUpdate();
-			stmt.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			
 		}
 	}
 	
 	public static void anadirUsuarioEntrenamientos(Connection connection, Usuario usuario, Entrenamiento entrenamiento) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuario_entrenamientos VALUES (?, ?, ?, ?)");
+		try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO usuario_entrenamientos VALUES (?, ?, ?, ?)")){
 			stmt.setString(1, usuario.getNombreUsuario());
 			stmt.setString(2, entrenamiento.getNombre());
 			stmt.setString(3, entrenamiento.getDificultad().toString());
 			stmt.setString(4, LocalDateTime.now(ZoneId.of("Europe/Madrid")).toString());
 			
 			stmt.executeUpdate();
-			stmt.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		
 	}
 	
 	public static void anadirUsuarioDieta(Connection connection, Usuario usuario, Dieta dieta, LocalDate fecha){
-		try {
-			PreparedStatement stmtComprobacion = connection.prepareStatement("SELECT * FROM usuario_dieta WHERE fecha = ? AND nombreUsuario = ?");
+		try (PreparedStatement stmtComprobacion = connection.prepareStatement("SELECT * FROM usuario_dieta WHERE fecha = ? AND nombreUsuario = ?")){
 			stmtComprobacion.setString(1, LocalDate.now().toString());
 			stmtComprobacion.setString(2, usuario.getNombreUsuario());
 			ResultSet rs = stmtComprobacion.executeQuery();
@@ -326,24 +312,22 @@ public class DBManager {
 				stmt.executeUpdate();
 				stmt.close();
 			}
+			rs.close();
 		}catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 	
 	public static void modificarVasosAgua(Connection connection, Usuario usuario, int cantidad) {
-		try {
-			PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET vasosDeAgua = ? WHERE nombreUsuario = ?");
+		try (PreparedStatement pstmt = connection.prepareStatement("UPDATE usuarios SET vasosDeAgua = ? WHERE nombreUsuario = ?")){
 			pstmt.setInt(1, cantidad);
 			pstmt.setString(2, usuario.getNombreUsuario());
 			pstmt.executeUpdate();
-			
-			pstmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			
 		}
@@ -364,7 +348,7 @@ public class DBManager {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return resultado;
 	}
@@ -382,7 +366,7 @@ public class DBManager {
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);	}
 		return resultado;
 	}
@@ -400,7 +384,7 @@ public class DBManager {
 			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return resultado;
@@ -420,7 +404,7 @@ public class DBManager {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return resultado;
 	}
@@ -439,7 +423,7 @@ public class DBManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return resultado;
 	}
@@ -461,7 +445,7 @@ public class DBManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return resultado;
 	}
@@ -482,14 +466,11 @@ public class DBManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return resultado;
 	}
-	
-	
-	
-	
+
 	public static void eliminarAlergia(Connection connection, TipoAlergias alergia) {
 		try (PreparedStatement pstmt = connection.prepareStatement("DELETE FROM Alergias WHERE nombreAlergia = ?")){
 			pstmt.setString(1, alergia.name());
@@ -497,7 +478,7 @@ public class DBManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}	
 	}
 	
@@ -508,7 +489,7 @@ public class DBManager {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}	
 	}
 	
@@ -534,7 +515,7 @@ public class DBManager {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
@@ -568,20 +549,18 @@ public class DBManager {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
 	public static void eliminarEntrenamientos (Connection connection, Entrenamiento entrenamiento) {
-		try {
-			PreparedStatement stmtEntrenamiento = connection.prepareStatement("DELETE FROM entrenamientos WHERE nombre = ?");
+		try (PreparedStatement stmtEntrenamiento = connection.prepareStatement("DELETE FROM entrenamientos WHERE nombre = ?")){
 			stmtEntrenamiento.setString(1, entrenamiento.getNombre());
 			stmtEntrenamiento.executeUpdate();
-			stmtEntrenamiento.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
@@ -589,8 +568,7 @@ public class DBManager {
 	public static List<Dieta> obtenerDietas (Connection connection){
 		List<Dieta> resultado = new ArrayList<Dieta>();
 		
-		try {
-			Statement stmt = connection.createStatement();
+		try (Statement stmt = connection.createStatement()){
 
 			ResultSet rs = stmt.executeQuery("SELECT * FROM dietas");
 			while (rs.next()) {
@@ -607,6 +585,8 @@ public class DBManager {
 				while (rsPasos.next()) {
 					pasos.add(rsPasos.getString("denominacion"));
 				}
+				rsPasos.close();
+				stmtPasos.close();
 				d.setPasos(new ArrayList<String>(pasos));
 				
 				PreparedStatement stmtIngredientes = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
@@ -616,6 +596,8 @@ public class DBManager {
 				while (rsIngredientes.next()) {
 					ingredientes.add(rsIngredientes.getString("nombreIngrediente"));
 				}
+				rsIngredientes.close();
+				stmtIngredientes.close();
 				d.setIngredientes(new ArrayList<String>(ingredientes));
 
 				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT alergia FROM dieta_alergias WHERE nombreDieta = ?");
@@ -625,6 +607,8 @@ public class DBManager {
 				while (rsAlergias.next()) {
 					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("alergia")));
 				}
+				rsAlergias.close();
+				stmtAlergias.close();
 				d.setAlergias(new ArrayList<TipoAlergias>(alergias));
 				
 				d.setNombre(nombre);
@@ -634,12 +618,13 @@ public class DBManager {
 				
 				
 				resultado.add(d);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
-				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
+		}
 		
 		return resultado;
 			
@@ -648,10 +633,8 @@ public class DBManager {
 	public static Dieta obtenerDietas (Connection connection, String nombreCondicion){
 		
 		Dieta d = new Dieta();
-		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM dietas WHERE nombre = ?");
+		try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM dietas WHERE nombre = ?")){
 			stmt.setString(1, nombreCondicion);
-			
 			ResultSet rs = stmt.executeQuery();
 		
 			
@@ -668,6 +651,8 @@ public class DBManager {
 				while (rsPasos.next()) {
 					pasos.add(rsPasos.getString("denominacion"));
 				}
+				rsPasos.close();
+				stmtPasos.close();
 				d.setPasos(new ArrayList<String>(pasos));
 				
 				PreparedStatement stmtIngredientes = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
@@ -677,6 +662,8 @@ public class DBManager {
 				while (rsIngredientes.next()) {
 					ingredientes.add(rsIngredientes.getString("nombreIngrediente"));
 				}
+				rsIngredientes.close();
+				stmtIngredientes.close();
 				d.setIngredientes(new ArrayList<String>(ingredientes));
 				
 				PreparedStatement stmtAlergias = connection.prepareStatement("SELECT nombreAlergia FROM alergias WHERE id = (SELECT alergia FROM dieta_alergias WHERE nombreDieta = ?)");
@@ -686,6 +673,8 @@ public class DBManager {
 				while (rsAlergias.next()) {
 					alergias.add(TipoAlergias.valueOf(rsAlergias.getString("nombreAlergia")));
 				}
+				rsAlergias.close();
+				stmtAlergias.close();
 				d.setAlergias(new ArrayList<TipoAlergias>(alergias));
 				
 				d.setNombre(nombre);
@@ -694,9 +683,10 @@ public class DBManager {
 				d.setKcal(kcal);
 				
 			}
+			rs.close();
 		}	catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return d;
 		
@@ -706,8 +696,7 @@ public class DBManager {
 	public static List<Usuario> obtenerUsuarios(Connection connection) {
 		
 		List<Usuario> resultado = new ArrayList<Usuario>();
-		try {
-			Statement stmt = connection.createStatement();
+		try (Statement stmt = connection.createStatement()){
 			
 			ResultSet rs = stmt.executeQuery("SELECT * FROM usuarios");
 			
@@ -738,7 +727,9 @@ public class DBManager {
 				while (rsAlergias.next()) {
 					alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")-1]);
 				}
-
+				rsAlergias.close();
+				pstmtAlergias.close();
+				
 				PreparedStatement pstmtEnfermedades = connection.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
 				pstmtEnfermedades.setString(1, nombreUsuario);
 				ResultSet rsEnfermedades = pstmtEnfermedades.executeQuery();
@@ -747,6 +738,8 @@ public class DBManager {
 				while (rsEnfermedades.next()) {
 					enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")-1]);
 				}
+				rsEnfermedades.close();
+				pstmtEnfermedades.close();
 
 				PreparedStatement pstmtProximaComida = connection.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
 				pstmtProximaComida.setString(1, nombreUsuario);
@@ -771,6 +764,8 @@ public class DBManager {
 						while (rsObtenerPasosDieta.next()) {
 							pasos.add(rsObtenerPasosDieta.getString("denominacion"));
 						}
+						rsObtenerPasosDieta.close();
+						pstmtObtenerPasosDieta.close();
 
 						PreparedStatement pstmtObtenerIngredientesDieta = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
 						pstmtObtenerIngredientesDieta.setString(1, nombreDieta);
@@ -779,6 +774,8 @@ public class DBManager {
 						while (rsObtenerIngredientesDieta.next()) {
 							ingredientes.add(rsObtenerIngredientesDieta.getString("nombreIngrediente"));
 						}
+						rsObtenerIngredientesDieta.close();
+						pstmtObtenerIngredientesDieta.close();
 
 						PreparedStatement pstmtObtenerAlergiasDieta = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
 						pstmtObtenerAlergiasDieta.setString(1, nombreDieta);
@@ -787,12 +784,18 @@ public class DBManager {
 						while (rsObtenerAlergiasDieta.next()) {
 							alergiasDieta.add(TipoAlergias.valueOf(rsObtenerAlergiasDieta.getString("alergia")));
 						}
+						rsObtenerAlergiasDieta.close();
+						pstmtObtenerAlergiasDieta.close();
 
 						Dieta dieta = new Dieta(nombreDieta, tiempo, dificultad, kcal, pasos, ingredientes,
 								alergiasDieta);
 						proximaComida.putIfAbsent(fecha, dieta);
 					}
+					rsObtenerDieta.close();
+					pstmtObtenerDieta.close();
 				}
+				rsProximaComida.close();
+				pstmtProximaComida.close();
 
 				// OBTENER REGISTRO ENTRENAMIENTOS del usuario
 				PreparedStatement pstmtRegEntrenamientos = connection.prepareStatement(
@@ -820,6 +823,9 @@ public class DBManager {
 
 					pstmtRegEntrenamientos.close();
 				}
+				rsUsuarioEntrenamientos.close();
+				pstmtRegEntrenamientos.close();
+				
 				Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
 						sexo, altura, peso, new ArrayList<TipoAlergias>(alergias), correoElectronico, new ArrayList<TipoEnfermedades>(enfermedades),
 						caloriasGastadas, tiempoEntrenado, ultimaVezEntreno,
@@ -827,16 +833,16 @@ public class DBManager {
 						new ArrayList<Entrenamiento>(listaEntrenamientos));
 				resultado.add(usuario);
 			}
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		}
 		return resultado;
 	}
 	
 	public static Usuario obtenerUsuarios(Connection connection, String nombreCondicion) {
-		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuarios WHERE nombreUsuario = ?");
+		try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM usuarios WHERE nombreUsuario = ?")){
 			stmt.setString(1, nombreCondicion);
 			ResultSet rs = stmt.executeQuery();
 			
@@ -867,6 +873,8 @@ public class DBManager {
 				while (rsAlergias.next()) {
 					alergias.add(TipoAlergias.values()[rsAlergias.getInt("id_alergia")-1]);
 				}
+				rsAlergias.close();
+				pstmtAlergias.close();
 
 				PreparedStatement pstmtEnfermedades = connection.prepareStatement("SELECT * FROM usuario_enfermedades WHERE nombreUsuario = ?");
 				pstmtEnfermedades.setString(1, nombreUsuario);
@@ -876,7 +884,9 @@ public class DBManager {
 				while (rsEnfermedades.next()) {
 					enfermedades.add(TipoEnfermedades.values()[rsEnfermedades.getInt("id_enfermedad")-1]);
 				}
-
+				rsEnfermedades.close();
+				pstmtEnfermedades.close();
+				
 				PreparedStatement pstmtProximaComida = connection.prepareStatement("SELECT * FROM usuario_dieta WHERE nombreUsuario = ?");
 				pstmtProximaComida.setString(1, nombreUsuario);
 				ResultSet rsProximaComida = pstmtProximaComida.executeQuery();
@@ -900,6 +910,8 @@ public class DBManager {
 						while (rsObtenerPasosDieta.next()) {
 							pasos.add(rsObtenerPasosDieta.getString("denominacion"));
 						}
+						rsObtenerPasosDieta.close();
+						pstmtObtenerPasosDieta.close();
 
 						PreparedStatement pstmtObtenerIngredientesDieta = connection.prepareStatement("SELECT * FROM ingredientes_dietas WHERE nombreDieta = ?");
 						pstmtObtenerIngredientesDieta.setString(1, nombreDieta);
@@ -908,6 +920,8 @@ public class DBManager {
 						while (rsObtenerIngredientesDieta.next()) {
 							ingredientes.add(rsObtenerIngredientesDieta.getString("nombreIngrediente"));
 						}
+						rsObtenerIngredientesDieta.close();
+						pstmtObtenerIngredientesDieta.close();
 
 						PreparedStatement pstmtObtenerAlergiasDieta = connection.prepareStatement("SELECT * FROM dieta_alergias WHERE nombreDieta = ?");
 						pstmtObtenerAlergiasDieta.setString(1, nombreDieta);
@@ -916,16 +930,21 @@ public class DBManager {
 						while (rsObtenerAlergiasDieta.next()) {
 							alergiasDieta.add(TipoAlergias.valueOf(rsObtenerAlergiasDieta.getString("alergia")));
 						}
+						rsObtenerAlergiasDieta.close();
+						pstmtObtenerAlergiasDieta.close();
 
 						Dieta dieta = new Dieta(nombreDieta, tiempo, dificultad, kcal, pasos, ingredientes,
 								alergiasDieta);
 						proximaComida.putIfAbsent(fecha, dieta);
 					}
+					rsObtenerDieta.close();
+					pstmtObtenerDieta.close();
 				}
-
+				rsProximaComida.close();
+				pstmtProximaComida.close();
+				
 				// OBTENER REGISTRO ENTRENAMIENTOS del usuario
-				PreparedStatement pstmtRegEntrenamientos = connection.prepareStatement(
-						"SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
+				PreparedStatement pstmtRegEntrenamientos = connection.prepareStatement("SELECT * FROM entrenamientos WHERE nombre IN (SELECT nombreEntrenamiento FROM usuario_entrenamientos WHERE nombreUsuario = ?)");
 				pstmtRegEntrenamientos.setString(1, nombreUsuario);
 				ResultSet rsUsuarioEntrenamientos = pstmtRegEntrenamientos.executeQuery();
 
@@ -949,18 +968,22 @@ public class DBManager {
 
 					pstmtRegEntrenamientos.close();
 				}
-
+				rsUsuarioEntrenamientos.close();
+				pstmtRegEntrenamientos.close();
+				
 				Usuario usuario = new Usuario(nombre, nombreUsuario, apellido1, apellido2, fechaNacimiento,
 						sexo, altura, peso, new ArrayList<TipoAlergias>(alergias), correoElectronico, new ArrayList<TipoEnfermedades>(enfermedades),
 						caloriasGastadas, tiempoEntrenado, ultimaVezEntreno,
 						caloriasConsumidas, new HashMap<LocalDate, Dieta>(proximaComida), vasosDeAgua, contrasena, foto, permiso,
 						new ArrayList<Entrenamiento>(listaEntrenamientos));
+				rs.close();
 				return usuario;
 				
 			}
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		
 		}
 		return null;
@@ -970,8 +993,7 @@ public class DBManager {
 		
 		List<Entrenamiento> resultado = new ArrayList<Entrenamiento>();
 		
-		try {
-			Statement stmt = connection.createStatement();
+		try (Statement stmt = connection.createStatement()){
 			ResultSet rs = stmt.executeQuery("SELECT * FROM entrenamientos");
 			while (rs.next()) {
 				String nombre = rs.getString("nombre");
@@ -987,9 +1009,10 @@ public class DBManager {
 				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);
 				resultado.add(entrenamiento);	
 			}
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return resultado;
@@ -997,8 +1020,7 @@ public class DBManager {
 
 	public static Entrenamiento obtenerEntrenamientos(Connection connection, String nombreCondicion) {
 				
-		try {
-			PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entrenamientos WHERE nombre = ?");
+		try (PreparedStatement stmt = connection.prepareStatement("SELECT * FROM entrenamientos WHERE nombre = ?")){
 			stmt.setString(1, nombreCondicion);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -1013,11 +1035,13 @@ public class DBManager {
 				ImageIcon fotoEnt = new ImageIcon(rs.getBytes("foto"));
 
 				Entrenamiento entrenamiento = new Entrenamiento(nombre, tipoEntrenamiento, dificultad, tiempo, descripcion, calorias, series, repeticiones, fotoEnt);
+				rs.close();
 				return entrenamiento;
 			}
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return null;	
@@ -1029,10 +1053,15 @@ public class DBManager {
 			ResultSet rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				return rs.getBytes("foto");
-			}			
+				byte[] bytes = rs.getBytes("foto");
+				rs.close();
+				return bytes;
+			}	
+			rs.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
+			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		return null;
 	}

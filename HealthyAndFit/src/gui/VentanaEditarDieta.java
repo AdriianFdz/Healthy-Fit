@@ -343,7 +343,7 @@ public class VentanaEditarDieta extends JFrame {
 			        conn.close();
 		        } catch (SQLException e1) {
 		        	e1.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		        }					
 		        
@@ -414,7 +414,7 @@ public class VentanaEditarDieta extends JFrame {
 		this.pack();
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setTitle("Editar Usuario");
+		this.setTitle("Editar Dieta");
 	}
 	public String obtenerNuevoIngrediente() {
         return JOptionPane.showInputDialog(this, "Ingrese el nombre del nuevo ingrediente:", "Nuevo Ingrediente", JOptionPane.PLAIN_MESSAGE);

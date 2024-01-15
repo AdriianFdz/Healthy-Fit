@@ -20,8 +20,9 @@ public class RegistroLogger {
 			JOptionPane.showConfirmDialog(null, "Error en la lectura del fichero", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	}
-	public static void anadirLogeo(Level nivel, String texto) {
-		logger.log(nivel, texto);
+	
+	public static Logger getLogger() {
+		return logger;
 	}
 
 }

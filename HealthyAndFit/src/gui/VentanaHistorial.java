@@ -186,7 +186,7 @@ public class VentanaHistorial extends JFrame {
 						refresh(u);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
-						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 			          
@@ -327,7 +327,7 @@ public class VentanaHistorial extends JFrame {
 				table.repaint();
 			} catch (SQLException e1) {
 				e1.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			
 			} 

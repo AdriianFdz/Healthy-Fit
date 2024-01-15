@@ -566,7 +566,7 @@ public class VentanaEditarPerfil extends JFrame {
 						
 					} catch (SQLException e1) {
 						e1.printStackTrace();
-						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al conectar con la base de datos");
+						RegistroLogger.getLogger().log(Level.SEVERE, "ERROR al conectar con la base de datos");
 						JOptionPane.showConfirmDialog(null, "ERROR al conectar con la BD", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}
@@ -612,7 +612,7 @@ public class VentanaEditarPerfil extends JFrame {
 						repaint();
 					} catch (IOException e1) {
 						e1.printStackTrace();
-						RegistroLogger.anadirLogeo(Level.SEVERE, "ERROR al convertir fichero a imagen al subir una foto");
+						RegistroLogger.getLogger().log(Level.SEVERE, "ERROR al convertir fichero a imagen al subir una foto");
 						JOptionPane.showConfirmDialog(null, "ERROR al convertir fichero a imagen", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}

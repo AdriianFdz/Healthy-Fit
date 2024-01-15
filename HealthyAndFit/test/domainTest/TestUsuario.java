@@ -252,7 +252,7 @@ public class TestUsuario {
 	
 	@Test
 	public void testToString() {
-		assertEquals("Usuario [nombre=Juan, nombreUsuario=juan_perez, apellido1=Perez, apellido2=Carbon, fechaNacimiento=2004-06-10, sexo=HOMBRE, altura=1.75, peso=75, alergias=[HUEVOS], correoElectronico=juan@gmail.com, enfermedades=[CARDIOVASCULARES], imc=24.489795918367346, caloriasGastadas=12300, rachaEntrenamiento=, tiempoEntrenado=300, ultimaVezEntreno=2024-01-14, caloriasConsumidas=13000, proximaComida={}, vasosDeAgua=3, contrasena=juan, foto=resources\\images\\foto.png, permiso=ADMINISTRADOR, registroEntrenamiento=[Entrenamiento [nombre=test, tipoEntrenamiento=INFERIOR, dificultad=DIFICIL, tiempo=3, descripcion=test descripcion, calorias=10, series=5, repeticiones=3]]]", usuario.toString());	
+		assertEquals("Usuario [nombre=Juan, nombreUsuario=juan_perez, apellido1=Perez, apellido2=Carbon, fechaNacimiento=2004-06-10, sexo=HOMBRE, altura=1.75, peso=75, alergias=[HUEVOS], correoElectronico=juan@gmail.com, enfermedades=[CARDIOVASCULARES], imc=24.489795918367346, caloriasGastadas=12300, rachaEntrenamiento=, tiempoEntrenado=300, ultimaVezEntreno=2024-01-15, caloriasConsumidas=13000, proximaComida={}, vasosDeAgua=3, contrasena=juan, permiso=ADMINISTRADOR, registroEntrenamiento=[Entrenamiento [nombre=test, tipoEntrenamiento=INFERIOR, dificultad=DIFICIL, tiempo=3, descripcion=test descripcion, calorias=10, series=5, repeticiones=3]]]", usuario.toString());	
 	} 
 	
 	

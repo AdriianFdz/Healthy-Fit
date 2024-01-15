@@ -45,7 +45,7 @@ public class TestDBManager {
 			Files.copy(Paths.get("src/db/Healthy-Fit-Tests-No-Modificable.db"), Paths.get("src/db/Healthy-Fit-Tests.db"), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo clonar la BD para los tests");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo clonar la BD para los tests");
 			JOptionPane.showConfirmDialog(null, "No se pudo clonar la BD para los tests", "Error", JOptionPane.PLAIN_MESSAGE);		
 		}
 		
@@ -58,7 +58,7 @@ public class TestDBManager {
 			connTest.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		
 		}
 	}
@@ -73,7 +73,7 @@ public class TestDBManager {
 						
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);		
 		}
 	}

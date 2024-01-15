@@ -9,7 +9,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -21,13 +20,14 @@ import java.util.logging.Level;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+
 import db.DBManager;
 import domain.Dieta;
 import domain.Entrenamiento;
 import domain.Usuario;
 
 public class ExportarDatos {
-	private static File obtenerRutaFichero (String titulo, String extension) {
+	public static File obtenerRutaFichero (String titulo, String extension) {
 		JFileChooser fileChooser = new JFileChooser();
 		
 		fileChooser.setDialogTitle(titulo);
@@ -60,11 +60,11 @@ public class ExportarDatos {
 				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-        		RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo csv");
+        		RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo csv");
         		JOptionPane.showConfirmDialog(null, "Error al crear el archivo csv", "Error", JOptionPane.PLAIN_MESSAGE);
 			} catch (IOException e1) {
 				e1.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos");
 				JOptionPane.showConfirmDialog(null, "Error al guardar los datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 			
@@ -86,11 +86,11 @@ public class ExportarDatos {
         		JOptionPane.showMessageDialog(null, "Historial guardado correctamente");
         	} catch (FileNotFoundException e) {
         		e.printStackTrace();
-        		RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo csv");
+        		RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo csv");
         		JOptionPane.showConfirmDialog(null, "Error al crear el archivo csv", "Error", JOptionPane.PLAIN_MESSAGE);
         	} catch (IOException e1) {
 				e1.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos del historial");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos del historial");
 				JOptionPane.showConfirmDialog(null, "Error al guardar los datos del historial", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
         }
@@ -110,15 +110,15 @@ public class ExportarDatos {
 				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo");
 	    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
 			} catch (IOException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de usuarios");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos de usuarios");
 				JOptionPane.showConfirmDialog(null, "Error al guardar los datos de usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
@@ -141,15 +141,15 @@ public class ExportarDatos {
 				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo");
 	    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
 			} catch (IOException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de dietas");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos de dietas");
 				JOptionPane.showConfirmDialog(null, "Error al guardar los datos de dietas", "Error", JOptionPane.PLAIN_MESSAGE);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
@@ -171,15 +171,15 @@ public class ExportarDatos {
 				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo");
 	    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
 			} catch (IOException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos de entrenamientos");
 				JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
 			} catch (SQLException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 		}
@@ -206,19 +206,19 @@ public class ExportarDatos {
 				
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo");
 		    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
 				} catch (IOException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos de entrenamientos");
 					JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
 				} catch (ClassNotFoundException e) {
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al leer los usuarios");
 					JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
 					e.printStackTrace();
 				} catch (SQLException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 				}
 		}
@@ -247,19 +247,19 @@ public class ExportarDatos {
 				
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo");
 		    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
 				} catch (IOException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos de entrenamientos");
 					JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
 				} catch (ClassNotFoundException e) {
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al leer los usuarios");
 					JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
 					e.printStackTrace();
 				} catch (SQLException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 				}
 		}
@@ -288,19 +288,19 @@ public class ExportarDatos {
 				
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al crear el archivo");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al crear el archivo");
 		    		JOptionPane.showConfirmDialog(null, "Error al crear el archivo", "Error", JOptionPane.PLAIN_MESSAGE);
 				} catch (IOException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al guardar los datos de entrenamientos");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al guardar los datos de entrenamientos");
 					JOptionPane.showConfirmDialog(null, "Error al guardar los datos de entrenamientos", "Error", JOptionPane.PLAIN_MESSAGE);
 				} catch (ClassNotFoundException e) {
-					RegistroLogger.anadirLogeo(Level.SEVERE, "Error al leer los usuarios");
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al leer los usuarios");
 					JOptionPane.showConfirmDialog(null, "Error al leer los usuarios", "Error", JOptionPane.PLAIN_MESSAGE);
 					e.printStackTrace();
 				} catch (SQLException e) {
 					e.printStackTrace();
-					RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+					RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 					JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 				}
 		}

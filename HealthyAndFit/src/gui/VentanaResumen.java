@@ -125,7 +125,7 @@ public class VentanaResumen extends JFrame{
 		JFreeChart graficaEntrenamiento = crearGrafica("Calorías quemadas", "Dia", "Calorias", datasetEntrenamiento);
 		ChartPanel panelGraficaEntrenamiento = new ChartPanel(graficaEntrenamiento);
 		Dimension resPantalla = Toolkit.getDefaultToolkit().getScreenSize();
-		RegistroLogger.anadirLogeo(Level.INFO, resPantalla.toString());
+		RegistroLogger.getLogger().log(Level.INFO, resPantalla.toString());
 		
 		panelGraficaEntrenamiento.setPreferredSize(new Dimension(resPantalla.getSize().width/2,resPantalla.getSize().height/2));
 		panelEntrenamiento.add(panelGraficaEntrenamiento, BorderLayout.CENTER);
@@ -287,7 +287,7 @@ public class VentanaResumen extends JFrame{
 						conn.close();
 					} catch (SQLException e1) {
 						e1.printStackTrace();
-						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 						JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 					List<Map<String, Entrenamiento>> resultado = calcularCombinaciones((int)modeloSpinner.getValue(), listaEntrenamientos, new HashMap<>(), new ArrayList<Map<String, Entrenamiento>>());
@@ -398,7 +398,7 @@ public class VentanaResumen extends JFrame{
 	        conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		repaint();
@@ -438,7 +438,7 @@ public class VentanaResumen extends JFrame{
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 		repaint();
@@ -466,7 +466,7 @@ public class VentanaResumen extends JFrame{
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						System.out.println("Hilo de animaciones de texto interrumpido");
-						RegistroLogger.anadirLogeo(Level.SEVERE, "Hilo de animacion de texto interrumpido");
+						RegistroLogger.getLogger().log(Level.SEVERE, "Hilo de animacion de texto interrumpido");
 						JOptionPane.showConfirmDialog(null, "Error en la animación del texto", "Error", JOptionPane.PLAIN_MESSAGE);
 					}
 				}
@@ -507,7 +507,7 @@ public class VentanaResumen extends JFrame{
 			listaVasos.set(i, vasoL);
 		}
 		
-		RegistroLogger.anadirLogeo(Level.INFO, "Vasos de agua actualizados");
+		RegistroLogger.getLogger().log(Level.INFO, "Vasos de agua actualizados");
 	}
 	
 	
@@ -520,7 +520,7 @@ public class VentanaResumen extends JFrame{
 				conn.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
-				RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+				RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 				JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 			}
 			
@@ -600,7 +600,7 @@ public class VentanaResumen extends JFrame{
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+			RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 			JOptionPane.showConfirmDialog(null, "Error al conectar con la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 		}
 	

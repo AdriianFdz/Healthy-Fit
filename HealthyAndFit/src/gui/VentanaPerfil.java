@@ -90,7 +90,7 @@ public class VentanaPerfil extends JFrame{
 		// Definir la condicion del boton Acceso
 		if (p.getPermiso() != TipoPermiso.ADMINISTRADOR) {
 			accesoPanelBot.setVisible(false);
-			RegistroLogger.anadirLogeo(Level.INFO, "Panel bloqueado por no tener suficientes permisos");
+			RegistroLogger.getLogger().log(Level.INFO, "Panel bloqueado por no tener suficientes permisos");
 		}
 
 		add(panelColum1, BorderLayout.WEST);
@@ -208,7 +208,7 @@ public class VentanaPerfil extends JFrame{
 						new VentanaHistorial(p);
 					} catch (SQLException e1) {
 						e1.printStackTrace();
-						RegistroLogger.anadirLogeo(Level.SEVERE, "No se pudo conectar con la base de datos");
+						RegistroLogger.getLogger().log(Level.SEVERE, "No se pudo conectar con la base de datos");
 						JOptionPane.showConfirmDialog(null, "Error al cargar la base de datos", "Error", JOptionPane.PLAIN_MESSAGE);
 						
 					}
