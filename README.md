@@ -10,8 +10,9 @@ Healthy&Fit es una herramienta diseñada para ayudarte a mantener un estilo de v
 
 - Registro de actividades Físicas:
 
-        -Entrena fácilmente con los diferentes tipos de ejercicios que  incluye el programa. Registra tus sesiones de ejercicio, incluyendo 
-        el tipo, la duracion, la dificultad, las series y repeticiones  ejecutadas, las calorías quemadas y la fecha en la que se realizó el 
+        -Entrena fácilmente con los diferentes tipos de ejercicios que  incluye el programa. Registra
+        tus sesiones de ejercicio, incluyendo  el tipo, la duracion, la dificultad, las series y
+        repeticiones  ejecutadas, las calorías quemadas y la fecha en la que se realizó el 
         entrenamiento.
     
         -Visualiza tu historial de actividades para evaluar tu rendimiento a lo largo del tiempo.
@@ -21,8 +22,8 @@ Healthy&Fit es una herramienta diseñada para ayudarte a mantener un estilo de v
 
         -Mantén un registro detallado de tus comidas diarias.
 
-        -Recibe diferentes dietas saludables y equilibradas cada dia. Los ingredientes que tienes que usar, sus pasos, la dificultad, las calorias que contiene
-        la comida y sus alérgenos.
+        -Recibe diferentes dietas saludables y equilibradas cada dia. Los ingredientes que tienes que usar,
+        sus pasos, la dificultad, las calorias que contiene la comida y sus alérgenos.
 
 
 
@@ -34,24 +35,27 @@ Healthy&Fit es una herramienta diseñada para ayudarte a mantener un estilo de v
 
 - Inicio de sesion:
 
-        - Una vez registrado el usuario iniciará sesion con el nombre de usuario y contraseña indicadas en el Registro.
+        - Una vez registrado el usuario iniciará sesion con el nombre de usuario y contraseña indicadas en
+        el Registro.
 
 - Registro de actividades:
 
         - Las actividades quedarán registradas mediante datos y gráficos.
         
-        - Antes de entrenar existe un boton ,llamado `Que entrenar`, en el que el programa generará un itinerario de entrenamientos segun los dias que
-        selecccione el usuario.
+        - Antes de entrenar existe un boton ,llamado `Que entrenar`, en el que el programa generará un itinerario
+        de entrenamientos segun los dias que selecccione el usuario.
 
-        - Para comenzar a entrenar seleccione el botón `Quiero entrenar` y elige un entrenamiento. Al finalizarlo le preguntara si quiere guardar 
-        los datos del entrenamiento para que el entrenamiento quede registrado y posteriormente pueda consultarlo en el historial.
+        - Para comenzar a entrenar seleccione el botón `Quiero entrenar` y elige un entrenamiento. Al finalizarlo
+        le preguntara si quiere guardar los datos del entrenamiento para que el entrenamiento quede registrado y
+        posteriormente pueda consultarlo en el historial.
 
-        - Ademas en el historial existe la función de exportar datos para copiar el historial de entrenamientos en un fichero con formato csv.
+        - Ademas en el historial existe la función de exportar datos para copiar el historial de entrenamientos en
+        un fichero con formato csv.
 
 - Seguimiento de Dietas:
 
-        - Al igual que los entrenamientos las dietas quedarán registradas tanto con datos como en gráficos, según los dias en los que se haya cumplido la 
-        dieta.
+        - Al igual que los entrenamientos las dietas quedarán registradas tanto con datos como en gráficos,
+        según los dias en los que se haya cumplido la dieta.
 
         - Las dietas podrán ser consultadas mediante el botón de `Revisar dieta`.
 
@@ -59,20 +63,22 @@ Healthy&Fit es una herramienta diseñada para ayudarte a mantener un estilo de v
 
 - Consulta y modificación de datos del perfil:
 
-        - Los usuarios tiene la posibilidad de consultar y modificar sus datos, asi como añadir posibles alergias o enfermedades.
+        - Los usuarios tiene la posibilidad de consultar y modificar sus datos, asi como añadir posibles
+        alergias o enfermedades.
 
         - Para consultar sus datos simplemente deberan hacer click sobre su foto de perfil.
 
-        - Para modificar datos una vez hecho click en la foto de perfil existe el botón `Modificar datos` en el que si se hace click el usuario podrá cambiar
-        sus datos.
+        - Para modificar datos una vez hecho click en la foto de perfil existe el botón `Modificar datos`
+        en el que si se hace click el usuario podrá cambiar sus datos.
 
 - Añadir, modificar o eliminar usuarios, dietas o entrenamientos (Solo para Administradores):
 
         - Esta función solo estará disponible si al usuario se le concede el rango administrador.
 
-        - El administrador al hacer click en su foto de perfil tendra un boton extra 'Acceso panel' en el que se abrirá un panel con tablas con los diferentes
-        usuarios, dietas y entrenamientos. En ese panel el administrador podra añadir, modificar o eliminar cualquier usuario, dieta o entrenamiento al 
-        programa.
+        - El administrador al hacer click en su foto de perfil tendra un boton extra 'Acceso panel'
+        en el que se abrirá un panel con tablas con los diferentes usuarios, dietas y entrenamientos.
+        En ese panel el administrador podra añadir, modificar o eliminar cualquier usuario, dieta
+        o entrenamiento al programa.
 
 ## Requerimientos
 
