@@ -10,9 +10,12 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -25,6 +28,7 @@ import javax.swing.SwingUtilities;
 import db.DBManager;
 import domain.Entrenamiento;
 import domain.Usuario;
+import io.RegistroLogger;
 
 
 public class VentanaEntrenamientoEnCurso extends JFrame{
@@ -64,9 +68,23 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	    public VentanaEntrenamientoEnCurso(Entrenamiento en, Usuario persona, VentanaResumen vResumen) {
 	    
 			//Imagenes sacadas de www.flaticon.com
-		    ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
+		    ImageIcon tmpCronometro = null;
+			try {
+				tmpCronometro = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/chronometer.png")));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+				JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+			}
             Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-            ImageIcon tmpFuego = new ImageIcon("resources\\images\\calories.png");
+            ImageIcon tmpFuego = null;
+			try {
+				tmpFuego = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/calories.png")));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+				JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+			}
             Image iconoFuego = tmpFuego.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
 		    
             //Inicializar las propiedades previamente definidas
@@ -96,7 +114,14 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        panelBotones.setLayout(new FlowLayout());
 	        
 	        
-	        ImageIcon background = new ImageIcon("resources/images/preparacion.jpg");
+	        ImageIcon background = null;
+			try {
+				background = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/preparacion.jpg")));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+				JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+			}
             Image preparacion = background.getImage().getScaledInstance(1500, background.getIconHeight(), Image.SCALE_SMOOTH);
 	        foto = new JLabel(new ImageIcon(preparacion));
 	 
@@ -127,6 +152,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 								Thread.sleep(1000);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
+								RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+								JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
 							}
 						}
 						
@@ -157,8 +184,16 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 								SwingUtilities.invokeLater(() -> labelTiempo.setForeground(Color.RED));
 								SwingUtilities.invokeLater(() -> labelEstado.setText("  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  DESCANSO  "));
 								SwingUtilities.invokeLater(() -> VentanaResumen.animacionTexto(labelEstado));
-								Icon background5 = new ImageIcon("resources/images/descanso.png");
-								SwingUtilities.invokeLater(() -> foto.setIcon(background5));
+								
+								try {
+									 Icon background5 = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/descanso.png")));
+									 SwingUtilities.invokeLater(() -> foto.setIcon(background5));
+								} catch (IOException e) {
+									e.printStackTrace();
+									RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+									JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+								}
+								
 							} else {
 								// Si ya está en el tiempo de descanso, reinicia el cronómetro para la próxima serie
 								descanso = false;

@@ -10,12 +10,14 @@ import java.awt.ScrollPane;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -233,12 +235,26 @@ public class VentanaEntrenamiento extends JFrame{
 				dificultadEntrenamientoSeleccionado.setText(String.format("<html><b>Dificultad: </b>%s</html>",value.getDificultad()));
 				
 				tiempoEntrenamientoSeleccionado.setText(String.format("<html><b>%d</b> minutos</html>", value.getTiempo()));
-				ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
+				ImageIcon tmpCronometro = null;
+				try {
+					tmpCronometro = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/chronometer.png")));
+				} catch (IOException e) {
+					e.printStackTrace();
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+					JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+				}
 				Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 				tiempoEntrenamientoSeleccionado.setIcon(new ImageIcon(iconoCronometro));
 				
 				caloriasEntrenamientoSeleccionado.setText(String.format("<html><b>%d</b> calorias</html>", value.getCalorias()));
-				ImageIcon tmpCalorias = new ImageIcon("resources\\images\\calories.png");
+				ImageIcon tmpCalorias = null;
+				try {
+					tmpCalorias = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/calories.png")));
+				} catch (IOException e) {
+					e.printStackTrace();
+					RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+					JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+				}
 				Image iconoCalorias = tmpCalorias.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
 				caloriasEntrenamientoSeleccionado.setIcon(new ImageIcon(iconoCalorias));
 			

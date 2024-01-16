@@ -5,15 +5,20 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.io.IOException;
+import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import domain.Dieta;
 import domain.TipoDificultad;
+import io.RegistroLogger;
 
 public class VentanaDieta extends JFrame {
 	/**
@@ -38,7 +43,14 @@ public class VentanaDieta extends JFrame {
 	public VentanaDieta(Dieta d) {
 		
 		//Imagenes sacadas de www.flaticon.com
-		ImageIcon tmpCronometro = new ImageIcon("resources\\images\\chronometer.png");
+		ImageIcon tmpCronometro = null;
+		try {
+			tmpCronometro = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/chronometer.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+			RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+			JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+		}
         Image iconoCronometro = tmpCronometro.getImage().getScaledInstance(65, 65, Image.SCALE_SMOOTH);
 		
 		//Inicializar las propiedades previamente definidas

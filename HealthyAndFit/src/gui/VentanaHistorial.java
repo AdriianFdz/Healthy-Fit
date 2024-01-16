@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +24,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.Vector;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -124,7 +126,14 @@ public class VentanaHistorial extends JFrame {
 				
 			});
 	        
-	        ImageIcon background = new ImageIcon("resources\\images\\historial.jpeg");
+	        ImageIcon background = null;
+			try {
+				background = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/historial.jpeg")));
+			} catch (IOException e2) {
+				e2.printStackTrace();
+				RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar la foto");
+				JOptionPane.showConfirmDialog(null, "Error al cargar la foto", "Error", JOptionPane.PLAIN_MESSAGE);
+			}
 	        foto = new JLabel(new ImageIcon(background.getImage().getScaledInstance(400, 600, Image.SCALE_SMOOTH)));
 
 	    

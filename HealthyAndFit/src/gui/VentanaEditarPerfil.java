@@ -145,7 +145,7 @@ public class VentanaEditarPerfil extends JFrame {
 		//Para imagen
 		Image foto = usuarioModificar.getFoto().getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
 		JLabel fotoUsuario = new JLabel(new ImageIcon(foto));
-		//fotoUsuario.setPreferredSize(new Dimension(300, 200));
+		
 		fotoUsuario.setToolTipText("Haz click para elegir otra foto");
 		anadirBordeLabel("Fotografía", fotoUsuario);
 		panelColumna1.add(fotoUsuario);
