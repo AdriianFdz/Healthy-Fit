@@ -12,6 +12,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 
@@ -165,8 +167,18 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 							if (opcion == JOptionPane.YES_OPTION) {
 								persona.getRegistroEntrenamiento().add(en);
 								persona.setUltimaVezEntreno(LocalDate.now());
-								Connection conn = DBManager.obtenerConexion();
-								DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
+								try (Connection conn = DBManager.obtenerConexion()){
+									PreparedStatement pstmt = conn.prepareStatement("UPDATE USUARIOS SET ultimaVezEntreno = ? WHERE nombreUsuario = ?");
+									pstmt.setString(1, LocalDate.now().toString());
+									pstmt.setString(2, persona.getNombreUsuario());
+									pstmt.executeUpdate();
+
+									DBManager.anadirUsuarioEntrenamientos(conn, persona, en);
+								} catch (SQLException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
 							}
 							SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
 							dispose();					

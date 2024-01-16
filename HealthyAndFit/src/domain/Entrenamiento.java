@@ -1,9 +1,15 @@
 
 package domain;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import io.RegistroLogger;
 
 public class Entrenamiento implements Serializable{
 	/**
@@ -48,7 +54,13 @@ public class Entrenamiento implements Serializable{
 		this.calorias = 0;
 		this.series = 0;
 		this.repeticiones = 0;
-		this.foto = new ImageIcon("resources\\images\\foto.png");
+		try {
+			this.foto = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/foto.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+			RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar imagenes");
+			JOptionPane.showConfirmDialog(null, "Error al cargar imagenes", "Error", JOptionPane.PLAIN_MESSAGE);
+		}
 	}
 
 	//getters y setters
