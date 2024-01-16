@@ -10,6 +10,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -142,13 +144,24 @@ public class VentanaResumen extends JFrame{
 			JPanel botonesVasos = new JPanel();
 			
 				JButton btnEliminarVaso = new JButton();
-					ImageIcon iconoMinus = new ImageIcon("resources\\images\\minus.png");
+					ImageIcon iconoMinus = null;
+					try {
+						iconoMinus = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/minus.png")));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 					Image iconoMinusImg = iconoMinus.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 					ImageIcon iconoMinusResized = new ImageIcon(iconoMinusImg);
 					btnEliminarVaso.setIcon(iconoMinusResized);
 					
 				JButton btnAnadirVaso = new JButton();
-					ImageIcon iconoPlus = new ImageIcon("resources\\images\\plus.png");
+					ImageIcon iconoPlus = null;
+					try {
+						iconoPlus = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/plus.png")));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					Image iconoPlusImg = iconoPlus.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 					ImageIcon iconoPlusResized = new ImageIcon(iconoPlusImg);
 					btnAnadirVaso.setIcon(iconoPlusResized);
@@ -488,7 +501,12 @@ public class VentanaResumen extends JFrame{
 	//Imagenes sacadas de www.flaticon.com
 	private void actualizarVasosDeAgua(Usuario persona, List<JLabel> listaVasos) {
 		for (int i = 0; i < persona.getVasosDeAgua(); i++) {
-			ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoLleno.png");
+			ImageIcon vasotmp = null;
+			try {
+				vasotmp = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/vasoLleno.png")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 			ImageIcon vasoBueno = new ImageIcon(vaso);
 			JLabel vasoL = new JLabel();
@@ -498,7 +516,12 @@ public class VentanaResumen extends JFrame{
 		}
 		
 		for (int i = persona.getVasosDeAgua(); i < 8; i++) {
-			ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoVacio.png");
+			ImageIcon vasotmp = null;
+			try {
+				vasotmp = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/vasoVacio.png")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 			ImageIcon vasoBueno = new ImageIcon(vaso);
 			JLabel vasoL = new JLabel();
@@ -525,7 +548,12 @@ public class VentanaResumen extends JFrame{
 			}
 			
 			for (int i = 0; i < cantidad; i++) {
-				ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoLleno.png");
+				ImageIcon vasotmp = null;
+				try {
+					vasotmp = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/vasoLleno.png")));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 				ImageIcon vasoBueno = new ImageIcon(vaso);
 				
@@ -533,7 +561,13 @@ public class VentanaResumen extends JFrame{
 			}
 			
 			for (int i = cantidad; i < 8; i++) {
-				ImageIcon vasotmp = new ImageIcon("resources\\images\\vasoVacio.png");
+				ImageIcon vasotmp = null;
+				try {
+					vasotmp = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/vasoVacio.png")));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				Image vaso = vasotmp.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 				ImageIcon vasoBueno = new ImageIcon(vaso);
 				

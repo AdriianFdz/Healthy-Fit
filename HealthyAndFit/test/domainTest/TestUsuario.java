@@ -31,7 +31,7 @@ public class TestUsuario {
 	@Before
 	public void setUp() {
 		e = new Entrenamiento("test", TipoEntrenamiento.INFERIOR, TipoDificultad.DIFICIL, 3, "test descripcion", 10, 5, 3, new ImageIcon("resources/images/foto.png"));
-		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), 12300, 300, LocalDate.now(), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>(Arrays.asList(e)));
+		usuario = new Usuario("Juan", "juan_perez", "Perez", "Carbon", LocalDate.of(2004, 6, 10), TipoSexo.HOMBRE, 1.75, 75, new ArrayList<TipoAlergias>(Arrays.asList(TipoAlergias.HUEVOS)), "juan@gmail.com", new ArrayList<TipoEnfermedades>(Arrays.asList(TipoEnfermedades.CARDIOVASCULARES)), 12300, 300, LocalDate.of(2024, 01, 15), 13000, new HashMap<LocalDate, Dieta>(), 3, "juan", new ImageIcon("resources\\images\\foto.png"), TipoPermiso.ADMINISTRADOR, new ArrayList<Entrenamiento>(Arrays.asList(e)));
 		usuarioSinArgs = new Usuario();
 				
 	} 
@@ -167,7 +167,7 @@ public class TestUsuario {
 	}
 	@Test
 	public void testGetUltimaVezEntreno(){
-		assertEquals(LocalDate.now(), usuario.getUltimaVezEntreno());
+		assertEquals(LocalDate.of(2024, 01, 15), usuario.getUltimaVezEntreno());
 	}
 	@Test
 	public void testSetUltimaVezEntreno() {

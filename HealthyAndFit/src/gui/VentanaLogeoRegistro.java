@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -135,7 +136,12 @@ public class VentanaLogeoRegistro extends JFrame {
 		
 				
 		foto = new JLabel();
-		ImageIcon imagen = new ImageIcon("resources\\images\\logo.png");
+		ImageIcon imagen = null;
+		try {
+			imagen = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/logo.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         Image imagen2 = imagen.getImage().getScaledInstance(330, 280, Image.SCALE_SMOOTH);
 		foto.setIcon(new ImageIcon(imagen2));
 		foto.setHorizontalAlignment(JLabel.CENTER);
@@ -278,7 +284,7 @@ public class VentanaLogeoRegistro extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (
 						!meterNombre.getText().isEmpty()
-						&& !meterNombreRegistro.getText().isBlank() 
+						&& !meterNombreRegistro.getText().isBlank()
 						&& !meterApellido1.getText().isBlank()
 						&& !meterApellido2.getText().isBlank() 
 						&& meterFechaNac.getDate() != null
@@ -319,7 +325,12 @@ public class VentanaLogeoRegistro extends JFrame {
 						Map<LocalDate, Dieta> proximaComida = new HashMap<LocalDate, Dieta>();
 						int vasosDeAgua = 0;
 						String contrasena = String.valueOf(meterContraseñaRegistro.getPassword());
-						ImageIcon foto = new ImageIcon("resources\\images\\foto.png");
+						ImageIcon foto = null;
+						try {
+							foto = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/foto.png")));
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 						TipoPermiso permiso = TipoPermiso.USUARIO;
 						List<Entrenamiento> registroEntrenamiento = new ArrayList<Entrenamiento>();
 						
@@ -466,7 +477,8 @@ public class VentanaLogeoRegistro extends JFrame {
 					int vasosDeAgua = rs.getInt("vasosDeAgua");
 					String contrasena = rs.getString("contrasena");
 					ImageIcon foto = new ImageIcon(rs.getBytes("foto"));
-					TipoPermiso permiso = TipoPermiso.valueOf(rs.getString("permiso"));
+					String permisoStr = rs.getString("permiso");
+					TipoPermiso permiso = TipoPermiso.valueOf(permisoStr);
 
 					PreparedStatement pstmtAlergias = conn.prepareStatement("SELECT * FROM usuario_alergias WHERE nombreUsuario = ?");
 					pstmtAlergias.setString(1, usuarioSinComprobar.getNombreUsuario());

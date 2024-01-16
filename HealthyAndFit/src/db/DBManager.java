@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,12 +42,13 @@ public class DBManager {
 	
 
 	public static Connection obtenerConexion() {
-		try (FileReader reader = new FileReader("conf/db.properties")){
+		try {
+			InputStream input = DBManager.class.getClassLoader().getResourceAsStream("db.properties");
 			Properties propiedades = new Properties();
-			propiedades.load(reader);
+			propiedades.load(input);
 			
 			String conexion = propiedades.getProperty("database");
-			conn = DriverManager.getConnection(conexion);
+	        conn = DriverManager.getConnection("jdbc:sqlite::resource:"+conexion);
 		
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -62,12 +64,13 @@ public class DBManager {
 	
 	public static Connection obtenerConexion(String nombrePropiedadDB) {
 		
-		try (FileReader reader = new FileReader("conf/db.properties")){
+		try {
+			InputStream input = DBManager.class.getClassLoader().getResourceAsStream("db.properties");
 			Properties propiedades = new Properties();
-			propiedades.load(reader);
+			propiedades.load(input);
 			
 			String conexion = propiedades.getProperty(nombrePropiedadDB);
-			conn = DriverManager.getConnection(conexion);
+	        conn = DriverManager.getConnection(conexion);
 			
 		} catch (IOException e1) {
 			e1.printStackTrace();
@@ -227,7 +230,7 @@ public class DBManager {
 			
 			stmt.executeUpdate();
 			stmt.close();
-			
+		
 			PreparedStatement stmtAnadirPasos = connection.prepareStatement("INSERT INTO pasos_dietas VALUES (null, ?, ?)");
 			for (String s : dieta.getPasos()) {
 				stmtAnadirPasos.setString(1, s);
