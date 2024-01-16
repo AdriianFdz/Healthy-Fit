@@ -1,13 +1,19 @@
 package domain;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+
+import io.RegistroLogger;
 
 public class Usuario implements Serializable{
 	/**
@@ -102,7 +108,13 @@ public class Usuario implements Serializable{
 		this.proximaComida = new HashMap<LocalDate, Dieta>();
 		this.vasosDeAgua = 0;
 		this.contrasena = "";
-		this.foto = new ImageIcon("resources\\images\\foto.png"); 
+		try {
+			this.foto = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/foto.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+			RegistroLogger.getLogger().log(Level.SEVERE, "Error al cargar imagenes");
+			JOptionPane.showConfirmDialog(null, "Error al cargar imagenes", "Error", JOptionPane.PLAIN_MESSAGE);
+		}
 		this.permiso = TipoPermiso.USUARIO;
 		this.registroEntrenamiento = new ArrayList<Entrenamiento>();
 
