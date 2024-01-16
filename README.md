@@ -98,6 +98,10 @@ Healthy&Fit es una herramienta diseñada para ayudarte a mantener un estilo de v
 5.Ya estas listo para empezar a usar el programa.
 
 ¡Comienza tu viaje hacia un estilo de vida más saludable con nuestra aplicación de Ejercicio y Dietas! Si tienes alguna pregunta o comentario, no dudes en contactarnos. ¡Disfruta de una vida más activa y equilibrada!
+
+## Descargas (.jar)
+https://drive.google.com/file/d/1_iMbO_rba3_mZS3otcYvaBCzFc6fTnPk/view?usp=drive_link
+
 ## Contribuidores
 
 - [[Adrián Fernández](https://github.com/AdriianFdz)]
