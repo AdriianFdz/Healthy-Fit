@@ -155,7 +155,7 @@ public class VentanaResumen extends JFrame{
 					btnEliminarVaso.setIcon(iconoMinusResized);
 					
 				JButton btnAnadirVaso = new JButton();
-					ImageIcon iconoPlus = null;
+					ImageIcon iconoPlus = null; 
 					try {
 						iconoPlus = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/plus.png")));
 					} catch (IOException e) {

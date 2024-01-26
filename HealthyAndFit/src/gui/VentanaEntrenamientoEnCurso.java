@@ -143,7 +143,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 	        
 	        labelTiempo.setText(String.valueOf(en.getTiempo()));
 	        Thread hilo = new Thread(new Runnable() {
-				
+			
 	        	@Override
 				public void run() {
 					while (!detener) {
@@ -162,7 +162,8 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 						if (seriesRestantes == 0) {
 							detener = true;
 							SwingUtilities.invokeLater(() -> labelTiempo.setVisible(false));
-							SwingUtilities.invokeLater(() -> labelEstado.setText("	ENTRENAMIENTO FINALIZADO	ENTRENAMIENTO FINALIZADO	ENTRENAMIENTO FINALIZADO	"));
+							SwingUtilities.invokeLater(() -> labelEstado.setText("	ENTRENAMIENTO FINALIZADO	 ENTRENAMIENTO FINALIZADO	 ENTRENAMIENTO FINALIZADO /	"));
+							SwingUtilities.invokeLater(() -> VentanaResumen.animacionTexto(labelEstado));
 							int opcion = JOptionPane.showConfirmDialog(null, "¿Quieres guardar el entrenamiento?", "Guardar Entrenamiento", JOptionPane.YES_NO_OPTION);
 							if (opcion == JOptionPane.YES_OPTION) {
 								persona.getRegistroEntrenamiento().add(en);
@@ -248,6 +249,7 @@ public class VentanaEntrenamientoEnCurso extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				SwingUtilities.invokeLater(() -> new VentanaResumen(persona));
+				detener = true;
 				dispose();
 				
 			}

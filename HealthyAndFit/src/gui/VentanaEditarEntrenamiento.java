@@ -83,7 +83,7 @@ public class VentanaEditarEntrenamiento extends JFrame{
 		// Componentes para el panel izquierdo
 		labelNombre = new JLabel("NOMBRE");
 		fieldNombre = new JTextField(20);
-		labelTiempo = new JLabel("TIEMPO");
+		labelTiempo = new JLabel("TIEMPO/SERIE");
 		labelDificultad = new JLabel("DIFICULTAD");
 		comboDif = new JComboBox<>(TipoDificultad.values());
 		labelKcal = new JLabel("KCAL");

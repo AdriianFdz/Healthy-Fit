@@ -234,7 +234,7 @@ public class VentanaEntrenamiento extends JFrame{
 				
 				dificultadEntrenamientoSeleccionado.setText(String.format("<html><b>Dificultad: </b>%s</html>",value.getDificultad()));
 				
-				tiempoEntrenamientoSeleccionado.setText(String.format("<html><b>%d</b> minutos</html>", value.getTiempo()));
+				tiempoEntrenamientoSeleccionado.setText(String.format("<html><b>%d</b> segundos/serie</html>", value.getTiempo()));
 				ImageIcon tmpCronometro = null;
 				try {
 					tmpCronometro = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/images/chronometer.png")));

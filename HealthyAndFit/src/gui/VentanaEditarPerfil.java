@@ -259,6 +259,14 @@ public class VentanaEditarPerfil extends JFrame {
 		panelEnfermedadBotones.add(eliminarEnfermedad);
 		panelEnfermedad.add(panelEnfermedadBotones, BorderLayout.SOUTH);
 		
+		comboRango.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				pack();
+			}
+		});
+		
 		anadirEnfermedad.addActionListener(new ActionListener() {
 			
 			@Override
