@@ -37,6 +37,7 @@ Healthy&Fit es una herramienta diseñada para ayudarte a mantener un estilo de v
 
         - Una vez registrado el usuario iniciará sesion con el nombre de usuario y contraseña indicadas en
         el Registro.
+        - Existe un usuario ya creado que permite acceder al panel de administrador, con el nombre de usuario "juan_perez" y contraseña "juan". Importante no incluir las dobles comillas.
 
 - Registro de actividades:
 
